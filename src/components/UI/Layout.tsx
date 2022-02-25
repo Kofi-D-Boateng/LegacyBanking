@@ -2,11 +2,11 @@ import { Fragment } from "react";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 
-const Layout = (props: any) => {
+const Layout: React.FC<{ isMobile: boolean }> = ({ isMobile, children }) => {
   return (
     <Fragment>
-      <Navbar />
-      <div>{props.children}</div>
+      <Navbar isMobile={isMobile} />
+      <div>{children}</div>
       <Footer />
     </Fragment>
   );
