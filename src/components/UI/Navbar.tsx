@@ -10,8 +10,11 @@ import React, { Fragment, useState } from "react";
 import { AccountCircle } from "@mui/icons-material";
 import classes from "./Navbar.module.scss";
 
-const Navbar: React.FC<{ isMobile: boolean }> = (props) => {
-  const { isMobile } = props;
+const Navbar: React.FC<{ isMobile: boolean; auth: boolean }> = ({
+  auth,
+  isMobile,
+  children,
+}) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleMenu = (event: any) => {
@@ -91,9 +94,15 @@ const Navbar: React.FC<{ isMobile: boolean }> = (props) => {
                   </NavLink>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
-                  <NavLink className={classes.menuLink} to={`/profile`}>
-                    Profile
-                  </NavLink>
+                  {auth ? (
+                    <NavLink className={classes.menuLink} to={`/profile`}>
+                      Profile
+                    </NavLink>
+                  ) : (
+                    <NavLink className={classes.menuLink} to={`/login`}>
+                      Login
+                    </NavLink>
+                  )}
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                   <NavLink className={classes.menuLink} to={`*`}>
@@ -134,42 +143,54 @@ const Navbar: React.FC<{ isMobile: boolean }> = (props) => {
                   Contact
                 </NavLink>
               </Typography>
-              <IconButton
-                size="small"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle fontSize="large" sx={{ color: "black" }} />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleClose}>
-                  <NavLink className={classes.menuLink} to={`/profile`}>
-                    Profile
-                  </NavLink>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <NavLink className={classes.menuLink} to={`*`}>
-                    Logout
-                  </NavLink>
-                </MenuItem>
-              </Menu>
+              {auth ? (
+                <Fragment>
+                  <IconButton
+                    size="small"
+                    aria-label="account of current user"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    onClick={handleMenu}
+                    color="inherit"
+                  >
+                    <AccountCircle fontSize="large" sx={{ color: "black" }} />
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <MenuItem onClick={handleClose}>
+                      <NavLink className={classes.menuLink} to={`/profile`}>
+                        Profile
+                      </NavLink>
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>
+                      <NavLink className={classes.menuLink} to={`*`}>
+                        Logout
+                      </NavLink>
+                    </MenuItem>
+                  </Menu>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <MenuItem onClick={handleClose}>
+                    <NavLink className={classes.menuLink} to={`/login`}>
+                      Login
+                    </NavLink>
+                  </MenuItem>
+                </Fragment>
+              )}
             </Fragment>
           )}
         </Toolbar>
