@@ -24,6 +24,17 @@ const styles = makeStyles(() => ({
     color: "white",
     margin: "auto 40px",
   },
+  btn: {
+    maxWidth: "0 auto",
+    margin: "10px 0",
+    color: "white",
+    borderColor: "white",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "black",
+      borderColor: "white",
+    },
+  },
   videoContainer: {
     position: "absolute",
     top: "0",
@@ -63,11 +74,7 @@ const Home: React.FC = () => {
             <Typography variant="h5">
               Banking and Investing for the future in you.
             </Typography>
-            <Button
-              variant="contained"
-              color="info"
-              sx={{ maxWidth: "0 auto", margin: "10px 0" }}
-            >
+            <Button variant="outlined" className={classes.btn}>
               Find A Location
             </Button>
           </Grid>
