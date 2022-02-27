@@ -11,6 +11,7 @@ import International from "./pages/International";
 import Investment from "./pages/Investments";
 import Loans from "./pages/Loans";
 import Locations from "./pages/Locations";
+import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import { RootState } from "./store/store";
 
@@ -23,12 +24,13 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/about" element={<Locations />} />
-        <Route path="/about" element={<Investment />} />
-        <Route path="/about" element={<Loans />} />
-        <Route path="/about" element={<International />} />
-        <Route path="/about" element={<Contact />} />
-        {auth.authenticated && <Route path="/about" element={<Profile />} />}
+        <Route path="/locations" element={<Locations />} />
+        <Route path="/investment" element={<Investment />} />
+        <Route path="/loans" element={<Loans />} />
+        <Route path="/international" element={<International />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/login" element={<Login />} />
+        {auth.authenticated && <Route path="/profile" element={<Profile />} />}
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     </Layout>
