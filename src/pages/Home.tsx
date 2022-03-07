@@ -80,7 +80,7 @@ const Home: React.FC = () => {
           </Grid>
         </Grid>
         <Grid className={classes.videoContainer} container>
-          <Grid className={classes.vidOverlay} container></Grid>
+          <Grid className={classes.vidOverlay} container />
           <video autoPlay muted loop>
             <source src={cityscape} type="video/mp4" />
           </video>

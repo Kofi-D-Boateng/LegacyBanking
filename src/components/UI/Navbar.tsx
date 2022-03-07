@@ -23,6 +23,7 @@ const Navbar: React.FC<{ isMobile: boolean; auth: boolean }> = ({
 
   const handleClose = (event: any) => {
     if (event.target.innerText === "Logout") {
+      console.log("true");
     }
     setAnchorEl(null);
   };
@@ -93,22 +94,26 @@ const Navbar: React.FC<{ isMobile: boolean; auth: boolean }> = ({
                     Contact
                   </NavLink>
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  {auth ? (
-                    <NavLink className={classes.menuLink} to={`/profile`}>
-                      Profile
-                    </NavLink>
-                  ) : (
+                {auth ? (
+                  <>
+                    <MenuItem onClick={handleClose}>
+                      <NavLink className={classes.menuLink} to={`/profile`}>
+                        Profile
+                      </NavLink>
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>
+                      <NavLink className={classes.menuLink} to={`*`}>
+                        Logout
+                      </NavLink>
+                    </MenuItem>
+                  </>
+                ) : (
+                  <MenuItem onClick={handleClose}>
                     <NavLink className={classes.menuLink} to={`/login`}>
                       Login
                     </NavLink>
-                  )}
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <NavLink className={classes.menuLink} to={`*`}>
-                    Logout
-                  </NavLink>
-                </MenuItem>
+                  </MenuItem>
+                )}
               </Menu>
             </Fragment>
           ) : (
