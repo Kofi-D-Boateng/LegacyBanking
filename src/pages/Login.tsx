@@ -57,11 +57,15 @@ const Login: React.FC = () => {
       await axios
         .post("http://localhost:8080/api/v1/customer/login", login)
         .then((response) => {
-          console.log(response.status);
+          console.log(response);
           console.log(response.headers);
-          console.log(response.data);
-          if (response.data === undefined) {
-            console.log(true);
+          console.log(response.data.username);
+          setInvalid(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error) {
+            setInvalid(true);
           }
         });
     };
