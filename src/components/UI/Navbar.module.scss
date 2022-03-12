@@ -12,8 +12,26 @@
   margin: 0 20px;
   color: black;
 }
+.navLink:hover {
+  text-decoration: underline;
+  color: black;
+}
+
+.navLink:active {
+  text-decoration: underline;
+  color: black;
+}
 
 .menuLink {
   text-decoration: none;
-  color: red;
+  color: black;
+}
+.menuLink:hover {
+  text-decoration: underline;
+  color: black;
+}
+
+.menuLink:active {
+  text-decoration: underline;
+  color: black;
 }

@@ -6,7 +6,8 @@ import cityscape from "../assets/videos/cityscape.mp4";
 import Services from "../components/Homepage/Services";
 import stocks from "../assets/photos/stockEx.jpg";
 import japan2 from "../assets/photos/japan2.jpg";
-import china from "../assets/photos/china.jpg";
+import startUp from "../assets/photos/startup.jpg";
+import { NavLink } from "react-router-dom";
 
 const styles = makeStyles(() => ({
   banner: {
@@ -71,7 +72,7 @@ const styles = makeStyles(() => ({
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     color: "white",
-    height: "550px",
+    height: "80vh",
     maxWidth: "95%",
     margin: "auto",
     position: "relative",
@@ -84,7 +85,7 @@ const styles = makeStyles(() => ({
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     color: "white",
-    height: "550px",
+    height: "80vh",
     maxWidth: "95%",
     margin: "auto",
     position: "relative",
@@ -97,7 +98,7 @@ const styles = makeStyles(() => ({
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     color: "white",
-    height: "550px",
+    height: "80vh",
     maxWidth: "95%",
     margin: "auto",
     position: "relative",
@@ -109,6 +110,30 @@ const styles = makeStyles(() => ({
     maxWidth: "80%",
     margin: "30px auto",
     padding: "5px 0",
+  },
+  aboutContainer: {
+    textAlign: "center",
+    margin: "90px 0",
+  },
+  startUpContainer: {
+    margin: "150px auto",
+    textAlign: "center",
+  },
+  link: {
+    textDecoration: "none",
+    color: "white",
+    "&:hover": {
+      textDecoration: "underline",
+    },
+  },
+  btn2: {
+    color: "white",
+    backgroundColor: "violet",
+    padding: "30px 0",
+    margin: "30px 0",
+  },
+  img: {
+    width: "80%",
   },
 }));
 
@@ -135,8 +160,65 @@ const Home: React.FC = () => {
           </video>
         </Grid>
       </Grid>
+      <Grid sx={{ backgroundColor: "purple", padding: "30px 0" }} container>
+        <Grid className={classes.aboutContainer} xs={12} md={12} item>
+          <Typography variant="h4">Learn more about us</Typography>
+          <Typography
+            sx={{ width: "60%", margin: "10px auto", fontSize: "1.1rem" }}
+            variant="body1"
+          >
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis
+            dolorem dolor necessitatibus accusantium at mollitia, laborum cum
+            perferendis eligendi, sint voluptatum molestias officia beatae,
+            reiciendis modi est nulla animi enim.
+          </Typography>
+          <NavLink to={"/about"} className={classes.link}>
+            Learn about us
+          </NavLink>
+        </Grid>
+      </Grid>
       <Grid className={classes.serviceContainer} container>
         <Services classes={classes} />
+        <Grid className={classes.startUpContainer} container>
+          <Grid xs={6} md={6} item>
+            <img className={classes.img} src={startUp} />
+          </Grid>
+          <Grid sx={{ margin: "auto", textAlign: "left" }} xs={6} md={6} item>
+            <Grid sx={{ margin: "auto", width: "70%" }} xs={12} md={12} item>
+              <Typography variant="h4" sx={{ color: "black" }}>
+                Startups and small Small businesses: How we are empowering those
+                to chase their dreams of having a small business.
+              </Typography>
+              <Typography
+                variant="body1"
+                sx={{
+                  textAlign: "left",
+                  margin: "20px 0",
+                  color: "black",
+                }}
+              >
+                We work with startups and small business around the world to
+                allow their continued growth to be substainable.
+              </Typography>
+              <Button
+                variant="outlined"
+                sx={{
+                  width: "30%",
+                  color: "purple",
+                  borderColor: "purple",
+                  "&:hover": {
+                    backgroundColor: "purple",
+                    color: "white",
+                    borderColor: "purple",
+                  },
+                }}
+                fullWidth
+              >
+                Learn more
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
     </Fragment>
   );

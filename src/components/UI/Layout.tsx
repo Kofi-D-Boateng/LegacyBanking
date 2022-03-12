@@ -9,14 +9,14 @@ const Layout: React.FC<{
   login: PathMatch<string> | null;
   signup: PathMatch<string> | null;
 }> = ({ isMobile, auth, children, login, signup }) => {
-  console.log(login);
+  console.log(login?.pattern.end);
   return (
     <Fragment>
-      {signup?.pattern.end === undefined || login?.pattern.end === undefined ? (
+      {signup?.pattern.end || login?.pattern.end ? null : (
         <Navbar isMobile={isMobile} auth={auth} />
-      ) : null}
+      )}
       <div>{children}</div>
-      {!signup?.pattern.end || !login?.pattern.end ? <Footer /> : null}
+      {!signup?.pattern.end || !login?.pattern.end ? null : <Footer />}
     </Fragment>
   );
 };

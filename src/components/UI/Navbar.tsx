@@ -13,7 +13,6 @@ import classes from "./Navbar.module.scss";
 const Navbar: React.FC<{ isMobile: boolean; auth: boolean }> = ({
   auth,
   isMobile,
-  children,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -189,11 +188,9 @@ const Navbar: React.FC<{ isMobile: boolean; auth: boolean }> = ({
                 </Fragment>
               ) : (
                 <Fragment>
-                  <MenuItem onClick={handleClose}>
-                    <NavLink className={classes.menuLink} to={`/login`}>
-                      Login
-                    </NavLink>
-                  </MenuItem>
+                  <NavLink className={classes.menuLink} to={`/login`}>
+                    Login
+                  </NavLink>
                 </Fragment>
               )}
             </Fragment>
