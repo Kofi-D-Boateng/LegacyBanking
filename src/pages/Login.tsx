@@ -1,25 +1,31 @@
 import axios from "axios";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import CardContent from "@mui/material/CardContent";
-import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, Fragment } from "react";
 import makeStyles from "@mui/styles/makeStyles";
 import { NavLink } from "react-router-dom";
-import { CardActionArea } from "@mui/material";
-import Kard from "../components/UI/Card";
+import japan from "../assets/photos/japan.jpg";
 
 const styles = makeStyles(() => ({
+  loginContainer: {
+    width: "100%",
+    height: "100vh",
+  },
   cardTitle: {
-    backgroundColor: "lightgray",
+    color: "purple",
+    margin: "20px 30px",
     padding: "20px 0",
+    textAlign: "justify",
   },
   inputField: {
-    margin: "20px 0",
+    width: "70%",
+    margin: "20px 30px",
   },
   btn: {
+    width: "30%",
+    margin: "20px 30px",
     borderColor: "green",
     color: "black",
     "&:hover": {
@@ -29,14 +35,18 @@ const styles = makeStyles(() => ({
     },
   },
   invalid: {
-    backgroundColor: "red",
-    color: "white",
-    padding: "20px 0",
+    color: "red",
+    margin: "0 30px",
     transition: "0.5 ease in",
+  },
+  imgContainer: {
+    background: `linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.0)), url(${japan})`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
   },
 }));
 
-const Login: React.FC = () => {
+const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
   interface credentials {
     email: string | undefined;
     password: string | undefined;
@@ -55,7 +65,7 @@ const Login: React.FC = () => {
     }
     const fetchUserLogin = async (login: {}) => {
       await axios
-        .post("http://localhost:8080/api/v1/customer/login", login)
+        .post("http://localhost:8080/api/v1/auth/login", login)
         .then((response) => {
           console.log(response);
           console.log(response.headers);
@@ -83,26 +93,22 @@ const Login: React.FC = () => {
 
     setUser(enteredValue);
   };
-
   const classes = styles();
   return (
-    <Container>
-      <Kard>
-        <Typography className={classes.cardTitle} variant="h4">
-          Please Login
-        </Typography>
-        {invalid && (
-          <Grid className={classes.invalid}>
-            <Typography variant="h6">Invalid email or password</Typography>
-          </Grid>
-        )}
-        <CardContent>
-          <form onSubmit={submitHandler}>
-            <Grid container>
-              <Grid sx={{ margin: "auto" }} xs={4} lg={4} item>
-                <Typography variant="h6">Email: </Typography>
+    <Fragment>
+      {isMobile ? (
+        <Grid container>
+          <Grid sx={{ margin: "auto" }} xs={6} md={6} item>
+            <Typography className={classes.cardTitle} variant="h4">
+              Please Login
+            </Typography>
+            {invalid && (
+              <Grid className={classes.invalid}>
+                <Typography variant="h6">Invalid email or password</Typography>
               </Grid>
-              <Grid xs={8} lg={8} item>
+            )}
+            <form onSubmit={submitHandler}>
+              <Grid container>
                 <TextField
                   className={classes.inputField}
                   variant="outlined"
@@ -113,12 +119,7 @@ const Login: React.FC = () => {
                   fullWidth
                 />
               </Grid>
-            </Grid>
-            <Grid container>
-              <Grid sx={{ margin: "auto" }} xs={4} lg={4} item>
-                <Typography variant="h6">Password: </Typography>
-              </Grid>
-              <Grid xs={8} lg={8} item>
+              <Grid container>
                 <TextField
                   className={classes.inputField}
                   variant="outlined"
@@ -129,36 +130,113 @@ const Login: React.FC = () => {
                   fullWidth
                 />
               </Grid>
+              <Grid container>
+                <Button
+                  className={classes.btn}
+                  variant="outlined"
+                  type="submit"
+                  fullWidth
+                >
+                  Login
+                </Button>
+              </Grid>
+            </form>
+            <Grid sx={{ margin: "10px 30px" }} container>
+              <Grid xs={12} md={12} item>
+                <NavLink to={"/forgot-password"} placeholder="test">
+                  <Typography variant="body1">Forgot password</Typography>
+                </NavLink>
+              </Grid>
             </Grid>
-            <Button
-              className={classes.btn}
-              variant="outlined"
-              type="submit"
-              fullWidth
+            <NavLink
+              style={{
+                textDecoration: "none",
+                margin: "0 30px",
+                width: "50%",
+              }}
+              to={"/signup"}
             >
-              Login
-            </Button>
-          </form>
-          <Grid sx={{ margin: "10px 0" }} container>
-            <Grid xs={12} md={12} item>
-              <NavLink to={"/forgot-password"} placeholder="test">
-                <Typography variant="body1">Forgot password</Typography>
-              </NavLink>
-            </Grid>
+              <Typography
+                sx={{ margin: "0 30px", fontSize: "1.2rem", color: "green" }}
+                variant="body1"
+              >
+                Open an account
+              </Typography>
+            </NavLink>
           </Grid>
-        </CardContent>
-        <CardActionArea sx={{ padding: "20px 0", backgroundColor: "green" }}>
-          <NavLink style={{ textDecoration: "none" }} to={"/signup"}>
-            <Typography
-              sx={{ fontSize: "1.2rem", color: "white" }}
-              variant="body1"
-            >
-              Open an account
+        </Grid>
+      ) : (
+        <Grid className={classes.loginContainer} container>
+          <Grid sx={{ margin: "auto" }} xs={6} md={6} item>
+            <Typography className={classes.cardTitle} variant="h4">
+              Please Login
             </Typography>
-          </NavLink>
-        </CardActionArea>
-      </Kard>
-    </Container>
+            {invalid && (
+              <Grid className={classes.invalid}>
+                <Typography variant="h6">Invalid email or password</Typography>
+              </Grid>
+            )}
+            <form onSubmit={submitHandler}>
+              <Grid container>
+                <TextField
+                  className={classes.inputField}
+                  variant="outlined"
+                  size="small"
+                  type="email"
+                  inputRef={emailRef}
+                  placeholder="enter email"
+                  fullWidth
+                />
+              </Grid>
+              <Grid container>
+                <TextField
+                  className={classes.inputField}
+                  variant="outlined"
+                  size="small"
+                  type="password"
+                  inputRef={passwordRef}
+                  placeholder="enter password"
+                  fullWidth
+                />
+              </Grid>
+              <Grid container>
+                <Button
+                  className={classes.btn}
+                  variant="outlined"
+                  type="submit"
+                  fullWidth
+                >
+                  Login
+                </Button>
+              </Grid>
+            </form>
+            <Grid sx={{ margin: "10px 30px" }} container>
+              <Grid xs={12} md={12} item>
+                <NavLink to={"/forgot-password"} placeholder="test">
+                  <Typography variant="body1">Forgot password</Typography>
+                </NavLink>
+              </Grid>
+            </Grid>
+            <NavLink
+              style={{
+                textDecoration: "none",
+                margin: "0 30px",
+                width: "50%",
+              }}
+              to={"/signup"}
+            >
+              <Typography
+                sx={{ margin: "0 30px", fontSize: "1.2rem", color: "green" }}
+                variant="body1"
+              >
+                Open an account
+              </Typography>
+            </NavLink>
+          </Grid>
+          <Grid className={classes.imgContainer} xs={6} md={6} item />
+        </Grid>
+      )}
+    </Fragment>
   );
 };
 

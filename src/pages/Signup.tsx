@@ -4,6 +4,7 @@ import { CardContent, Grid, Typography } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import SignupForm from "../components/Forms/SignupForm/SignupForm";
 import Kard from "../components/UI/Card";
+import { useNavigate } from "react-router-dom";
 
 const styles = makeStyles(() => ({
   cardTitle: {
@@ -34,6 +35,7 @@ const styles = makeStyles(() => ({
 
 const Signup: React.FC = () => {
   const [user, setUser] = useState<{} | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user === null) {
@@ -42,13 +44,13 @@ const Signup: React.FC = () => {
     const fetchUserSignup = async (register: {}) => {
       console.log(register);
       await axios
-        .post("http://localhost:8080/api/v1/customer/registration", register)
+        .post("http://localhost:8080/api/v1/auth/registration", register)
         .then((response) => {
-          console.log(response.data);
+          if (response.data === true) navigate("/", { replace: true });
         });
     };
     fetchUserSignup(user);
-  }, [user]);
+  }, [user, navigate]);
 
   const userInfo = (
     data: SetStateAction<{

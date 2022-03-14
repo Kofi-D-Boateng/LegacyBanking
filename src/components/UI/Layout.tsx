@@ -16,7 +16,7 @@ const Layout: React.FC<{
         <Navbar isMobile={isMobile} auth={auth} />
       )}
       <div>{children}</div>
-      {!signup?.pattern.end || !login?.pattern.end ? null : <Footer />}
+      {signup?.pattern.end || login?.pattern.end ? null : <Footer />}
     </Fragment>
   );
 };

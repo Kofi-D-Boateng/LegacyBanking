@@ -46,7 +46,7 @@ const App: React.FC = () => {
         <Route path="/loans" element={<Loans />} />
         <Route path="/international" element={<International />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login isMobile={mobile} />} />
         <Route path="/signup" element={<Signup />} />
         {auth.authenticated && <Route path="/profile" element={<Profile />} />}
         <Route path="*" element={<Navigate replace to="/" />} />
