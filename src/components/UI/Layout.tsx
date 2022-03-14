@@ -1,17 +1,22 @@
 import { Fragment } from "react";
+import { PathMatch } from "react-router-dom";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 
-const Layout: React.FC<{ isMobile: boolean; auth: boolean }> = ({
-  isMobile,
-  auth,
-  children,
-}) => {
+const Layout: React.FC<{
+  isMobile: boolean;
+  auth: boolean;
+  login: PathMatch<string> | null;
+  signup: PathMatch<string> | null;
+}> = ({ isMobile, auth, children, login, signup }) => {
+  console.log(login?.pattern.end);
   return (
     <Fragment>
-      <Navbar isMobile={isMobile} auth={auth} />
+      {signup?.pattern.end || login?.pattern.end ? null : (
+        <Navbar isMobile={isMobile} auth={auth} />
+      )}
       <div>{children}</div>
-      <Footer />
+      {signup?.pattern.end || login?.pattern.end ? null : <Footer />}
     </Fragment>
   );
 };
