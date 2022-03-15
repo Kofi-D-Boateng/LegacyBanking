@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, TextField, Typography } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import React, { Fragment } from "react";
 import city from "../assets/photos/city.jpg";
@@ -7,6 +7,7 @@ import Services from "../components/Homepage/Services";
 import stocks from "../assets/photos/stockEx.jpg";
 import japan2 from "../assets/photos/japan2.jpg";
 import startUp from "../assets/photos/startup.jpg";
+import biz from "../assets/photos/business.jpg";
 import { NavLink } from "react-router-dom";
 
 const styles = makeStyles(() => ({
@@ -135,6 +136,18 @@ const styles = makeStyles(() => ({
   img: {
     width: "80%",
   },
+  businessImg: {
+    width: "80%",
+  },
+  mail: {
+    backgroundColor: "purple",
+    textAlign: "center",
+    padding: "50px 0",
+    color: "white",
+  },
+  textfield: {
+    color: "white",
+  },
 }));
 
 const Home: React.FC = () => {
@@ -181,7 +194,7 @@ const Home: React.FC = () => {
         <Services classes={classes} />
         <Grid className={classes.startUpContainer} container>
           <Grid xs={6} md={6} item>
-            <img className={classes.img} src={startUp} />
+            <img className={classes.img} src={startUp} alt="startup.jpg" />
           </Grid>
           <Grid sx={{ margin: "auto", textAlign: "left" }} xs={6} md={6} item>
             <Grid sx={{ margin: "auto", width: "70%" }} xs={12} md={12} item>
@@ -218,6 +231,70 @@ const Home: React.FC = () => {
               </Button>
             </Grid>
           </Grid>
+        </Grid>
+        <Grid container>
+          <Grid sx={{ margin: "auto", textAlign: "left" }} xs={6} md={6} item>
+            <Grid sx={{ margin: "auto", width: "70%" }} xs={12} md={12} item>
+              <Typography
+                sx={{ color: "black", textAlign: "left" }}
+                variant="h4"
+              >
+                Business Partners & Board Members
+              </Typography>
+              <Typography
+                sx={{ color: "black", textAlign: "left", margin: "20px 0" }}
+                variant="body1"
+              >
+                Meet a the people behind the scenes that we work with that helps
+                us help your reach your goals.
+              </Typography>
+              <Button
+                variant="outlined"
+                sx={{
+                  width: "30%",
+                  color: "purple",
+                  borderColor: "purple",
+                  "&:hover": {
+                    backgroundColor: "purple",
+                    color: "white",
+                    borderColor: "purple",
+                  },
+                }}
+                fullWidth
+              >
+                Learn more
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid xs={6} md={6} item>
+            <img className={classes.businessImg} src={biz} alt="business.jpg" />
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid className={classes.mail} container>
+        <Grid xs={12} md={12} item>
+          <Typography variant="h4">Join our mail letters!</Typography>
+          <Typography variant="body1">
+            Stay up to date with the latest news from our business and global
+            finances around the world!
+          </Typography>
+          <form>
+            <TextField
+              sx={{
+                margin: "20px 0",
+                width: "40%",
+              }}
+              InputProps={{
+                className: classes.textfield,
+              }}
+              color="primary"
+              variant="filled"
+              type="email"
+              placeholder="enter email"
+              size="small"
+              fullWidth
+            />
+          </form>
         </Grid>
       </Grid>
     </Fragment>
