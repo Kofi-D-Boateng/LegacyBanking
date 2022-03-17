@@ -1,9 +1,12 @@
 import { Grid, Typography, Card, CardContent } from "@mui/material";
+import { ClassNameMap } from "@mui/styles/withStyles";
 import React from "react";
 
-const AccountActivity: React.FC = () => {
+const AccountActivity: React.FC<{ classes: ClassNameMap<string> }> = ({
+  classes,
+}) => {
   return (
-    <Card style={{ width: "90%", margin: "20px auto" }}>
+    <Card className={classes.card}>
       <CardContent>
         <Typography variant="body1">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos

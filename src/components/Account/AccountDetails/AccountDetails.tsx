@@ -1,8 +1,11 @@
 import { Grid, Typography, Card, CardContent } from "@mui/material";
+import { ClassNameMap } from "@mui/styles/withStyles";
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const AccountDetails: React.FC = () => {
+const AccountDetails: React.FC<{ classes: ClassNameMap<string> }> = ({
+  classes,
+}) => {
   const clickableDetails: {
     key: number;
     title: string;
@@ -15,7 +18,7 @@ const AccountDetails: React.FC = () => {
     { key: 4, title: "Unpaid debt", link: "/", img: null },
   ];
   return (
-    <Card style={{ width: "90%", margin: "20px auto" }}>
+    <Card className={classes.card}>
       <CardContent>
         <Typography variant="h6">Manage your details</Typography>
         {clickableDetails.map((details) => {
