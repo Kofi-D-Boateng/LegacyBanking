@@ -5,8 +5,10 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import React, { useState, useRef, useEffect, Fragment } from "react";
 import makeStyles from "@mui/styles/makeStyles";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import japan from "../assets/photos/japan.jpg";
+import { useDispatch } from "react-redux";
+import { authActions } from "../store/authentication/auth-slice";
 
 const styles = makeStyles(() => ({
   loginContainer: {
@@ -51,6 +53,8 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
     email: string | undefined;
     password: string | undefined;
   }
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [invalid, setInvalid] = useState<boolean>(false);
   const [user, setUser] = useState<credentials>({
     email: "",
@@ -69,7 +73,9 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
         .then((response) => {
           console.log(response);
           console.log(response.headers);
-          console.log(response.data.username);
+          console.log(response.data);
+          dispatch(authActions.getCreds({ token: "test" }));
+          navigate("/", { replace: true });
           setInvalid(false);
         })
         .catch((error) => {
@@ -81,7 +87,7 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
     };
     fetchUserLogin(user);
     console.log(user);
-  }, [user]);
+  }, [user, dispatch, navigate]);
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
