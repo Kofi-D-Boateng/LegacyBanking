@@ -27,7 +27,6 @@ const App: React.FC = () => {
   const theme = useTheme();
   const mobile: boolean = useMediaQuery(theme.breakpoints.down("sm"));
   const auth = useSelector((state: RootState) => state.auth);
-  console.log(auth);
   const { pathname } = useLocation();
   const login: PathMatch<string> | null = matchPath("/login", pathname);
   const signup: PathMatch<string> | null = matchPath("/signup", pathname);

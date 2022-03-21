@@ -10,6 +10,22 @@ const styles = makeStyles(() => ({
     width: "90%",
     margin: "20px auto",
   },
+  linksContainer: {
+    borderRight: "1px solid purple",
+    textAlign: "center",
+  },
+  links: {
+    color: "purple",
+    textDecoration: "none",
+    "&:hover": {
+      color: "blue",
+    },
+  },
+  details: {
+    margin: "10px 0",
+    textDecoration: "none",
+    color: "black",
+  },
 }));
 
 const Profile: React.FC = () => {
