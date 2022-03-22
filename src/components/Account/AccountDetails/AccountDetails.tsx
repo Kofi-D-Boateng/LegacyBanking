@@ -53,40 +53,46 @@ const AccountDetails: React.FC<{ classes: ClassNameMap<string> }> = ({
         <Typography variant="h6">Manage your details</Typography>
         {clickableDetails.map((details) => {
           return (
-            <>
-              <NavLink
-                className={classes.details}
-                key={details.key}
-                to={details.link}
-              >
-                <Grid container>
-                  <Grid
-                    sx={{ margin: "auto", textAlign: "center" }}
-                    xs={1}
-                    md={1}
-                    item
-                  >
-                    {details.icon}
-                  </Grid>
-                  <Grid xs={10} md={10} item>
-                    <Typography sx={{ margin: "0 10px" }} variant="h5">
-                      {details.title}
-                    </Typography>
-                    <Typography sx={{ margin: "0 10px" }} variant="body1">
-                      {details.desc}
-                    </Typography>
-                  </Grid>
-                  <Grid
-                    sx={{ margin: "auto", textAlign: "center" }}
-                    xs={1}
-                    md={1}
-                  >
-                    <ArrowForwardIos />
-                  </Grid>
+            <NavLink
+              className={classes.details}
+              key={details.key}
+              to={details.link}
+            >
+              <Grid container>
+                <Grid
+                  sx={{ margin: "auto", textAlign: "center" }}
+                  xs={1}
+                  md={1}
+                  item
+                >
+                  {details.icon}
                 </Grid>
-              </NavLink>
-              {details.key !== clickableDetails.length && <hr />}
-            </>
+                <Grid xs={10} md={10} item>
+                  <Typography sx={{ margin: "0 10px" }} variant="h5">
+                    {details.title}
+                  </Typography>
+                  <Typography sx={{ margin: "0 10px" }} variant="body1">
+                    {details.desc}
+                  </Typography>
+                </Grid>
+                <Grid
+                  sx={{ margin: "auto", textAlign: "center" }}
+                  xs={1}
+                  md={1}
+                  item
+                >
+                  <ArrowForwardIos />
+                </Grid>
+                <div
+                  style={{
+                    borderBottom: "0.5px solid black",
+                    width: "100%",
+                  }}
+                >
+                  {" "}
+                </div>
+              </Grid>
+            </NavLink>
           );
         })}
       </CardContent>

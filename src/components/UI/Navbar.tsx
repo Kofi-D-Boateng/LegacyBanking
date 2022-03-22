@@ -94,7 +94,7 @@ const Navbar: React.FC<{ isMobile: boolean; auth: boolean }> = ({
                   </NavLink>
                 </MenuItem>
                 {auth ? (
-                  <>
+                  <div>
                     <MenuItem onClick={handleClose}>
                       <NavLink className={classes.menuLink} to={`/profile`}>
                         Profile
@@ -105,7 +105,7 @@ const Navbar: React.FC<{ isMobile: boolean; auth: boolean }> = ({
                         Logout
                       </NavLink>
                     </MenuItem>
-                  </>
+                  </div>
                 ) : (
                   <MenuItem onClick={handleClose}>
                     <NavLink className={classes.menuLink} to={`/login`}>

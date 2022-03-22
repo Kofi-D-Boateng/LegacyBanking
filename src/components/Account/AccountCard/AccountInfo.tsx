@@ -47,7 +47,7 @@ const AccountInfo: React.FC<{ classes: ClassNameMap<string> }> = ({
             );
           })}
         </Grid>
-        <hr />
+        <hr style={{ backgroundColor: "black", padding: "0.5px 0" }} />
         <Grid container>
           {links.map((l) => {
             return (
@@ -57,6 +57,7 @@ const AccountInfo: React.FC<{ classes: ClassNameMap<string> }> = ({
                 sx={l.key === 4 ? { textAlign: "center" } : null}
                 xs={12 / links.length}
                 md={12 / links.length}
+                item
               >
                 <NavLink className={classes.links} to={l.link}>
                   {l.title}

@@ -6,6 +6,11 @@ import AccountInfo from "../components/Account/AccountCard/AccountInfo";
 import AccountDetails from "../components/Account/AccountDetails/AccountDetails";
 
 const styles = makeStyles(() => ({
+  profile: {
+    backgroundColor: "rgb(235, 236, 237)",
+    padding: "10px 0",
+    width: "100%",
+  },
   card: {
     width: "90%",
     margin: "20px auto",
@@ -26,15 +31,18 @@ const styles = makeStyles(() => ({
     textDecoration: "none",
     color: "black",
   },
+  activityTitles: {
+    textAlign: "center",
+  },
+  activities: {
+    textAlign: "center",
+  },
 }));
 
 const Profile: React.FC = () => {
   const classes = styles();
   return (
-    <Grid
-      sx={{ backgroundColor: "rgb(235, 236, 237)", padding: "10px 0" }}
-      container
-    >
+    <Grid className={classes.profile} container>
       <Grid xs={12} lg={7} item>
         <Grid container>
           <Grid xs={12} md={12} item>
