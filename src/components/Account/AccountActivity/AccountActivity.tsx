@@ -14,6 +14,7 @@ import Inactive from "@mui/icons-material/ChevronRight";
 import Active from "@mui/icons-material/KeyboardArrowDown";
 import { ClassNameMap } from "@mui/styles/withStyles";
 import React, { useState } from "react";
+import Transaction from "./Transaction";
 
 const AccountActivity: React.FC<{ classes: ClassNameMap<string> }> = ({
   classes,
@@ -31,7 +32,7 @@ const AccountActivity: React.FC<{ classes: ClassNameMap<string> }> = ({
   }[] = [
     {
       key: 1,
-      date: "March 21, 2022",
+      date: "Mar 21, 2022",
       product: "Namooo Korean Bowls",
       type: "ACH Credit",
       amount: "$12.95",
@@ -39,7 +40,7 @@ const AccountActivity: React.FC<{ classes: ClassNameMap<string> }> = ({
     },
     {
       key: 2,
-      date: "March 21, 2022",
+      date: "Mar 22, 2022",
       product: "Namooo Korean Bowls",
       type: "ACH Credit",
       amount: "$12.95",
@@ -47,7 +48,7 @@ const AccountActivity: React.FC<{ classes: ClassNameMap<string> }> = ({
     },
     {
       key: 3,
-      date: "March 21, 2022",
+      date: "Mar 23, 2022",
       product: "Namooo Korean Bowls",
       type: "ACH Credit",
       amount: "$12.95",
@@ -55,7 +56,7 @@ const AccountActivity: React.FC<{ classes: ClassNameMap<string> }> = ({
     },
     {
       key: 4,
-      date: "March 21, 2022",
+      date: "Mar 24, 2022",
       product: "Namooo Korean Bowls",
       type: "ACH Credit",
       amount: "$12.95",
@@ -63,7 +64,7 @@ const AccountActivity: React.FC<{ classes: ClassNameMap<string> }> = ({
     },
     {
       key: 5,
-      date: "March 21, 2022",
+      date: "Mar 25, 2022",
       product: "Namooo Korean Bowls",
       type: "ACH Credit",
       amount: "$12.95",
@@ -71,7 +72,7 @@ const AccountActivity: React.FC<{ classes: ClassNameMap<string> }> = ({
     },
     {
       key: 6,
-      date: "March 21, 2022",
+      date: "Mar 26, 2022",
       product: "Namooo Korean Bowls",
       type: "ACH Credit",
       amount: "$12.95",
@@ -79,7 +80,7 @@ const AccountActivity: React.FC<{ classes: ClassNameMap<string> }> = ({
     },
     {
       key: 7,
-      date: "March 21, 2022",
+      date: "Mar 27, 2022",
       product: "Namooo Korean Bowls",
       type: "ACH Credit",
       amount: "$12.95",
@@ -186,57 +187,12 @@ const AccountActivity: React.FC<{ classes: ClassNameMap<string> }> = ({
             <div style={{ borderBottom: "0.5px solid black", width: "100%" }}>
               {" "}
             </div>
-            <Grid container>
-              {activity.map((a) => {
-                return (
-                  <Grid key={a.key} className={classes.activities} container>
-                    <Grid
-                      xs={12 / categories.length}
-                      md={12 / categories.length}
-                      item
-                    >
-                      <Typography variant="body1">{a.date}</Typography>
-                    </Grid>
-                    <Grid
-                      xs={12 / categories.length}
-                      md={12 / categories.length}
-                      item
-                    >
-                      <Typography variant="body1">{a.product}</Typography>
-                    </Grid>
-                    <Grid
-                      xs={12 / categories.length}
-                      md={12 / categories.length}
-                      item
-                    >
-                      <Typography variant="body1">{a.type}</Typography>
-                    </Grid>
-                    <Grid
-                      xs={12 / categories.length}
-                      md={12 / categories.length}
-                      item
-                    >
-                      <Typography variant="body1">{a.amount}</Typography>
-                    </Grid>
-                    <Grid
-                      xs={12 / categories.length}
-                      md={12 / categories.length}
-                      item
-                    >
-                      <Typography variant="body1">{a.balance}</Typography>
-                    </Grid>
-                    <div
-                      style={{
-                        borderBottom: "0.5px solid black",
-                        width: "100%",
-                      }}
-                    >
-                      {" "}
-                    </div>
-                  </Grid>
-                );
-              })}
-            </Grid>
+            <Transaction
+              classes={classes}
+              activity={activity}
+              filter={filter}
+              categories={categories}
+            />
           </>
         )}
       </CardContent>

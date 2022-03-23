@@ -1,6 +1,7 @@
 import { Grid } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import React from "react";
+import { matchPath, PathMatch } from "react-router-dom";
 import AccountActivity from "../components/Account/AccountActivity/AccountActivity";
 import AccountInfo from "../components/Account/AccountCard/AccountInfo";
 import AccountDetails from "../components/Account/AccountDetails/AccountDetails";
@@ -39,7 +40,13 @@ const styles = makeStyles(() => ({
   },
 }));
 
-const Profile: React.FC = () => {
+const Profile: React.FC<{ pathname: string }> = ({ pathname }) => {
+  const params: PathMatch<string> | null = matchPath<string, string>(
+    "/profile",
+    pathname
+  );
+  console.log(pathname);
+  console.log(params);
   const classes = styles();
   return (
     <Grid className={classes.profile} container>
