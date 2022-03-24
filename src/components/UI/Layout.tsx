@@ -15,7 +15,7 @@ const Layout: React.FC<{
       {signup?.pattern.end || login?.pattern.end ? null : (
         <Navbar isMobile={isMobile} auth={auth} />
       )}
-      <div>{children}</div>
+      <div style={{ width: "100%", height: "100vh" }}>{children}</div>
       {signup?.pattern.end || login?.pattern.end ? null : <Footer />}
     </Fragment>
   );

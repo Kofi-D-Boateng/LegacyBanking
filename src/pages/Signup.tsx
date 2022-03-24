@@ -35,6 +35,7 @@ const styles = makeStyles(() => ({
 
 const Signup: React.FC = () => {
   const [user, setUser] = useState<{} | null>(null);
+  const [isValid, setIsValid] = useState<boolean>(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,9 +45,16 @@ const Signup: React.FC = () => {
     const fetchUserSignup = async (register: {}) => {
       console.log(register);
       await axios
-        .post("http://localhost:8080/api/v1/auth/registration", register)
+        .post(
+          "http://localhost:8081/api/v1/authentication/registration",
+          register
+        )
         .then((response) => {
-          if (response.data === true) navigate("/", { replace: true });
+          if (response.data.isSaved === true) {
+            navigate("/", { replace: true });
+          } else {
+            setIsValid(false);
+          }
         });
     };
     fetchUserSignup(user);
