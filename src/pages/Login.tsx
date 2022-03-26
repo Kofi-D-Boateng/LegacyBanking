@@ -9,7 +9,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import japan from "../assets/photos/japan.jpg";
 import { useDispatch } from "react-redux";
 import { authActions } from "../store/authentication/auth-slice";
-import { customerActions } from "../store/customer/customer";
 
 const styles = makeStyles(() => ({
   loginContainer: {
@@ -74,13 +73,6 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
         .then((response) => {
           if (response.status === 200) {
             dispatch(authActions.getCreds({ token: response?.data.token }));
-            dispatch(
-              customerActions.createCustomer({
-                fName: response.data.firstName,
-                lName: response.data.lastName,
-                email: response.data.email,
-              })
-            );
             navigate("/", { replace: true });
             setInvalid(false);
           }

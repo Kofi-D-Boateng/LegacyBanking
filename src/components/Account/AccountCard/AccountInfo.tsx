@@ -1,19 +1,27 @@
 import { Grid, Typography, Card, CardContent, Button } from "@mui/material";
 import { ClassNameMap } from "@mui/styles/withStyles";
 import React from "react";
-import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { RootState } from "../../../store/store";
+import useConverter from "../../../hooks/useConverter";
 
-const AccountInfo: React.FC<{ classes: ClassNameMap<string> }> = ({
-  classes,
-}) => {
-  const customer = useSelector((state: RootState) => state.cust);
-  console.log(customer);
-  const details: { key: number; value: string; desc: string }[] = [
-    { key: 1, value: "+520,000", desc: "Available balance" },
-    { key: 2, value: "+$15,000", desc: "Deposits this month" },
-    { key: 3, value: "-$6,000", desc: "Withdrawls this month" },
+const AccountInfo: React.FC<{
+  classes: ClassNameMap<string>;
+  fName: string;
+  lName: string;
+  funds: number;
+}> = ({ classes, fName, lName, funds }) => {
+  const details: { key: number; value: string | undefined; desc: string }[] = [
+    { key: 1, value: `$${useConverter(funds)}`, desc: "Available balance" },
+    {
+      key: 2,
+      value: `+$${useConverter(150000.12)}`,
+      desc: "Deposits this month",
+    },
+    {
+      key: 3,
+      value: `-$${useConverter(6000.12)}`,
+      desc: "Withdrawls this month",
+    },
   ];
 
   const links: { key: number; title: string; link: string }[] = [
@@ -26,7 +34,7 @@ const AccountInfo: React.FC<{ classes: ClassNameMap<string> }> = ({
     <Card className={classes.card}>
       <CardContent>
         <Typography sx={{ margin: "10px 0" }} variant="h6">
-          {customer.fName} {customer.lName}'s account |{" "}
+          {fName} {lName}'s account |{" "}
           <Button sx={{ color: "blue" }} variant="text">
             See full account number
           </Button>
