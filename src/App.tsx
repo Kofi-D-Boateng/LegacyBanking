@@ -28,7 +28,10 @@ import { RootState } from "./store/store";
 const App: React.FC = () => {
   const theme = useTheme<Theme>();
   const mobile: boolean = useMediaQuery<unknown>(theme.breakpoints.down("sm"));
-  const auth = useSelector((state: RootState) => state.auth);
+  const auth: {
+    token: string;
+    authenticated: boolean;
+  } = useSelector((state: RootState) => state.auth);
   const { pathname } = useLocation();
   const login: PathMatch<string> | null = matchPath<string, string>(
     "/login",
@@ -57,10 +60,7 @@ const App: React.FC = () => {
             <Route path="/login" element={<Login isMobile={mobile} />} />
             <Route path="/signup" element={<Signup />} />
             {auth.authenticated && (
-              <Route
-                path="/profile"
-                element={<Profile pathname={pathname} />}
-              />
+              <Route path="/profile" element={<Profile token={auth.token} />} />
             )}
             <Route path="*" element={<Navigate replace to="/" />} />
           </Routes>
@@ -83,10 +83,7 @@ const App: React.FC = () => {
             <Route path="/login" element={<Login isMobile={mobile} />} />
             <Route path="/signup" element={<Signup />} />
             {auth.authenticated && (
-              <Route
-                path="/profile"
-                element={<Profile pathname={pathname} />}
-              />
+              <Route path="/profile" element={<Profile token={auth.token} />} />
             )}
             <Route path="*" element={<Navigate replace to="/" />} />
           </Routes>
