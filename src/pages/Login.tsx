@@ -1,10 +1,8 @@
-import axios from "axios";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 import React, { useState, useRef, useEffect, Fragment } from "react";
+import { Grid, Typography } from "@mui/material";
+import LoginForm from "../components/Forms/LoginForm/LoginForm";
 import makeStyles from "@mui/styles/makeStyles";
+import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import japan from "../assets/photos/japan.jpg";
 import { useDispatch } from "react-redux";
@@ -53,6 +51,7 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
     email: string | undefined;
     password: string | undefined;
   }
+  const classes = styles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [invalid, setInvalid] = useState<boolean>(false);
@@ -90,21 +89,27 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-
     const enteredValue: credentials = {
       email: emailRef.current?.value,
       password: passwordRef.current?.value,
     };
-
+    console.log(enteredValue);
     setUser(enteredValue);
   };
-  const classes = styles();
   return (
     <Fragment>
       {isMobile ? (
-        <Grid container>
+        <Grid className={classes.loginContainer} container>
           <Grid sx={{ margin: "auto" }} xs={6} md={6} item>
-            <Typography className={classes.cardTitle} variant="h4">
+            <Typography
+              sx={{
+                color: "purple",
+                margin: "20px 30px",
+                padding: "20px 0",
+                textAlign: "justify",
+              }}
+              variant="h4"
+            >
               Please Login
             </Typography>
             {invalid && (
@@ -112,40 +117,12 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
                 <Typography variant="h6">Invalid email or password</Typography>
               </Grid>
             )}
-            <form onSubmit={submitHandler}>
-              <Grid container>
-                <TextField
-                  className={classes.inputField}
-                  variant="outlined"
-                  size="small"
-                  type="email"
-                  inputRef={emailRef}
-                  placeholder="enter email"
-                  fullWidth
-                />
-              </Grid>
-              <Grid container>
-                <TextField
-                  className={classes.inputField}
-                  variant="outlined"
-                  size="small"
-                  type="password"
-                  inputRef={passwordRef}
-                  placeholder="enter password"
-                  fullWidth
-                />
-              </Grid>
-              <Grid container>
-                <Button
-                  className={classes.btn}
-                  variant="outlined"
-                  type="submit"
-                  fullWidth
-                >
-                  Login
-                </Button>
-              </Grid>
-            </form>
+            <LoginForm
+              classes={classes}
+              submit={submitHandler}
+              password={passwordRef}
+              email={emailRef}
+            />
             <Grid sx={{ margin: "10px 30px" }} container>
               <Grid xs={12} md={12} item>
                 <NavLink to={"/forgot-password"} placeholder="test">
@@ -173,7 +150,15 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
       ) : (
         <Grid className={classes.loginContainer} container>
           <Grid sx={{ margin: "auto" }} xs={6} md={6} item>
-            <Typography className={classes.cardTitle} variant="h4">
+            <Typography
+              sx={{
+                color: "purple",
+                margin: "20px 30px",
+                padding: "20px 0",
+                textAlign: "justify",
+              }}
+              variant="h4"
+            >
               Please Login
             </Typography>
             {invalid && (
@@ -181,40 +166,12 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
                 <Typography variant="h6">Invalid email or password</Typography>
               </Grid>
             )}
-            <form onSubmit={submitHandler}>
-              <Grid container>
-                <TextField
-                  className={classes.inputField}
-                  variant="outlined"
-                  size="small"
-                  type="email"
-                  inputRef={emailRef}
-                  placeholder="enter email"
-                  fullWidth
-                />
-              </Grid>
-              <Grid container>
-                <TextField
-                  className={classes.inputField}
-                  variant="outlined"
-                  size="small"
-                  type="password"
-                  inputRef={passwordRef}
-                  placeholder="enter password"
-                  fullWidth
-                />
-              </Grid>
-              <Grid container>
-                <Button
-                  className={classes.btn}
-                  variant="outlined"
-                  type="submit"
-                  fullWidth
-                >
-                  Login
-                </Button>
-              </Grid>
-            </form>
+            <LoginForm
+              classes={classes}
+              submit={submitHandler}
+              password={passwordRef}
+              email={emailRef}
+            />
             <Grid sx={{ margin: "10px 30px" }} container>
               <Grid xs={12} md={12} item>
                 <NavLink to={"/forgot-password"} placeholder="test">
