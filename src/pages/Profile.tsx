@@ -50,7 +50,7 @@ const Profile: React.FC<{ token: string }> = ({ token }) => {
     const fetchAccount = async () => {
       await axios({
         method: "GET",
-        url: "http://localhost:8081/api/v1/profile/info",
+        url: "http://localhost:8081/api/v1/authentication/profile/info",
         headers: {
           authorization: token,
         },
