@@ -43,7 +43,10 @@ const Services: React.FC<{ classes: ClassNameMap<string> | any }> = ({
               <Card className={c?.css || undefined}>
                 <Grid className={c?.css2} container>
                   <Typography variant="h5">{c?.title}</Typography>
-                  <Typography variant="body1" sx={{ fontSize: "1.3rem" }}>
+                  <Typography
+                    variant="body1"
+                    sx={{ fontSize: "1.3rem", color: "white" }}
+                  >
                     {c?.description}
                   </Typography>
                 </Grid>

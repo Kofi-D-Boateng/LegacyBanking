@@ -29,6 +29,10 @@ const authSlice = createSlice({
       state.authenticated = true;
       sessionStorage.setItem("lb-token", token);
     },
+    logout(state) {
+      sessionStorage.removeItem("lb-token");
+      state.authenticated = false;
+    },
   },
 });
 

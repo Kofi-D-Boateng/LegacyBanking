@@ -10,7 +10,13 @@ function initialState(): {
   area: string | undefined;
   zipCode: string | undefined;
   funds: number;
-  transactions: {}[];
+  transactions: {
+    id: number;
+    type: string;
+    dateOfTransaction: string;
+    amount: number;
+    location: string;
+  }[];
 } {
   return {
     fName: "",
@@ -22,7 +28,9 @@ function initialState(): {
     area: "",
     zipCode: "",
     funds: 0,
-    transactions: [],
+    transactions: [
+      { id: 0, amount: 0, dateOfTransaction: "", location: "", type: "" },
+    ],
   };
 }
 
@@ -42,7 +50,13 @@ const customerSlice = createSlice({
         area: string | undefined;
         zipCode: string | undefined;
         funds: number;
-        transactions: {}[];
+        transactions: {
+          id: number;
+          type: string;
+          dateOfTransaction: string;
+          amount: number;
+          location: string;
+        }[];
       }>
     ) {
       const {
@@ -67,7 +81,9 @@ const customerSlice = createSlice({
       state.zipCode = zipCode ? zipCode : state.zipCode;
       state.funds = funds ? funds : state.funds;
       state.transactions =
-        transactions.length > 0 ? transactions : state.transactions;
+        transactions.length > state.transactions.length
+          ? transactions.reverse()
+          : state.transactions;
     },
   },
 });

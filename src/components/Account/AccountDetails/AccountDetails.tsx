@@ -8,9 +8,9 @@ import React, { ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 import { ArrowForwardIos } from "@mui/icons-material";
 
-const AccountDetails: React.FC<{ classes: ClassNameMap<string> }> = ({
-  classes,
-}) => {
+const AccountDetails: React.FC<{
+  classes: ClassNameMap<string>;
+}> = ({ classes }) => {
   const clickableDetails: {
     key: number;
     title: string;
@@ -83,14 +83,14 @@ const AccountDetails: React.FC<{ classes: ClassNameMap<string> }> = ({
                 >
                   <ArrowForwardIos />
                 </Grid>
-                <div
-                  style={{
-                    borderBottom: "0.5px solid black",
-                    width: "100%",
-                  }}
-                >
-                  {" "}
-                </div>
+                {details.key !== clickableDetails.length && (
+                  <div
+                    style={{
+                      borderBottom: "0.5px solid black",
+                      width: "100%",
+                    }}
+                  />
+                )}
               </Grid>
             </NavLink>
           );

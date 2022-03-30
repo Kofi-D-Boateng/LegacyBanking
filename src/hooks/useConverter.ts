@@ -1,4 +1,5 @@
-const useConverter = (amount: number) => {
+const useConverter = (num: number) => {
+  let amount = num;
   const length = amount.toString().length;
   if (length <= 6) {
     return amount.toString();

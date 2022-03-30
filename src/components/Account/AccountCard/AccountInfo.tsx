@@ -1,6 +1,6 @@
 import { Grid, Typography, Card, CardContent, Button } from "@mui/material";
 import { ClassNameMap } from "@mui/styles/withStyles";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import useConverter from "../../../hooks/useConverter";
 
@@ -9,17 +9,56 @@ const AccountInfo: React.FC<{
   fName: string;
   lName: string;
   funds: number;
-}> = ({ classes, fName, lName, funds }) => {
+  transactions: {
+    id: number;
+    type: string;
+    dateOfTransaction: string;
+    amount: number;
+    location: string;
+  }[];
+}> = ({ classes, fName, lName, funds, transactions }) => {
+  const [withdrawals, setWithdrawals] = useState<number>(0);
+  const [deposits, setDeposits] = useState<number>(0);
+  const currentMonth: string = (new Date().getMonth() + 1).toString();
+  const currentYear: string = new Date().getFullYear().toString();
+
+  useEffect(() => {
+    let withdrawal: number = 0;
+    let deposit: number = 0;
+    transactions
+      .filter((a) => {
+        return (
+          a.dateOfTransaction.substring(0, 4) === currentYear &&
+          a.dateOfTransaction.substring(6, 7) === currentMonth
+        );
+      })
+      .map((a) => {
+        console.log(a);
+        if (a.type === "withdrawal") {
+          withdrawal = withdrawal + a.amount;
+        } else {
+          console.log("made it");
+          deposit++;
+          console.log(deposit);
+        }
+        if (a.id === transactions.length) {
+          setDeposits(deposit);
+          setWithdrawals(withdrawal);
+        }
+        return;
+      });
+  }, [currentMonth, currentYear, transactions]);
+
   const details: { key: number; value: string | undefined; desc: string }[] = [
     { key: 1, value: `$${useConverter(funds)}`, desc: "Available balance" },
     {
       key: 2,
-      value: `+$${useConverter(150000.12)}`,
+      value: `+$${useConverter(deposits)}`,
       desc: "Deposits this month",
     },
     {
       key: 3,
-      value: `-$${useConverter(6000.12)}`,
+      value: `-$${useConverter(withdrawals)}`,
       desc: "Withdrawls this month",
     },
   ];

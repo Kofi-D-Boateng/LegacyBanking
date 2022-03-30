@@ -16,83 +16,24 @@ import { ClassNameMap } from "@mui/styles/withStyles";
 import React, { useState } from "react";
 import Transaction from "./Transaction";
 
-const AccountActivity: React.FC<{ classes: ClassNameMap<string> }> = ({
-  classes,
-}) => {
+const AccountActivity: React.FC<{
+  classes: ClassNameMap<string>;
+  transactions: {
+    id: number;
+    type: string;
+    dateOfTransaction: string;
+    amount: number;
+    location: string;
+  }[];
+}> = ({ classes, transactions }) => {
   const [view, setView] = useState<React.SetStateAction<boolean>>(false);
   const [filter, setFilter] = useState<string | undefined>("");
 
-  const activity: {
-    key: number;
-    date: string;
-    type: string;
-    amount: string;
-    balance: string;
-    product: string;
-  }[] = [
-    {
-      key: 1,
-      date: "Mar 21, 2022",
-      product: "Namooo Korean Bowls",
-      type: "ACH Credit",
-      amount: "$12.95",
-      balance: "$22,000",
-    },
-    {
-      key: 2,
-      date: "Mar 22, 2022",
-      product: "Namooo Korean Bowls",
-      type: "ACH Credit",
-      amount: "$12.95",
-      balance: "$22,000",
-    },
-    {
-      key: 3,
-      date: "Mar 23, 2022",
-      product: "Namooo Korean Bowls",
-      type: "ACH Credit",
-      amount: "$12.95",
-      balance: "$22,000",
-    },
-    {
-      key: 4,
-      date: "Mar 24, 2022",
-      product: "Namooo Korean Bowls",
-      type: "ACH Credit",
-      amount: "$12.95",
-      balance: "$22,000",
-    },
-    {
-      key: 5,
-      date: "Mar 25, 2022",
-      product: "Namooo Korean Bowls",
-      type: "ACH Credit",
-      amount: "$12.95",
-      balance: "$22,000",
-    },
-    {
-      key: 6,
-      date: "Mar 26, 2022",
-      product: "Namooo Korean Bowls",
-      type: "ACH Credit",
-      amount: "$12.95",
-      balance: "$22,000",
-    },
-    {
-      key: 7,
-      date: "Mar 27, 2022",
-      product: "Namooo Korean Bowls",
-      type: "ACH Credit",
-      amount: "$12.95",
-      balance: "$22,000",
-    },
-  ];
   const categories: { key: number; title: string }[] = [
     { key: 1, title: "Date" },
-    { key: 2, title: "Product" },
+    { key: 2, title: "Description" },
     { key: 3, title: "Type" },
     { key: 4, title: "Amount" },
-    { key: 5, title: "Balance" },
   ];
 
   const viewHandler = () => {
@@ -188,8 +129,8 @@ const AccountActivity: React.FC<{ classes: ClassNameMap<string> }> = ({
               {" "}
             </div>
             <Transaction
+              transactions={transactions}
               classes={classes}
-              activity={activity}
               filter={filter}
               categories={categories}
             />

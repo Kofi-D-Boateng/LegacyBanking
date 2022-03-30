@@ -3,6 +3,7 @@ import React, { ChangeEvent, useRef, useState } from "react";
 
 const SignupForm: React.FC<{
   classes: any;
+  isValid: boolean;
   onGetUserInfo: (data: {
     firstName: string | undefined;
     lastName: string | undefined;
@@ -13,8 +14,9 @@ const SignupForm: React.FC<{
     zipcode: string | undefined;
     socialSecurity: string | undefined;
     password: string | undefined;
+    phoneNumber: string | undefined;
   }) => void;
-}> = ({ classes, onGetUserInfo }) => {
+}> = ({ classes, onGetUserInfo, isValid }) => {
   let firstNameRef = useRef<HTMLInputElement | undefined>();
   let lastNameRef = useRef<HTMLInputElement | undefined>();
   let emailRef = useRef<HTMLInputElement | undefined>();
@@ -23,8 +25,9 @@ const SignupForm: React.FC<{
   let stateRef = useRef<HTMLInputElement | undefined>();
   let zipcodeRef = useRef<HTMLInputElement | undefined>();
   let socialSecurityRef = useRef<HTMLInputElement | undefined>();
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  let phoneNumberRef = useRef<HTMLInputElement | undefined>();
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<boolean>(true);
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -39,6 +42,7 @@ const SignupForm: React.FC<{
       zipcode: string | undefined;
       socialSecurity: string | undefined;
       password: string | undefined;
+      phoneNumber: string | undefined;
     }
     const info: enteredValue = {
       firstName: firstNameRef.current?.value,
@@ -50,6 +54,7 @@ const SignupForm: React.FC<{
       zipcode: zipcodeRef.current?.value,
       socialSecurity: socialSecurityRef.current?.value,
       password: password,
+      phoneNumber: phoneNumberRef.current?.value,
     };
 
     onGetUserInfo(info);
@@ -70,9 +75,10 @@ const SignupForm: React.FC<{
   const confirmPasswordChecker = (event: ChangeEvent<HTMLInputElement>) => {
     const value: string | undefined = event.target?.value;
     if (password !== value) {
+      setConfirmPassword(false);
       return;
     }
-    setConfirmPassword(value);
+    setConfirmPassword(true);
   };
 
   return (
@@ -179,6 +185,19 @@ const SignupForm: React.FC<{
           <TextField
             variant="outlined"
             className={classes.inputField}
+            type="tel"
+            size="small"
+            fullWidth
+            placeholder="phone number"
+            inputRef={phoneNumberRef}
+          />
+        </Grid>
+      </Grid>
+      <Grid container>
+        <Grid xs={12} md={12} item>
+          <TextField
+            variant="outlined"
+            className={classes.inputField}
             type="text"
             size="small"
             fullWidth
@@ -191,7 +210,7 @@ const SignupForm: React.FC<{
         <Grid xs={12} md={12} item>
           <TextField
             variant="outlined"
-            className={classes.inputField}
+            className={confirmPassword ? classes.inputField : classes.invalid}
             type="text"
             size="small"
             fullWidth

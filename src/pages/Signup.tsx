@@ -1,37 +1,10 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 import axios from "axios";
 import { CardContent, Grid, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
 import SignupForm from "../components/Forms/SignupForm/SignupForm";
 import Kard from "../components/UI/Card";
 import { useNavigate } from "react-router-dom";
-
-const styles = makeStyles(() => ({
-  cardTitle: {
-    backgroundColor: "lightgray",
-    padding: "20px 0",
-  },
-  inputField: {
-    margin: "20px auto",
-    maxWidth: "80%",
-  },
-  btn: {
-    margin: "8px 0",
-    borderColor: "green",
-    color: "black",
-    "&:hover": {
-      backgroundColor: "green",
-      color: "white",
-      borderColor: "green",
-    },
-  },
-  invalid: {
-    backgroundColor: "red",
-    color: "white",
-    padding: "20px 0",
-    transition: "0.5 ease in",
-  },
-}));
+import styles from "../styles/SignupStyles";
 
 const Signup: React.FC = () => {
   const [user, setUser] = useState<{} | null>(null);
@@ -71,6 +44,7 @@ const Signup: React.FC = () => {
       zipcode: string | undefined;
       socialSecurity: string | undefined;
       password: string | undefined;
+      phoneNumber: string | undefined;
     }>
   ) => {
     setUser(data);
@@ -84,7 +58,11 @@ const Signup: React.FC = () => {
           Please Signup
         </Typography>
         <CardContent>
-          <SignupForm classes={classes} onGetUserInfo={userInfo} />
+          <SignupForm
+            classes={classes}
+            isValid={isValid}
+            onGetUserInfo={userInfo}
+          />
         </CardContent>
       </Kard>
     </Grid>

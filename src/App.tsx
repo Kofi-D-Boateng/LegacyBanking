@@ -45,6 +45,7 @@ const App: React.FC = () => {
     "/profile",
     pathname
   );
+
   return (
     <>
       {profile?.pattern.end ? (
@@ -60,7 +61,10 @@ const App: React.FC = () => {
             <Route path="/login" element={<Login isMobile={mobile} />} />
             <Route path="/signup" element={<Signup />} />
             {auth.authenticated && (
-              <Route path="/profile" element={<Profile token={auth.token} />} />
+              <Route
+                path="/profile"
+                element={<Profile token={auth.token} mobile={mobile} />}
+              />
             )}
             <Route path="*" element={<Navigate replace to="/" />} />
           </Routes>
@@ -83,7 +87,10 @@ const App: React.FC = () => {
             <Route path="/login" element={<Login isMobile={mobile} />} />
             <Route path="/signup" element={<Signup />} />
             {auth.authenticated && (
-              <Route path="/profile" element={<Profile token={auth.token} />} />
+              <Route
+                path="/profile"
+                element={<Profile token={auth.token} mobile={mobile} />}
+              />
             )}
             <Route path="*" element={<Navigate replace to="/" />} />
           </Routes>

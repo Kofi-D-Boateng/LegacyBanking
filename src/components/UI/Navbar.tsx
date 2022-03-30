@@ -6,15 +6,22 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { NavLink } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
-import React, { Fragment, useState } from "react";
+import React, { Dispatch, Fragment, useState } from "react";
 import { AccountCircle } from "@mui/icons-material";
-import classes from "./Navbar.module.scss";
+import { Button } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { authActions } from "../../store/authentication/auth-slice";
+import styles from "../../styles/NavbarStyles";
 
 const Navbar: React.FC<{ isMobile: boolean; auth: boolean }> = ({
   auth,
   isMobile,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const dispatch = useDispatch<Dispatch<any>>();
+  const logoutHandler = () => {
+    dispatch(authActions.logout());
+  };
 
   const handleMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -26,6 +33,7 @@ const Navbar: React.FC<{ isMobile: boolean; auth: boolean }> = ({
     }
     setAnchorEl(null);
   };
+  const classes = styles();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -101,9 +109,22 @@ const Navbar: React.FC<{ isMobile: boolean; auth: boolean }> = ({
                       </NavLink>
                     </MenuItem>
                     <MenuItem onClick={handleClose}>
-                      <NavLink className={classes.menuLink} to={`*`}>
+                      <Button
+                        sx={{
+                          textTransform: "none",
+                          textAlign: "center",
+                          color: "purple",
+                          fontSize: "1.0rem",
+                          "&:hover": {
+                            textDecoration: "underline",
+                            backgroundColor: "transparent",
+                          },
+                        }}
+                        className={classes.menuLink}
+                        onClick={logoutHandler}
+                      >
                         Logout
-                      </NavLink>
+                      </Button>
                     </MenuItem>
                   </div>
                 ) : (
@@ -179,10 +200,26 @@ const Navbar: React.FC<{ isMobile: boolean; auth: boolean }> = ({
                         Profile
                       </NavLink>
                     </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      <NavLink className={classes.menuLink} to={`*`}>
+                    <MenuItem
+                      className={classes.menuLink}
+                      onClick={handleClose}
+                    >
+                      <Button
+                        sx={{
+                          textTransform: "none",
+                          textAlign: "center",
+                          color: "purple",
+                          fontSize: "1.0rem",
+                          "&:hover": {
+                            textDecoration: "underline",
+                            backgroundColor: "transparent",
+                          },
+                        }}
+                        onClick={logoutHandler}
+                        fullWidth
+                      >
                         Logout
-                      </NavLink>
+                      </Button>
                     </MenuItem>
                   </Menu>
                 </Fragment>

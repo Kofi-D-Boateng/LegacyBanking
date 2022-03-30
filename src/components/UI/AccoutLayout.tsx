@@ -1,11 +1,10 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import User from "@mui/icons-material/PersonOutline";
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton } from "@mui/material";
 
@@ -16,11 +15,7 @@ const AccountLayout: React.FC<{ mobile: boolean }> = ({ children, mobile }) => {
     { key: 3, title: "Security & Privacy" },
     { key: 4, title: "Sign out" },
   ];
-  //   const mainHeader: {
-  //     key: number;
-  //     title: string;
-  //     icon: ReactElement<any, any>;
-  //   }[] = [{ key: 1, title: "", icon: <User /> }];
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
