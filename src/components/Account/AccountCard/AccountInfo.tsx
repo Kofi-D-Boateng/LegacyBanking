@@ -1,7 +1,6 @@
 import { Grid, Typography, Card, CardContent, Button } from "@mui/material";
 import { ClassNameMap } from "@mui/styles/withStyles";
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
 import useConverter from "../../../hooks/useConverter";
 
 const AccountInfo: React.FC<{
@@ -16,7 +15,8 @@ const AccountInfo: React.FC<{
     amount: number;
     location: string;
   }[];
-}> = ({ classes, fName, lName, funds, transactions }) => {
+  onSetView: (event: any) => void;
+}> = ({ classes, fName, lName, funds, transactions, onSetView }) => {
   const [withdrawals, setWithdrawals] = useState<number>(0);
   const [deposits, setDeposits] = useState<number>(0);
   const currentMonth: string = (new Date().getMonth() + 1).toString();
@@ -49,7 +49,7 @@ const AccountInfo: React.FC<{
       });
   }, [currentMonth, currentYear, transactions]);
 
-  const details: { key: number; value: string | undefined; desc: string }[] = [
+  const details: { key: number; value: string; desc: string }[] = [
     { key: 1, value: `$${useConverter(funds)}`, desc: "Available balance" },
     {
       key: 2,
@@ -63,11 +63,11 @@ const AccountInfo: React.FC<{
     },
   ];
 
-  const links: { key: number; title: string; link: string }[] = [
-    { key: 1, title: "Statement", link: "/" },
-    { key: 2, title: "Paperless", link: "/" },
-    { key: 3, title: "Transfer Money", link: "/" },
-    { key: 4, title: "More", link: "/" },
+  const links: { key: number; title: string }[] = [
+    { key: 1, title: "Statement" },
+    { key: 2, title: "Paperless" },
+    { key: 3, title: "Transfer Money" },
+    { key: 4, title: "More" },
   ];
   return (
     <Card className={classes.card}>
@@ -84,7 +84,16 @@ const AccountInfo: React.FC<{
               <Grid key={d.key} md={4} item>
                 <Grid container>
                   <Grid xs={12} md={12} item>
-                    <Typography variant="h6">{d.value}</Typography>
+                    <Typography
+                      sx={
+                        parseInt(d.value) < 0 || d.value.substring(0, 1) === "-"
+                          ? { color: "red" }
+                          : { color: "green" }
+                      }
+                      variant="h6"
+                    >
+                      {d.value}
+                    </Typography>
                   </Grid>
                   <Grid xs={12} md={12} item>
                     <Typography variant="body1">{d.desc}</Typography>
@@ -106,9 +115,21 @@ const AccountInfo: React.FC<{
                 md={12 / links.length}
                 item
               >
-                <NavLink className={classes.links} to={l.link}>
+                <Button
+                  sx={{
+                    fontSize: "1rem",
+                    textTransform: "none",
+                    color: "purple",
+                    "&:hover": {
+                      backgroundColor: "transparent",
+                      color: "green",
+                    },
+                  }}
+                  size="small"
+                  onClick={onSetView}
+                >
                   {l.title}
-                </NavLink>
+                </Button>
               </Grid>
             );
           })}

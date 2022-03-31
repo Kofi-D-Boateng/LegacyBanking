@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { PathMatch } from "react-router-dom";
-import Footer from "./Footer";
-import Navbar from "./Navbar";
+import Footer from "../Footer";
+import Navbar from "../Navbar";
 
 const Layout: React.FC<{
   isMobile: boolean;

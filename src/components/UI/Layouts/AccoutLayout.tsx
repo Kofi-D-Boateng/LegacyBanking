@@ -69,7 +69,22 @@ const AccountLayout: React.FC<{ mobile: boolean }> = ({ children, mobile }) => {
           </Toolbar>
         </AppBar>
       </Box>
-      <div style={{ width: "100%", height: "100vh" }}>{children}</div>
+      <div style={{ width: "100%" }}>{children}</div>
+      <Box style={{ backgroundColor: "purple", padding: "50px 0" }}>
+        <footer>
+          <Grid container>
+            <Grid sx={{ margin: "auto" }} xs={10} md={10} item>
+              <Typography variant="body1">
+                Legacy Bank, N.A. and its affiliates offer investment products,
+                which may include bank managed accounts and custody, as part of
+                its trust and fiduciary services. Other investment products and
+                services, such as brokerage and advisory accounts, are offered
+                through Legacy Securities LLC (LS), a member of FINRA and SIPC.
+              </Typography>
+            </Grid>
+          </Grid>
+        </footer>
+      </Box>
     </>
   );
 };

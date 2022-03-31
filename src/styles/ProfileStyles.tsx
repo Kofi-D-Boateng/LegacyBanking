@@ -9,6 +9,7 @@ const styles = makeStyles(() => ({
   card: {
     width: "90%",
     margin: "20px auto",
+    border: "0.5px solid black",
   },
   linksContainer: {
     borderRight: "1px solid purple",
@@ -31,6 +32,13 @@ const styles = makeStyles(() => ({
   },
   activities: {
     textAlign: "center",
+  },
+  paper: {
+    margin: "30px auto",
+    textAlign: "center",
+    width: "70%",
+    minHeight: "150px",
+    position: "relative",
   },
 }));
 

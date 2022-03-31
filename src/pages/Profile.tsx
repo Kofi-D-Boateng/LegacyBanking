@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import React, { Dispatch, useEffect } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import AccountActivity from "../components/Account/AccountActivity/AccountActivity";
 import AccountInfo from "../components/Account/AccountCard/AccountInfo";
 import AccountDetails from "../components/Account/AccountDetails/AccountDetails";
@@ -9,11 +9,13 @@ import { customerActions } from "../store/customer/customer";
 import { RootState } from "../store/store";
 import { authActions } from "../store/authentication/auth-slice";
 import styles from "../styles/ProfileStyles";
+import AccountCoupons from "../components/Account/AccountCoupons/AccountCoupons";
 
 const Profile: React.FC<{ token: string; mobile: boolean }> = ({
   token,
   mobile,
 }) => {
+  const [infoView, setInfoView] = useState<string | undefined>(undefined);
   const customer = useSelector((state: RootState) => state.cust);
   const dispatch = useDispatch<Dispatch<any>>();
   useEffect(() => {
@@ -60,8 +62,12 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
     };
     fetchAccount();
   }, [token, dispatch]);
-  const classes = styles();
 
+  const classes = styles();
+  const viewHandler = (event: any) => {
+    const VIEW = event.target.innerText;
+    setInfoView(VIEW);
+  };
   return (
     <Grid className={classes.profile} container>
       <Grid xs={12} lg={7} item>
@@ -73,6 +79,7 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
               lName={customer.lName}
               funds={customer.funds}
               transactions={customer.transactions}
+              onSetView={viewHandler}
             />
           </Grid>
           <Grid xs={12} md={12} item>
@@ -88,6 +95,9 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
           <Grid container>
             <Grid xs={12} md={12} item>
               <AccountDetails classes={classes} />
+            </Grid>
+            <Grid xs={12} md={12} item>
+              <AccountCoupons classes={classes} />
             </Grid>
           </Grid>
         </Grid>

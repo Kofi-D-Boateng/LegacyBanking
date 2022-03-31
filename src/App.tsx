@@ -11,8 +11,8 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
-import AccountLayout from "./components/UI/AccoutLayout";
-import Layout from "./components/UI/Layout";
+import AccountLayout from "./components/UI/Layouts/AccoutLayout";
+import Layout from "./components/UI/Layouts/Layout";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
