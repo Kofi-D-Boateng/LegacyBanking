@@ -30,6 +30,7 @@ const AccountLayout: React.FC<{ mobile: boolean }> = ({ children, mobile }) => {
                 {options.map((o) => {
                   return (
                     <Button
+                      key={o.key}
                       variant={o.key !== options.length ? "text" : "outlined"}
                       sx={
                         o.key !== options.length
