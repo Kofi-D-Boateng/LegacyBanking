@@ -5,15 +5,20 @@ import {
   Card,
   CardContent,
   ClassNameMap,
+  FormControl,
   Grid,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import React, { useRef, useState } from "react";
 import ReactDOM from "react-dom";
-
-const backdropDiv: HTMLElement = document.getElementById("backdrop-root")!;
-const overlayDiv: HTMLElement = document.getElementById("overlay-root")!;
+import { backdropDiv, overlayDiv } from "../Layouts/RootElement";
 
 const Modal: React.FC<{
   classes: ClassNameMap<string>;
@@ -23,7 +28,19 @@ const Modal: React.FC<{
     phoneNumber: string | undefined;
     amount: number;
   }) => void;
-}> = ({ classes, Exit, Transfer }) => {
+  choiceHandler: (event: SelectChangeEvent) => void;
+  view: boolean;
+  termsOfChoice: string;
+  isMobile: boolean;
+}> = ({
+  classes,
+  Exit,
+  Transfer,
+  choiceHandler,
+  view,
+  termsOfChoice,
+  isMobile,
+}) => {
   const [amount, setAmount] = useState<number>(0);
   const emailRef = useRef<HTMLInputElement | undefined>();
   const phoneNumberRef = useRef<HTMLInputElement | undefined>();
@@ -48,60 +65,120 @@ const Modal: React.FC<{
   };
 
   return (
-    <Card className={classes.card} onClick={Exit}>
-      <Typography
+    <Card className={!isMobile ? classes.card : classes.mobileCard}>
+      <Grid
         sx={{
-          backgroundColor: "lightgray",
+          backgroundColor: "purple",
           padding: "20px 0",
-          textAlign: "center",
         }}
-        variant="h6"
+        container
       >
-        Transfer Money from account
-      </Typography>
-      <CardContent>
-        <form onSubmit={submitHandler}>
-          <Grid sx={{ margin: "50px 0" }} container>
-            <Grid sx={{ margin: "auto" }} xs={3} md={3} item>
-              <Typography variant="h6">Enter Email</Typography>
-            </Grid>
-            <Grid xs={9} md={9} item>
-              <TextField
-                label="email"
-                size="small"
-                type="email"
-                placeholder="enter transfee's email"
-                fullWidth
-              />
-            </Grid>
-          </Grid>
-          <Grid sx={{ margin: "50px 0" }} container>
-            <Grid sx={{ margin: "auto" }} xs={3} md={3} item>
-              <Typography variant="h6">Enter Amount</Typography>
-            </Grid>
-            <Grid xs={9} md={9} item>
-              <TextField
-                label="amount"
-                size="small"
-                placeholder="enter transfer amount"
-                type="number"
-                onChange={amountHandler}
-                fullWidth
-              />
-            </Grid>
-          </Grid>
-          <Grid container>
-            <Button
-              className={classes.btn}
-              variant="outlined"
-              size="small"
-              type="submit"
-              fullWidth
+        <Typography
+          sx={{
+            flexGrow: "1",
+            margin: "auto",
+            textAlign: "center",
+            color: "white",
+          }}
+          variant="h6"
+        >
+          Transfer Money from account
+        </Typography>
+        <IconButton
+          onClick={Exit}
+          sx={{
+            "&:hover": {
+              backgroundColor: "transparent",
+            },
+          }}
+        >
+          <CloseIcon sx={{ color: "white" }} />
+        </IconButton>
+      </Grid>
+      <CardContent sx={{ margin: "auto" }}>
+        {!view ? (
+          <FormControl sx={!isMobile ? { width: "100%" } : { width: "100%" }}>
+            <InputLabel id="Choice">Send By....</InputLabel>
+            <Select
+              labelId="Choice"
+              value={termsOfChoice}
+              label="Send By"
+              onChange={choiceHandler}
             >
-              Send
-            </Button>
-          </Grid>
-        </form>
+              <MenuItem value={"email"}>Email</MenuItem>
+              <MenuItem value={"number"}>Phone Number</MenuItem>
+            </Select>
+          </FormControl>
+        ) : (
+          <form onSubmit={submitHandler}>
+            <Grid sx={{ margin: "50px 0" }} container>
+              <Grid
+                sx={{ margin: "auto", textAlign: "center" }}
+                xs={3}
+                md={3}
+                item
+              >
+                <Typography variant="h6">
+                  {termsOfChoice === "email" ? "Email" : "Phone number"}
+                </Typography>
+              </Grid>
+              {termsOfChoice === "email" ? (
+                <Grid xs={9} md={9} item>
+                  <TextField
+                    label="Email"
+                    size="small"
+                    type="email"
+                    inputRef={emailRef}
+                    placeholder="enter transfee's email"
+                    fullWidth
+                  />
+                </Grid>
+              ) : (
+                <Grid xs={9} md={9} item>
+                  <TextField
+                    label="Phone Number"
+                    size="small"
+                    type="tel"
+                    inputRef={phoneNumberRef}
+                    placeholder="enter transfee's phone number"
+                    fullWidth
+                  />
+                </Grid>
+              )}
+            </Grid>
+            <Grid sx={{ margin: "50px 0" }} container>
+              <Grid
+                sx={{ margin: "auto", textAlign: "center" }}
+                xs={3}
+                md={3}
+                item
+              >
+                <Typography variant="h6">Enter Amount</Typography>
+              </Grid>
+              <Grid xs={9} md={9} item>
+                <TextField
+                  label="amount"
+                  size="small"
+                  placeholder="enter transfer amount"
+                  type="number"
+                  onChange={amountHandler}
+                  fullWidth
+                />
+              </Grid>
+            </Grid>
+            <Grid container>
+              <Button
+                className={classes.btn}
+                variant="outlined"
+                size="small"
+                type="submit"
+                fullWidth
+              >
+                Send
+              </Button>
+            </Grid>
+          </form>
+        )}
       </CardContent>
     </Card>
   );
@@ -109,18 +186,30 @@ const Modal: React.FC<{
 
 const MoneyTransfer: React.FC<{
   Exit: () => void;
+  onChoice: (event: SelectChangeEvent) => void;
   onTransfer: (data: {
     email: string | undefined;
     phoneNumber: string | undefined;
     amount: number;
   }) => void;
-}> = ({ Exit, onTransfer }) => {
+  view: boolean;
+  termsOfChoice: string;
+  mobile: boolean;
+}> = ({ Exit, onTransfer, onChoice, view, termsOfChoice, mobile }) => {
   const classes = styles();
   return (
     <>
       {ReactDOM.createPortal(<Backdrop Exit={Exit} />, backdropDiv)}
       {ReactDOM.createPortal(
-        <Modal Exit={Exit} Transfer={onTransfer} classes={classes} />,
+        <Modal
+          Exit={Exit}
+          Transfer={onTransfer}
+          choiceHandler={onChoice}
+          view={view}
+          termsOfChoice={termsOfChoice}
+          classes={classes}
+          isMobile={mobile}
+        />,
         overlayDiv
       )}
     </>

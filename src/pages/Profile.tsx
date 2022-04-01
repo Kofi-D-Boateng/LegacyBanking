@@ -1,5 +1,5 @@
-import { Container, Grid } from "@mui/material";
-import React, { Dispatch, useEffect, useState } from "react";
+import { Container, Grid, SelectChangeEvent } from "@mui/material";
+import React, { ChangeEvent, Dispatch, useEffect, useState } from "react";
 import AccountActivity from "../components/Account/AccountActivity/AccountActivity";
 import AccountInfo from "../components/Account/AccountCard/AccountInfo";
 import AccountDetails from "../components/Account/AccountDetails/AccountDetails";
@@ -13,27 +13,15 @@ import AccountCoupons from "../components/Account/AccountCoupons/AccountCoupons"
 import MoneyTransfer from "../components/UI/Modals/MoneyTransfer";
 import Statement from "../components/UI/Modals/Statement";
 import Paperless from "../components/UI/Modals/Paperless";
+import { modalActions } from "../store/modals/modal-slice";
 
 const Profile: React.FC<{ token: string; mobile: boolean }> = ({
   token,
   mobile,
 }) => {
-  const [accountTransfer, setAccountTransfer] = useState<{
-    email: string | undefined;
-    dateOfTransaction: number;
-    amount: number;
-    location: string;
-    accountNumber: string | undefined;
-    type: string;
-  }>({
-    email: "",
-    dateOfTransaction: 0,
-    amount: 0,
-    location: "",
-    accountNumber: "",
-    type: "",
-  });
-  const [infoView, setInfoView] = useState<string | undefined>(undefined);
+  const [view, setView] = useState<boolean>(false);
+  const [termsOfChoice, setTermsOfChoice] = useState<string>("");
+  const modal = useSelector((state: RootState) => state.view);
   const customer = useSelector((state: RootState) => state.cust);
   const dispatch = useDispatch<Dispatch<any>>();
   useEffect(() => {
@@ -72,22 +60,65 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
               transactions: transactions,
             })
           );
-          console.log(response.data);
         })
         .catch(() => {
           dispatch(authActions.logout());
         });
     };
+
+    const fetchTransfer = async (accountTransfer: {
+      email: string | undefined;
+      amount: number;
+      location: string;
+      accountNumber: string | undefined;
+      type: string;
+    }) => {
+      await axios({
+        method: "POST",
+        url: "http://localhost:8081/api/v1/authentication/profile/info",
+        data: accountTransfer,
+        headers: {
+          authorization: token,
+        },
+      })
+        .then((response) => {
+          if (response.status >= 200 && response.status <= 299) {
+            dispatch(
+              customerActions.createTransfer({
+                accountNumber: undefined,
+                amount: 0,
+                email: undefined,
+                location: "",
+                phoneNumber: undefined,
+                type: "",
+              })
+            );
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    if (
+      customer.accountTransfer.amount > 0 &&
+      customer.accountTransfer.accountNumber &&
+      customer.accountTransfer.email
+    ) {
+      fetchTransfer(customer.accountTransfer);
+      return;
+    }
     fetchAccount();
-  }, [token, dispatch]);
+  }, [token, dispatch, customer.accountTransfer]);
 
   const classes = styles();
-  const viewHandler = (event: any) => {
+  const viewHandler = (event: ChangeEvent<HTMLElement>) => {
     const VIEW = event.target.innerText;
-    setInfoView(VIEW);
+    dispatch(modalActions.setView({ view: VIEW }));
   };
   const exitHandler = () => {
-    setInfoView(undefined);
+    dispatch(modalActions.setView({ view: undefined }));
+    setTermsOfChoice("");
+    setView(false);
   };
 
   const transferHandler = (data: {
@@ -95,22 +126,49 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
     phoneNumber: string | undefined;
     amount: number;
   }) => {
-    const date: Date = new Date();
-    setAccountTransfer({
-      email: data.email,
-      amount: data.amount,
-      dateOfTransaction: date.getUTCDate(),
-      location: "Account transfer",
-      type: "transfer",
-      accountNumber: customer.accountNum,
-    });
+    dispatch(
+      customerActions.createTransfer({
+        email: data.email,
+        accountNumber: customer.accountNum,
+        amount: data.amount,
+        location: "Account transfer",
+        type: "transfer",
+        phoneNumber: data.phoneNumber,
+      })
+    );
+  };
+
+  const paperlessHandler = (event: SelectChangeEvent<string | boolean>) => {
+    const { value } = event.target;
+    console.log(typeof value);
+    if (value === "true") {
+      dispatch(modalActions.setPaperless({ paperless: true }));
+      return;
+    }
+    dispatch(modalActions.setPaperless({ paperless: false }));
+  };
+
+  const choiceHandler = (event: SelectChangeEvent) => {
+    const { value } = event.target;
+    console.log(value);
+    setTermsOfChoice(value);
+    setView(true);
   };
 
   const modals: { key: number; modal: JSX.Element; type: string }[] = [
     {
       key: 1,
       type: "Transfer Money",
-      modal: <MoneyTransfer onTransfer={transferHandler} Exit={exitHandler} />,
+      modal: (
+        <MoneyTransfer
+          onTransfer={transferHandler}
+          Exit={exitHandler}
+          onChoice={choiceHandler}
+          termsOfChoice={termsOfChoice}
+          view={view}
+          mobile={mobile}
+        />
+      ),
     },
     {
       key: 2,
@@ -120,16 +178,22 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
     {
       key: 3,
       type: "Paperless",
-      modal: <Paperless />,
+      modal: (
+        <Paperless
+          Exit={exitHandler}
+          onChoice={paperlessHandler}
+          mobile={mobile}
+        />
+      ),
     },
   ];
 
   return (
     <>
-      {infoView &&
+      {modal.view &&
         modals
           .filter((m) => {
-            return m.type === infoView;
+            return m.type === modal.view;
           })
           .map((a) => {
             return <Container key={a.key}>{a.modal}</Container>;
