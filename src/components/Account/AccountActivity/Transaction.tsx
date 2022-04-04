@@ -15,198 +15,68 @@ const Transaction: React.FC<{
     title: string;
   }[];
   filter: string | undefined;
-}> = ({ classes, categories, filter, transactions }) => {
+  YEAR: string;
+  MONTH: string;
+}> = ({ classes, categories, filter, transactions, MONTH, YEAR }) => {
   console.log(transactions);
 
   return (
     <Grid container>
-      {filter === "asc"
-        ? transactions.map((a) => {
-            if (
-              a.type === "withdrawal" ||
-              a.type === "account transfer" ||
-              a.type === "ACH Debit"
-            ) {
-              return (
-                <Grid key={a.id} className={classes.activities} container>
-                  <Grid
-                    xs={12 / categories.length}
-                    md={12 / categories.length}
-                    item
-                  >
-                    <Typography variant="body1">
-                      {a.dateOfTransaction}
-                    </Typography>
-                  </Grid>
-                  <Grid
-                    xs={12 / categories.length}
-                    md={12 / categories.length}
-                    item
-                  >
-                    <Typography variant="body1">{a.location}</Typography>
-                  </Grid>
-                  <Grid
-                    xs={12 / categories.length}
-                    md={12 / categories.length}
-                    item
-                  >
-                    <Typography variant="body1">{a.type}</Typography>
-                  </Grid>
-                  <Grid
-                    xs={12 / categories.length}
-                    md={12 / categories.length}
-                    item
-                  >
-                    <Typography variant="body1">{`-$${a.amount}`}</Typography>
-                  </Grid>
-                  <div
-                    style={{
-                      borderBottom: "0.5px solid black",
-                      width: "100%",
-                    }}
-                  >
-                    {" "}
-                  </div>
-                </Grid>
-              );
-            } else {
-              return (
-                <Grid key={a.id} className={classes.activities} container>
-                  <Grid
-                    xs={12 / categories.length}
-                    md={12 / categories.length}
-                    item
-                  >
-                    <Typography variant="body1">
-                      {a.dateOfTransaction}
-                    </Typography>
-                  </Grid>
-                  <Grid
-                    xs={12 / categories.length}
-                    md={12 / categories.length}
-                    item
-                  >
-                    <Typography variant="body1">{a.location}</Typography>
-                  </Grid>
-                  <Grid
-                    xs={12 / categories.length}
-                    md={12 / categories.length}
-                    item
-                  >
-                    <Typography variant="body1">{a.type}</Typography>
-                  </Grid>
-                  <Grid
-                    xs={12 / categories.length}
-                    md={12 / categories.length}
-                    item
-                  >
-                    <Typography variant="body1">{`+$${a.amount}`}</Typography>
-                  </Grid>
-                  <div
-                    style={{
-                      borderBottom: "0.5px solid black",
-                      width: "100%",
-                    }}
-                  >
-                    {" "}
-                  </div>
-                </Grid>
-              );
-            }
-          })
-        : transactions.map((a) => {
-            if (
-              a.type === "withdrawal" ||
-              a.type === "account transfer" ||
-              a.type === "ACH Debit"
-            ) {
-              return (
-                <Grid key={a.id} className={classes.activities} container>
-                  <Grid
-                    xs={12 / categories.length}
-                    md={12 / categories.length}
-                    item
-                  >
-                    <Typography variant="body1">
-                      {a.dateOfTransaction}
-                    </Typography>
-                  </Grid>
-                  <Grid
-                    xs={12 / categories.length}
-                    md={12 / categories.length}
-                    item
-                  >
-                    <Typography variant="body1">{a.location}</Typography>
-                  </Grid>
-                  <Grid
-                    xs={12 / categories.length}
-                    md={12 / categories.length}
-                    item
-                  >
-                    <Typography variant="body1">{a.type}</Typography>
-                  </Grid>
-                  <Grid
-                    xs={12 / categories.length}
-                    md={12 / categories.length}
-                    item
-                  >
-                    <Typography variant="body1">{`-$${a.amount}`}</Typography>
-                  </Grid>
-                  <div
-                    style={{
-                      borderBottom: "0.5px solid black",
-                      width: "100%",
-                    }}
-                  >
-                    {" "}
-                  </div>
-                </Grid>
-              );
-            } else {
-              return (
-                <Grid key={a.id} className={classes.activities} container>
-                  <Grid
-                    xs={12 / categories.length}
-                    md={12 / categories.length}
-                    item
-                  >
-                    <Typography variant="body1">
-                      {a.dateOfTransaction}
-                    </Typography>
-                  </Grid>
-                  <Grid
-                    xs={12 / categories.length}
-                    md={12 / categories.length}
-                    item
-                  >
-                    <Typography variant="body1">{a.location}</Typography>
-                  </Grid>
-                  <Grid
-                    xs={12 / categories.length}
-                    md={12 / categories.length}
-                    item
-                  >
-                    <Typography variant="body1">{a.type}</Typography>
-                  </Grid>
-                  <Grid
-                    xs={12 / categories.length}
-                    md={12 / categories.length}
-                    item
-                  >
-                    <Typography variant="body1">{`+$${a.amount}`}</Typography>
-                  </Grid>
-                  <div
-                    style={{
-                      borderBottom: "0.5px solid black",
-                      width: "100%",
-                    }}
-                  >
-                    {" "}
-                  </div>
-                </Grid>
-              );
-            }
-          })}
+      {transactions
+        .filter((a) => {
+          return (
+            a.dateOfTransaction.substring(0, 4) === YEAR &&
+            a.dateOfTransaction.substring(6, 7) === MONTH
+          );
+        })
+        .map((a) => {
+          return (
+            <Grid key={a.id} className={classes.activities} container>
+              <Grid
+                xs={12 / categories.length}
+                md={12 / categories.length}
+                item
+              >
+                <Typography variant="body1">{a.dateOfTransaction}</Typography>
+              </Grid>
+              <Grid
+                xs={12 / categories.length}
+                md={12 / categories.length}
+                item
+              >
+                <Typography variant="body1">{a.location}</Typography>
+              </Grid>
+              <Grid
+                xs={12 / categories.length}
+                md={12 / categories.length}
+                item
+              >
+                <Typography variant="body1">{a.type}</Typography>
+              </Grid>
+              <Grid
+                xs={12 / categories.length}
+                md={12 / categories.length}
+                item
+              >
+                <Typography variant="body1">
+                  {a.type === "transfer" ||
+                  a.type === "withdrawal" ||
+                  a.type === "ACH Debit"
+                    ? `-$${a.amount}`
+                    : `+$${a.amount}`}
+                </Typography>
+              </Grid>
+              <div
+                style={{
+                  borderBottom: "0.5px solid black",
+                  width: "100%",
+                }}
+              >
+                {" "}
+              </div>
+            </Grid>
+          );
+        })}
     </Grid>
   );
 };

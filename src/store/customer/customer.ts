@@ -17,6 +17,14 @@ function initialState(): {
     amount: number;
     location: string;
   }[];
+  accountTransfer: {
+    email: string | undefined;
+    amount: number;
+    location: string;
+    accountNumber: string | undefined;
+    type: string;
+    phoneNumber: string | undefined;
+  };
 } {
   return {
     fName: "",
@@ -31,6 +39,14 @@ function initialState(): {
     transactions: [
       { id: 0, amount: 0, dateOfTransaction: "", location: "", type: "" },
     ],
+    accountTransfer: {
+      accountNumber: undefined,
+      amount: 0,
+      email: undefined,
+      location: "",
+      type: "",
+      phoneNumber: undefined,
+    },
   };
 }
 
@@ -84,6 +100,26 @@ const customerSlice = createSlice({
         transactions.length > state.transactions.length
           ? transactions.reverse()
           : state.transactions;
+    },
+    createTransfer(
+      state,
+      action: PayloadAction<{
+        email: string | undefined;
+        amount: number;
+        location: string;
+        accountNumber: string | undefined;
+        type: string;
+        phoneNumber: string | undefined;
+      }>
+    ) {
+      const { email, amount, accountNumber, location, type, phoneNumber } =
+        action.payload;
+      state.accountTransfer.accountNumber = accountNumber;
+      state.accountTransfer.amount = amount;
+      state.accountTransfer.email = email;
+      state.accountTransfer.location = location;
+      state.accountTransfer.type = type;
+      state.accountTransfer.phoneNumber = phoneNumber;
     },
   },
 });

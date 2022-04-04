@@ -5,7 +5,6 @@ function initialState(): {
   authenticated: boolean;
 } {
   const token = sessionStorage.getItem("lb-token");
-  console.log(token);
   if (token !== null) {
     return {
       token: token,

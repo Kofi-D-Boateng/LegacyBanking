@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Typography,
   Card,
@@ -13,7 +14,6 @@ import {
 import Inactive from "@mui/icons-material/ChevronRight";
 import Active from "@mui/icons-material/KeyboardArrowDown";
 import { ClassNameMap } from "@mui/styles/withStyles";
-import React, { useState } from "react";
 import Transaction from "./Transaction";
 
 const AccountActivity: React.FC<{
@@ -25,7 +25,9 @@ const AccountActivity: React.FC<{
     amount: number;
     location: string;
   }[];
-}> = ({ classes, transactions }) => {
+  YEAR: string;
+  MONTH: string;
+}> = ({ classes, transactions, MONTH, YEAR }) => {
   const [view, setView] = useState<React.SetStateAction<boolean>>(false);
   const [filter, setFilter] = useState<string | undefined>("");
 
@@ -95,8 +97,6 @@ const AccountActivity: React.FC<{
               >
                 <MenuItem value={"type"}>Type</MenuItem>
                 <MenuItem value={"date"}>Date</MenuItem>
-                <MenuItem value={"asc"}>Oldest to newest</MenuItem>
-                <MenuItem value={"desc"}>Newest to oldest</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -106,9 +106,7 @@ const AccountActivity: React.FC<{
             borderBottom: "0.5px solid black",
             width: "100%",
           }}
-        >
-          {" "}
-        </div>
+        />
         {view && (
           <>
             <Grid className={classes.activityTitles} container>
@@ -133,6 +131,8 @@ const AccountActivity: React.FC<{
               classes={classes}
               filter={filter}
               categories={categories}
+              YEAR={YEAR}
+              MONTH={MONTH}
             />
           </>
         )}

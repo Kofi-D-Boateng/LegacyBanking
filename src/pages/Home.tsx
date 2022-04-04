@@ -13,31 +13,32 @@ import biz from "../assets/photos/business.jpg";
 import { NavLink } from "react-router-dom";
 import styles from "../styles/HomeStyles";
 
-const Home: React.FC = () => {
-  // const info: {
-  //   key: number;
-  //   title: string;
-  //   desc: string;
-  //   css: string;
-  //   src: string | undefined;
-  // }[] = [
-  //   {
-  //     key: 1,
-  //     title:
-  //       " Startups and small Small businesses: How we are empowering those to chase their dreams of having a small business.",
-  //     desc: " We work with startups and small business around the world to allow their continued growth to be substainable.",
-  //     css: classes.img,
-  //     src: startUp ? startUp : undefined,
-  //   },
-  //   {
-  //     key: 2,
-  //     title: " Business Partners & Board Members",
-  //     desc: "Meet a the people behind the scenes that we work with that helps us help your reach your goals.",
-  //     css: classes.businessImg,
-  //     src: biz ? biz : undefined,
-  //   },
-  // ];
+const Home: React.FC<{ mobile: boolean }> = ({ mobile }) => {
   const classes: ClassNameMap<string> = styles();
+  const info: {
+    key: number;
+    title: string;
+    desc: string;
+    css: string;
+    src: string | undefined;
+  }[] = [
+    {
+      key: 1,
+      title:
+        " Startups and small Small businesses: How we are empowering those to chase their dreams of having a small business.",
+      desc: " We work with startups and small business around the world to allow their continued growth to be substainable.",
+      css: classes.img,
+      src: startUp ? startUp : undefined,
+    },
+    {
+      key: 2,
+      title: " Business Partners & Board Members",
+      desc: "Meet a the people behind the scenes that we work with that helps us help your reach your goals.",
+      css: classes.businessImg,
+      src: biz ? biz : undefined,
+    },
+  ];
+
   return (
     <Fragment>
       <Grid className={classes.banner} container>
@@ -72,7 +73,7 @@ const Home: React.FC = () => {
           </video>
         </Grid>
       </Grid>
-      <Grid sx={{ backgroundColor: "purple", padding: "30px 0" }} container>
+      <Grid sx={{ backgroundColor: "purple", padding: "80px 0" }} container>
         <Grid className={classes.aboutContainer} xs={12} md={12} item>
           <Typography variant="h4">Learn more about us</Typography>
           <Typography
