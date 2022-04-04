@@ -2,6 +2,7 @@ import { Grid, Typography, Card, CardContent, Button } from "@mui/material";
 import { ClassNameMap } from "@mui/styles/withStyles";
 import React, { useEffect, useState } from "react";
 import useConverter from "../../../hooks/useConverter";
+import MonthlyExpenditure from "./MonthlyExpenditure/MonthlyExpenditure";
 
 const AccountInfo: React.FC<{
   classes: ClassNameMap<string>;
@@ -15,39 +16,49 @@ const AccountInfo: React.FC<{
     amount: number;
     location: string;
   }[];
+  mobile: boolean;
+  YEAR: string;
+  MONTH: string;
   onSetView: (event: any) => void;
-}> = ({ classes, fName, lName, funds, transactions, onSetView }) => {
+}> = ({
+  classes,
+  fName,
+  lName,
+  funds,
+  transactions,
+  onSetView,
+  mobile,
+  MONTH,
+  YEAR,
+}) => {
   const [withdrawals, setWithdrawals] = useState<number>(0);
   const [deposits, setDeposits] = useState<number>(0);
-  const currentMonth: string = (new Date().getMonth() + 1).toString();
-  const currentYear: string = new Date().getFullYear().toString();
-
+  console.log(deposits);
   useEffect(() => {
     let withdrawal: number = 0;
     let deposit: number = 0;
     transactions
       .filter((a) => {
+        console.log(a);
         return (
-          a.dateOfTransaction.substring(0, 4) === currentYear &&
-          a.dateOfTransaction.substring(6, 7) === currentMonth
+          a.dateOfTransaction.substring(0, 4) === YEAR &&
+          a.dateOfTransaction.substring(6, 7) === MONTH
         );
       })
       .map((a) => {
-        console.log(a);
-        if (a.type === "withdrawal") {
+        if (a.type === "withdrawal" || a.type === "transfer") {
           withdrawal = withdrawal + a.amount;
         } else {
-          console.log("made it");
-          deposit++;
-          console.log(deposit);
+          console.log("dep-->", a.amount);
+          deposit = deposit + a.amount;
         }
-        if (a.id === transactions.length) {
-          setDeposits(deposit);
-          setWithdrawals(withdrawal);
-        }
-        return;
+        return true;
       });
-  }, [currentMonth, currentYear, transactions]);
+    const floatWithdrawal = parseFloat(withdrawal.toFixed(2));
+    const floatDeposit = parseFloat(deposit.toFixed(2));
+    setDeposits(floatDeposit);
+    setWithdrawals(floatWithdrawal);
+  }, [YEAR, MONTH, transactions]);
 
   const details: { key: number; value: string; desc: string }[] = [
     { key: 1, value: `$${useConverter(funds)}`, desc: "Available balance" },
@@ -73,35 +84,24 @@ const AccountInfo: React.FC<{
     <Card className={classes.card}>
       <CardContent>
         <Typography sx={{ margin: "10px 0" }} variant="h6">
-          {fName} {lName}'s account |{" "}
-          <Button sx={{ color: "blue" }} variant="text">
+          {fName} {lName}'s account |
+          <Button
+            sx={{
+              color: "purple",
+              fontSize: "1.2rem",
+              textTransform: "none",
+              "&:hover": {
+                backgroundColor: "transparent",
+                color: "blue",
+              },
+            }}
+            variant="text"
+          >
             See full account number
           </Button>
         </Typography>
         <Grid sx={{ margin: "10px 0" }} container>
-          {details.map((d) => {
-            return (
-              <Grid key={d.key} md={4} item>
-                <Grid container>
-                  <Grid xs={12} md={12} item>
-                    <Typography
-                      sx={
-                        parseInt(d.value) < 0 || d.value.substring(0, 1) === "-"
-                          ? { color: "red" }
-                          : { color: "green" }
-                      }
-                      variant="h6"
-                    >
-                      {d.value}
-                    </Typography>
-                  </Grid>
-                  <Grid xs={12} md={12} item>
-                    <Typography variant="body1">{d.desc}</Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-            );
-          })}
+          <MonthlyExpenditure details={details} />
         </Grid>
         <hr style={{ backgroundColor: "black", padding: "0.5px 0" }} />
         <Grid container>
@@ -110,7 +110,9 @@ const AccountInfo: React.FC<{
               <Grid
                 key={l.key}
                 className={l.key !== 4 ? classes.linksContainer : ""}
-                sx={l.key === 4 ? { textAlign: "center" } : null}
+                sx={
+                  l.key === 4 ? { textAlign: "center", margin: "auto" } : null
+                }
                 xs={12 / links.length}
                 md={12 / links.length}
                 item

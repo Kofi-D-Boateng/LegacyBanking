@@ -3,7 +3,7 @@ import makeStyles from "@mui/styles/makeStyles";
 const styles = makeStyles(() => ({
   profile: {
     backgroundColor: "rgb(235, 236, 237)",
-    padding: "10px 0",
+    padding: "40px 0",
     width: "100%",
   },
   card: {
@@ -14,6 +14,7 @@ const styles = makeStyles(() => ({
   linksContainer: {
     borderRight: "1px solid purple",
     textAlign: "center",
+    margin: "auto",
   },
   links: {
     color: "purple",

@@ -1,3 +1,5 @@
+import React, { useRef, useState } from "react";
+import ReactDOM from "react-dom";
 import Backdrop from "../Backdrops/Backdrop";
 import styles from "../../../styles/MoneyTransferStyles";
 import {
@@ -16,8 +18,6 @@ import {
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import React, { useRef, useState } from "react";
-import ReactDOM from "react-dom";
 import { backdropDiv, overlayDiv } from "../Layouts/RootElement";
 
 const Modal: React.FC<{
@@ -45,9 +45,22 @@ const Modal: React.FC<{
   const emailRef = useRef<HTMLInputElement | undefined>();
   const phoneNumberRef = useRef<HTMLInputElement | undefined>();
 
-  const amountHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const inputValHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // let { value } = event.target;
+    // var t = value;
+    // value =
+    //   t.indexOf(".") >= 0
+    //     ? t.substring(0, t.indexOf(".")) + t.substring(t.indexOf("."), 3)
+    //     : t;
+  };
+
+  const amountHandler = (event: React.FocusEvent<HTMLInputElement>) => {
+    const regex = /[A-Za-z]/;
     const { value } = event.target;
-    setAmount(parseFloat(value));
+    if (regex.test(value)) {
+      return;
+    }
+    setAmount(+parseFloat(value).toFixed(2));
   };
 
   const submitHandler = (event: React.FormEvent) => {
@@ -59,7 +72,7 @@ const Modal: React.FC<{
     } = {
       email: emailRef.current?.value,
       phoneNumber: phoneNumberRef.current?.value,
-      amount: amount,
+      amount: parseFloat(amount.toFixed(2)),
     };
     Transfer(data);
   };
@@ -119,7 +132,7 @@ const Modal: React.FC<{
                 item
               >
                 <Typography variant="h6">
-                  {termsOfChoice === "email" ? "Email" : "Phone number"}
+                  {termsOfChoice === "email" ? "Email: " : "Phone number: "}
                 </Typography>
               </Grid>
               {termsOfChoice === "email" ? (
@@ -153,7 +166,7 @@ const Modal: React.FC<{
                 md={3}
                 item
               >
-                <Typography variant="h6">Enter Amount</Typography>
+                <Typography variant="h6">Amount: </Typography>
               </Grid>
               <Grid xs={9} md={9} item>
                 <TextField
@@ -161,7 +174,8 @@ const Modal: React.FC<{
                   size="small"
                   placeholder="enter transfer amount"
                   type="number"
-                  onChange={amountHandler}
+                  onBlur={amountHandler}
+                  onInput={inputValHandler}
                   fullWidth
                 />
               </Grid>

@@ -1,10 +1,10 @@
-import { Container, Grid, SelectChangeEvent } from "@mui/material";
 import React, { ChangeEvent, Dispatch, useEffect, useState } from "react";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { Container, Grid, SelectChangeEvent } from "@mui/material";
 import AccountActivity from "../components/Account/AccountActivity/AccountActivity";
 import AccountInfo from "../components/Account/AccountCard/AccountInfo";
 import AccountDetails from "../components/Account/AccountDetails/AccountDetails";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
 import { customerActions } from "../store/customer/customer";
 import { RootState } from "../store/store";
 import { authActions } from "../store/authentication/auth-slice";
@@ -19,6 +19,8 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
   token,
   mobile,
 }) => {
+  const currentMonth: string = (new Date().getMonth() + 1).toString();
+  const currentYear: string = new Date().getFullYear().toString();
   const [view, setView] = useState<boolean>(false);
   const [termsOfChoice, setTermsOfChoice] = useState<string>("");
   const modal = useSelector((state: RootState) => state.view);
@@ -73,14 +75,12 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
       accountNumber: string | undefined;
       type: string;
     }) => {
-      await axios({
-        method: "POST",
-        url: "http://localhost:8081/api/v1/authentication/profile/info",
-        data: accountTransfer,
-        headers: {
-          authorization: token,
-        },
-      })
+      await axios
+        .post(
+          "http://localhost:8081/api/v1/authentication/transaction",
+          accountTransfer,
+          { headers: { authorization: token } }
+        )
         .then((response) => {
           if (response.status >= 200 && response.status <= 299) {
             dispatch(
@@ -94,15 +94,18 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
               })
             );
           }
+          dispatch(modalActions.setView({ view: undefined }));
         })
         .catch((error) => {
           console.log(error);
         });
     };
+    console.log("Running UseEffect");
     if (
-      customer.accountTransfer.amount > 0 &&
-      customer.accountTransfer.accountNumber &&
-      customer.accountTransfer.email
+      (customer.accountTransfer.amount > 0 &&
+        customer.accountTransfer.accountNumber &&
+        customer.accountTransfer.email) ||
+      customer.accountTransfer.phoneNumber
     ) {
       fetchTransfer(customer.accountTransfer);
       return;
@@ -140,7 +143,6 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
 
   const paperlessHandler = (event: SelectChangeEvent<string | boolean>) => {
     const { value } = event.target;
-    console.log(typeof value);
     if (value === "true") {
       dispatch(modalActions.setPaperless({ paperless: true }));
       return;
@@ -199,10 +201,13 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
             return <Container key={a.key}>{a.modal}</Container>;
           })}
       <Grid className={classes.profile} container>
-        <Grid xs={12} lg={7} item>
+        <Grid xs={12} md={7} item>
           <Grid container>
             <Grid xs={12} md={12} item>
               <AccountInfo
+                YEAR={currentYear}
+                MONTH={currentMonth}
+                mobile={mobile}
                 classes={classes}
                 fName={customer.fName}
                 lName={customer.lName}
@@ -213,6 +218,8 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
             </Grid>
             <Grid xs={12} md={12} item>
               <AccountActivity
+                YEAR={currentYear}
+                MONTH={currentMonth}
                 transactions={customer.transactions}
                 classes={classes}
               />

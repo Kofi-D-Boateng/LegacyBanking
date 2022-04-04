@@ -1,39 +1,123 @@
-import Toolbar from "@mui/material/Toolbar";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
 import { NavLink } from "react-router-dom";
-import AppBar from "@mui/material/AppBar";
 import React, { Dispatch, Fragment, useState } from "react";
-import { AccountCircle } from "@mui/icons-material";
-import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
+import {
+  Typography,
+  Box,
+  IconButton,
+  MenuItem,
+  Menu,
+  AppBar,
+  Toolbar,
+  Button,
+  Grid,
+} from "@mui/material/";
+import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import { authActions } from "../../store/authentication/auth-slice";
 import styles from "../../styles/NavbarStyles";
 
-const Navbar: React.FC<{ isMobile: boolean; auth: boolean }> = ({
-  auth,
-  isMobile,
-}) => {
+const AccountNavbar: React.FC<{
+  mobile: boolean;
+  options: { key: number; title: string; link: string }[];
+}> = ({ mobile, options }) => {
+  const dispatch = useDispatch<Dispatch<any>>();
+  return (
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar
+        position="static"
+        elevation={0}
+        style={{ backgroundColor: "purple" }}
+      >
+        <Toolbar>
+          {!mobile ? (
+            <Grid container>
+              {options.map((o) => {
+                if (o.key !== options.length) {
+                  return (
+                    <NavLink
+                      style={{
+                        fontSize: "1rem",
+                        textDecoration: "none",
+                        margin: "auto 20px",
+                        display: "inline-flex",
+                        color: "white",
+                      }}
+                      key={o.key}
+                      to={o.link}
+                    >
+                      {o.title}
+                    </NavLink>
+                  );
+                } else {
+                  return (
+                    <Button
+                      key={o.key}
+                      variant="outlined"
+                      sx={{
+                        borderColor: "white",
+                        display: "inline-flex",
+                        color: "white",
+                        textTransform: "none",
+                        marginLeft: "60%",
+                        flexGrow: 1,
+                        "&:hover": {
+                          backgroundColor: "white",
+                          color: "purple",
+                          borderColor: "purple",
+                        },
+                      }}
+                      onClick={() => {
+                        dispatch(authActions.logout());
+                      }}
+                    >
+                      <Typography key={o.key} variant="h6">
+                        {o.title}
+                      </Typography>
+                    </Button>
+                  );
+                }
+              })}
+            </Grid>
+          ) : (
+            <>
+              <IconButton
+                size="small"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                color="inherit"
+              >
+                <MenuIcon fontSize="large" sx={{ color: "white" }} />
+              </IconButton>
+            </>
+          )}
+        </Toolbar>
+      </AppBar>
+    </Box>
+  );
+};
+
+const Navbar: React.FC<{
+  isMobile: boolean;
+  auth: boolean;
+  links: { key: number; title: string; link: string }[];
+  authLinks: { key: number; title: string; link: string }[];
+}> = ({ auth, isMobile, links, authLinks }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch<Dispatch<any>>();
-  const logoutHandler = () => {
-    dispatch(authActions.logout());
-  };
+  const classes = styles();
 
-  const handleMenu = (event: any) => {
+  const handleMenu = (event: React.MouseEvent<any>) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = (event: any) => {
-    if (event.target.innerText === "Logout") {
-      console.log("true");
+  const handleClose = (event: React.MouseEvent<HTMLElement>) => {
+    const { innerText } = event.currentTarget;
+    if (innerText === "Logout") {
+      dispatch(authActions.logout());
     }
     setAnchorEl(null);
   };
-  const classes = styles();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -59,7 +143,7 @@ const Navbar: React.FC<{ isMobile: boolean; auth: boolean }> = ({
                 onClick={handleMenu}
                 color="inherit"
               >
-                <AccountCircle fontSize="large" sx={{ color: "black" }} />
+                <MenuIcon fontSize="large" sx={{ color: "black" }} />
               </IconButton>
               <Menu
                 id="menu-appbar"
@@ -76,100 +160,58 @@ const Navbar: React.FC<{ isMobile: boolean; auth: boolean }> = ({
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>
-                  <NavLink className={classes.menuLink} to="/locations">
-                    Locations
-                  </NavLink>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <NavLink className={classes.menuLink} to="/investments/*">
-                    Investments
-                  </NavLink>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <NavLink className={classes.menuLink} to="/loans/*">
-                    Loans
-                  </NavLink>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <NavLink className={classes.menuLink} to="/international/*">
-                    International
-                  </NavLink>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <NavLink className={classes.menuLink} to="/contact">
-                    Contact
-                  </NavLink>
-                </MenuItem>
-                {auth ? (
-                  <div>
-                    <MenuItem onClick={handleClose}>
-                      <NavLink className={classes.menuLink} to={`/profile`}>
-                        Profile
+                {links.map((l) => {
+                  return (
+                    <MenuItem key={l.key} onClick={handleClose}>
+                      <NavLink className={classes.menuLink} to={l.link}>
+                        {l.title}
                       </NavLink>
                     </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      <Button
+                  );
+                })}
+                {authLinks
+                  .filter((l) => {
+                    if (auth) {
+                      return l.key < 3;
+                    }
+                    return l.key === 3;
+                  })
+                  .map((l) => {
+                    return (
+                      <MenuItem
+                        key={l.key}
                         sx={{
-                          textTransform: "none",
-                          textAlign: "center",
-                          color: "purple",
-                          fontSize: "1.0rem",
                           "&:hover": {
-                            textDecoration: "underline",
-                            backgroundColor: "transparent",
+                            backgroundColor: "black",
                           },
                         }}
-                        className={classes.menuLink}
-                        onClick={logoutHandler}
+                        onClick={handleClose}
                       >
-                        Logout
-                      </Button>
-                    </MenuItem>
-                  </div>
-                ) : (
-                  <MenuItem onClick={handleClose}>
-                    <NavLink className={classes.menuLink} to={`/login`}>
-                      Login
-                    </NavLink>
-                  </MenuItem>
-                )}
+                        <NavLink className={classes.menuLink} to={l.link}>
+                          {l.title}
+                        </NavLink>
+                      </MenuItem>
+                    );
+                  })}
               </Menu>
             </Fragment>
           ) : (
             <Fragment>
-              <Typography variant="h6">
-                <NavLink className={classes.navLink} to="/about">
-                  About Us
-                </NavLink>
-              </Typography>
-              <Typography variant="h6">
-                <NavLink className={classes.navLink} to="/locations">
-                  Locations
-                </NavLink>
-              </Typography>
-              <Typography variant="h6">
-                <NavLink className={classes.navLink} to="/investments/*">
-                  Investments
-                </NavLink>
-              </Typography>
-              <Typography variant="h6">
-                <NavLink className={classes.navLink} to="/loans/*">
-                  Loans
-                </NavLink>
-              </Typography>
-              <Typography variant="h6">
-                <NavLink className={classes.navLink} to="/international/*">
-                  International
-                </NavLink>
-              </Typography>
-              <Typography sx={{ flexGrow: 1 }} variant="h6">
-                <NavLink className={classes.navLink} to="/contact">
-                  Contact
-                </NavLink>
-              </Typography>
+              {links.map((l) => {
+                return (
+                  <Typography
+                    key={l.key}
+                    sx={l.key === links.length ? { flexGrow: 1 } : undefined}
+                    variant="h6"
+                  >
+                    <NavLink className={classes.navLink} to={l.link}>
+                      {l.title}
+                    </NavLink>
+                  </Typography>
+                );
+              })}
               {auth ? (
-                <Fragment>
+                <>
                   <IconButton
                     size="small"
                     aria-label="account of current user"
@@ -195,40 +237,59 @@ const Navbar: React.FC<{ isMobile: boolean; auth: boolean }> = ({
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
-                    <MenuItem onClick={handleClose}>
-                      <NavLink className={classes.menuLink} to={`/profile`}>
-                        Profile
-                      </NavLink>
-                    </MenuItem>
-                    <MenuItem
-                      className={classes.menuLink}
-                      onClick={handleClose}
-                    >
-                      <Button
-                        sx={{
-                          textTransform: "none",
-                          textAlign: "center",
-                          color: "purple",
-                          fontSize: "1.0rem",
-                          "&:hover": {
-                            textDecoration: "underline",
-                            backgroundColor: "transparent",
-                          },
-                        }}
-                        onClick={logoutHandler}
-                        fullWidth
-                      >
-                        Logout
-                      </Button>
-                    </MenuItem>
+                    {authLinks
+                      .filter((l) => {
+                        if (auth) {
+                          return l.key < 3;
+                        }
+                        return l.key === 3;
+                      })
+                      .map((l) => {
+                        return (
+                          <MenuItem
+                            sx={{
+                              "&:hover": {
+                                backgroundColor: "transparent",
+                              },
+                            }}
+                            key={l.key}
+                            onClick={handleClose}
+                          >
+                            <NavLink className={classes.menuLink} to={l.link}>
+                              {l.title}
+                            </NavLink>
+                          </MenuItem>
+                        );
+                      })}
                   </Menu>
-                </Fragment>
+                </>
               ) : (
-                <Fragment>
-                  <NavLink className={classes.menuLink} to={`/login`}>
-                    Login
-                  </NavLink>
-                </Fragment>
+                <>
+                  {authLinks
+                    .filter((l) => {
+                      if (auth) {
+                        return l.key < 3;
+                      }
+                      return l.key === 3;
+                    })
+                    .map((l) => {
+                      return (
+                        <MenuItem
+                          sx={{
+                            "&:hover": {
+                              backgroundColor: "transparent",
+                            },
+                          }}
+                          key={l.key}
+                          onClick={handleClose}
+                        >
+                          <NavLink className={classes.menuLink} to={l.link}>
+                            {l.title}
+                          </NavLink>
+                        </MenuItem>
+                      );
+                    })}
+                </>
               )}
             </Fragment>
           )}
@@ -238,4 +299,4 @@ const Navbar: React.FC<{ isMobile: boolean; auth: boolean }> = ({
   );
 };
 
-export default Navbar;
+export { Navbar, AccountNavbar };

@@ -32,9 +32,9 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
         .post("http://localhost:8081/api/v1/authentication/login", login)
         .then((response) => {
           if (response.status === 200) {
-            dispatch(authActions.getCreds({ token: response?.data.token }));
+            const { token } = response.data;
+            dispatch(authActions.getCreds({ token: token }));
             navigate("/", { replace: true });
-            setInvalid(false);
           }
         })
         .catch((error) => {
@@ -45,7 +45,6 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
         });
     };
     fetchUserLogin(user);
-    console.log(user);
   }, [user, dispatch, navigate]);
 
   const submitHandler = (event: React.FormEvent) => {

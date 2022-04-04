@@ -27,7 +27,7 @@ import { RootState } from "./store/store";
 
 const App: React.FC = () => {
   const theme = useTheme<Theme>();
-  const mobile: boolean = useMediaQuery<unknown>(theme.breakpoints.down("sm"));
+  const mobile: boolean = useMediaQuery<unknown>(theme.breakpoints.down("md"));
   const auth: {
     token: string;
     authenticated: boolean;
@@ -51,7 +51,7 @@ const App: React.FC = () => {
       {profile?.pattern.end ? (
         <AccountLayout mobile={mobile}>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home mobile={mobile} />} />
             <Route path="/about" element={<About />} />
             <Route path="/locations" element={<Locations />} />
             <Route path="/investment" element={<Investment />} />
@@ -77,7 +77,7 @@ const App: React.FC = () => {
           signup={signup}
         >
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home mobile={mobile} />} />
             <Route path="/about" element={<About />} />
             <Route path="/locations" element={<Locations />} />
             <Route path="/investment" element={<Investment />} />
