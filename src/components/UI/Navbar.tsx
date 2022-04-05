@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import React, { Dispatch, Fragment, useState } from "react";
+import React, { Dispatch, Fragment, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   Typography,
@@ -11,6 +11,7 @@ import {
   Toolbar,
   Button,
   Grid,
+  Container,
 } from "@mui/material/";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -22,6 +23,22 @@ const AccountNavbar: React.FC<{
   options: { key: number; title: string; link: string }[];
 }> = ({ mobile, options }) => {
   const dispatch = useDispatch<Dispatch<any>>();
+  const [showLinks, setShowLinks] = useState<HTMLElement | null>(null);
+  const handleMenu = useCallback((event: React.MouseEvent<any>) => {
+    if (event.currentTarget) {
+      setShowLinks(event.currentTarget);
+    }
+  }, []);
+  const handleClose = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      const { innerText } = event.currentTarget;
+      if (innerText === "Logout") {
+        dispatch(authActions.logout());
+      }
+      setShowLinks(null);
+    },
+    [dispatch]
+  );
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -85,10 +102,55 @@ const AccountNavbar: React.FC<{
                 size="small"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
+                onClick={handleMenu}
                 color="inherit"
               >
                 <MenuIcon fontSize="large" sx={{ color: "white" }} />
               </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={showLinks}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(showLinks)}
+                onClose={handleClose}
+              >
+                {options.map((o) => {
+                  return (
+                    <Container
+                      key={o.key}
+                      sx={
+                        o.key !== options.length
+                          ? {
+                              borderBottom: "1px solid black",
+                              margin: "auto",
+                              padding: "5px 0",
+                            }
+                          : {
+                              margin: "auto",
+                              padding: "5px 0",
+                            }
+                      }
+                    >
+                      <NavLink style={{ textDecoration: "none" }} to={o.link}>
+                        <Typography
+                          sx={{ textAlign: "center", color: "purple" }}
+                          variant="h6"
+                        >
+                          {o.title}
+                        </Typography>
+                      </NavLink>
+                    </Container>
+                  );
+                })}
+              </Menu>
             </>
           )}
         </Toolbar>
@@ -107,17 +169,20 @@ const Navbar: React.FC<{
   const dispatch = useDispatch<Dispatch<any>>();
   const classes = styles();
 
-  const handleMenu = (event: React.MouseEvent<any>) => {
+  const handleMenu = useCallback((event: React.MouseEvent<any>) => {
     setAnchorEl(event.currentTarget);
-  };
+  }, []);
 
-  const handleClose = (event: React.MouseEvent<HTMLElement>) => {
-    const { innerText } = event.currentTarget;
-    if (innerText === "Logout") {
-      dispatch(authActions.logout());
-    }
-    setAnchorEl(null);
-  };
+  const handleClose = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      const { innerText } = event.currentTarget;
+      if (innerText === "Logout") {
+        dispatch(authActions.logout());
+      }
+      setAnchorEl(null);
+    },
+    [dispatch]
+  );
 
   return (
     <Box sx={{ flexGrow: 1 }}>

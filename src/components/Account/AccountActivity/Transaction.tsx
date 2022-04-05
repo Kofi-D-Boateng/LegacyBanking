@@ -18,8 +18,6 @@ const Transaction: React.FC<{
   YEAR: string;
   MONTH: string;
 }> = ({ classes, categories, filter, transactions, MONTH, YEAR }) => {
-  console.log(transactions);
-
   return (
     <Grid container>
       {transactions
@@ -33,6 +31,7 @@ const Transaction: React.FC<{
           return (
             <Grid key={a.id} className={classes.activities} container>
               <Grid
+                sx={{ margin: "auto" }}
                 xs={12 / categories.length}
                 md={12 / categories.length}
                 item
@@ -40,6 +39,7 @@ const Transaction: React.FC<{
                 <Typography variant="body1">{a.dateOfTransaction}</Typography>
               </Grid>
               <Grid
+                sx={{ margin: "auto" }}
                 xs={12 / categories.length}
                 md={12 / categories.length}
                 item
@@ -47,6 +47,7 @@ const Transaction: React.FC<{
                 <Typography variant="body1">{a.location}</Typography>
               </Grid>
               <Grid
+                sx={{ margin: "auto" }}
                 xs={12 / categories.length}
                 md={12 / categories.length}
                 item
@@ -54,6 +55,7 @@ const Transaction: React.FC<{
                 <Typography variant="body1">{a.type}</Typography>
               </Grid>
               <Grid
+                sx={{ margin: "auto" }}
                 xs={12 / categories.length}
                 md={12 / categories.length}
                 item
