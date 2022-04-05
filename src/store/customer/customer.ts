@@ -4,8 +4,8 @@ function initialState(): {
   fName: string;
   lName: string;
   email: string;
-  accountNum: string | undefined;
-  routingNum: string | undefined;
+  accountNum: string;
+  routingNum: string;
   country: string | undefined;
   area: string | undefined;
   zipCode: string | undefined;
@@ -21,7 +21,7 @@ function initialState(): {
     email: string | undefined;
     amount: number;
     location: string;
-    accountNumber: string | undefined;
+    accountNumber: string;
     type: string;
     phoneNumber: string | undefined;
   };
@@ -40,7 +40,7 @@ function initialState(): {
       { id: 0, amount: 0, dateOfTransaction: "", location: "", type: "" },
     ],
     accountTransfer: {
-      accountNumber: undefined,
+      accountNumber: "",
       amount: 0,
       email: undefined,
       location: "",
@@ -60,8 +60,8 @@ const customerSlice = createSlice({
         fName: string;
         lName: string;
         email: string;
-        accountingNum: string | undefined;
-        routingNum: string | undefined;
+        accountingNum: string;
+        routingNum: string;
         country: string | undefined;
         area: string | undefined;
         zipCode: string | undefined;
@@ -107,7 +107,7 @@ const customerSlice = createSlice({
         email: string | undefined;
         amount: number;
         location: string;
-        accountNumber: string | undefined;
+        accountNumber: string;
         type: string;
         phoneNumber: string | undefined;
       }>

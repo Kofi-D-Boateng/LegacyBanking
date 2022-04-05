@@ -33,13 +33,12 @@ const AccountInfo: React.FC<{
 }) => {
   const [withdrawals, setWithdrawals] = useState<number>(0);
   const [deposits, setDeposits] = useState<number>(0);
-  console.log(deposits);
+  console.log("ACCOUNT INFO RENDER");
   useEffect(() => {
     let withdrawal: number = 0;
     let deposit: number = 0;
     transactions
       .filter((a) => {
-        console.log(a);
         return (
           a.dateOfTransaction.substring(0, 4) === YEAR &&
           a.dateOfTransaction.substring(6, 7) === MONTH
@@ -49,7 +48,6 @@ const AccountInfo: React.FC<{
         if (a.type === "withdrawal" || a.type === "transfer") {
           withdrawal = withdrawal + a.amount;
         } else {
-          console.log("dep-->", a.amount);
           deposit = deposit + a.amount;
         }
         return true;
@@ -95,9 +93,10 @@ const AccountInfo: React.FC<{
                 color: "blue",
               },
             }}
+            onClick={onSetView}
             variant="text"
           >
-            See full account number
+            Full account numbers
           </Button>
         </Typography>
         <Grid sx={{ margin: "10px 0" }} container>

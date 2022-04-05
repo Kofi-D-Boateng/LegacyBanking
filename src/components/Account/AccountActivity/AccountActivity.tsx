@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Typography,
   Card,
@@ -28,6 +28,7 @@ const AccountActivity: React.FC<{
   YEAR: string;
   MONTH: string;
 }> = ({ classes, transactions, MONTH, YEAR }) => {
+  console.log("ACCOUNT ACTIVITY RENDER");
   const [view, setView] = useState<React.SetStateAction<boolean>>(false);
   const [filter, setFilter] = useState<string | undefined>("");
 
@@ -46,12 +47,12 @@ const AccountActivity: React.FC<{
     }
   };
 
-  const filterHandler = (event: SelectChangeEvent) => {
+  const filterHandler = useCallback((event: SelectChangeEvent) => {
     const { value } = event.target;
     console.log(value);
     console.log(typeof value);
     setFilter(value);
-  };
+  }, []);
 
   return (
     <Card className={classes.card}>
@@ -59,6 +60,11 @@ const AccountActivity: React.FC<{
         <Grid container>
           <Grid sx={{ margin: "auto 0" }} xs={2} md={2} item>
             <IconButton
+              sx={{
+                "&:hover": {
+                  backgroundColor: "transparent",
+                },
+              }}
               onClick={viewHandler}
               children={view ? <Active /> : <Inactive />}
             />
@@ -141,4 +147,4 @@ const AccountActivity: React.FC<{
   );
 };
 
-export default AccountActivity;
+export default React.memo(AccountActivity);

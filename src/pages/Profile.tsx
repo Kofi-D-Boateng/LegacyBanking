@@ -1,4 +1,11 @@
-import React, { ChangeEvent, Dispatch, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  Dispatch,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Grid, SelectChangeEvent } from "@mui/material";
@@ -14,6 +21,7 @@ import MoneyTransfer from "../components/UI/Modals/MoneyTransfer";
 import Statement from "../components/UI/Modals/Statement";
 import Paperless from "../components/UI/Modals/Paperless";
 import { modalActions } from "../store/modals/modal-slice";
+import AccountNumbers from "../components/UI/Modals/AccountNumbers";
 
 const Profile: React.FC<{ token: string; mobile: boolean }> = ({
   token,
@@ -85,7 +93,7 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
           if (response.status >= 200 && response.status <= 299) {
             dispatch(
               customerActions.createTransfer({
-                accountNumber: undefined,
+                accountNumber: "",
                 amount: 0,
                 email: undefined,
                 location: "",
@@ -114,48 +122,59 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
   }, [token, dispatch, customer.accountTransfer]);
 
   const classes = styles();
-  const viewHandler = (event: ChangeEvent<HTMLElement>) => {
-    const VIEW = event.target.innerText;
-    dispatch(modalActions.setView({ view: VIEW }));
-  };
-  const exitHandler = () => {
+
+  const viewHandler = useCallback(
+    (event: ChangeEvent<HTMLElement>) => {
+      const VIEW = event.target.innerText;
+      dispatch(modalActions.setView({ view: VIEW }));
+    },
+    [dispatch]
+  );
+
+  const exitHandler = useCallback(() => {
     dispatch(modalActions.setView({ view: undefined }));
     setTermsOfChoice("");
     setView(false);
-  };
+  }, [dispatch]);
 
-  const transferHandler = (data: {
-    email: string | undefined;
-    phoneNumber: string | undefined;
-    amount: number;
-  }) => {
-    dispatch(
-      customerActions.createTransfer({
-        email: data.email,
-        accountNumber: customer.accountNum,
-        amount: data.amount,
-        location: "Account transfer",
-        type: "transfer",
-        phoneNumber: data.phoneNumber,
-      })
-    );
-  };
+  const transferHandler = useCallback(
+    (data: {
+      email: string | undefined;
+      phoneNumber: string | undefined;
+      amount: number;
+    }) => {
+      dispatch(
+        customerActions.createTransfer({
+          email: data.email,
+          accountNumber: customer.accountNum,
+          amount: data.amount,
+          location: "Account transfer",
+          type: "transfer",
+          phoneNumber: data.phoneNumber,
+        })
+      );
+    },
+    [customer.accountNum, dispatch]
+  );
 
-  const paperlessHandler = (event: SelectChangeEvent<string | boolean>) => {
-    const { value } = event.target;
-    if (value === "true") {
-      dispatch(modalActions.setPaperless({ paperless: true }));
-      return;
-    }
-    dispatch(modalActions.setPaperless({ paperless: false }));
-  };
+  const paperlessHandler = useCallback(
+    (event: SelectChangeEvent<string | boolean>) => {
+      const { value } = event.target;
+      if (value === "true") {
+        dispatch(modalActions.setPaperless({ paperless: true }));
+        return;
+      }
+      dispatch(modalActions.setPaperless({ paperless: false }));
+    },
+    [dispatch]
+  );
 
-  const choiceHandler = (event: SelectChangeEvent) => {
+  const choiceHandler = useCallback((event: SelectChangeEvent) => {
     const { value } = event.target;
     console.log(value);
     setTermsOfChoice(value);
     setView(true);
-  };
+  }, []);
 
   const modals: { key: number; modal: JSX.Element; type: string }[] = [
     {
@@ -184,6 +203,18 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
         <Paperless
           Exit={exitHandler}
           onChoice={paperlessHandler}
+          mobile={mobile}
+        />
+      ),
+    },
+    {
+      key: 4,
+      type: "Full account numbers",
+      modal: (
+        <AccountNumbers
+          accountNum={customer.accountNum}
+          routingNum={customer.routingNum}
+          Exit={exitHandler}
           mobile={mobile}
         />
       ),
@@ -220,7 +251,10 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
               <AccountActivity
                 YEAR={currentYear}
                 MONTH={currentMonth}
-                transactions={customer.transactions}
+                transactions={useMemo(
+                  () => customer.transactions,
+                  [customer.transactions]
+                )}
                 classes={classes}
               />
             </Grid>
@@ -243,4 +277,4 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
   );
 };
 
-export default Profile;
+export default React.memo(Profile);
