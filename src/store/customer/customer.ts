@@ -20,7 +20,6 @@ function initialState(): {
   accountTransfer: {
     email: string | undefined;
     amount: number;
-    location: string;
     accountNumber: string;
     type: string;
     phoneNumber: string | undefined;
@@ -43,7 +42,6 @@ function initialState(): {
       accountNumber: "",
       amount: 0,
       email: undefined,
-      location: "",
       type: "",
       phoneNumber: undefined,
     },
@@ -106,18 +104,16 @@ const customerSlice = createSlice({
       action: PayloadAction<{
         email: string | undefined;
         amount: number;
-        location: string;
         accountNumber: string;
         type: string;
         phoneNumber: string | undefined;
       }>
     ) {
-      const { email, amount, accountNumber, location, type, phoneNumber } =
+      const { email, amount, accountNumber, type, phoneNumber } =
         action.payload;
       state.accountTransfer.accountNumber = accountNumber;
       state.accountTransfer.amount = amount;
       state.accountTransfer.email = email;
-      state.accountTransfer.location = location;
       state.accountTransfer.type = type;
       state.accountTransfer.phoneNumber = phoneNumber;
     },

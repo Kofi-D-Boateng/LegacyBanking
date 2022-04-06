@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import Backdrop from "../Backdrops/Backdrop";
 import styles from "../../../styles/MoneyTransferStyles";
@@ -45,15 +45,6 @@ const Modal: React.FC<{
   const emailRef = useRef<HTMLInputElement | undefined>();
   const phoneNumberRef = useRef<HTMLInputElement | undefined>();
 
-  const inputValHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // let { value } = event.target;
-    // var t = value;
-    // value =
-    //   t.indexOf(".") >= 0
-    //     ? t.substring(0, t.indexOf(".")) + t.substring(t.indexOf("."), 3)
-    //     : t;
-  };
-
   const amountHandler = (event: React.FocusEvent<HTMLInputElement>) => {
     const regex = /[A-Za-z]/;
     const { value } = event.target;
@@ -72,7 +63,7 @@ const Modal: React.FC<{
     } = {
       email: emailRef.current?.value,
       phoneNumber: phoneNumberRef.current?.value,
-      amount: parseFloat(amount.toFixed(2)),
+      amount: amount,
     };
     Transfer(data);
   };
@@ -174,8 +165,11 @@ const Modal: React.FC<{
                   size="small"
                   placeholder="enter transfer amount"
                   type="number"
+                  inputProps={{
+                    step: "0.01",
+                    lang: "en-US",
+                  }}
                   onBlur={amountHandler}
-                  onInput={inputValHandler}
                   fullWidth
                 />
               </Grid>

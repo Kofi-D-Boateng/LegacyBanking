@@ -61,7 +61,8 @@ const Transaction: React.FC<{
                 item
               >
                 <Typography variant="body1">
-                  {a.type === "transfer" ||
+                  {a.type === "Debit transfer" ||
+                  a.type === "transfer" ||
                   a.type === "withdrawal" ||
                   a.type === "ACH Debit"
                     ? `-$${a.amount}`

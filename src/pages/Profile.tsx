@@ -22,6 +22,7 @@ import Statement from "../components/UI/Modals/Statement";
 import Paperless from "../components/UI/Modals/Paperless";
 import { modalActions } from "../store/modals/modal-slice";
 import AccountNumbers from "../components/UI/Modals/AccountNumbers";
+import { DEBITTRASFER } from "../components/UI/Constants/Constants";
 
 const Profile: React.FC<{ token: string; mobile: boolean }> = ({
   token,
@@ -79,9 +80,9 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
     const fetchTransfer = async (accountTransfer: {
       email: string | undefined;
       amount: number;
-      location: string;
       accountNumber: string | undefined;
       type: string;
+      phoneNumber: string | undefined;
     }) => {
       await axios
         .post(
@@ -96,7 +97,6 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
                 accountNumber: "",
                 amount: 0,
                 email: undefined,
-                location: "",
                 phoneNumber: undefined,
                 type: "",
               })
@@ -148,8 +148,7 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
           email: data.email,
           accountNumber: customer.accountNum,
           amount: data.amount,
-          location: "Account transfer",
-          type: "transfer",
+          type: DEBITTRASFER,
           phoneNumber: data.phoneNumber,
         })
       );
