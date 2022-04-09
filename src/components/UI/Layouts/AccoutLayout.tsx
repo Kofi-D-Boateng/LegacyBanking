@@ -3,7 +3,6 @@ import { AccountFooter } from "../Footer";
 import { AccountNavbar } from "../Navbar";
 
 const AccountLayout: React.FC<{ mobile: boolean }> = ({ children, mobile }) => {
-  console.log("ACCOUNT LAYOUT");
   const options: { key: number; title: string; link: string }[] = [
     { key: 1, title: "Accounts", link: "/" },
     { key: 2, title: "Pay & Transfer", link: "/" },

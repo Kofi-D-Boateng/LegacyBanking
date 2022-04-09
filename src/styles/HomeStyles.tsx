@@ -110,10 +110,7 @@ const styles = makeStyles(() => ({
     textAlign: "center",
     margin: "90px 0",
   },
-  startUpContainer: {
-    margin: "150px auto",
-    textAlign: "center",
-  },
+
   link: {
     textDecoration: "none",
     color: "white",
@@ -128,10 +125,10 @@ const styles = makeStyles(() => ({
     margin: "30px 0",
   },
   img: {
-    width: "90%",
+    width: "100%",
   },
   businessImg: {
-    width: "90%",
+    width: "100%",
   },
   mail: {
     backgroundColor: "purple",

@@ -1,10 +1,19 @@
-import { Card, ClassNameMap, Grid, Typography } from "@mui/material";
+import {
+  Card,
+  ClassNameMap,
+  Grid,
+  Pagination,
+  PaginationItem,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const Services: React.FC<{ classes: ClassNameMap<string> | any }> = ({
-  classes,
-}) => {
+const Services: React.FC<{
+  classes: ClassNameMap<string> | any;
+  isMobile: boolean;
+}> = ({ classes, isMobile }) => {
   const year = new Date().getFullYear();
   const cards = [
     {
@@ -36,25 +45,29 @@ const Services: React.FC<{ classes: ClassNameMap<string> | any }> = ({
 
   return (
     <Grid className={classes?.serviceContainer} container>
-      {cards.map((c) => {
-        return (
-          <Grid key={c?.key} xs={12} md={4} item>
-            <NavLink to={c.link} style={{ textDecoration: "none" }}>
-              <Card className={c?.css || undefined}>
-                <Grid className={c?.css2} container>
-                  <Typography variant="h5">{c?.title}</Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{ fontSize: "1.3rem", color: "white" }}
-                  >
-                    {c?.description}
-                  </Typography>
-                </Grid>
-              </Card>
-            </NavLink>
-          </Grid>
-        );
-      })}
+      {!isMobile && (
+        <>
+          {cards.map((c) => {
+            return (
+              <Grid key={c?.key} xs={12} md={4} item>
+                <NavLink to={c.link} style={{ textDecoration: "none" }}>
+                  <Card className={c?.css || undefined}>
+                    <Grid className={c?.css2} container>
+                      <Typography variant="h5">{c?.title}</Typography>
+                      <Typography
+                        variant="body1"
+                        sx={{ fontSize: "1.3rem", color: "white" }}
+                      >
+                        {c?.description}
+                      </Typography>
+                    </Grid>
+                  </Card>
+                </NavLink>
+              </Grid>
+            );
+          })}
+        </>
+      )}
     </Grid>
   );
 };

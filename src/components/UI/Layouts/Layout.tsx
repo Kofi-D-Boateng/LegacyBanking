@@ -10,7 +10,6 @@ const Layout: React.FC<{
   login: PathMatch<string> | null;
   signup: PathMatch<string> | null;
 }> = ({ isMobile, auth, children, login, signup }) => {
-  console.log("REG LAYOUT");
   const Links: { key: number; title: string; link: string }[] = [
     { key: 1, title: "About Us", link: "/about" },
     { key: 2, title: "Locations", link: "/locations" },

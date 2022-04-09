@@ -42,7 +42,7 @@ const App: React.FC = () => {
     pathname
   );
   const profile: PathMatch<string> | null = matchPath<string, string>(
-    "/profile",
+    "/profile/*",
     pathname
   );
 
@@ -62,7 +62,7 @@ const App: React.FC = () => {
             <Route path="/signup" element={<Signup />} />
             {auth.authenticated && (
               <Route
-                path="/profile"
+                path="/profile/*"
                 element={<Profile token={auth.token} mobile={mobile} />}
               />
             )}
@@ -88,7 +88,7 @@ const App: React.FC = () => {
             <Route path="/signup" element={<Signup />} />
             {auth.authenticated && (
               <Route
-                path="/profile"
+                path="/profile/*"
                 element={<Profile token={auth.token} mobile={mobile} />}
               />
             )}

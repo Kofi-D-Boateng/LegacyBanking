@@ -7,6 +7,7 @@ import { ClassNameMap } from "@mui/styles/withStyles";
 import React, { ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 import { ArrowForwardIos } from "@mui/icons-material";
+import { CREDITSCORE, LOANS, SUMMARY } from "../../UI/Constants/Constants";
 
 const AccountDetails: React.FC<{
   classes: ClassNameMap<string>;
@@ -22,21 +23,21 @@ const AccountDetails: React.FC<{
     {
       key: 1,
       title: "Spending summary",
-      link: "/",
+      link: SUMMARY,
       desc: "Get insight into your spending",
       icon: <Wallet fontSize="large" sx={{ color: "purple" }} />,
     },
     {
       key: 2,
       title: "Credit score",
-      link: "/",
+      link: CREDITSCORE,
       desc: "Check your credit score",
       icon: <Credit fontSize="large" sx={{ color: "purple" }} />,
     },
     {
       key: 3,
       title: "Loans",
-      link: "/",
+      link: LOANS,
       desc: "See what loans you have taken",
       icon: <Loan fontSize="large" sx={{ color: "purple" }} />,
     },

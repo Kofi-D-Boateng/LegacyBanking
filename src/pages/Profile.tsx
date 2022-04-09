@@ -3,33 +3,47 @@ import React, {
   Dispatch,
   useCallback,
   useEffect,
-  useMemo,
   useState,
 } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Grid, SelectChangeEvent } from "@mui/material";
-import AccountActivity from "../components/Account/AccountActivity/AccountActivity";
-import AccountInfo from "../components/Account/AccountCard/AccountInfo";
-import AccountDetails from "../components/Account/AccountDetails/AccountDetails";
+import { SelectChangeEvent } from "@mui/material";
 import { customerActions } from "../store/customer/customer";
 import { RootState } from "../store/store";
 import { authActions } from "../store/authentication/auth-slice";
 import styles from "../styles/ProfileStyles";
-import AccountCoupons from "../components/Account/AccountCoupons/AccountCoupons";
 import MoneyTransfer from "../components/UI/Modals/MoneyTransfer";
 import Statement from "../components/UI/Modals/Statement";
 import Paperless from "../components/UI/Modals/Paperless";
 import { modalActions } from "../store/modals/modal-slice";
 import AccountNumbers from "../components/UI/Modals/AccountNumbers";
-import { DEBITTRASFER } from "../components/UI/Constants/Constants";
+import {
+  CREDITSCORE,
+  DEBITTRASFER,
+  LOANS,
+  SUMMARY,
+} from "../components/UI/Constants/Constants";
+import MainProfile from "../components/Account/MainProfile";
+import {
+  NavigateFunction,
+  Route,
+  Routes,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
+import CreditScore from "../components/Account/AccountDetails/CreditScore";
+import PersonalLoans from "../components/Account/AccountDetails/PersonalLoans";
+import Summary from "../components/Account/AccountDetails/Summary";
 
-const Profile: React.FC<{ token: string; mobile: boolean }> = ({
-  token,
-  mobile,
-}) => {
+const Profile: React.FC<{
+  token: string;
+  mobile: boolean;
+}> = ({ token, mobile }) => {
+  const PARAMS = useParams<string>();
+  const navigate: NavigateFunction = useNavigate();
   const currentMonth: string = (new Date().getMonth() + 1).toString();
   const currentYear: string = new Date().getFullYear().toString();
+  const [tracker, setTracker] = useState<number>(0);
   const [view, setView] = useState<boolean>(false);
   const [termsOfChoice, setTermsOfChoice] = useState<string>("");
   const modal = useSelector((state: RootState) => state.view);
@@ -220,58 +234,53 @@ const Profile: React.FC<{ token: string; mobile: boolean }> = ({
     },
   ];
 
+  const ProfileView: { key: number; view: JSX.Element; link: string }[] = [
+    {
+      key: 1,
+      view: (
+        <MainProfile
+          viewHandler={viewHandler}
+          customer={customer}
+          currentYear={currentYear}
+          currentMonth={currentMonth}
+          modal={modal}
+          modals={modals}
+          classes={classes}
+          mobile={mobile}
+        />
+      ),
+      link: "",
+    },
+    {
+      key: 2,
+      view: <CreditScore />,
+      link: CREDITSCORE,
+    },
+    {
+      key: 3,
+      view: <PersonalLoans />,
+      link: LOANS,
+    },
+    {
+      key: 4,
+      view: (
+        <Summary customer={customer} year={currentYear} month={currentMonth} />
+      ),
+      link: SUMMARY,
+    },
+  ];
+
   return (
     <>
-      {modal.view &&
-        modals
-          .filter((m) => {
-            return m.type === modal.view;
-          })
-          .map((a) => {
-            return <Container key={a.key}>{a.modal}</Container>;
-          })}
-      <Grid className={classes.profile} container>
-        <Grid xs={12} md={7} item>
-          <Grid container>
-            <Grid xs={12} md={12} item>
-              <AccountInfo
-                YEAR={currentYear}
-                MONTH={currentMonth}
-                mobile={mobile}
-                classes={classes}
-                fName={customer.fName}
-                lName={customer.lName}
-                funds={customer.funds}
-                transactions={customer.transactions}
-                onSetView={viewHandler}
-              />
-            </Grid>
-            <Grid xs={12} md={12} item>
-              <AccountActivity
-                YEAR={currentYear}
-                MONTH={currentMonth}
-                transactions={useMemo(
-                  () => customer.transactions,
-                  [customer.transactions]
-                )}
-                classes={classes}
-              />
-            </Grid>
-          </Grid>
-        </Grid>
-        {!mobile && (
-          <Grid xs={12} md={5} item>
-            <Grid container>
-              <Grid xs={12} md={12} item>
-                <AccountDetails classes={classes} />
-              </Grid>
-              <Grid xs={12} md={12} item>
-                <AccountCoupons classes={classes} />
-              </Grid>
-            </Grid>
-          </Grid>
-        )}
-      </Grid>
+      {ProfileView.filter((v) => {
+        return v.link.trim() === PARAMS["*"];
+      }).map((v) => {
+        return (
+          <Routes key={v.key}>
+            <Route path={v.link} element={v.view} />
+          </Routes>
+        );
+      })}
     </>
   );
 };

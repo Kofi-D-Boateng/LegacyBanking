@@ -28,7 +28,6 @@ const AccountActivity: React.FC<{
   YEAR: string;
   MONTH: string;
 }> = ({ classes, transactions, MONTH, YEAR }) => {
-  console.log("ACCOUNT ACTIVITY RENDER");
   const [view, setView] = useState<React.SetStateAction<boolean>>(false);
   const [filter, setFilter] = useState<string | undefined>("");
 

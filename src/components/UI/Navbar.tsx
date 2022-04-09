@@ -75,9 +75,10 @@ const AccountNavbar: React.FC<{
                         borderColor: "white",
                         display: "inline-flex",
                         color: "white",
-                        textTransform: "none",
+                        float: "right",
                         marginLeft: "60%",
-                        flexGrow: 1,
+                        textTransform: "none",
+
                         "&:hover": {
                           backgroundColor: "white",
                           color: "purple",

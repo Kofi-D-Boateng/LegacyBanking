@@ -33,7 +33,6 @@ const AccountInfo: React.FC<{
 }) => {
   const [withdrawals, setWithdrawals] = useState<number>(0);
   const [deposits, setDeposits] = useState<number>(0);
-  console.log("ACCOUNT INFO RENDER");
   useEffect(() => {
     let withdrawal: number = 0;
     let deposit: number = 0;
@@ -45,7 +44,12 @@ const AccountInfo: React.FC<{
         );
       })
       .map((a) => {
-        if (a.type === "withdrawal" || a.type === "transfer") {
+        if (
+          a.type === "withdrawal" ||
+          a.type === "transfer" ||
+          a.type === "ACH Debit" ||
+          a.type === "Debit transfer"
+        ) {
           withdrawal = withdrawal + a.amount;
         } else {
           deposit = deposit + a.amount;
