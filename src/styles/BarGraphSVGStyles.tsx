@@ -5,6 +5,7 @@ const styles = makeStyles({
     backgroundColor: "lightgray",
     width: "100%",
     padding: "40px 0",
+    textAlign: "center",
   },
 });
 

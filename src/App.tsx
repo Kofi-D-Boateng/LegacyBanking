@@ -53,7 +53,10 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home mobile={mobile} />} />
             <Route path="/about" element={<About />} />
-            <Route path="/locations" element={<Locations />} />
+            <Route
+              path="/locations"
+              element={<Locations isMobile={mobile} />}
+            />
             <Route path="/investment" element={<Investment />} />
             <Route path="/loans" element={<Loans />} />
             <Route path="/international" element={<International />} />
@@ -79,7 +82,10 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home mobile={mobile} />} />
             <Route path="/about" element={<About />} />
-            <Route path="/locations" element={<Locations />} />
+            <Route
+              path="/locations"
+              element={<Locations isMobile={mobile} />}
+            />
             <Route path="/investment" element={<Investment />} />
             <Route path="/loans" element={<Loans />} />
             <Route path="/international" element={<International />} />

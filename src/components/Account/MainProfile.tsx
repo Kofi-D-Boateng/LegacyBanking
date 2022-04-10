@@ -1,5 +1,6 @@
 import { Container, Grid, ClassNameMap } from "@mui/material";
 import React, { ChangeEvent, useMemo } from "react";
+import { DateAmountHash } from "../../Interfaces/Maps";
 import AccountActivity from "./AccountActivity/AccountActivity";
 import AccountInfo from "./AccountCard/AccountInfo";
 import AccountCoupons from "./AccountCoupons/AccountCoupons";

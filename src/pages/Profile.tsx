@@ -34,11 +34,13 @@ import {
 import CreditScore from "../components/Account/AccountDetails/CreditScore";
 import PersonalLoans from "../components/Account/AccountDetails/PersonalLoans";
 import Summary from "../components/Account/AccountDetails/Summary";
+import { DateAmountHash } from "../Interfaces/Maps";
 
 const Profile: React.FC<{
   token: string;
   mobile: boolean;
 }> = ({ token, mobile }) => {
+  const DateAmount: DateAmountHash = {};
   const PARAMS = useParams<string>();
   const navigate: NavigateFunction = useNavigate();
   const currentMonth: string = (new Date().getMonth() + 1).toString();
@@ -264,7 +266,12 @@ const Profile: React.FC<{
     {
       key: 4,
       view: (
-        <Summary customer={customer} year={currentYear} month={currentMonth} />
+        <Summary
+          customer={customer}
+          year={currentYear}
+          month={currentMonth}
+          DateAmount={DateAmount}
+        />
       ),
       link: SUMMARY,
     },

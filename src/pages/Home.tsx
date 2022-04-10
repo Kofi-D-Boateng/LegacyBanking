@@ -4,13 +4,14 @@ import cityscape from "../assets/videos/cityscape.mp4";
 import Services from "../components/Homepage/Services";
 import startUp from "../assets/photos/startup.jpg";
 import biz from "../assets/photos/business.jpg";
-import { NavLink } from "react-router-dom";
+import { NavigateFunction, NavLink, useNavigate } from "react-router-dom";
 import styles from "../styles/HomeStyles";
 import Banner from "../components/Homepage/Banner";
 import Misc from "../components/Homepage/Misc";
 import MailLetter from "../components/Homepage/MailLetter";
 
 const Home: React.FC<{ mobile: boolean }> = ({ mobile }) => {
+  const NAVIGATE: NavigateFunction = useNavigate();
   const classes: ClassNameMap<string> = styles();
   const info: {
     key: number;
@@ -38,7 +39,12 @@ const Home: React.FC<{ mobile: boolean }> = ({ mobile }) => {
 
   return (
     <Fragment>
-      <Banner classes={classes} cityscape={cityscape} isMobile={mobile} />
+      <Banner
+        classes={classes}
+        cityscape={cityscape}
+        isMobile={mobile}
+        navigate={NAVIGATE}
+      />
       <Grid sx={{ backgroundColor: "purple", padding: "80px 0" }} container>
         <Grid className={classes.aboutContainer} xs={12} md={12} item>
           <Typography variant="h4">Learn more about us</Typography>

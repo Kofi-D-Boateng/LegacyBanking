@@ -44,7 +44,7 @@ const Layout: React.FC<{
       )}
       <div style={{ width: "100%" }}>{children}</div>
       {signup?.pattern.end || login?.pattern.end ? null : (
-        <Footer socials={Socials} />
+        <Footer socials={Socials} isMobile={isMobile} />
       )}
     </Fragment>
   );

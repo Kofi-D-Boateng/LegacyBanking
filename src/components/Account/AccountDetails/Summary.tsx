@@ -1,19 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  select,
-  min,
-  max,
-  scaleBand,
-  axisBottom,
-  axisLeft,
-  scaleTime,
-  extent,
-  scaleLinear,
-  axisRight,
-  NumberValue,
-} from "d3";
+import React, { Dispatch, useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import styles from "../../../styles/BarGraphSVGStyles";
+import BarChart from "./SVGs/BarChart";
+import MainPanel from "./MainPanel/MainPanel";
+import { DateAmountHash } from "../../../Interfaces/Maps";
+import { useDispatch } from "react-redux";
+import { customerActions } from "../../../store/customer/customer";
 
 const Summary: React.FC<{
   year: string;
@@ -36,24 +28,22 @@ const Summary: React.FC<{
       location: string;
     }[];
   };
-}> = ({ customer, month, year }) => {
-  const [view, setView] = useState<number>(0);
+  DateAmount: DateAmountHash;
+}> = ({ customer, month, year, DateAmount }) => {
+  const dispatch = useDispatch<Dispatch<any>>();
+  const [view, setView] = useState<number>(1);
   const [yearView, setYearView] = useState<string>(year);
   const [monthView, setMonthView] = useState<string>(month);
-  const margin: { top: number; bottom: number } = { top: 20, bottom: 20 };
-  const CHART_HEIGHT: number = 400;
-  const CHART_WIDTH: number = 600;
-  const { transactions } = customer;
-  const test: { id: number; date: string; amount: number }[] = [
-    { id: 1, date: "Apr", amount: 1200000.45 },
-    { id: 2, date: "May", amount: 1200000.65 },
-    { id: 3, date: "Jun", amount: 5672319.45 },
-    { id: 4, date: "Jul", amount: 9872340.45 },
-  ];
   const classes = styles();
-  const svgRef: React.LegacyRef<SVGSVGElement> | undefined = useRef<any>();
+  const { transactions } = customer;
+  // const test: { id: number; date: string; amount: number }[] = [
+  //   { id: 1, date: "Apr", amount: 1200000.45 },
+  //   { id: 2, date: "May", amount: 1200000.65 },
+  //   { id: 3, date: "Jun", amount: 5672319.45 },
+  //   { id: 4, date: "Jul", amount: 9872340.45 },
+  // ];
   useEffect(() => {
-    const DateAmount = new Map();
+    const DateAmount: DateAmountHash = {};
     const Dates: {
       1: string;
       2: string;
@@ -83,10 +73,7 @@ const Summary: React.FC<{
     };
     transactions
       .filter((t) => {
-        return (
-          t.dateOfTransaction.substring(0, 4) === yearView &&
-          t.dateOfTransaction.substring(6, 7) === monthView
-        );
+        return t.dateOfTransaction.substring(0, 4) === yearView;
       })
       .map((t) => {
         const i: number = +t.dateOfTransaction.substring(6, 7);
@@ -109,59 +96,45 @@ const Summary: React.FC<{
           ],
           amount: t.amount,
         };
-        if (DateAmount.has(items.date)) {
-          const newAmount: number = DateAmount.get(items.date) + items.amount;
-          DateAmount.delete(items.date);
-          DateAmount.set(items.date, parseFloat(newAmount.toFixed(2)));
+        if (DateAmount[items.date]) {
+          const newAmount: number = DateAmount[items.date] + items.amount;
+          DateAmount[items.date] = parseFloat(newAmount.toFixed(2));
         } else {
-          DateAmount.set(items.date, items.amount);
+          DateAmount[items.date] = parseFloat(items.amount.toFixed(2));
         }
         return true;
       });
-
-    const svg = select(svgRef.current)
-      .style("background-color", "white")
-      .style("overflow", "visible")
-      .style("margin", "0 300px")
-      .attr("width", CHART_WIDTH)
-      .attr("height", CHART_HEIGHT);
-    const x = scaleBand()
-      .domain(transactions.map((d) => d.dateOfTransaction))
-      .rangeRound([0, CHART_WIDTH])
-      .padding(0.5);
-    const y = scaleLinear()
-      .domain([0, max(transactions, (t) => t.amount)] as Iterable<NumberValue>)
-      .range([CHART_HEIGHT, 0]);
-    svg
-      .append("g")
-      .style("color", "black")
-      .style("transform", "translate(0,100%)")
-      .style("overflow", "visibile")
-      .call(axisBottom(x));
-    svg
-      .append("g")
-      .style("color", "black")
-      .style("transform", "translate(100%,0)")
-      .style("overflow", "visibile")
-      .call(axisLeft(y));
-    svg
-      .selectAll(".bar")
-      .data(transactions)
-      .join("rect")
-      .style("fill", "red")
-      .attr("width", x.bandwidth())
-      .attr("height", (data) => CHART_HEIGHT - y(data.amount))
-      .attr("x", (data) => x(data.dateOfTransaction) as string | number)
-      .attr("y", (data) => y(data.amount));
-  }, [transactions, yearView, monthView]);
+  }, [transactions, yearView, monthView, dispatch]);
+  console.log(DateAmount);
+  const SVGs: { key: number; title: string; svg: JSX.Element }[] = [
+    {
+      key: 1,
+      title: "bar-chart",
+      svg: <BarChart transactions={transactions} DateAmount={DateAmount} />,
+    },
+  ];
 
   return (
     <Grid className={classes.svgHolder} container>
-      <Grid sx={{ margin: "auto auto" }} xs={12} md={12} item>
-        <svg ref={svgRef} />
+      <Grid sx={{ alignSelf: "center" }} xs={6} md={4} item>
+        <MainPanel
+          transactions={transactions}
+          yearView={yearView}
+          monthView={monthView}
+          DateAmount={DateAmount}
+        />
       </Grid>
+      {SVGs.filter((s) => {
+        return s.key === view;
+      }).map((s) => {
+        return (
+          <Grid key={s.key} sx={{ margin: "auto auto" }} xs={6} md={8} item>
+            {s.svg}
+          </Grid>
+        );
+      })}
     </Grid>
   );
 };
 
-export default Summary;
+export default React.memo(Summary);

@@ -30,7 +30,8 @@ const Footer: React.FC<{
     svg: ReactElement;
     link: string;
   }[];
-}> = ({ socials }) => {
+  isMobile: boolean;
+}> = ({ socials, isMobile }) => {
   const year = new Date().getFullYear();
   const classes = styles();
   return (

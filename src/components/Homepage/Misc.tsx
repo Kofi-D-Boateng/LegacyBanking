@@ -18,7 +18,7 @@ const Misc: React.FC<{
           {info.map((i) => {
             if (i.key % 2 !== 0) {
               return (
-                <Grid sx={{ margin: "30px 0" }} container>
+                <Grid key={i.key} sx={{ margin: "30px 0" }} container>
                   <Grid xs={6} md={6} item>
                     <Grid sx={{ maxWidth: "90%", margin: "auto" }} container>
                       <img className={i.css} src={i.src} alt="startup.jpg" />
@@ -71,7 +71,7 @@ const Misc: React.FC<{
               );
             } else {
               return (
-                <Grid sx={{ margin: "30px 0" }} container>
+                <Grid key={i.key} sx={{ margin: "30px 0" }} container>
                   <Grid
                     sx={{ margin: "auto", textAlign: "left" }}
                     xs={6}

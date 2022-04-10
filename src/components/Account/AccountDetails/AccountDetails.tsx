@@ -12,7 +12,6 @@ import { CREDITSCORE, LOANS, SUMMARY } from "../../UI/Constants/Constants";
 const AccountDetails: React.FC<{
   classes: ClassNameMap<string>;
 }> = ({ classes }) => {
-  console.log("ACCOUNT DETAILS RENDER");
   const clickableDetails: {
     key: number;
     title: string;

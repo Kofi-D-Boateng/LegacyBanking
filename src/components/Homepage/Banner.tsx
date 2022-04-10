@@ -1,11 +1,13 @@
 import { Button, ClassNameMap, Grid, Typography } from "@mui/material";
 import React from "react";
+import { NavigateFunction } from "react-router-dom";
 
 const Banner: React.FC<{
   classes: ClassNameMap<string>;
   cityscape: any;
   isMobile: boolean;
-}> = ({ classes, cityscape, isMobile }) => {
+  navigate: NavigateFunction;
+}> = ({ classes, cityscape, isMobile, navigate }) => {
   return (
     <Grid className={classes.banner} container>
       <Grid className={classes.sloganContainer} container>
@@ -27,6 +29,7 @@ const Banner: React.FC<{
                 borderColor: "white",
               },
             }}
+            onClick={() => navigate("/locations", { replace: true })}
           >
             Find A Location
           </Button>

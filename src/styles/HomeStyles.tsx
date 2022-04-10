@@ -2,8 +2,30 @@ import makeStyles from "@mui/styles/makeStyles";
 import stocks from "../assets/photos/stockEx.jpg";
 import japan2 from "../assets/photos/japan2.jpg";
 import city from "../assets/photos/city.jpg";
+import { keyframes } from "@emotion/react";
+
+const slide = keyframes`
+  from{
+    opacity:0,
+    transform: translateX(0)
+  }
+  to{
+    opacity:1,
+    transform: translateX(100%)
+  }
+`;
 
 const styles = makeStyles(() => ({
+  "@keyframse fadeIn": {
+    "0%": {
+      opacity: 0,
+      transform: "translateY(0)",
+    },
+    "100%": {
+      opacity: 1,
+      transform: "translateX(100%)",
+    },
+  },
   banner: {
     position: "relative",
     width: "100%",
@@ -60,6 +82,7 @@ const styles = makeStyles(() => ({
   serviceContainer: {
     backgroundColor: "rgb(235, 236, 237)",
     padding: "30px 0",
+    animation: "$fadeIn 2s ease-in-out",
   },
   international: {
     background: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.3)), url(${japan2})`,

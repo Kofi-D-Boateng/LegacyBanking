@@ -6,12 +6,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { authActions } from "../store/authentication/auth-slice";
 import styles from "../styles/LoginStyles";
+import { credentials } from "../Interfaces/Credentials";
 
 const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
-  interface credentials {
-    email: string | undefined;
-    password: string | undefined;
-  }
   const classes = styles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,10 +35,7 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
           }
         })
         .catch((error) => {
-          console.log(error);
-          if (error) {
-            setInvalid(true);
-          }
+          setInvalid(true);
         });
     };
     fetchUserLogin(user);
@@ -53,7 +47,6 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
       email: emailRef.current?.value,
       password: passwordRef.current?.value,
     };
-    console.log(enteredValue);
     setUser(enteredValue);
   };
   return (
