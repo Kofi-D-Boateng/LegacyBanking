@@ -9,6 +9,7 @@ function initialState(): {
   branches: {
     name: string;
     country: string;
+    area: string;
     zipcode: string;
     totalHoldings: number;
   }[];
@@ -38,6 +39,7 @@ const bankSlice = createSlice({
         branches: {
           name: string;
           country: string;
+          area: string;
           zipcode: string;
           totalHoldings: number;
         }[];

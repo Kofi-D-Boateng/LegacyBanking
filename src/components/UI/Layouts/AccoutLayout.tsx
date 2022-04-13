@@ -4,7 +4,7 @@ import { AccountNavbar } from "../Navbar";
 
 const AccountLayout: React.FC<{ mobile: boolean }> = ({ children, mobile }) => {
   const options: { key: number; title: string; link: string }[] = [
-    { key: 1, title: "Accounts", link: "/" },
+    { key: 1, title: "Accounts", link: "/profile" },
     { key: 2, title: "Pay & Transfer", link: "/" },
     { key: 3, title: "Security & Privacy", link: "/" },
     { key: 4, title: "Sign out", link: "/" },

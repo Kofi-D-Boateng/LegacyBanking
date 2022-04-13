@@ -1,7 +1,8 @@
 import axios from "axios";
-import React, { Dispatch, useEffect } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BankInfo from "../components/Locations/BankInfo";
+import BankSearch from "../components/Locations/BankSearch";
 import Banner from "../components/Locations/Banner";
 import { bankActions } from "../store/bank/bank-slice";
 import { RootState } from "../store/store";
@@ -16,10 +17,16 @@ const Locations: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
     branches: {
       name: string;
       country: string;
+      area: string;
       zipcode: string;
       totalHoldings: number;
     }[];
   } = useSelector((state: RootState) => state.bank);
+  const [param, setParam] = useState<{
+    state: string | undefined;
+    zipcode: string | undefined;
+    country: string | undefined;
+  }>({ country: undefined, state: undefined, zipcode: undefined });
   const dispatch: Dispatch<any> = useDispatch();
   useEffect(() => {
     const fetchBankData: () => void = async () => {
@@ -46,7 +53,8 @@ const Locations: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
   return (
     <>
       <Banner />
-      <BankInfo bank={LEGACY} />
+      <BankInfo />
+      <BankSearch bank={LEGACY} param={param} onParam={setParam} />
     </>
   );
 };

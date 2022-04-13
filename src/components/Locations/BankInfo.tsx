@@ -1,30 +1,30 @@
 import { Grid, Typography } from "@mui/material";
 
-const BankInfo: React.FC<{
-  bank: {
-    name: string;
-    country: string;
-    area: string;
-    zipcode: string;
-    totalHoldings: number;
-    branches: {
-      name: string;
-      country: string;
-      zipcode: string;
-      totalHoldings: number;
-    }[];
-  };
-}> = ({ bank }) => {
+const BankInfo: React.FC<{}> = () => {
   return (
     <>
-      <Grid container>
-        <Grid xs={12} md={12} item>
-          <Grid container>
-            <Typography sx={{ color: "black" }} variant="h4">
-              Bank with Legacy around the world
+      <Grid sx={{ padding: "100px 0", textAlign: "center" }} container>
+        <Grid xs={6} md={6} item>
+          <Grid sx={{ margin: "auto" }} xs={6} md={12} item>
+            <Typography variant="h3" sx={{ color: "purple" }}>
+              Banking with Legacy
+            </Typography>
+          </Grid>
+          <Grid sx={{ margin: "auto", width: "90%" }} xs={6} md={12} item>
+            <Typography
+              variant="body1"
+              sx={{ color: "purple", fontSize: "1.3rem" }}
+            >
+              Legacy has many strategical positions around the world. Our goal
+              is to aid give strategical advise and opportunities to our global
+              community.
             </Typography>
           </Grid>
         </Grid>
+        <Grid xs={6} md={6} item></Grid>
+      </Grid>
+      <Grid container>
+        <Typography>Find a Location near you</Typography>
       </Grid>
     </>
   );

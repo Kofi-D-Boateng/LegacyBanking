@@ -7,8 +7,11 @@ import {
   axisLeft,
   scaleLinear,
   NumberValue,
+  format,
 } from "d3";
-import { DateAmountHash } from "../../../../Interfaces/Maps";
+import { DateAmount } from "../../../../Interfaces/Maps";
+import { Card, CardContent, Grid, Paper, Typography } from "@mui/material";
+import { ClassNameMap } from "@mui/styles/withStyles";
 const BarChart: React.FC<{
   transactions: {
     id: number;
@@ -17,48 +20,145 @@ const BarChart: React.FC<{
     amount: number;
     location: string;
   }[];
-  DateAmount: DateAmountHash;
-}> = ({ transactions, DateAmount }) => {
+  DateAmount: DateAmount[];
+  year: string;
+  month: string;
+  classes: ClassNameMap<string>;
+}> = ({ transactions, DateAmount, month, year, classes }) => {
   const svgRef: React.LegacyRef<SVGSVGElement> | undefined = useRef<any>();
-  const margin: { top: number; bottom: number } = { top: 20, bottom: 20 };
-  const CHART_HEIGHT: number = 300;
-  const CHART_WIDTH: number = 500;
+  const MARGIN: { top: number; bottom: number; left: number; right: number } = {
+    top: 30,
+    bottom: 30,
+    left: 20,
+    right: 20,
+  };
+  const CHART_HEIGHT: number = 600 - MARGIN.top - MARGIN.bottom;
+  const CHART_WIDTH: number = 800 - MARGIN.left - MARGIN.right;
+  let count = 0;
   useEffect(() => {
+    const Dates: {
+      1: string;
+      2: string;
+      3: string;
+      4: string;
+      5: string;
+      6: string;
+      7: string;
+      8: string;
+      9: string;
+      10: string;
+      11: string;
+      12: string;
+    } = {
+      1: "Jan",
+      2: "Feb",
+      3: "Mar",
+      4: "Apr",
+      5: "May",
+      6: "Jun",
+      7: "Jul",
+      8: "Aug",
+      9: "Sep",
+      10: "Oct",
+      11: "Nov",
+      12: "Dec",
+    };
+    transactions
+      .filter((t) => {
+        return t.dateOfTransaction.substring(0, 4) === year;
+      })
+      .forEach((t) => {
+        const i: number = +t.dateOfTransaction.substring(6, 7);
+        const items: { date: string; amount: number } = {
+          date: Dates[
+            i as keyof {
+              1: string;
+              2: string;
+              3: string;
+              4: string;
+              5: string;
+              6: string;
+              7: string;
+              8: string;
+              9: string;
+              10: string;
+              11: string;
+              12: string;
+            }
+          ],
+          amount: t.amount,
+        };
+        console.log(items);
+        if (!DateAmount[0]) {
+          DateAmount.push({
+            date: items.date,
+            amount: +items.amount.toFixed(2),
+          });
+        } else if (items.date === DateAmount[count].date) {
+          const newAmount = DateAmount[count].amount + items.amount;
+          DateAmount[count].amount = +newAmount.toFixed(2);
+        } else {
+          DateAmount.push({
+            date: items.date,
+            amount: +items.amount.toFixed(2),
+          });
+          count++;
+        }
+        console.log(DateAmount);
+      });
+
+    // SELECTS THE SVG
     const svg = select(svgRef.current)
       .style("background-color", "white")
       .style("overflow", "visible")
       .attr("width", CHART_WIDTH)
       .attr("height", CHART_HEIGHT);
+
+    // X-BAND FOR X-AXIS
     const x = scaleBand()
-      .domain(transactions.map((d) => d.dateOfTransaction))
+      .domain(DateAmount.map((d) => d.date))
       .rangeRound([0, CHART_WIDTH])
-      .padding(0.6);
+      .padding(0.8);
+
+    // YSCALE FOR AMOUNTS
     const y = scaleLinear()
-      .domain([0, max(transactions, (t) => t.amount)] as Iterable<NumberValue>)
+      .domain([
+        0,
+        max(DateAmount.map((d) => d.amount)),
+      ] as Iterable<NumberValue>)
       .range([CHART_HEIGHT, 0]);
+
     svg
       .append("g")
       .style("color", "black")
-      .style("transform", "translate(0,100%)")
+      .attr("transform", `translate(0,${CHART_HEIGHT})`)
       .style("overflow", "visibile")
-      .call(axisBottom(x));
+      .call(axisBottom(x).tickSizeOuter(0));
     svg
       .append("g")
       .style("color", "black")
-      .style("transform", "translate(100%,0)")
+      .style("transform", `translate(${CHART_HEIGHT},0)`)
       .style("overflow", "visibile")
-      .call(axisLeft(y));
+      .call(axisLeft(y).ticks(5).tickSizeOuter(0).tickFormat(format("$,.2r")));
     svg
       .selectAll(".bar")
-      .data(transactions)
+      .data(DateAmount)
       .join("rect")
-      .style("fill", "red")
+      .style("fill", "green")
       .attr("width", x.bandwidth())
       .attr("height", (data) => CHART_HEIGHT - y(data.amount))
-      .attr("x", (data) => x(data.dateOfTransaction) as string | number)
+      .attr("x", (data) => x(data.date) as string | number)
       .attr("y", (data) => y(data.amount));
-  }, [transactions]);
-  return <svg ref={svgRef} />;
+  }, [year, month]);
+  return (
+    <>
+      <Card className={classes.card}>
+        <CardContent sx={{ margin: "auto" }}>
+          <svg ref={svgRef} />
+        </CardContent>
+      </Card>
+    </>
+  );
 };
 
 export default BarChart;

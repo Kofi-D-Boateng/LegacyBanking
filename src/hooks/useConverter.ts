@@ -1,9 +1,7 @@
 const useConverter = (num: number) => {
   let amount = num;
   const length = amount.toString().length;
-  if (length <= 6) {
-    return amount.toString();
-  }
+
   if (length === 7) {
     const first = amount.toString().substring(0, 1);
     const second = amount.toString().substring(1);
@@ -44,6 +42,7 @@ const useConverter = (num: number) => {
     const fourth = amount.toString().substring(7);
     return first + "," + second + "," + third + "," + fourth;
   }
+  return amount.toString();
 };
 
 export default useConverter;

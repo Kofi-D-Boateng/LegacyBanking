@@ -1,7 +1,4 @@
-import useTheme from "@mui/material/styles/useTheme";
-import { Theme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import React from "react";
+import React, { Suspense } from "react";
 import { useSelector } from "react-redux";
 import {
   matchPath,
@@ -11,19 +8,22 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
+import useTheme from "@mui/material/styles/useTheme";
+import { Theme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import AccountLayout from "./components/UI/Layouts/AccoutLayout";
-import Layout from "./components/UI/Layouts/Layout";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Home from "./pages/Home";
-import International from "./pages/International";
-import Investment from "./pages/Investments";
-import Loans from "./pages/Loans";
-import Locations from "./pages/Locations";
-import Login from "./pages/Login";
-import Profile from "./pages/Profile";
-import Signup from "./pages/Signup";
 import { RootState } from "./store/store";
+import Layout from "./components/UI/Layouts/Layout";
+import Home from "./pages/Home";
+const About = React.lazy(() => import("./pages/About"));
+const Contact = React.lazy(() => import("./pages/Contact"));
+const International = React.lazy(() => import("./pages/International"));
+const Investment = React.lazy(() => import("./pages/Investments"));
+const Loans = React.lazy(() => import("./pages/Loans"));
+const Locations = React.lazy(() => import("./pages/Locations"));
+const Login = React.lazy(() => import("./pages/Login"));
+const Signup = React.lazy(() => import("./pages/Signup"));
+const Profile = React.lazy(() => import("./pages/Profile"));
 
 const App: React.FC = () => {
   const theme = useTheme<Theme>();
@@ -47,7 +47,13 @@ const App: React.FC = () => {
   );
 
   return (
-    <>
+    <Suspense
+      fallback={
+        <div>
+          <h1>....Loading</h1>
+        </div>
+      }
+    >
       {profile?.pattern.end ? (
         <AccountLayout mobile={mobile}>
           <Routes>
@@ -102,7 +108,7 @@ const App: React.FC = () => {
           </Routes>
         </Layout>
       )}
-    </>
+    </Suspense>
   );
 };
 

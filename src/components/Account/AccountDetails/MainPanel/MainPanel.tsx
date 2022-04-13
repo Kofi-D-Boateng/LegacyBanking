@@ -1,6 +1,7 @@
 import { Card, CardContent, Grid, Typography } from "@mui/material";
+import { ClassNameMap } from "@mui/styles/withStyles";
 import { useEffect } from "react";
-import { DateAmountHash } from "../../../../Interfaces/Maps";
+import { DateAmount } from "../../../../Interfaces/Maps";
 
 const MainPanel: React.FC<{
   transactions: {
@@ -10,30 +11,31 @@ const MainPanel: React.FC<{
     amount: number;
     location: string;
   }[];
-  yearView: string;
-  monthView: string;
-  DateAmount: DateAmountHash;
-}> = ({ transactions, monthView, yearView, DateAmount }) => {
+  test: string;
+  classes: ClassNameMap<string>;
+}> = ({ transactions, classes, test }) => {
   return (
-    <Card
-      sx={{
-        textAlign: "center",
-        width: "90%",
-        margin: "20px auto",
-        border: "0.5px solid black",
-      }}
-    >
-      <CardContent>
-        <Grid container>
-          <Typography variant="h5">{yearView} Spending History</Typography>
-        </Grid>
-        <Grid container>
-          <Typography variant="h5">
-            {monthView + ": " + Object.keys(DateAmount)}
-          </Typography>
-        </Grid>
-      </CardContent>
-    </Card>
+    <Grid container>
+      <Card className={classes.card}>
+        <CardContent>
+          <Grid container>
+            <Typography variant="h5">Account Summary</Typography>
+          </Grid>
+          <Grid
+            sx={{
+              backgroundColor: "lightgray",
+              borderRadius: "5px",
+              margin: "10px 0",
+            }}
+            container
+          >
+            <Typography sx={{ margin: "0 10px" }} variant="h5">
+              {`You have spent $${test} this month`}
+            </Typography>
+          </Grid>
+        </CardContent>
+      </Card>
+    </Grid>
   );
 };
 

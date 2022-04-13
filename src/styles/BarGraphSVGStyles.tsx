@@ -7,6 +7,11 @@ const styles = makeStyles({
     padding: "40px 0",
     textAlign: "center",
   },
+  card: {
+    border: "0.3px solid black",
+    margin: " 50px auto",
+    width: "70%",
+  },
 });
 
 export default styles;
