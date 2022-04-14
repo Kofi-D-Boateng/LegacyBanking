@@ -1,7 +1,5 @@
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import { ClassNameMap } from "@mui/styles/withStyles";
-import { useEffect } from "react";
-import { DateAmount } from "../../../../Interfaces/Maps";
 
 const MainPanel: React.FC<{
   transactions: {
@@ -11,9 +9,8 @@ const MainPanel: React.FC<{
     amount: number;
     location: string;
   }[];
-  test: string;
   classes: ClassNameMap<string>;
-}> = ({ transactions, classes, test }) => {
+}> = ({ transactions, classes }) => {
   return (
     <Grid container>
       <Card className={classes.card}>
@@ -30,7 +27,7 @@ const MainPanel: React.FC<{
             container
           >
             <Typography sx={{ margin: "0 10px" }} variant="h5">
-              {`You have spent $${test} this month`}
+              {`You have spent $${0} this month`}
             </Typography>
           </Grid>
         </CardContent>

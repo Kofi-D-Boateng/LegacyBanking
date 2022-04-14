@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { Dispatch, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Map from "../assets/photos/world.svg";
 import BankInfo from "../components/Locations/BankInfo";
 import BankSearch from "../components/Locations/BankSearch";
 import Banner from "../components/Locations/Banner";
@@ -50,11 +51,26 @@ const Locations: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
     };
     fetchBankData();
   }, [dispatch]);
+
+  const locationHandler: (e: React.MouseEvent<HTMLImageElement>) => void = ({
+    clientX,
+    clientY,
+  }) => {
+    console.log("X: " + clientX);
+    console.log("Y: " + clientY);
+  };
+
   return (
     <>
       <Banner />
       <BankInfo />
-      <BankSearch bank={LEGACY} param={param} onParam={setParam} />
+      <BankSearch
+        bank={LEGACY}
+        param={param}
+        Map={Map}
+        onParam={setParam}
+        location={locationHandler}
+      />
     </>
   );
 };

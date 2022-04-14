@@ -6,29 +6,29 @@ import Japan from "../../assets/photos/japan.jpg";
 import { useEffect, useState } from "react";
 
 const Banner: React.FC = () => {
-  const [position, setPosition] = useState<number>(3);
+  const [position, setPosition] = useState<number>(2);
   const CAROUSEL: { key: number; img: string; alt: string }[] = [
     { key: 1, img: Toronto, alt: "Toronto.jpg" },
     { key: 2, img: Seoul, alt: "Seoul.jpg" },
     { key: 3, img: NewYork, alt: "NewYork.jpg" },
     { key: 4, img: Japan, alt: "Japan.jpg" },
   ];
-  useEffect(() => {
-    // const INTERVAL = setInterval(() => {
-    //   if (!CAROUSEL[position]) {
-    //     setPosition(0);
-    //     return;
-    //   }
-    //   setPosition((prevState) => prevState + 1);
-    // }, 3000);
-    // return () => clearInterval(INTERVAL);
-  }, []);
+  // useEffect(() => {
+  //   const INTERVAL = setInterval(() => {
+  //     if (position >= 3) {
+  //       setPosition(0);
+  //       return;
+  //     }
+  //     setPosition((prevState) => prevState + 1);
+  //   }, 3000);
+  //   return () => clearInterval(INTERVAL);
+  // }, []);
 
   return (
     <>
       <Grid container>
         <img
-          style={{ width: "100%", height: 600 }}
+          style={{ width: "100%", height: "90vh" }}
           src={CAROUSEL[position].img}
           alt={CAROUSEL[position].alt}
         />

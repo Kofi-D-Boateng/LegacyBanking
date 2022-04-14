@@ -24,13 +24,7 @@ import {
   SUMMARY,
 } from "../components/UI/Constants/Constants";
 import MainProfile from "../components/Account/MainProfile";
-import {
-  NavigateFunction,
-  Route,
-  Routes,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { Route, Routes, useParams } from "react-router-dom";
 import CreditScore from "../components/Account/AccountDetails/CreditScore";
 import PersonalLoans from "../components/Account/AccountDetails/PersonalLoans";
 import Summary from "../components/Account/AccountDetails/Summary";
@@ -42,7 +36,6 @@ const Profile: React.FC<{
 }> = ({ token, mobile }) => {
   const DateAmount: DateAmount[] = [];
   const PARAMS = useParams<string>();
-  const navigate: NavigateFunction = useNavigate();
   const currentMonth: string = (new Date().getMonth() + 1).toString();
   const currentYear: string = new Date().getFullYear().toString();
   const [tracker, setTracker] = useState<number>(0);

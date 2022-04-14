@@ -1,7 +1,7 @@
 import React, { Dispatch, useEffect, useState } from "react";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import styles from "../../../styles/BarGraphSVGStyles";
-import BarChart from "./SVGs/BarChart";
+import BarChart from "../../UI/SVGs/BarChart";
 import MainPanel from "./MainPanel/MainPanel";
 import { DateAmount } from "../../../Interfaces/Maps";
 import { useDispatch } from "react-redux";
@@ -36,7 +36,6 @@ const Summary: React.FC<{
   const [monthView, setMonthView] = useState<string>(month);
   const classes = styles();
   const { transactions } = customer;
-  const test = useConverter(DateAmount[0].amount);
   const SVGs: { key: number; title: string; svg: JSX.Element }[] = [
     {
       key: 1,
@@ -65,7 +64,7 @@ const Summary: React.FC<{
             </Grid>
           );
         })}
-        <MainPanel classes={classes} transactions={transactions} test={test} />
+        <MainPanel classes={classes} transactions={transactions} />
       </Grid>
     </>
   );

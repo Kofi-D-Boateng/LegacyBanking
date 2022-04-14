@@ -9,7 +9,7 @@ import {
   NumberValue,
   format,
 } from "d3";
-import { DateAmount } from "../../../../Interfaces/Maps";
+import { DateAmount, MonthsMap } from "../../../Interfaces/Maps";
 import { Card, CardContent, Grid, Paper, Typography } from "@mui/material";
 import { ClassNameMap } from "@mui/styles/withStyles";
 const BarChart: React.FC<{
@@ -36,20 +36,7 @@ const BarChart: React.FC<{
   const CHART_WIDTH: number = 800 - MARGIN.left - MARGIN.right;
   let count = 0;
   useEffect(() => {
-    const Dates: {
-      1: string;
-      2: string;
-      3: string;
-      4: string;
-      5: string;
-      6: string;
-      7: string;
-      8: string;
-      9: string;
-      10: string;
-      11: string;
-      12: string;
-    } = {
+    const Dates: MonthsMap = {
       1: "Jan",
       2: "Feb",
       3: "Mar",
@@ -69,7 +56,7 @@ const BarChart: React.FC<{
       })
       .forEach((t) => {
         const i: number = +t.dateOfTransaction.substring(6, 7);
-        const items: { date: string; amount: number } = {
+        const items: DateAmount = {
           date: Dates[
             i as keyof {
               1: string;
@@ -88,7 +75,6 @@ const BarChart: React.FC<{
           ],
           amount: t.amount,
         };
-        console.log(items);
         if (!DateAmount[0]) {
           DateAmount.push({
             date: items.date,
@@ -104,7 +90,6 @@ const BarChart: React.FC<{
           });
           count++;
         }
-        console.log(DateAmount);
       });
 
     // SELECTS THE SVG
@@ -128,6 +113,11 @@ const BarChart: React.FC<{
       ] as Iterable<NumberValue>)
       .range([CHART_HEIGHT, 0]);
 
+    const TOOLTIP = svg
+      .append("div")
+      .style("visibility", "hidden")
+      .style("background-color", "red");
+
     svg
       .append("g")
       .style("color", "black")
@@ -140,15 +130,19 @@ const BarChart: React.FC<{
       .style("transform", `translate(${CHART_HEIGHT},0)`)
       .style("overflow", "visibile")
       .call(axisLeft(y).ticks(5).tickSizeOuter(0).tickFormat(format("$,.2r")));
-    svg
-      .selectAll(".bar")
-      .data(DateAmount)
-      .join("rect")
+
+    const RECT = svg.selectAll(".bar").data(DateAmount);
+
+    RECT.exit().remove();
+    RECT.join("rect")
       .style("fill", "green")
       .attr("width", x.bandwidth())
       .attr("height", (data) => CHART_HEIGHT - y(data.amount))
       .attr("x", (data) => x(data.date) as string | number)
-      .attr("y", (data) => y(data.amount));
+      .attr("y", (data) => y(data.amount))
+      .on("mouseover", (e, d) => {
+        RECT.append("div").text(`${d.date}: ` + `$${d.amount}`);
+      });
   }, [year, month]);
   return (
     <>

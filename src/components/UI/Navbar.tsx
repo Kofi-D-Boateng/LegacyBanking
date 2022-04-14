@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavigateFunction, NavLink, useNavigate } from "react-router-dom";
 import React, { Dispatch, Fragment, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
@@ -23,6 +23,7 @@ const AccountNavbar: React.FC<{
   options: { key: number; title: string; link: string }[];
 }> = ({ mobile, options }) => {
   const dispatch = useDispatch<Dispatch<any>>();
+  const navigate: NavigateFunction = useNavigate();
   const [showLinks, setShowLinks] = useState<HTMLElement | null>(null);
   const handleMenu = useCallback((event: React.MouseEvent<any>) => {
     if (event.currentTarget) {
@@ -39,6 +40,23 @@ const AccountNavbar: React.FC<{
     },
     [dispatch]
   );
+
+  const navigation: (e: React.MouseEvent<HTMLButtonElement>) => void = ({
+    currentTarget,
+  }) => {
+    const { innerText } = currentTarget;
+    console.log(innerText);
+    if (innerText.includes("Accounts")) {
+      navigate("/profile", { replace: true });
+    }
+    if (innerText.includes("Payments")) {
+      navigate("payments", { replace: true });
+    }
+    if (innerText.includes("Security & Privacy")) {
+    }
+    return;
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -52,19 +70,23 @@ const AccountNavbar: React.FC<{
               {options.map((o) => {
                 if (o.key !== options.length) {
                   return (
-                    <NavLink
-                      style={{
-                        fontSize: "1rem",
-                        textDecoration: "none",
+                    <Button
+                      key={o.key}
+                      variant="text"
+                      sx={{
+                        fontSize: "1.1rem",
+                        textTransform: "none",
                         margin: "auto 20px",
                         display: "inline-flex",
                         color: "white",
+                        "&:hover": {
+                          backgroundColor: "transparent",
+                        },
                       }}
-                      key={o.key}
-                      to={o.link}
+                      onClick={navigation}
                     >
                       {o.title}
-                    </NavLink>
+                    </Button>
                   );
                 } else {
                   return (

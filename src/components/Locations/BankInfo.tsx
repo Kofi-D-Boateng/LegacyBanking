@@ -1,6 +1,16 @@
 import { Grid, Typography } from "@mui/material";
+import React from "react";
+import WORLD from "../../assets/photos/world.svg";
 
 const BankInfo: React.FC<{}> = () => {
+  const locationHandler: (e: React.MouseEvent<HTMLImageElement>) => void = ({
+    clientX,
+    clientY,
+  }) => {
+    console.log("X: " + clientX);
+    console.log("Y: " + clientY);
+  };
+
   return (
     <>
       <Grid sx={{ padding: "100px 0", textAlign: "center" }} container>
@@ -22,9 +32,6 @@ const BankInfo: React.FC<{}> = () => {
           </Grid>
         </Grid>
         <Grid xs={6} md={6} item></Grid>
-      </Grid>
-      <Grid container>
-        <Typography>Find a Location near you</Typography>
       </Grid>
     </>
   );
