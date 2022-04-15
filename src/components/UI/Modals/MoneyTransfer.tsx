@@ -1,7 +1,6 @@
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import Backdrop from "../Backdrops/Backdrop";
-import styles from "../../../styles/MoneyTransferStyles";
 import {
   Button,
   Card,
@@ -203,8 +202,10 @@ const MoneyTransfer: React.FC<{
   view: boolean;
   termsOfChoice: string;
   mobile: boolean;
-}> = ({ Exit, onTransfer, onChoice, view, termsOfChoice, mobile }) => {
-  const classes = styles();
+  classes: {
+    readonly [key: string]: string;
+  };
+}> = ({ Exit, onTransfer, onChoice, view, termsOfChoice, mobile, classes }) => {
   return (
     <>
       {ReactDOM.createPortal(<Backdrop Exit={Exit} />, backdropDiv)}

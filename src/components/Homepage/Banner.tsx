@@ -39,8 +39,8 @@ const Banner: React.FC<{
       </Grid>
       <Grid className={classes.videoContainer} container>
         <Grid className={classes.vidOverlay} container />
-        <video className={classes.video} autoPlay muted loop>
-          <source className={classes.video} src={cityscape} type="video/mp4" />
+        <video autoPlay muted loop>
+          <source src={cityscape} type="video/mp4" />
         </video>
       </Grid>
     </Grid>

@@ -1,8 +1,7 @@
 import React from "react";
-import styles from "../../../styles/OverlayStyles";
+import classes from "../../../styles/OverlayStyles.module.css";
 
 const Backdrop: React.FC<{ Exit: () => void }> = ({ Exit }) => {
-  const classes = styles();
   return <div onClick={Exit} className={classes.overlay} />;
 };
 export default Backdrop;

@@ -1,23 +1,23 @@
 .navbar {
-  background-color: "white";
-  padding: "15px 0";
+  background-color: white;
+  padding: 15px 0;
 }
 
 .logoDiv {
-  color: "#00bbff";
+  color: #00bbff;
   flex-grow: 1;
 }
 
 .navLink {
-  text-decoration: "none";
-  text-transform: "none";
-  margin: " 0 20px";
-  color: "purple";
+  text-decoration: none;
+  text-transform: none;
+  margin: 0 20px;
+  color: purple;
 }
 
 .navLink:hover {
-  text-decoration: "underline";
-  color: "black";
+  text-decoration: underline;
+  color: black;
 }
 
 .menuLink {

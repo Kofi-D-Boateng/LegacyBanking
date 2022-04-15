@@ -13,6 +13,7 @@ import { RootState } from "../store/store";
 import { authActions } from "../store/authentication/auth-slice";
 import classes from "../styles/ProfileStyles.module.css";
 import MoneyTransfer from "../components/UI/Modals/MoneyTransfer";
+import MoneyTransferStyles from "../styles/MoneyTransfer.module.css";
 import Statement from "../components/UI/Modals/Statement";
 import Paperless from "../components/UI/Modals/Paperless";
 import { modalActions } from "../store/modals/modal-slice";
@@ -188,6 +189,7 @@ const Profile: React.FC<{
       type: "Transfer Money",
       modal: (
         <MoneyTransfer
+          classes={MoneyTransferStyles}
           onTransfer={transferHandler}
           Exit={exitHandler}
           onChoice={choiceHandler}
@@ -207,6 +209,7 @@ const Profile: React.FC<{
       type: "Paperless",
       modal: (
         <Paperless
+          classes={MoneyTransferStyles}
           Exit={exitHandler}
           onChoice={paperlessHandler}
           mobile={mobile}
@@ -218,6 +221,7 @@ const Profile: React.FC<{
       type: "Full account numbers",
       modal: (
         <AccountNumbers
+          classes={MoneyTransferStyles}
           accountNum={customer.accountNum}
           routingNum={customer.routingNum}
           Exit={exitHandler}

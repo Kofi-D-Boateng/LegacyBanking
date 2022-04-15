@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Backdrop from "../Backdrops/Backdrop";
-import styles from "../../../styles/MoneyTransferStyles";
 import {
   Card,
   CardContent,
@@ -116,8 +115,10 @@ const Paperless: React.FC<{
   Exit: () => void;
   mobile: boolean;
   onChoice: (event: SelectChangeEvent) => void;
-}> = ({ Exit, mobile, onChoice }) => {
-  const classes = styles();
+  classes: {
+    readonly [key: string]: string;
+  };
+}> = ({ Exit, mobile, onChoice, classes }) => {
   return (
     <>
       {ReactDOM.createPortal(<Backdrop Exit={Exit} />, backdropDiv)}

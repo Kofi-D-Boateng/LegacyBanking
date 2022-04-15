@@ -1,11 +1,10 @@
 import React, { Dispatch, useEffect, useState } from "react";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
-import styles from "../../../styles/BarGraphSVGStyles";
+import classes from "../../../styles/BarGraphSVGStyles.module.css";
 import BarChart from "../../UI/SVGs/BarChart";
 import MainPanel from "./MainPanel/MainPanel";
 import { DateAmount } from "../../../Interfaces/Maps";
 import { useDispatch } from "react-redux";
-import useConverter from "../../../hooks/useConverter";
 
 const Summary: React.FC<{
   year: string;
@@ -34,7 +33,6 @@ const Summary: React.FC<{
   const [view, setView] = useState<number>(1);
   const [yearView, setYearView] = useState<string>(year);
   const [monthView, setMonthView] = useState<string>(month);
-  const classes = styles();
   const { transactions } = customer;
   const SVGs: { key: number; title: string; svg: JSX.Element }[] = [
     {

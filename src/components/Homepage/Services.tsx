@@ -1,6 +1,5 @@
 import {
   Card,
-  ClassNameMap,
   Grid,
   Pagination,
   PaginationItem,
@@ -11,7 +10,9 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 const Services: React.FC<{
-  classes: ClassNameMap<string> | any;
+  classes: {
+    readonly [key: string]: string;
+  };
   isMobile: boolean;
 }> = ({ classes, isMobile }) => {
   const year = new Date().getFullYear();

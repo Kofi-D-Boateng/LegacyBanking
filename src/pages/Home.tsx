@@ -1,4 +1,4 @@
-import { ClassNameMap, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import React, { Fragment } from "react";
 import cityscape from "../assets/videos/cityscape.mp4";
 import Services from "../components/Homepage/Services";
@@ -32,7 +32,7 @@ const Home: React.FC<{ mobile: boolean }> = ({ mobile }) => {
       key: 2,
       title: " Business Partners & Board Members",
       desc: "Meet a the people behind the scenes that we work with that helps us help your reach your goals.",
-      css: classes.businessImg,
+      css: classes.img,
       src: biz ? biz : undefined,
     },
   ];

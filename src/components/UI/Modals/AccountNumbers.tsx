@@ -11,7 +11,6 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import Backdrop from "../Backdrops/Backdrop";
 import { backdropDiv, overlayDiv } from "../Layouts/RootElement";
-import styles from "../../../styles/MoneyTransferStyles";
 
 const Modal: React.FC<{
   Exit: () => void;
@@ -84,8 +83,10 @@ const AccountNumbers: React.FC<{
   mobile: boolean;
   accountNum: string;
   routingNum: string;
-}> = ({ Exit, mobile, accountNum, routingNum }) => {
-  const classes = styles();
+  classes: {
+    readonly [key: string]: string;
+  };
+}> = ({ Exit, mobile, accountNum, routingNum, classes }) => {
   return (
     <>
       {createPortal(<Backdrop Exit={Exit} />, backdropDiv)}
