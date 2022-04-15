@@ -1,0 +1,33 @@
+.navbar {
+  background-color: "white";
+  padding: "15px 0";
+}
+
+.logoDiv {
+  color: "#00bbff";
+  flex-grow: 1;
+}
+
+.navLink {
+  text-decoration: "none";
+  text-transform: "none";
+  margin: " 0 20px";
+  color: "purple";
+}
+
+.navLink:hover {
+  text-decoration: "underline";
+  color: "black";
+}
+
+.menuLink {
+  font-size: 1.2rem;
+  text-transform: none;
+  text-decoration: none;
+  color: purple;
+}
+
+.menuLink:hover {
+  text-decoration: underline;
+  color: black;
+}

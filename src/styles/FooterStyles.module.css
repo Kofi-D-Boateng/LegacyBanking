@@ -1,0 +1,14 @@
+.footer {
+  background-color: lightgray;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.Logo {
+  color: black;
+}
+
+.footerLink {
+  padding: 10px 0;
+  color: black;
+}

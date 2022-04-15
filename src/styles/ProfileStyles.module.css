@@ -1,0 +1,48 @@
+.profile {
+  background-color: rgb(235, 236, 237);
+  padding: 40px 0;
+  width: 100%;
+}
+
+.card {
+  width: 90%;
+  margin: 20px auto;
+  border: 0.5px solid black;
+}
+
+.linksContainer {
+  border-right: 1px solid purple;
+  text-align: center;
+  margin: auto;
+}
+
+.links {
+  color: purple;
+  text-decoration: none;
+}
+
+.links:hover {
+  color: blue;
+}
+
+.details {
+  margin: 10px 0;
+  text-decoration: none;
+  color: black;
+}
+
+.activityTitles {
+  text-align: center;
+}
+
+.activities {
+  text-align: center;
+}
+
+.paper {
+  margin: 30px auto;
+  text-align: center;
+  width: 70%;
+  min-height: 150px;
+  position: relative;
+}

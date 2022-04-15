@@ -1,0 +1,28 @@
+.cardTitle {
+  background-color: lightgray;
+  padding: 20px 0;
+}
+
+.inputField {
+  margin: 20px auto;
+  max-width: 80%;
+}
+
+.btn {
+  margin: 8px 0;
+  border-color: green;
+  color: black;
+}
+
+.btn:hover {
+  background-color: green;
+  color: white;
+  border-color: green;
+}
+
+.invalid {
+  background-color: red;
+  color: white;
+  padding: 20px 0;
+  transition: 0.5 ease-in;
+}
