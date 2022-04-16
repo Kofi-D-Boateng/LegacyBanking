@@ -28,7 +28,8 @@ const Summary: React.FC<{
     }[];
   };
   DateAmount: DateAmount[];
-}> = ({ customer, month, year, DateAmount }) => {
+  isMobile: boolean;
+}> = ({ customer, month, year, DateAmount, isMobile }) => {
   const dispatch = useDispatch<Dispatch<any>>();
   const [view, setView] = useState<number>(1);
   const [yearView, setYearView] = useState<string>(year);

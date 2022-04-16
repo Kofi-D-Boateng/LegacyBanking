@@ -9,6 +9,14 @@
 }
 
 .footerLink {
+  text-decoration: none;
+  color: black;
+}
+.footerLink:hover {
+  text-decoration: underline 0.5px;
+}
+
+.footerSocialContainer {
   padding: 10px 0;
   color: black;
 }

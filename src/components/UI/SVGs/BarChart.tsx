@@ -9,8 +9,13 @@ import {
   format,
 } from "d3";
 import { DateAmount, MonthsMap } from "../../../Interfaces/Maps";
-import { Card, CardContent, ClassNameMap } from "@mui/material";
-import { NumberValue } from "d3";
+import {
+  Card,
+  CardContent,
+  ClassNameMap,
+  Grid,
+  Typography,
+} from "@mui/material";
 const BarChart: React.FC<{
   transactions: {
     id: number;
@@ -143,6 +148,14 @@ const BarChart: React.FC<{
   return (
     <>
       <Card className={classes.card}>
+        <Grid
+          sx={{ width: "80%", margin: "auto", padding: "30px 0" }}
+          container
+        >
+          <Typography variant="h5" sx={{ color: "purple" }}>
+            Account Summary
+          </Typography>
+        </Grid>
         <CardContent sx={{ margin: "auto" }}>
           <svg ref={svgRef} />
         </CardContent>

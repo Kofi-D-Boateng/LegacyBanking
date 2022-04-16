@@ -46,7 +46,7 @@ const Layout: React.FC<GlobalLayouts> = ({
       )}
       <div style={{ width: "100%" }}>{children}</div>
       {signup?.pattern.end || login?.pattern.end ? null : (
-        <Footer socials={Socials} isMobile={mobile} />
+        <Footer socials={Socials} links={Links} isMobile={mobile} />
       )}
     </Fragment>
   );

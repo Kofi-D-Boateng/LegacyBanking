@@ -1,11 +1,9 @@
+import { Grid } from "@mui/material";
 import {
   Icon,
-  LatLng,
   LatLngExpression,
-  LeafletEventHandlerFn,
   LeafletEventHandlerFnMap,
   LeafletMouseEvent,
-  LocationEvent,
   Map,
   Marker,
 } from "leaflet";
@@ -19,9 +17,15 @@ const LocationMarker: React.FC<{
   >;
   geo: Geolocation;
   markerIcon: string;
-  useMapEvents: (handlers: LeafletEventHandlerFnMap) => Map;
   useMap: () => Map;
-}> = ({ Marker, geo, markerIcon, useMapEvents, useMap }) => {
+  branch: {
+    name: string;
+    country: string;
+    area: string;
+    zipcode: string;
+    totalHoldings: number;
+  }[];
+}> = ({ Marker, geo, markerIcon, useMap, branch }) => {
   const [position, setPosition] = useState<LatLngExpression | undefined>(
     undefined
   );

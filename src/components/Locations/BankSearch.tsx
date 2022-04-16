@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React from "react";
 import { Geolocation } from "../../Interfaces/Maps";
 import GlobalMap from "../UI/WorldMap/GlobalMap";
 
@@ -18,28 +18,24 @@ const BankSearch: React.FC<{
       totalHoldings: number;
     }[];
   };
-  param: {
-    state: string | undefined;
-    zipcode: string | undefined;
-    country: string | undefined;
+  classes: {
+    readonly [key: string]: string;
   };
-  onParam: React.Dispatch<
-    React.SetStateAction<{
-      state: string | undefined;
-      zipcode: string | undefined;
-      country: string | undefined;
-    }>
-  >;
-  location: (e: React.MouseEvent<HTMLImageElement>) => void;
   Geolocation: Geolocation[];
-}> = ({ bank, onParam, param, location, Geolocation }) => {
+}> = ({ bank, Geolocation, classes }) => {
   return (
-    <Grid container>
-      <Typography variant="h4" sx={{ margin: "auto", color: "purple" }}>
-        Regional Locations
-      </Typography>
-      <div style={{ width: "100%", margin: "50px auto" }}>
-        <GlobalMap Geolocation={Geolocation} branch={bank.branches} />
+    <Grid sx={{ padding: "30px 0" }} container>
+      <Grid sx={{ textAlign: "center" }} xs={12} md={12} item>
+        <Typography variant="h4" sx={{ color: "purple" }}>
+          View our locations around the world
+        </Typography>
+      </Grid>
+      <div className={classes.mapContainer}>
+        <GlobalMap
+          classes={classes}
+          Geolocation={Geolocation}
+          branch={bank.branches}
+        />
       </div>
     </Grid>
   );

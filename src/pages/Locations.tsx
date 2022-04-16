@@ -7,6 +7,7 @@ import BankSearch from "../components/Locations/BankSearch";
 import Banner from "../components/Locations/Banner";
 import { bankActions } from "../store/bank/bank-slice";
 import { RootState } from "../store/store";
+import classes from "../styles/LocationsStyles.module.css";
 
 const Locations: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
   const LEGACY: {
@@ -23,11 +24,6 @@ const Locations: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
       totalHoldings: number;
     }[];
   } = useSelector((state: RootState) => state.bank);
-  const [param, setParam] = useState<{
-    state: string | undefined;
-    zipcode: string | undefined;
-    country: string | undefined;
-  }>({ country: undefined, state: undefined, zipcode: undefined });
   const dispatch: Dispatch<any> = useDispatch();
 
   useEffect(() => {
@@ -47,31 +43,16 @@ const Locations: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
               branches,
             })
           );
-        })
-        .catch((error) => {});
+        });
     };
     fetchBankData();
   }, [dispatch]);
 
-  const locationHandler: (e: React.MouseEvent<HTMLImageElement>) => void = ({
-    clientX,
-    clientY,
-  }) => {
-    console.log("X: " + clientX);
-    console.log("Y: " + clientY);
-  };
-
   return (
     <>
-      <Banner />
+      <Banner classes={classes} />
       <BankInfo />
-      <BankSearch
-        Geolocation={GEOLOCATION}
-        bank={LEGACY}
-        param={param}
-        onParam={setParam}
-        location={locationHandler}
-      />
+      <BankSearch classes={classes} Geolocation={GEOLOCATION} bank={LEGACY} />
     </>
   );
 };

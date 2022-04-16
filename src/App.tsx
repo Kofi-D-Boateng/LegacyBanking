@@ -64,8 +64,8 @@ const App: React.FC = () => {
               element={<Locations isMobile={mobile} />}
             />
             <Route path="/investment" element={<Investment />} />
-            <Route path="/loans" element={<Loans />} />
-            <Route path="/international" element={<International />} />
+            <Route path="/loans/*" element={<Loans />} />
+            <Route path="/international/*" element={<International />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login isMobile={mobile} />} />
             <Route path="/signup" element={<Signup />} />
@@ -92,9 +92,9 @@ const App: React.FC = () => {
               path="/locations"
               element={<Locations isMobile={mobile} />}
             />
-            <Route path="/investment" element={<Investment />} />
-            <Route path="/loans" element={<Loans />} />
-            <Route path="/international" element={<International />} />
+            <Route path="/investments/*" element={<Investment />} />
+            <Route path="/loans/*" element={<Loans />} />
+            <Route path="/international/*" element={<International />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login isMobile={mobile} />} />
             <Route path="/signup" element={<Signup />} />

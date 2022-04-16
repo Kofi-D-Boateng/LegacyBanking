@@ -22,14 +22,17 @@ import {
   CREDITSCORE,
   DEBITTRASFER,
   LOANS,
+  MAINPROFILE,
+  PAYMENT,
   SUMMARY,
 } from "../components/UI/Constants/Constants";
 import MainProfile from "../components/Account/MainProfile";
 import { Route, Routes, useParams } from "react-router-dom";
-import CreditScore from "../components/Account/AccountDetails/CreditScore";
-import PersonalLoans from "../components/Account/AccountDetails/PersonalLoans";
+import CreditScore from "../components/Account/CreditScore/CreditScore";
+import PersonalLoans from "../components/Account/Loans/PersonalLoans";
 import Summary from "../components/Account/AccountDetails/Summary";
 import { DateAmount } from "../Interfaces/Maps";
+import Payment from "../components/Account/Payments/Payment";
 
 const Profile: React.FC<{
   token: string;
@@ -246,22 +249,23 @@ const Profile: React.FC<{
           mobile={mobile}
         />
       ),
-      link: "",
+      link: MAINPROFILE,
     },
     {
       key: 2,
-      view: <CreditScore />,
+      view: <CreditScore customer={customer} isMobile={mobile} />,
       link: CREDITSCORE,
     },
     {
       key: 3,
-      view: <PersonalLoans />,
+      view: <PersonalLoans customer={customer} isMobile={mobile} />,
       link: LOANS,
     },
     {
       key: 4,
       view: (
         <Summary
+          isMobile={mobile}
           customer={customer}
           year={currentYear}
           month={currentMonth}
@@ -269,6 +273,11 @@ const Profile: React.FC<{
         />
       ),
       link: SUMMARY,
+    },
+    {
+      key: 5,
+      view: <Payment customer={customer} isMobile={mobile} />,
+      link: PAYMENT,
     },
   ];
 

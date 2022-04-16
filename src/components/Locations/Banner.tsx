@@ -1,37 +1,23 @@
-import { Grid } from "@mui/material";
-import Toronto from "../../assets/photos/Toronto.jpg";
-import Seoul from "../../assets/photos/Seoul.jpg";
-import NewYork from "../../assets/photos/New_York.jpg";
-import Japan from "../../assets/photos/japan.jpg";
-import { useEffect, useState } from "react";
+import { Grid, Typography } from "@mui/material";
 
-const Banner: React.FC = () => {
-  const [position, setPosition] = useState<number>(2);
-  const CAROUSEL: { key: number; img: string; alt: string }[] = [
-    { key: 1, img: Toronto, alt: "Toronto.jpg" },
-    { key: 2, img: Seoul, alt: "Seoul.jpg" },
-    { key: 3, img: NewYork, alt: "NewYork.jpg" },
-    { key: 4, img: Japan, alt: "Japan.jpg" },
-  ];
-  // useEffect(() => {
-  //   const INTERVAL = setInterval(() => {
-  //     if (position >= 3) {
-  //       setPosition(0);
-  //       return;
-  //     }
-  //     setPosition((prevState) => prevState + 1);
-  //   }, 3000);
-  //   return () => clearInterval(INTERVAL);
-  // }, []);
-
+const Banner: React.FC<{
+  classes: {
+    readonly [key: string]: string;
+  };
+}> = ({ classes }) => {
   return (
     <>
-      <Grid container>
-        <img
-          style={{ width: "100%", height: "90vh" }}
-          src={CAROUSEL[position].img}
-          alt={CAROUSEL[position].alt}
-        />
+      <Grid className={classes.banner} container>
+        <Grid className={classes.bannerTitle} item>
+          <Typography
+            variant="h3"
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            Our Locations
+          </Typography>
+        </Grid>
       </Grid>
     </>
   );

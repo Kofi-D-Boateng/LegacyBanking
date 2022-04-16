@@ -6,7 +6,17 @@ const COMPARE: { key: number; title: string }[] = [
   { key: 4, title: "withdrawal" },
   { key: 5, title: "Debit transfer" },
 ];
+const MAINPROFILE: string = "";
 const SUMMARY: string = "account-summary";
 const CREDITSCORE: string = "credit-score";
 const LOANS: string = "personal-loans";
-export { DEBITTRASFER, COMPARE, SUMMARY, CREDITSCORE, LOANS };
+const PAYMENT: string = "payments";
+export {
+  DEBITTRASFER,
+  COMPARE,
+  SUMMARY,
+  CREDITSCORE,
+  LOANS,
+  PAYMENT,
+  MAINPROFILE,
+};

@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  useMapEvents,
-  useMap,
-} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import { LatLngExpression } from "leaflet";
@@ -21,7 +15,10 @@ const GlobalMap: React.FC<{
     totalHoldings: number;
   }[];
   Geolocation: Geolocation[];
-}> = ({ branch, Geolocation }) => {
+  classes: {
+    readonly [key: string]: string;
+  };
+}> = ({ branch, Geolocation, classes }) => {
   const zoom: number = 2.5;
   const CENTER: LatLngExpression | undefined = [31.563572, -31.971787];
 
@@ -29,8 +26,9 @@ const GlobalMap: React.FC<{
     <MapContainer
       center={CENTER}
       zoom={zoom}
+      minZoom={zoom}
       scrollWheelZoom={false}
-      style={{ height: "100vh", width: "100wh" }}
+      className={classes.map}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -40,11 +38,11 @@ const GlobalMap: React.FC<{
       {Geolocation.map((geo) => {
         return (
           <LocationMarker
+            branch={branch}
             key={geo.id}
             geo={geo}
             Marker={Marker}
             markerIcon={markerIcon}
-            useMapEvents={useMapEvents}
             useMap={useMap}
           />
         );

@@ -53,6 +53,7 @@ const AccountNavbar: React.FC<{
       navigate("payments", { replace: true });
     }
     if (innerText.includes("Security & Privacy")) {
+      navigate("security", { replace: true });
     }
     return;
   };
