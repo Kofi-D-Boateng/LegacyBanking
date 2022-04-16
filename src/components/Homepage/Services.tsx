@@ -22,24 +22,24 @@ const Services: React.FC<{
       title: "International",
       description:
         "A deep dive into our foreign strategies and relations with around the world.",
-      css: classes?.international,
-      css2: classes?.cardDescription,
+      css: classes.international,
+      css2: classes.cardDescription,
       link: "/international",
     },
     {
       key: 2,
       title: "Insight",
       description: `A look at our ${year} organizational plans.`,
-      css: classes?.insight,
-      css2: classes?.cardDescription,
+      css: classes.insight,
+      css2: classes.cardDescription,
       link: "/Insight",
     },
     {
       key: 3,
       title: "Investor Relations",
       description: "Engage with our team on our monetary strategies.",
-      css: classes?.investments,
-      css2: classes?.cardDescription,
+      css: classes.investments,
+      css2: classes.cardDescription,
       link: "/investments",
     },
   ];
@@ -52,8 +52,8 @@ const Services: React.FC<{
             return (
               <Grid key={c?.key} xs={12} md={4} item>
                 <NavLink to={c.link} style={{ textDecoration: "none" }}>
-                  <Card className={c?.css || undefined}>
-                    <Grid className={c?.css2} container>
+                  <Card className={c.css || undefined}>
+                    <Grid className={c.css2} container>
                       <Typography variant="h5">{c?.title}</Typography>
                       <Typography
                         variant="body1"

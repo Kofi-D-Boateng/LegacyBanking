@@ -70,9 +70,9 @@
   background-repeat: no-repeat;
   background-size: cover;
   color: white;
-  height: 80vh;
+  height: 90vh;
   max-width: 95%;
-  margin: auto;
+  margin: 100px auto;
   position: relative;
 }
 
@@ -82,21 +82,21 @@
   background-repeat: no-repeat;
   background-size: cover;
   color: white;
-  height: 80vh;
+  height: 90vh;
   max-width: 95%;
-  margin: auto;
+  margin: 100px auto;
   position: relative;
 }
 
 .investments {
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     url("../assets/photos/stockEx.jpg");
-  background-repeat: "no-repeat";
-  background-size: "cover";
+  background-repeat: no-repeat;
+  background-size: cover;
   color: white;
-  height: 80vh;
+  height: 90vh;
   max-width: 95%;
-  margin: auto;
+  margin: 100px auto;
   position: relative;
 }
 
@@ -107,10 +107,10 @@
 }
 
 .cardDescription {
-  color: "white";
-  max-width: "80%";
-  margin: "30px auto";
-  padding: "5px 0";
+  color: white;
+  max-width: 80%;
+  margin: 30px auto;
+  padding: 5px 0;
 }
 
 .aboutContainer {

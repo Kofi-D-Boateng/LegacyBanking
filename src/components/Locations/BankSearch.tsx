@@ -1,6 +1,7 @@
+import { Grid, Typography } from "@mui/material";
 import React, { useRef, useState } from "react";
-import { LocationMap } from "../../Interfaces/Maps";
-import WorldMap from "../UI/SVGs/WorldMap";
+import { Geolocation } from "../../Interfaces/Maps";
+import GlobalMap from "../UI/WorldMap/GlobalMap";
 
 const BankSearch: React.FC<{
   bank: {
@@ -30,11 +31,18 @@ const BankSearch: React.FC<{
     }>
   >;
   location: (e: React.MouseEvent<HTMLImageElement>) => void;
-  Map: string;
-}> = ({ bank, onParam, param, location, Map }) => {
-  const COORDINATES: LocationMap[] = [];
-
-  return <WorldMap location={location} Map={Map} bank={bank} />;
+  Geolocation: Geolocation[];
+}> = ({ bank, onParam, param, location, Geolocation }) => {
+  return (
+    <Grid container>
+      <Typography variant="h4" sx={{ margin: "auto", color: "purple" }}>
+        Regional Locations
+      </Typography>
+      <div style={{ width: "100%", margin: "50px auto" }}>
+        <GlobalMap Geolocation={Geolocation} branch={bank.branches} />
+      </div>
+    </Grid>
+  );
 };
 
 export default BankSearch;

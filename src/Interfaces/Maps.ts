@@ -17,3 +17,14 @@ export interface LocationMap {
   x: number;
   y: number;
 }
+
+export interface Geolocation {
+  id: number;
+  country: string;
+  ISO_code: string;
+  geometry: {
+    city: string;
+    lat: number;
+    lng: number;
+  };
+}

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { Dispatch, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Map from "../assets/photos/world.svg";
+import { GEOLOCATION } from "../assets/data/Geolocation";
 import BankInfo from "../components/Locations/BankInfo";
 import BankSearch from "../components/Locations/BankSearch";
 import Banner from "../components/Locations/Banner";
@@ -29,6 +29,7 @@ const Locations: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
     country: string | undefined;
   }>({ country: undefined, state: undefined, zipcode: undefined });
   const dispatch: Dispatch<any> = useDispatch();
+
   useEffect(() => {
     const fetchBankData: () => void = async () => {
       await axios
@@ -65,9 +66,9 @@ const Locations: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
       <Banner />
       <BankInfo />
       <BankSearch
+        Geolocation={GEOLOCATION}
         bank={LEGACY}
         param={param}
-        Map={Map}
         onParam={setParam}
         location={locationHandler}
       />
