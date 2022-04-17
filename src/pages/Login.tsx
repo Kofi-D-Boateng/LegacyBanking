@@ -30,7 +30,7 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
           if (response.status === 200) {
             const { token } = response.data;
             dispatch(authActions.getCreds({ token: token }));
-            navigate("/", { replace: true });
+            navigate("/profile", { replace: true });
           }
         })
         .catch((error) => {

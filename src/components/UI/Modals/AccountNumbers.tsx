@@ -1,20 +1,15 @@
 import React from "react";
 import { createPortal } from "react-dom";
-import {
-  Card,
-  CardContent,
-  Grid,
-  IconButton,
-  Typography,
-  ClassNameMap,
-} from "@mui/material";
+import { Card, CardContent, Grid, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Backdrop from "../Backdrops/Backdrop";
 import { backdropDiv, overlayDiv } from "../Layouts/RootElement";
 
 const Modal: React.FC<{
   Exit: () => void;
-  classes: ClassNameMap<string>;
+  classes: {
+    readonly [key: string]: string;
+  };
   AN: string;
   RN: string;
   isMobile: boolean;
@@ -80,13 +75,13 @@ const Modal: React.FC<{
 
 const AccountNumbers: React.FC<{
   Exit: () => void;
-  mobile: boolean;
+  isMobile: boolean;
   accountNum: string;
   routingNum: string;
   classes: {
     readonly [key: string]: string;
   };
-}> = ({ Exit, mobile, accountNum, routingNum, classes }) => {
+}> = ({ Exit, isMobile, accountNum, routingNum, classes }) => {
   return (
     <>
       {createPortal(<Backdrop Exit={Exit} />, backdropDiv)}
@@ -94,7 +89,7 @@ const AccountNumbers: React.FC<{
         <Modal
           AN={accountNum}
           RN={routingNum}
-          isMobile={mobile}
+          isMobile={isMobile}
           Exit={Exit}
           classes={classes}
         />,

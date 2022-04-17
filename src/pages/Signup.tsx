@@ -5,6 +5,7 @@ import SignupForm from "../components/Forms/SignupForm/SignupForm";
 import Kard from "../components/UI/Card";
 import { useNavigate } from "react-router-dom";
 import classes from "../styles/SignupStyles.module.css";
+import { PROFILE } from "../components/UI/Constants/Constants";
 
 const Signup: React.FC = () => {
   const [user, setUser] = useState<{} | null>(null);
@@ -24,7 +25,7 @@ const Signup: React.FC = () => {
         )
         .then((response) => {
           if (response.data.isSaved === true) {
-            navigate("/", { replace: true });
+            navigate(PROFILE, { replace: true });
           } else {
             setIsValid(false);
           }

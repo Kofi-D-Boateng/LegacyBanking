@@ -1,11 +1,10 @@
 import React, { useRef, useState } from "react";
-import ReactDOM from "react-dom";
+import { createPortal } from "react-dom";
 import Backdrop from "../Backdrops/Backdrop";
 import {
   Button,
   Card,
   CardContent,
-  ClassNameMap,
   FormControl,
   Grid,
   IconButton,
@@ -20,7 +19,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import { backdropDiv, overlayDiv } from "../Layouts/RootElement";
 
 const Modal: React.FC<{
-  classes: ClassNameMap<string>;
+  classes: {
+    readonly [key: string]: string;
+  };
   Exit: () => void;
   Transfer: (data: {
     email: string | undefined;
@@ -201,15 +202,23 @@ const MoneyTransfer: React.FC<{
   }) => void;
   view: boolean;
   termsOfChoice: string;
-  mobile: boolean;
+  isMobile: boolean;
   classes: {
     readonly [key: string]: string;
   };
-}> = ({ Exit, onTransfer, onChoice, view, termsOfChoice, mobile, classes }) => {
+}> = ({
+  Exit,
+  onTransfer,
+  onChoice,
+  view,
+  termsOfChoice,
+  isMobile,
+  classes,
+}) => {
   return (
     <>
-      {ReactDOM.createPortal(<Backdrop Exit={Exit} />, backdropDiv)}
-      {ReactDOM.createPortal(
+      {createPortal(<Backdrop Exit={Exit} />, backdropDiv)}
+      {createPortal(
         <Modal
           Exit={Exit}
           Transfer={onTransfer}
@@ -217,7 +226,7 @@ const MoneyTransfer: React.FC<{
           view={view}
           termsOfChoice={termsOfChoice}
           classes={classes}
-          isMobile={mobile}
+          isMobile={isMobile}
         />,
         overlayDiv
       )}

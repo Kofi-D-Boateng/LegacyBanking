@@ -66,7 +66,7 @@ const Home: React.FC<{ mobile: boolean }> = ({ mobile }) => {
         <Services classes={classes} isMobile={mobile} />
         <Misc classes={classes} isMobile={mobile} info={info} />
       </Grid>
-      <MailLetter classes={classes} />
+      <MailLetter classes={classes} isMobile={mobile} />
     </Fragment>
   );
 };

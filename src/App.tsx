@@ -15,6 +15,17 @@ import AccountLayout from "./components/UI/Layouts/AccoutLayout";
 import { RootState } from "./store/store";
 import Layout from "./components/UI/Layouts/Layout";
 import Home from "./pages/Home";
+import {
+  ABOUT,
+  CONTACT,
+  HOME,
+  INVESTMENTS,
+  LOCATIONS,
+  LOGIN,
+  PROFILE,
+  REDIRECT,
+  SIGNUP,
+} from "./components/UI/Constants/Constants";
 const About = React.lazy(() => import("./pages/About"));
 const Contact = React.lazy(() => import("./pages/Contact"));
 const International = React.lazy(() => import("./pages/International"));
@@ -57,25 +68,20 @@ const App: React.FC = () => {
       {profile?.pattern.end ? (
         <AccountLayout mobile={mobile} login={null} signup={null} auth={false}>
           <Routes>
-            <Route path="/" element={<Home mobile={mobile} />} />
-            <Route path="/about" element={<About />} />
-            <Route
-              path="/locations"
-              element={<Locations isMobile={mobile} />}
-            />
-            <Route path="/investment" element={<Investment />} />
-            <Route path="/loans/*" element={<Loans />} />
-            <Route path="/international/*" element={<International />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/login" element={<Login isMobile={mobile} />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route path={HOME} element={<Home mobile={mobile} />} />
+            <Route path={ABOUT} element={<About />} />
+            <Route path={LOCATIONS} element={<Locations isMobile={mobile} />} />
+            <Route path={INVESTMENTS} element={<Investment />} />
+            <Route path={CONTACT} element={<Contact />} />
+            <Route path={LOGIN} element={<Login isMobile={mobile} />} />
+            <Route path={SIGNUP} element={<Signup />} />
             {auth.authenticated && (
               <Route
-                path="/profile/*"
+                path={PROFILE}
                 element={<Profile token={auth.token} mobile={mobile} />}
               />
             )}
-            <Route path="*" element={<Navigate replace to="/" />} />
+            <Route path={REDIRECT} element={<Navigate replace to={HOME} />} />
           </Routes>
         </AccountLayout>
       ) : (
@@ -86,25 +92,20 @@ const App: React.FC = () => {
           signup={signup}
         >
           <Routes>
-            <Route path="/" element={<Home mobile={mobile} />} />
-            <Route path="/about" element={<About />} />
-            <Route
-              path="/locations"
-              element={<Locations isMobile={mobile} />}
-            />
-            <Route path="/investments/*" element={<Investment />} />
-            <Route path="/loans/*" element={<Loans />} />
-            <Route path="/international/*" element={<International />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/login" element={<Login isMobile={mobile} />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route path={HOME} element={<Home mobile={mobile} />} />
+            <Route path={ABOUT} element={<About />} />
+            <Route path={LOCATIONS} element={<Locations isMobile={mobile} />} />
+            <Route path={INVESTMENTS} element={<Investment />} />
+            <Route path={CONTACT} element={<Contact />} />
+            <Route path={LOGIN} element={<Login isMobile={mobile} />} />
+            <Route path={SIGNUP} element={<Signup />} />
             {auth.authenticated && (
               <Route
-                path="/profile/*"
+                path={PROFILE}
                 element={<Profile token={auth.token} mobile={mobile} />}
               />
             )}
-            <Route path="*" element={<Navigate replace to="/" />} />
+            <Route path={REDIRECT} element={<Navigate replace to={HOME} />} />
           </Routes>
         </Layout>
       )}

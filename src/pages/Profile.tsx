@@ -5,8 +5,17 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import {
+  NavigateFunction,
+  Route,
+  Routes,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { modalActions } from "../store/modals/modal-slice";
+import { MockStatements } from "../assets/data/MockData";
 import { SelectChangeEvent } from "@mui/material";
 import { customerActions } from "../store/customer/customer";
 import { RootState } from "../store/store";
@@ -16,7 +25,6 @@ import MoneyTransfer from "../components/UI/Modals/MoneyTransfer";
 import MoneyTransferStyles from "../styles/MoneyTransfer.module.css";
 import Statement from "../components/UI/Modals/Statement";
 import Paperless from "../components/UI/Modals/Paperless";
-import { modalActions } from "../store/modals/modal-slice";
 import AccountNumbers from "../components/UI/Modals/AccountNumbers";
 import {
   CREDITSCORE,
@@ -24,10 +32,10 @@ import {
   LOANS,
   MAINPROFILE,
   PAYMENT,
+  REDIRECT,
   SUMMARY,
 } from "../components/UI/Constants/Constants";
 import MainProfile from "../components/Account/MainProfile";
-import { Route, Routes, useParams } from "react-router-dom";
 import CreditScore from "../components/Account/CreditScore/CreditScore";
 import PersonalLoans from "../components/Account/Loans/PersonalLoans";
 import Summary from "../components/Account/AccountDetails/Summary";
@@ -42,12 +50,12 @@ const Profile: React.FC<{
   const PARAMS = useParams<string>();
   const currentMonth: string = (new Date().getMonth() + 1).toString();
   const currentYear: string = new Date().getFullYear().toString();
-  const [tracker, setTracker] = useState<number>(0);
   const [view, setView] = useState<boolean>(false);
   const [termsOfChoice, setTermsOfChoice] = useState<string>("");
   const modal = useSelector((state: RootState) => state.view);
   const customer = useSelector((state: RootState) => state.cust);
   const dispatch = useDispatch<Dispatch<any>>();
+  const navigate: NavigateFunction = useNavigate();
   useEffect(() => {
     const fetchAccount = async () => {
       await axios({
@@ -69,21 +77,27 @@ const Profile: React.FC<{
             accountNum,
             routingNum,
             transactions,
+            isEnabled,
+            isLocked,
           } = response.data;
-          dispatch(
-            customerActions.createCustomer({
-              fName: fName,
-              lName: lName,
-              email: email,
-              country: country,
-              zipCode: zipCode,
-              area: state,
-              funds: funds,
-              accountingNum: accountNum,
-              routingNum: routingNum,
-              transactions: transactions,
-            })
-          );
+          if (isEnabled && !isLocked) {
+            dispatch(
+              customerActions.createCustomer({
+                fName: fName,
+                lName: lName,
+                email: email,
+                country: country,
+                zipCode: zipCode,
+                area: state,
+                funds: funds,
+                accountingNum: accountNum,
+                routingNum: routingNum,
+                transactions: transactions,
+              })
+            );
+            return;
+          }
+          navigate(REDIRECT, { replace: true });
         })
         .catch(() => {
           dispatch(authActions.logout());
@@ -132,7 +146,7 @@ const Profile: React.FC<{
       return;
     }
     fetchAccount();
-  }, [token, dispatch, customer.accountTransfer]);
+  }, [token, dispatch, customer.accountTransfer, navigate]);
 
   const viewHandler = useCallback(
     (event: ChangeEvent<HTMLElement>) => {
@@ -198,14 +212,21 @@ const Profile: React.FC<{
           onChoice={choiceHandler}
           termsOfChoice={termsOfChoice}
           view={view}
-          mobile={mobile}
+          isMobile={mobile}
         />
       ),
     },
     {
       key: 2,
       type: "Statement",
-      modal: <Statement />,
+      modal: (
+        <Statement
+          classes={MoneyTransferStyles}
+          Exit={exitHandler}
+          isMobile={mobile}
+          MockStatements={MockStatements}
+        />
+      ),
     },
     {
       key: 3,
@@ -215,7 +236,7 @@ const Profile: React.FC<{
           classes={MoneyTransferStyles}
           Exit={exitHandler}
           onChoice={paperlessHandler}
-          mobile={mobile}
+          isMobile={mobile}
         />
       ),
     },
@@ -228,7 +249,7 @@ const Profile: React.FC<{
           accountNum={customer.accountNum}
           routingNum={customer.routingNum}
           Exit={exitHandler}
-          mobile={mobile}
+          isMobile={mobile}
         />
       ),
     },

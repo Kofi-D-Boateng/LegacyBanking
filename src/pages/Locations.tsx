@@ -1,12 +1,13 @@
 import axios from "axios";
-import React, { Dispatch, useEffect, useState } from "react";
+import React, { Dispatch, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { bankActions } from "../store/bank/bank-slice";
+import { RootState } from "../store/store";
 import { GEOLOCATION } from "../assets/data/Geolocation";
+import BM from "../assets/photos/business_man.jpg";
 import BankInfo from "../components/Locations/BankInfo";
 import BankSearch from "../components/Locations/BankSearch";
 import Banner from "../components/Locations/Banner";
-import { bankActions } from "../store/bank/bank-slice";
-import { RootState } from "../store/store";
 import classes from "../styles/LocationsStyles.module.css";
 
 const Locations: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
@@ -51,7 +52,7 @@ const Locations: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
   return (
     <>
       <Banner classes={classes} />
-      <BankInfo />
+      <BankInfo photo={BM} classes={classes} />
       <BankSearch classes={classes} Geolocation={GEOLOCATION} bank={LEGACY} />
     </>
   );

@@ -1,8 +1,11 @@
 import { ClassNameMap, Grid, TextField, Typography } from "@mui/material";
 
-const MailLetter: React.FC<{ classes: ClassNameMap<string> }> = ({
-  classes,
-}) => {
+const MailLetter: React.FC<{
+  classes: {
+    readonly [key: string]: string;
+  };
+  isMobile: boolean;
+}> = ({ classes, isMobile }) => {
   return (
     <Grid className={classes.mail} container>
       <Grid xs={12} md={12} item>

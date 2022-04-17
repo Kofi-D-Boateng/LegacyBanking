@@ -1,7 +1,6 @@
-import Papa from "papaparse";
 import { Geolocation } from "../../Interfaces/Maps";
 
-export const GEOLOCATION: Geolocation[] = [
+export let GEOLOCATION: Geolocation[] = [
   {
     id: 1,
     country: "Japan",

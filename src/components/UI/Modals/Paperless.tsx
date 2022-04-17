@@ -9,7 +9,6 @@ import {
   Grid,
   Radio,
   RadioGroup,
-  ClassNameMap,
   Typography,
   IconButton,
   SelectChangeEvent,
@@ -19,7 +18,9 @@ import { backdropDiv, overlayDiv } from "../Layouts/RootElement";
 import CloseIcon from "@mui/icons-material/Close";
 
 const Modal: React.FC<{
-  classes: ClassNameMap<string>;
+  classes: {
+    readonly [key: string]: string;
+  };
   isMobile: boolean;
   paperlessHandler: (event: SelectChangeEvent) => void;
   Exit: () => void;
@@ -113,12 +114,12 @@ const Modal: React.FC<{
 
 const Paperless: React.FC<{
   Exit: () => void;
-  mobile: boolean;
+  isMobile: boolean;
   onChoice: (event: SelectChangeEvent) => void;
   classes: {
     readonly [key: string]: string;
   };
-}> = ({ Exit, mobile, onChoice, classes }) => {
+}> = ({ Exit, isMobile, onChoice, classes }) => {
   return (
     <>
       {ReactDOM.createPortal(<Backdrop Exit={Exit} />, backdropDiv)}
@@ -127,7 +128,7 @@ const Paperless: React.FC<{
           classes={classes}
           Exit={Exit}
           paperlessHandler={onChoice}
-          isMobile={mobile}
+          isMobile={isMobile}
         />,
         overlayDiv
       )}
