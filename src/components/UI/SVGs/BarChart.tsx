@@ -8,7 +8,7 @@ import {
   scaleLinear,
   format,
 } from "d3";
-import { DateAmount, MonthsMap } from "../../../Interfaces/Maps";
+import { DateAmountType, MonthsMap } from "../../../Interfaces/Maps";
 import {
   Card,
   CardContent,
@@ -16,6 +16,12 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
+import {
+  ACHDEBIT,
+  DEBITTRASFER,
+  TRANSFER,
+  WITHDRAWAL,
+} from "../Constants/Constants";
 const BarChart: React.FC<{
   transactions: {
     id: number;
@@ -24,11 +30,13 @@ const BarChart: React.FC<{
     amount: number;
     location: string;
   }[];
-  DateAmount: DateAmount[];
-  year: string;
-  month: string;
-  classes: ClassNameMap<string>;
-}> = ({ transactions, DateAmount, month, year, classes }) => {
+  DateAmount: DateAmountType[];
+  year: number;
+  classes: {
+    readonly [key: string]: string;
+  };
+  isMobile: boolean;
+}> = ({ transactions, DateAmount, year, classes, isMobile }) => {
   const svgRef: React.LegacyRef<SVGSVGElement> | undefined = useRef<any>();
   const MARGIN: { top: number; bottom: number; left: number; right: number } = {
     top: 30,
@@ -56,11 +64,11 @@ const BarChart: React.FC<{
     };
     transactions
       .filter((t) => {
-        return t.dateOfTransaction.substring(0, 4) === year;
+        return +t.dateOfTransaction.substring(0, 4) === year;
       })
       .forEach((t) => {
         const i: number = +t.dateOfTransaction.substring(6, 7);
-        const items: DateAmount = {
+        const items: DateAmountType = {
           date: Dates[
             i as keyof {
               1: string;
@@ -78,11 +86,13 @@ const BarChart: React.FC<{
             }
           ],
           amount: t.amount,
+          type: t.type,
         };
         if (!DateAmount[0]) {
           DateAmount.push({
             date: items.date,
             amount: +items.amount.toFixed(2),
+            type: items.type,
           });
         } else if (items.date === DateAmount[count].date) {
           const newAmount = DateAmount[count].amount + items.amount;
@@ -91,6 +101,7 @@ const BarChart: React.FC<{
           DateAmount.push({
             date: items.date,
             amount: +items.amount.toFixed(2),
+            type: items.type,
           });
           count++;
         }
@@ -111,7 +122,19 @@ const BarChart: React.FC<{
 
     // YSCALE FOR AMOUNTS
     const y = scaleLinear()
-      .domain([0, max(DateAmount.map((d) => d.amount))] as Iterable<Number>)
+      .domain([
+        0,
+        max(
+          DateAmount.filter((d) => {
+            return (
+              d.type.includes(DEBITTRASFER) ||
+              d.type.includes(TRANSFER) ||
+              d.type.includes(WITHDRAWAL) ||
+              d.type.includes(ACHDEBIT)
+            );
+          }).map((d) => d.amount)
+        ),
+      ] as Iterable<Number>)
       .range([CHART_HEIGHT, 0]);
 
     const TOOLTIP = svg
@@ -142,12 +165,13 @@ const BarChart: React.FC<{
       .attr("x", (data: { date: any }) => x(data.date) as string | number)
       .attr("y", (data: { amount: any }) => y(data.amount))
       .on("mouseover", (e: any, d: { date: any; amount: any }) => {
-        RECT.append("div").text(`${d.date}: ` + `$${d.amount}`);
+        console.log(`${d.date}:  $${d.amount}`);
+        RECT.append("div").text(`${d.date}:  $${d.amount}`);
       });
-  }, [year, month]);
+  }, [year]);
   return (
     <>
-      <Card className={classes.card}>
+      <Card className={!isMobile ? classes.card : classes.mobileCard}>
         <Grid
           sx={{ width: "80%", margin: "auto", padding: "30px 0" }}
           container

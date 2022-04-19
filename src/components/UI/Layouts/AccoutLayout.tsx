@@ -1,14 +1,14 @@
 import React from "react";
 import { GlobalLayouts } from "../../../GlobalTypes/types";
+import { HOME, PROFILE, SECURITY } from "../Constants/Constants";
 import { AccountFooter } from "../Footer";
 import { AccountNavbar } from "../Navbar";
 
 const AccountLayout: React.FC<GlobalLayouts> = ({ children, mobile }) => {
   const options: { key: number; title: string; link: string }[] = [
-    { key: 1, title: "Accounts", link: "/profile" },
-    { key: 2, title: "Payments", link: "payments" },
-    { key: 3, title: "Security & Privacy", link: "" },
-    { key: 4, title: "Sign out", link: "" },
+    { key: 1, title: "Accounts", link: PROFILE.substring(0, 8) },
+    { key: 2, title: "Security & Privacy", link: SECURITY },
+    { key: 3, title: "Sign out", link: HOME },
   ];
 
   return (

@@ -44,6 +44,7 @@ const App: React.FC = () => {
     authenticated: boolean;
   } = useSelector((state: RootState) => state.auth);
   const { pathname } = useLocation();
+  console.log(pathname);
   const login: PathMatch<string> | null = matchPath<string, string>(
     "/login",
     pathname

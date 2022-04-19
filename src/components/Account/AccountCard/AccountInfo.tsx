@@ -1,17 +1,17 @@
+import { Grid, Typography, Card, CardContent, Button } from "@mui/material";
+import React, { useEffect } from "react";
 import {
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  Button,
-  ClassNameMap,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import useConverter from "../../../hooks/useConverter";
+  ACHDEBIT,
+  DEBITTRASFER,
+  TRANSFER,
+  WITHDRAWAL,
+} from "../../UI/Constants/Constants";
 import MonthlyExpenditure from "./MonthlyExpenditure/MonthlyExpenditure";
 
 const AccountInfo: React.FC<{
-  classes: ClassNameMap<string>;
+  classes: {
+    readonly [key: string]: string;
+  };
   fName: string;
   lName: string;
   funds: number;
@@ -23,8 +23,12 @@ const AccountInfo: React.FC<{
     location: string;
   }[];
   mobile: boolean;
-  YEAR: string;
-  MONTH: string;
+  YEAR: number;
+  MONTH: number;
+  withdrawals: number;
+  deposits: number;
+  setWithdrawals: React.Dispatch<React.SetStateAction<number>>;
+  setDeposits: React.Dispatch<React.SetStateAction<number>>;
   onSetView: (event: any) => void;
 }> = ({
   classes,
@@ -36,25 +40,27 @@ const AccountInfo: React.FC<{
   mobile,
   MONTH,
   YEAR,
+  deposits,
+  setDeposits,
+  setWithdrawals,
+  withdrawals,
 }) => {
-  const [withdrawals, setWithdrawals] = useState<number>(0);
-  const [deposits, setDeposits] = useState<number>(0);
   useEffect(() => {
     let withdrawal: number = 0;
     let deposit: number = 0;
     transactions
       .filter((a) => {
         return (
-          a.dateOfTransaction.substring(0, 4) === YEAR &&
-          a.dateOfTransaction.substring(6, 7) === MONTH
+          +a.dateOfTransaction.substring(0, 4) === YEAR &&
+          +a.dateOfTransaction.substring(6, 7) === MONTH
         );
       })
       .map((a) => {
         if (
-          a.type === "withdrawal" ||
-          a.type === "transfer" ||
-          a.type === "ACH Debit" ||
-          a.type === "Debit transfer"
+          a.type.includes(WITHDRAWAL) ||
+          a.type.includes(TRANSFER) ||
+          a.type.includes(ACHDEBIT) ||
+          a.type.includes(DEBITTRASFER)
         ) {
           withdrawal = withdrawal + a.amount;
         } else {
@@ -69,15 +75,19 @@ const AccountInfo: React.FC<{
   }, [YEAR, MONTH, transactions]);
 
   const details: { key: number; value: string; desc: string }[] = [
-    { key: 1, value: `$${useConverter(funds)}`, desc: "Available balance" },
+    {
+      key: 1,
+      value: `$${funds.toLocaleString("en-us")}`,
+      desc: "Available balance",
+    },
     {
       key: 2,
-      value: `+$${useConverter(deposits)}`,
+      value: `+$${deposits.toLocaleString("en-us")}`,
       desc: "Deposits this month",
     },
     {
       key: 3,
-      value: `-$${useConverter(withdrawals)}`,
+      value: `-$${withdrawals.toLocaleString("en-us")}`,
       desc: "Withdrawls this month",
     },
   ];
@@ -86,7 +96,6 @@ const AccountInfo: React.FC<{
     { key: 1, title: "Statement" },
     { key: 2, title: "Paperless" },
     { key: 3, title: "Transfer Money" },
-    { key: 4, title: "More" },
   ];
   return (
     <Card className={classes.card}>
@@ -118,9 +127,9 @@ const AccountInfo: React.FC<{
             return (
               <Grid
                 key={l.key}
-                className={l.key !== 4 ? classes.linksContainer : ""}
+                className={l.key !== 3 ? classes.linksContainer : ""}
                 sx={
-                  l.key === 4 ? { textAlign: "center", margin: "auto" } : null
+                  l.key === 3 ? { textAlign: "center", margin: "auto" } : null
                 }
                 xs={12 / links.length}
                 md={12 / links.length}

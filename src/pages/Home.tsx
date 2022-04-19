@@ -9,7 +9,6 @@ import classes from "../styles/HomeStyles.module.css";
 import Banner from "../components/Homepage/Banner";
 import Misc from "../components/Homepage/Misc";
 import MailLetter from "../components/Homepage/MailLetter";
-console.log(classes);
 
 const Home: React.FC<{ mobile: boolean }> = ({ mobile }) => {
   const NAVIGATE: NavigateFunction = useNavigate();

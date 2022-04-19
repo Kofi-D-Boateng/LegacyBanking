@@ -39,19 +39,23 @@ import MainProfile from "../components/Account/MainProfile";
 import CreditScore from "../components/Account/CreditScore/CreditScore";
 import PersonalLoans from "../components/Account/Loans/PersonalLoans";
 import Summary from "../components/Account/AccountDetails/Summary";
-import { DateAmount } from "../Interfaces/Maps";
+import { DateAmountType } from "../Interfaces/Maps";
 import Payment from "../components/Account/Payments/Payment";
 
 const Profile: React.FC<{
   token: string;
   mobile: boolean;
 }> = ({ token, mobile }) => {
-  const DateAmount: DateAmount[] = [];
+  const DateAmount: DateAmountType[] = [];
   const PARAMS = useParams<string>();
-  const currentMonth: string = (new Date().getMonth() + 1).toString();
-  const currentYear: string = new Date().getFullYear().toString();
+  const currentYear: number = new Date().getFullYear();
+  const [currentMonth, setCurrentMonth] = useState<number>(
+    new Date().getMonth() + 1
+  );
   const [view, setView] = useState<boolean>(false);
   const [termsOfChoice, setTermsOfChoice] = useState<string>("");
+  const [withdrawals, setWithdrawals] = useState<number>(0);
+  const [deposits, setDeposits] = useState<number>(0);
   const modal = useSelector((state: RootState) => state.view);
   const customer = useSelector((state: RootState) => state.cust);
   const dispatch = useDispatch<Dispatch<any>>();
@@ -135,7 +139,6 @@ const Profile: React.FC<{
           console.log(error);
         });
     };
-    console.log("Running UseEffect");
     if (
       (customer.accountTransfer.amount > 0 &&
         customer.accountTransfer.accountNumber &&
@@ -260,6 +263,7 @@ const Profile: React.FC<{
       key: 1,
       view: (
         <MainProfile
+          setCurrentMonth={setCurrentMonth}
           viewHandler={viewHandler}
           customer={customer}
           currentYear={currentYear}
@@ -268,6 +272,10 @@ const Profile: React.FC<{
           modals={modals}
           classes={classes}
           mobile={mobile}
+          withdrawals={withdrawals}
+          setWithdrawals={setWithdrawals}
+          deposits={deposits}
+          setDeposits={setDeposits}
         />
       ),
       link: MAINPROFILE,
@@ -291,6 +299,7 @@ const Profile: React.FC<{
           year={currentYear}
           month={currentMonth}
           DateAmount={DateAmount}
+          withdrawals={withdrawals}
         />
       ),
       link: SUMMARY,
@@ -305,6 +314,7 @@ const Profile: React.FC<{
   return (
     <>
       {ProfileView.filter((v) => {
+        console.log(PARAMS);
         return v.link.trim() === PARAMS["*"];
       }).map((v) => {
         return (

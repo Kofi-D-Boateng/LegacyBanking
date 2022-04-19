@@ -1,12 +1,8 @@
 // PROFILE STRING COMPARISON
 const DEBITTRASFER: string = "Debit transfer";
-const COMPARE: { key: number; title: string }[] = [
-  { key: 1, title: DEBITTRASFER },
-  { key: 2, title: "transfer" },
-  { key: 3, title: "ACH Debit" },
-  { key: 4, title: "withdrawal" },
-  { key: 5, title: "Debit transfer" },
-];
+const TRANSFER: string = "transfer";
+const ACHDEBIT: string = "ACH Debit";
+const WITHDRAWAL: string = "withdrawal";
 
 // ROUTES
 const MAINPROFILE: string = "";
@@ -15,6 +11,7 @@ const CREDITSCORE: string = "credit-score";
 const LOANS: string = "personal-loans";
 const PAYMENT: string = "payments";
 const PROFILE: string = "/profile/*";
+const SECURITY: string = "account-security";
 const HOME: string = "/";
 const ABOUT: string = "/about";
 const LOCATIONS: string = "/locations";
@@ -25,7 +22,9 @@ const LOGIN: string = "/login";
 const REDIRECT: string = "*";
 export {
   DEBITTRASFER,
-  COMPARE,
+  ACHDEBIT,
+  TRANSFER,
+  WITHDRAWAL,
   SUMMARY,
   CREDITSCORE,
   LOANS,
@@ -40,4 +39,5 @@ export {
   REDIRECT,
   SIGNUP,
   LOGIN,
+  SECURITY,
 };

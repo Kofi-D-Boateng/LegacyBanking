@@ -1,3 +1,7 @@
+import { AttachMoney, Send } from "@mui/icons-material";
+import { Grid, SvgIconTypeMap, Typography } from "@mui/material";
+import { ReactElement, useState } from "react";
+
 const Payment: React.FC<{
   isMobile: boolean;
   customer: {
@@ -18,7 +22,16 @@ const Payment: React.FC<{
       location: string;
     }[];
   };
-}> = ({ isMobile, customer }) => {
+}> = () => {
+  // const [view, setView] = useState<string>("");
+  // const viewMap: {
+  //   key: number;
+  //   title: string;
+  //   svg: ReactElement;
+  // }[] = [
+  //   { key: 1, title: "Send Money", svg: <Send /> },
+  //   { key: 2, title: "Pay Bill", svg: <AttachMoney /> },
+  // ];
   return <></>;
 };
 

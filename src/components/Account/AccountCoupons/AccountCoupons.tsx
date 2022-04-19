@@ -1,16 +1,12 @@
-import {
-  Card,
-  CardContent,
-  ClassNameMap,
-  Grid,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, Grid, Paper, Typography } from "@mui/material";
 import React from "react";
 
-const AccountCoupons: React.FC<{ classes: ClassNameMap<string> }> = ({
-  classes,
-}) => {
+const AccountCoupons: React.FC<{
+  classes: {
+    readonly [key: string]: string;
+  };
+  isMobile: boolean;
+}> = ({ classes, isMobile }) => {
   const coupons: {
     key: number;
     title: string;
@@ -60,14 +56,14 @@ const AccountCoupons: React.FC<{ classes: ClassNameMap<string> }> = ({
                   sx={{
                     margin: "30px auto",
                     textAlign: "center",
-                    width: "70%",
+                    width: isMobile ? "90%" : "70%",
                     minHeight: "150px",
                     position: "relative",
                     border: "0.5px solid lightgray",
                   }}
                 >
                   <Grid xs={12} md={12} item>
-                    <Typography variant="h6">{c.title}</Typography>
+                    <Typography variant="body1">{c.title}</Typography>
                   </Grid>
                   <Grid xs={12} md={12} item>
                     <Typography variant="body1">{c.amount}</Typography>
