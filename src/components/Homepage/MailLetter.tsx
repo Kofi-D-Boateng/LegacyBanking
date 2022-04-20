@@ -1,4 +1,6 @@
-import { ClassNameMap, Grid, TextField, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import Form from "../Forms/MailLetterForm/MailLetterForm";
 
 const MailLetter: React.FC<{
   classes: {
@@ -6,6 +8,21 @@ const MailLetter: React.FC<{
   };
   isMobile: boolean;
 }> = ({ classes, isMobile }) => {
+  const [show, setShow] = useState<boolean>(false);
+  const [ready, setReady] = useState<boolean>(false);
+  const emailRef = useRef<HTMLInputElement>();
+
+  useEffect(() => {
+    // WE WILL SEND THIS EMAIL TO BACK END TO BE ADDED TO THE NEWSLETTER
+  }, [ready]);
+
+  const submitHandler: (e: React.FormEvent) => void = (e) => {
+    e.preventDefault();
+    if (emailRef.current?.value) {
+      setReady(true);
+    }
+  };
+
   return (
     <Grid className={classes.mail} container>
       <Grid xs={12} md={12} item>
@@ -14,23 +31,16 @@ const MailLetter: React.FC<{
           Stay up to date with the latest news from our business and global
           finances around the world!
         </Typography>
-        <form>
-          <TextField
-            sx={{
-              margin: "20px 0",
-              width: "40%",
-            }}
-            InputProps={{
-              className: classes.textfield,
-            }}
-            color="primary"
-            variant="filled"
-            type="email"
-            placeholder="enter email"
-            size="small"
-            fullWidth
-          />
-        </form>
+      </Grid>
+      <Grid xs={12} md={12} item>
+        <Form
+          isMobile={isMobile}
+          classes={classes}
+          show={show}
+          setShow={setShow}
+          emailRef={emailRef}
+          submit={submitHandler}
+        />
       </Grid>
     </Grid>
   );

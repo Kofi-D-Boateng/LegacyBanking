@@ -49,7 +49,7 @@ const Footer: React.FC<{
         <Grid xs={4} md={4} item>
           {links
             .filter((l) => {
-              return l.key <= 3;
+              return l.key <= 2;
             })
             .map((l) => {
               return (
@@ -64,7 +64,7 @@ const Footer: React.FC<{
         <Grid xs={4} md={4} item>
           {links
             .filter((l) => {
-              return l.key >= 4;
+              return l.key >= 3;
             })
             .map((l) => {
               return (

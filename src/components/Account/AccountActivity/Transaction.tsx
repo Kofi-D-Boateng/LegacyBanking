@@ -22,26 +22,16 @@ const Transaction: React.FC<{
     key: number;
     title: string;
   }[];
-  filter: string | undefined;
   YEAR: number;
-  MONTH: number;
-  setCurrentMonth: React.Dispatch<React.SetStateAction<number>>;
-}> = ({
-  classes,
-  categories,
-  filter,
-  transactions,
-  MONTH,
-  YEAR,
-  setCurrentMonth,
-}) => {
+  count: number;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
+}> = ({ classes, categories, transactions, YEAR, count, setCount }) => {
   return (
     <Grid sx={{ margin: "auto" }} container>
       {transactions
-        .filter((a) => {
+        .filter((a, index) => {
           return (
-            +a.dateOfTransaction.substring(0, 4) === YEAR &&
-            +a.dateOfTransaction.substring(6, 7) <= MONTH
+            +a.dateOfTransaction.substring(0, 4) === YEAR && index <= count
           );
         })
         .map((a) => {
@@ -110,7 +100,7 @@ const Transaction: React.FC<{
           variant="text"
           // THIS DOES NOT WORK AS INTENDED!!! MUST DECREMENT CURRENT TO SHOW PREVIOUS MONTHS.
           onClick={() => {
-            setCurrentMonth((prevState) => prevState + 1);
+            setCount((prevState) => prevState + 5);
           }}
         >
           See more activity

@@ -13,7 +13,7 @@ const Misc: React.FC<{
 }> = ({ classes, isMobile, info }) => {
   return (
     <>
-      {!isMobile && (
+      {!isMobile ? (
         <>
           {info.map((i) => {
             if (i.key % 2 !== 0) {
@@ -126,6 +126,56 @@ const Misc: React.FC<{
                 </Grid>
               );
             }
+          })}
+        </>
+      ) : (
+        <>
+          {info.map((i) => {
+            return (
+              <Grid key={i.key} sx={{ margin: "30px 0" }} container>
+                <Grid sx={{ margin: "30px 0" }} xs={12} item>
+                  <Grid sx={{ maxWidth: "90%", margin: "auto" }} container>
+                    <img className={i.css} src={i.src} alt="startup.jpg" />
+                  </Grid>
+                </Grid>
+                <Grid sx={{ margin: "auto", textAlign: "center" }} xs={12} item>
+                  <Grid
+                    sx={{ margin: " 20px auto", width: "70%" }}
+                    xs={12}
+                    item
+                  >
+                    <Typography variant="h5" sx={{ color: "black" }}>
+                      {i.title}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        textAlign: "center",
+                        margin: "20px 0",
+                        color: "black",
+                      }}
+                    >
+                      {i.desc}
+                    </Typography>
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        color: "purple",
+                        borderColor: "purple",
+                        "&:hover": {
+                          backgroundColor: "purple",
+                          color: "white",
+                          borderColor: "purple",
+                        },
+                      }}
+                      fullWidth
+                    >
+                      Learn more
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+            );
           })}
         </>
       )}

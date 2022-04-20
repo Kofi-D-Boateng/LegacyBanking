@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@mui/material";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import cityscape from "../assets/videos/cityscape.mp4";
 import Services from "../components/Homepage/Services";
 import startUp from "../assets/photos/startup.jpg";
@@ -9,9 +9,12 @@ import classes from "../styles/HomeStyles.module.css";
 import Banner from "../components/Homepage/Banner";
 import Misc from "../components/Homepage/Misc";
 import MailLetter from "../components/Homepage/MailLetter";
+import { BACKWARD, FORWARD } from "../components/UI/Constants/Constants";
 
 const Home: React.FC<{ mobile: boolean }> = ({ mobile }) => {
   const NAVIGATE: NavigateFunction = useNavigate();
+  const year = new Date().getFullYear();
+  const [view, setView] = useState<number>(0);
   const info: {
     key: number;
     title: string;
@@ -22,7 +25,7 @@ const Home: React.FC<{ mobile: boolean }> = ({ mobile }) => {
     {
       key: 1,
       title:
-        " Startups and small Small businesses: How we are empowering those to chase their dreams of having a small business.",
+        " Startups and Small businesses: How we are empowering those to chase their dreams of having a small business.",
       desc: " We work with startups and small business around the world to allow their continued growth to be substainable.",
       css: classes.img,
       src: startUp ? startUp : undefined,
@@ -35,6 +38,50 @@ const Home: React.FC<{ mobile: boolean }> = ({ mobile }) => {
       src: biz ? biz : undefined,
     },
   ];
+
+  const cards = [
+    {
+      key: 1,
+      title: "International",
+      description:
+        "A deep dive into our foreign strategies and relations with around the world.",
+      css: !mobile ? classes.international : classes.mobInternational,
+      css2: classes.cardDescription,
+      link: "/international",
+    },
+    {
+      key: 2,
+      title: "Insight",
+      description: `A look at our ${year} organizational plans.`,
+      css: !mobile ? classes.insight : classes.mobInsight,
+      css2: classes.cardDescription,
+      link: "/Insight",
+    },
+    {
+      key: 3,
+      title: "Investor Relations",
+      description: "Engage with our team on our monetary strategies.",
+      css: !mobile ? classes.investments : classes.mobInvestments,
+      css2: classes.cardDescription,
+      link: "/investments",
+    },
+  ];
+
+  const viewHandler: (e: React.MouseEvent<HTMLButtonElement>) => void = ({
+    currentTarget,
+  }) => {
+    const { value } = currentTarget;
+
+    if (value.includes(FORWARD) && view < cards.length - 1) {
+      setView(view + 1);
+      return;
+    }
+
+    if (value.includes(BACKWARD) && view > 0) {
+      setView(view - 1);
+      return;
+    }
+  };
 
   return (
     <Fragment>
@@ -62,7 +109,15 @@ const Home: React.FC<{ mobile: boolean }> = ({ mobile }) => {
         </Grid>
       </Grid>
       <Grid className={classes.serviceContainer} container>
-        <Services classes={classes} isMobile={mobile} />
+        <Services
+          classes={classes}
+          isMobile={mobile}
+          view={view}
+          cards={cards}
+          setView={viewHandler}
+          FORWARD={FORWARD}
+          BACKWARD={BACKWARD}
+        />
         <Misc classes={classes} isMobile={mobile} info={info} />
       </Grid>
       <MailLetter classes={classes} isMobile={mobile} />

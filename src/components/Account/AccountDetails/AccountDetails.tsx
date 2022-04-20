@@ -1,6 +1,5 @@
 import Wallet from "@mui/icons-material/AccountBalanceWallet";
 import Loan from "@mui/icons-material/CreditCard";
-import Debt from "@mui/icons-material/ReportProblem";
 import { Grid, Typography, Card, CardContent } from "@mui/material";
 import React, { ReactElement } from "react";
 import { NavLink } from "react-router-dom";
@@ -32,13 +31,6 @@ const AccountDetails: React.FC<{
       link: LOANS,
       desc: "See what loans you have taken",
       icon: <Loan fontSize="large" sx={{ color: "purple" }} />,
-    },
-    {
-      key: 3,
-      title: "Unpaid debt",
-      link: "/",
-      desc: "Check your unpaid debt",
-      icon: <Debt fontSize="large" sx={{ color: "purple" }} />,
     },
   ];
   return (

@@ -49,9 +49,7 @@ const Profile: React.FC<{
   const DateAmount: DateAmountType[] = [];
   const PARAMS = useParams<string>();
   const currentYear: number = new Date().getFullYear();
-  const [currentMonth, setCurrentMonth] = useState<number>(
-    new Date().getMonth() + 1
-  );
+  const currentMonth: number = new Date().getMonth() + 1;
   const [view, setView] = useState<boolean>(false);
   const [termsOfChoice, setTermsOfChoice] = useState<string>("");
   const [withdrawals, setWithdrawals] = useState<number>(0);
@@ -263,7 +261,6 @@ const Profile: React.FC<{
       key: 1,
       view: (
         <MainProfile
-          setCurrentMonth={setCurrentMonth}
           viewHandler={viewHandler}
           customer={customer}
           currentYear={currentYear}

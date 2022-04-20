@@ -1,15 +1,10 @@
-import React, { ChangeEvent, useCallback, useState } from "react";
+import React, { useState } from "react";
 import {
   Typography,
   Card,
   CardContent,
   Grid,
   IconButton,
-  FormControl,
-  InputLabel,
-  Select,
-  SelectChangeEvent,
-  MenuItem,
   ClassNameMap,
 } from "@mui/material";
 import Inactive from "@mui/icons-material/ChevronRight";
@@ -26,11 +21,9 @@ const AccountActivity: React.FC<{
     location: string;
   }[];
   YEAR: number;
-  MONTH: number;
-  setCurrentMonth: React.Dispatch<React.SetStateAction<number>>;
-}> = ({ classes, transactions, MONTH, YEAR, setCurrentMonth }) => {
+}> = ({ classes, transactions, YEAR }) => {
   const [view, setView] = useState<React.SetStateAction<boolean>>(false);
-  const [filter, setFilter] = useState<string | undefined>("");
+  const [count, setCount] = useState<number>(10);
 
   const categories: { key: number; title: string }[] = [
     { key: 1, title: "Date" },
@@ -46,15 +39,6 @@ const AccountActivity: React.FC<{
       setView(true);
     }
   };
-
-  const activityHandler: (e: ChangeEvent) => void = () => {};
-
-  const filterHandler = useCallback((event: SelectChangeEvent) => {
-    const { value } = event.target;
-    console.log(value);
-    console.log(typeof value);
-    setFilter(value);
-  }, []);
 
   return (
     <Card className={classes.card}>
@@ -103,13 +87,12 @@ const AccountActivity: React.FC<{
               {" "}
             </div>
             <Transaction
-              setCurrentMonth={setCurrentMonth}
               transactions={transactions}
               classes={classes}
-              filter={filter}
               categories={categories}
               YEAR={YEAR}
-              MONTH={MONTH}
+              count={count}
+              setCount={setCount}
             />
           </>
         )}

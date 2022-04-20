@@ -27,13 +27,15 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
       await axios
         .post("http://localhost:8081/api/v1/authentication/login", login)
         .then((response) => {
+          console.log(response.status);
           if (response.status === 200) {
             const { token } = response.data;
             dispatch(authActions.getCreds({ token: token }));
             navigate("/profile", { replace: true });
           }
         })
-        .catch((error) => {
+        .catch(() => {
+          console.log("HIT");
           setInvalid(true);
         });
     };

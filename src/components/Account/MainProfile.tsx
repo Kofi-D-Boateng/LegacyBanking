@@ -43,7 +43,6 @@ const MainProfile: React.FC<{
   setWithdrawals: React.Dispatch<React.SetStateAction<number>>;
   setDeposits: React.Dispatch<React.SetStateAction<number>>;
   viewHandler: (event: ChangeEvent<HTMLElement>) => void;
-  setCurrentMonth: React.Dispatch<React.SetStateAction<number>>;
 }> = ({
   modal,
   modals,
@@ -57,7 +56,6 @@ const MainProfile: React.FC<{
   setDeposits,
   setWithdrawals,
   viewHandler,
-  setCurrentMonth,
 }) => {
   return (
     <>
@@ -94,8 +92,6 @@ const MainProfile: React.FC<{
                 <Grid xs={12} md={12} item>
                   <AccountActivity
                     YEAR={currentYear}
-                    MONTH={currentMonth}
-                    setCurrentMonth={setCurrentMonth}
                     transactions={customer.transactions}
                     classes={classes}
                   />
@@ -149,8 +145,6 @@ const MainProfile: React.FC<{
             <Grid xs={12} item>
               <AccountActivity
                 YEAR={currentYear}
-                MONTH={currentMonth}
-                setCurrentMonth={setCurrentMonth}
                 transactions={customer.transactions}
                 classes={classes}
               />

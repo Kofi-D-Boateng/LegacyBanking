@@ -71,13 +71,12 @@ const AccountNavbar: React.FC<{
                   return (
                     <Button
                       key={o.key}
-                      variant="outlined"
+                      variant="text"
                       sx={{
                         borderColor: "white",
                         display: "inline-flex",
                         color: "white",
                         float: "right",
-                        marginLeft: "60%",
                         textTransform: "none",
 
                         "&:hover": {
@@ -142,10 +141,10 @@ const AccountNavbar: React.FC<{
                       onClick={() => {
                         if (!o.title.includes("Sign out")) {
                           navigate(o.link, { replace: true });
-                          return;
                         } else {
                           dispatch(authActions.logout());
                         }
+                        setShowLinks(null);
                       }}
                     >
                       {o.title}
