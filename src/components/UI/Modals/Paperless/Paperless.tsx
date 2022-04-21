@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Backdrop from "../Backdrops/Backdrop";
+import Backdrop from "../../Backdrops/Backdrop";
 import {
   Card,
   CardContent,
@@ -14,7 +14,6 @@ import {
   SelectChangeEvent,
   Button,
 } from "@mui/material";
-import { backdropDiv, overlayDiv } from "../Layouts/RootElement";
 import CloseIcon from "@mui/icons-material/Close";
 
 const Modal: React.FC<{
@@ -119,10 +118,12 @@ const Paperless: React.FC<{
   classes: {
     readonly [key: string]: string;
   };
-}> = ({ Exit, isMobile, onChoice, classes }) => {
+  BACKDROPDIV: HTMLElement;
+  OVERLAYDIV: HTMLElement;
+}> = ({ Exit, isMobile, onChoice, classes, BACKDROPDIV, OVERLAYDIV }) => {
   return (
     <>
-      {ReactDOM.createPortal(<Backdrop Exit={Exit} />, backdropDiv)}
+      {ReactDOM.createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV)}
       {ReactDOM.createPortal(
         <Modal
           classes={classes}
@@ -130,7 +131,7 @@ const Paperless: React.FC<{
           paperlessHandler={onChoice}
           isMobile={isMobile}
         />,
-        overlayDiv
+        OVERLAYDIV
       )}
     </>
   );

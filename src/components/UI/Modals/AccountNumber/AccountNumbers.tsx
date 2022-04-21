@@ -2,8 +2,7 @@ import React from "react";
 import { createPortal } from "react-dom";
 import { Card, CardContent, Grid, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import Backdrop from "../Backdrops/Backdrop";
-import { backdropDiv, overlayDiv } from "../Layouts/RootElement";
+import Backdrop from "../../Backdrops/Backdrop";
 
 const Modal: React.FC<{
   Exit: () => void;
@@ -81,10 +80,20 @@ const AccountNumbers: React.FC<{
   classes: {
     readonly [key: string]: string;
   };
-}> = ({ Exit, isMobile, accountNum, routingNum, classes }) => {
+  BACKDROPDIV: HTMLElement;
+  OVERLAYDIV: HTMLElement;
+}> = ({
+  Exit,
+  isMobile,
+  accountNum,
+  routingNum,
+  classes,
+  BACKDROPDIV,
+  OVERLAYDIV,
+}) => {
   return (
     <>
-      {createPortal(<Backdrop Exit={Exit} />, backdropDiv)}
+      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV)}
       {createPortal(
         <Modal
           AN={accountNum}
@@ -93,7 +102,7 @@ const AccountNumbers: React.FC<{
           Exit={Exit}
           classes={classes}
         />,
-        overlayDiv
+        OVERLAYDIV
       )}
     </>
   );

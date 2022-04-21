@@ -21,18 +21,23 @@ import { customerActions } from "../store/customer/customer";
 import { RootState } from "../store/store";
 import { authActions } from "../store/authentication/auth-slice";
 import classes from "../styles/ProfileStyles.module.css";
-import MoneyTransfer from "../components/UI/Modals/MoneyTransfer";
+import MoneyTransfer from "../components/UI/Modals/MoneyTransfer/MoneyTransfer";
 import MoneyTransferStyles from "../styles/MoneyTransfer.module.css";
-import Statement from "../components/UI/Modals/Statement";
-import Paperless from "../components/UI/Modals/Paperless";
-import AccountNumbers from "../components/UI/Modals/AccountNumbers";
+import Statement from "../components/UI/Modals/Statement/Statement";
+import Paperless from "../components/UI/Modals/Paperless/Paperless";
+import AccountNumbers from "../components/UI/Modals/AccountNumber/AccountNumbers";
 import {
+  ACCOUNTNUMBER,
   CREDITSCORE,
   DEBITTRASFER,
   LOANS,
   MAINPROFILE,
+  MONEYTRANSFER,
+  PAPERLESS,
   PAYMENT,
   REDIRECT,
+  SECURITY,
+  STATEMENT,
   SUMMARY,
 } from "../components/UI/Constants/Constants";
 import MainProfile from "../components/Account/MainProfile";
@@ -41,6 +46,8 @@ import PersonalLoans from "../components/Account/Loans/PersonalLoans";
 import Summary from "../components/Account/AccountDetails/Summary";
 import { DateAmountType } from "../Interfaces/Maps";
 import Payment from "../components/Account/Payments/Payment";
+import AccountSecurity from "../components/UI/Modals/AccountSecurity/AccountSecurity";
+import { backdropDiv, overlayDiv } from "../components/UI/Layouts/RootElement";
 
 const Profile: React.FC<{
   token: string;
@@ -131,7 +138,7 @@ const Profile: React.FC<{
               })
             );
           }
-          dispatch(modalActions.setView({ view: undefined }));
+          dispatch(modalActions.setView({ view: "" }));
         })
         .catch((error) => {
           console.log(error);
@@ -158,7 +165,7 @@ const Profile: React.FC<{
   );
 
   const exitHandler = useCallback(() => {
-    dispatch(modalActions.setView({ view: undefined }));
+    dispatch(modalActions.setView({ view: "" }));
     setTermsOfChoice("");
     setView(false);
   }, [dispatch]);
@@ -185,13 +192,9 @@ const Profile: React.FC<{
   const paperlessHandler = useCallback(
     (event: SelectChangeEvent<string | boolean>) => {
       const { value } = event.target;
-      if (value === "true") {
-        dispatch(modalActions.setPaperless({ paperless: true }));
-        return;
-      }
-      dispatch(modalActions.setPaperless({ paperless: false }));
+      console.log(value);
     },
-    [dispatch]
+    []
   );
 
   const choiceHandler = useCallback((event: SelectChangeEvent) => {
@@ -204,9 +207,11 @@ const Profile: React.FC<{
   const modals: { key: number; modal: JSX.Element; type: string }[] = [
     {
       key: 1,
-      type: "Transfer Money",
+      type: MONEYTRANSFER,
       modal: (
         <MoneyTransfer
+          BACKDROPDIV={backdropDiv}
+          OVERLAYDIV={overlayDiv}
           classes={MoneyTransferStyles}
           onTransfer={transferHandler}
           Exit={exitHandler}
@@ -219,9 +224,11 @@ const Profile: React.FC<{
     },
     {
       key: 2,
-      type: "Statement",
+      type: STATEMENT,
       modal: (
         <Statement
+          BACKDROPDIV={backdropDiv}
+          OVERLAYDIV={overlayDiv}
           classes={MoneyTransferStyles}
           Exit={exitHandler}
           isMobile={mobile}
@@ -231,9 +238,11 @@ const Profile: React.FC<{
     },
     {
       key: 3,
-      type: "Paperless",
+      type: PAPERLESS,
       modal: (
         <Paperless
+          BACKDROPDIV={backdropDiv}
+          OVERLAYDIV={overlayDiv}
           classes={MoneyTransferStyles}
           Exit={exitHandler}
           onChoice={paperlessHandler}
@@ -243,14 +252,29 @@ const Profile: React.FC<{
     },
     {
       key: 4,
-      type: "Full account numbers",
+      type: ACCOUNTNUMBER,
       modal: (
         <AccountNumbers
+          BACKDROPDIV={backdropDiv}
+          OVERLAYDIV={overlayDiv}
           classes={MoneyTransferStyles}
           accountNum={customer.accountNum}
           routingNum={customer.routingNum}
           Exit={exitHandler}
           isMobile={mobile}
+        />
+      ),
+    },
+    {
+      key: 5,
+      type: SECURITY,
+      modal: (
+        <AccountSecurity
+          Exit={exitHandler}
+          classes={MoneyTransferStyles}
+          isMobile={mobile}
+          BACKDROPDIV={backdropDiv}
+          OVERLAYDIV={overlayDiv}
         />
       ),
     },
@@ -261,6 +285,11 @@ const Profile: React.FC<{
       key: 1,
       view: (
         <MainProfile
+          STATEMENT={STATEMENT}
+          SECURITY={SECURITY}
+          MONEYTRANSFER={MONEYTRANSFER}
+          PAPERLESS={PAPERLESS}
+          ACCOUNTNUMBER={ACCOUNTNUMBER}
           viewHandler={viewHandler}
           customer={customer}
           currentYear={currentYear}
@@ -311,7 +340,6 @@ const Profile: React.FC<{
   return (
     <>
       {ProfileView.filter((v) => {
-        console.log(PARAMS);
         return v.link.trim() === PARAMS["*"];
       }).map((v) => {
         return (

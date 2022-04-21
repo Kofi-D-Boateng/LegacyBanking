@@ -27,6 +27,11 @@ const AccountInfo: React.FC<{
   MONTH: number;
   withdrawals: number;
   deposits: number;
+  STATEMENT: string;
+  SECURITY: string;
+  MONEYTRANSFER: string;
+  PAPERLESS: string;
+  ACCOUNTNUMBER: string;
   setWithdrawals: React.Dispatch<React.SetStateAction<number>>;
   setDeposits: React.Dispatch<React.SetStateAction<number>>;
   onSetView: (event: any) => void;
@@ -36,14 +41,19 @@ const AccountInfo: React.FC<{
   lName,
   funds,
   transactions,
-  onSetView,
   mobile,
   MONTH,
   YEAR,
   deposits,
+  withdrawals,
+  ACCOUNTNUMBER,
+  MONEYTRANSFER,
+  PAPERLESS,
+  SECURITY,
+  STATEMENT,
   setDeposits,
   setWithdrawals,
-  withdrawals,
+  onSetView,
 }) => {
   useEffect(() => {
     let withdrawal: number = 0;
@@ -72,7 +82,7 @@ const AccountInfo: React.FC<{
     const floatDeposit = parseFloat(deposit.toFixed(2));
     setDeposits(floatDeposit);
     setWithdrawals(floatWithdrawal);
-  }, [YEAR, MONTH, transactions]);
+  }, [YEAR, MONTH, transactions, setDeposits, setWithdrawals]);
 
   const details: { key: number; value: string; desc: string }[] = [
     {
@@ -93,9 +103,10 @@ const AccountInfo: React.FC<{
   ];
 
   const links: { key: number; title: string }[] = [
-    { key: 1, title: "Statement" },
-    { key: 2, title: "Paperless" },
-    { key: 3, title: "Transfer Money" },
+    { key: 1, title: STATEMENT },
+    { key: 2, title: PAPERLESS },
+    { key: 3, title: MONEYTRANSFER },
+    { key: 4, title: SECURITY },
   ];
   return (
     <Card className={classes.card}>
@@ -115,7 +126,7 @@ const AccountInfo: React.FC<{
             onClick={onSetView}
             variant="text"
           >
-            Full account numbers
+            {ACCOUNTNUMBER}
           </Button>
         </Typography>
         <Grid sx={{ margin: "10px 0" }} container>
@@ -127,9 +138,9 @@ const AccountInfo: React.FC<{
             return (
               <Grid
                 key={l.key}
-                className={l.key !== 3 ? classes.linksContainer : ""}
+                className={l.key !== 4 ? classes.linksContainer : ""}
                 sx={
-                  l.key === 3 ? { textAlign: "center", margin: "auto" } : null
+                  l.key === 4 ? { textAlign: "center", margin: "auto" } : null
                 }
                 xs={12 / links.length}
                 md={12 / links.length}

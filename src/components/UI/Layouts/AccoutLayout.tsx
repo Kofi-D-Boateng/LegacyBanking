@@ -1,13 +1,12 @@
 import React from "react";
 import { GlobalLayouts } from "../../../GlobalTypes/types";
-import { HOME, PROFILE, SECURITY } from "../Constants/Constants";
+import { HOME, PROFILE } from "../Constants/Constants";
 import { AccountFooter } from "../Footer";
 import { AccountNavbar } from "../Navbar";
 
 const AccountLayout: React.FC<GlobalLayouts> = ({ children, mobile }) => {
   const options: { key: number; title: string; link: string }[] = [
     { key: 1, title: "Accounts", link: PROFILE.substring(0, 8) },
-    { key: 2, title: "Security & Privacy", link: SECURITY },
     { key: 3, title: "Sign out", link: HOME },
   ];
 

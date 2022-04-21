@@ -5,9 +5,8 @@ import { createPortal } from "react-dom";
 import {
   MockStatements,
   MockStatementsTiles,
-} from "../../../assets/data/MockData";
-import Backdrop from "../Backdrops/Backdrop";
-import { backdropDiv, overlayDiv } from "../Layouts/RootElement";
+} from "../../../../assets/data/MockData";
+import Backdrop from "../../Backdrops/Backdrop";
 
 const Modal: React.FC<{
   classes: {
@@ -125,10 +124,12 @@ const Statement: React.FC<{
     amount: number;
     amountPaid: number;
   }[];
-}> = ({ Exit, isMobile, classes, MockStatements }) => {
+  BACKDROPDIV: HTMLElement;
+  OVERLAYDIV: HTMLElement;
+}> = ({ Exit, isMobile, classes, MockStatements, BACKDROPDIV, OVERLAYDIV }) => {
   return (
     <>
-      {createPortal(<Backdrop Exit={Exit} />, backdropDiv)}
+      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV)}
       {createPortal(
         <Modal
           classes={classes}
@@ -136,7 +137,7 @@ const Statement: React.FC<{
           isMobile={isMobile}
           MockStatements={MockStatements}
         />,
-        overlayDiv
+        OVERLAYDIV
       )}
     </>
   );

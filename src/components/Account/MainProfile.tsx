@@ -6,7 +6,7 @@ import AccountCoupons from "./AccountCoupons/AccountCoupons";
 import AccountDetails from "./AccountDetails/AccountDetails";
 const MainProfile: React.FC<{
   modal: {
-    view: string | undefined;
+    view: string;
     paperless: boolean | undefined;
   };
   modals: {
@@ -40,6 +40,11 @@ const MainProfile: React.FC<{
   };
   withdrawals: number;
   deposits: number;
+  STATEMENT: string;
+  SECURITY: string;
+  MONEYTRANSFER: string;
+  PAPERLESS: string;
+  ACCOUNTNUMBER: string;
   setWithdrawals: React.Dispatch<React.SetStateAction<number>>;
   setDeposits: React.Dispatch<React.SetStateAction<number>>;
   viewHandler: (event: ChangeEvent<HTMLElement>) => void;
@@ -56,13 +61,18 @@ const MainProfile: React.FC<{
   setDeposits,
   setWithdrawals,
   viewHandler,
+  ACCOUNTNUMBER,
+  MONEYTRANSFER,
+  PAPERLESS,
+  SECURITY,
+  STATEMENT,
 }) => {
   return (
     <>
       {modal.view &&
         modals
           .filter((m) => {
-            return m.type === modal.view;
+            return m.type.includes(modal.view);
           })
           .map((a) => {
             return <Container key={a.key}>{a.modal}</Container>;
@@ -74,6 +84,11 @@ const MainProfile: React.FC<{
               <Grid container>
                 <Grid xs={12} md={12} item>
                   <AccountInfo
+                    STATEMENT={STATEMENT}
+                    SECURITY={SECURITY}
+                    MONEYTRANSFER={MONEYTRANSFER}
+                    PAPERLESS={PAPERLESS}
+                    ACCOUNTNUMBER={ACCOUNTNUMBER}
                     YEAR={currentYear}
                     MONTH={currentMonth}
                     mobile={mobile}
@@ -115,6 +130,11 @@ const MainProfile: React.FC<{
               <Grid container>
                 <Grid xs={12} item>
                   <AccountInfo
+                    STATEMENT={STATEMENT}
+                    SECURITY={SECURITY}
+                    MONEYTRANSFER={MONEYTRANSFER}
+                    PAPERLESS={PAPERLESS}
+                    ACCOUNTNUMBER={ACCOUNTNUMBER}
                     YEAR={currentYear}
                     MONTH={currentMonth}
                     mobile={mobile}

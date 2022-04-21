@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import Backdrop from "../Backdrops/Backdrop";
+import Backdrop from "../../Backdrops/Backdrop";
 import {
   Button,
   Card,
@@ -16,7 +16,6 @@ import {
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { backdropDiv, overlayDiv } from "../Layouts/RootElement";
 
 const Modal: React.FC<{
   classes: {
@@ -101,7 +100,7 @@ const Modal: React.FC<{
       </Grid>
       <CardContent sx={{ margin: "auto" }}>
         {!view ? (
-          <FormControl sx={!isMobile ? { width: "100%" } : { width: "100%" }}>
+          <FormControl sx={{ width: "100%" }}>
             <InputLabel id="Choice">Send By....</InputLabel>
             <Select
               labelId="Choice"
@@ -206,6 +205,8 @@ const MoneyTransfer: React.FC<{
   classes: {
     readonly [key: string]: string;
   };
+  BACKDROPDIV: HTMLElement;
+  OVERLAYDIV: HTMLElement;
 }> = ({
   Exit,
   onTransfer,
@@ -214,10 +215,12 @@ const MoneyTransfer: React.FC<{
   termsOfChoice,
   isMobile,
   classes,
+  BACKDROPDIV,
+  OVERLAYDIV,
 }) => {
   return (
     <>
-      {createPortal(<Backdrop Exit={Exit} />, backdropDiv)}
+      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV)}
       {createPortal(
         <Modal
           Exit={Exit}
@@ -228,7 +231,7 @@ const MoneyTransfer: React.FC<{
           classes={classes}
           isMobile={isMobile}
         />,
-        overlayDiv
+        OVERLAYDIV
       )}
     </>
   );

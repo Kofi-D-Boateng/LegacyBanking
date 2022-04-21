@@ -7,7 +7,6 @@ const WITHDRAWAL: string = "withdrawal";
 // ROUTES
 const MAINPROFILE: string = "";
 const SUMMARY: string = "account-summary";
-const SECURITY: string = "account-security";
 const CREDITSCORE: string = "credit-score";
 const LOANS: string = "personal-loans";
 const PAYMENT: string = "payments";
@@ -21,9 +20,26 @@ const SIGNUP: string = "/signup";
 const LOGIN: string = "/login";
 const REDIRECT: string = "*";
 
+// MODAL VALUES
+const SECURITY: string = "Account Security";
+const STATEMENT: string = "Statement";
+const PAPERLESS: string = "Paperless";
+const MONEYTRANSFER: string = "Money Transfer";
+const ACCOUNTNUMBER: string = "Full account numbers";
+const LOCKACCOUNT: string = "Lock your account";
+const LOCKCARD: string = "Lock your card";
+
 // BUTTON VALUES
 const FORWARD: string = "forward";
 const BACKWARD: string = "backward";
+const LOCKEDCARD: string = "Locked Card";
+const LOCKEDACCOUNT: string = "Locked Account";
+
+// MESSAGES
+const LOCKEDCARDMSG: string =
+  "Your card has been recently locked by you or for fraudulent activities. Please check your email for steps on access to a new card";
+const LOCKEDACCOUNTMSG: string =
+  "Your account has been temporarily locked. Please check your email in regards for next steps on gaining access to your account.";
 
 export {
   DEBITTRASFER,
@@ -47,4 +63,14 @@ export {
   SECURITY,
   BACKWARD,
   FORWARD,
+  MONEYTRANSFER,
+  PAPERLESS,
+  STATEMENT,
+  ACCOUNTNUMBER,
+  LOCKACCOUNT,
+  LOCKCARD,
+  LOCKEDACCOUNT,
+  LOCKEDCARD,
+  LOCKEDACCOUNTMSG,
+  LOCKEDCARDMSG,
 };
