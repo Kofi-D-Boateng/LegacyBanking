@@ -17,6 +17,7 @@ import Layout from "./components/UI/Layouts/Layout";
 import Home from "./pages/Home";
 import {
   ABOUT,
+  AUTHAPI,
   CONTACT,
   HOME,
   INVESTMENTS,
@@ -71,15 +72,23 @@ const App: React.FC = () => {
           <Routes>
             <Route path={HOME} element={<Home mobile={mobile} />} />
             <Route path={ABOUT} element={<About />} />
-            <Route path={LOCATIONS} element={<Locations isMobile={mobile} />} />
+            <Route
+              path={LOCATIONS}
+              element={<Locations URL={AUTHAPI} isMobile={mobile} />}
+            />
             <Route path={INVESTMENTS} element={<Investment />} />
             <Route path={CONTACT} element={<Contact />} />
-            <Route path={LOGIN} element={<Login isMobile={mobile} />} />
-            <Route path={SIGNUP} element={<Signup />} />
+            <Route
+              path={LOGIN}
+              element={<Login URL={AUTHAPI} isMobile={mobile} />}
+            />
+            <Route path={SIGNUP} element={<Signup URL={AUTHAPI} />} />
             {auth.authenticated && (
               <Route
                 path={PROFILE}
-                element={<Profile token={auth.token} mobile={mobile} />}
+                element={
+                  <Profile URL={AUTHAPI} token={auth.token} mobile={mobile} />
+                }
               />
             )}
             <Route path={REDIRECT} element={<Navigate replace to={HOME} />} />
@@ -95,15 +104,23 @@ const App: React.FC = () => {
           <Routes>
             <Route path={HOME} element={<Home mobile={mobile} />} />
             <Route path={ABOUT} element={<About />} />
-            <Route path={LOCATIONS} element={<Locations isMobile={mobile} />} />
+            <Route
+              path={LOCATIONS}
+              element={<Locations URL={AUTHAPI} isMobile={mobile} />}
+            />
             <Route path={INVESTMENTS} element={<Investment />} />
             <Route path={CONTACT} element={<Contact />} />
-            <Route path={LOGIN} element={<Login isMobile={mobile} />} />
-            <Route path={SIGNUP} element={<Signup />} />
+            <Route
+              path={LOGIN}
+              element={<Login URL={AUTHAPI} isMobile={mobile} />}
+            />
+            <Route path={SIGNUP} element={<Signup URL={AUTHAPI} />} />
             {auth.authenticated && (
               <Route
                 path={PROFILE}
-                element={<Profile token={auth.token} mobile={mobile} />}
+                element={
+                  <Profile URL={AUTHAPI} token={auth.token} mobile={mobile} />
+                }
               />
             )}
             <Route path={REDIRECT} element={<Navigate replace to={HOME} />} />

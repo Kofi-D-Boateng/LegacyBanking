@@ -1,14 +1,74 @@
-import { GridTypeMap } from "@mui/material";
+import {
+  ExtendButtonBase,
+  FormControlLabelProps,
+  FormControlTypeMap,
+  GridTypeMap,
+  MenuItemTypeMap,
+  RadioGroupProps,
+  RadioProps,
+} from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
+import { LOCKEDACCOUNT } from "../../Constants/Constants";
 
 const AccountLock: React.FC<{
   setView: React.Dispatch<React.SetStateAction<string>>;
   Grid: OverridableComponent<GridTypeMap<{}, "div">>;
-}> = ({ Grid, setView }) => {
+  FormControl: OverridableComponent<FormControlTypeMap<{}, "div">>;
+  RadioGroup: (props: RadioGroupProps) => JSX.Element;
+  MenuItem: ExtendButtonBase<MenuItemTypeMap<{}, "li">>;
+  Radio: (props: RadioProps) => JSX.Element;
+  FormControlLabel: (props: FormControlLabelProps) => JSX.Element;
+  setChoice: React.Dispatch<
+    React.SetStateAction<{
+      choice: boolean;
+      item: string;
+    }>
+  >;
+}> = ({
+  Grid,
+  setView,
+  FormControl,
+  FormControlLabel,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  setChoice,
+}) => {
+  const changeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void = ({
+    currentTarget,
+  }) => {
+    const { value } = currentTarget;
+    if (value.includes("true")) {
+      setChoice({ choice: true, item: LOCKEDACCOUNT });
+      setView("");
+    }
+  };
   return (
     <>
-      <Grid>
-        <h1>HELLO</h1>
+      <Grid container>
+        <Grid sx={{ margin: "auto", textAlign: "center" }} xs={6} md={6} item>
+          Lock card due to theft or lost card
+        </Grid>
+        <Grid sx={{ textAlign: "center" }} xs={6} md={6} item>
+          <FormControl>
+            <RadioGroup onChange={changeHandler} defaultValue="none">
+              <FormControlLabel
+                value={true}
+                control={
+                  <Radio
+                    color="success"
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: "transparent",
+                      },
+                    }}
+                  />
+                }
+                label="Yes"
+              />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
       </Grid>
     </>
   );

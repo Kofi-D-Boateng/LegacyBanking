@@ -52,7 +52,8 @@ import { backdropDiv, overlayDiv } from "../components/UI/Layouts/RootElement";
 const Profile: React.FC<{
   token: string;
   mobile: boolean;
-}> = ({ token, mobile }) => {
+  URL: string;
+}> = ({ token, mobile, URL }) => {
   const DateAmount: DateAmountType[] = [];
   const PARAMS = useParams<string>();
   const currentYear: number = new Date().getFullYear();
@@ -66,10 +67,10 @@ const Profile: React.FC<{
   const dispatch = useDispatch<Dispatch<any>>();
   const navigate: NavigateFunction = useNavigate();
   useEffect(() => {
-    const fetchAccount = async () => {
+    const fetchAccount: (token: string) => void = async (token) => {
       await axios({
         method: "GET",
-        url: "http://localhost:8081/api/v1/authentication/profile/info",
+        url: `${URL}/authentication/profile/info`,
         headers: {
           authorization: token,
         },
@@ -153,8 +154,8 @@ const Profile: React.FC<{
       fetchTransfer(customer.accountTransfer);
       return;
     }
-    fetchAccount();
-  }, [token, dispatch, customer.accountTransfer, navigate]);
+    fetchAccount(token);
+  }, [token, dispatch, customer.accountTransfer, navigate, URL]);
 
   const viewHandler = useCallback(
     (event: ChangeEvent<HTMLElement>) => {
@@ -270,6 +271,9 @@ const Profile: React.FC<{
       type: SECURITY,
       modal: (
         <AccountSecurity
+          accountNumber={customer.accountNum}
+          URL={URL}
+          token={token}
           Exit={exitHandler}
           classes={MoneyTransferStyles}
           isMobile={mobile}

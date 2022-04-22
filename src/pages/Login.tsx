@@ -8,7 +8,10 @@ import { authActions } from "../store/authentication/auth-slice";
 import classes from "../styles/LoginStyles.module.css";
 import { credentials } from "../Interfaces/Credentials";
 
-const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
+const Login: React.FC<{ isMobile: boolean; URL: string }> = ({
+  isMobile,
+  URL,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [invalid, setInvalid] = useState<boolean>(false);
@@ -25,7 +28,7 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
     }
     const fetchUserLogin = async (login: {}) => {
       await axios
-        .post("http://localhost:8081/api/v1/authentication/login", login)
+        .post(`${URL}/authentication/login`, login)
         .then((response) => {
           console.log(response.status);
           if (response.status === 200) {
@@ -40,7 +43,7 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
         });
     };
     fetchUserLogin(user);
-  }, [user, dispatch, navigate]);
+  }, [user, dispatch, navigate, URL]);
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();

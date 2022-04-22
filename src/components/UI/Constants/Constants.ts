@@ -1,3 +1,6 @@
+// BACKEND URL
+const AUTHAPI: string = "http://localhost:8081/api/v1";
+
 // PROFILE STRING COMPARISON
 const DEBITTRASFER: string = "Debit transfer";
 const TRANSFER: string = "transfer";
@@ -40,7 +43,8 @@ const LOCKEDCARDMSG: string =
   "Your card has been recently locked by you or for fraudulent activities. Please check your email for steps on access to a new card";
 const LOCKEDACCOUNTMSG: string =
   "Your account has been temporarily locked. Please check your email in regards for next steps on gaining access to your account.";
-
+const SECURITYERRORMSG: string =
+  "We are sorry, there was an error processing your request on our end.";
 export {
   DEBITTRASFER,
   ACHDEBIT,
@@ -73,4 +77,6 @@ export {
   LOCKEDCARD,
   LOCKEDACCOUNTMSG,
   LOCKEDCARDMSG,
+  AUTHAPI,
+  SECURITYERRORMSG,
 };
