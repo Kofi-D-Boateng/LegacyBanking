@@ -5,6 +5,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 1,
     country: "Japan",
     ISO_code: "JP",
+    local_branch: "",
     geometry: {
       city: "Tokyo",
       lat: 35.6762,
@@ -15,6 +16,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 2,
     country: "China",
     ISO_code: "CN",
+    local_branch: "",
     geometry: {
       city: "Shenzhen",
       lat: 22.5429,
@@ -25,6 +27,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 3,
     country: "South Korea",
     ISO_code: "SK",
+    local_branch: "",
     geometry: {
       city: "Seoul",
       lat: 37.566536,
@@ -35,6 +38,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 4,
     country: "Vietnam",
     ISO_code: "VN",
+    local_branch: "",
     geometry: {
       city: "Ho Chi Minh",
       lat: 10.8231,
@@ -45,6 +49,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 5,
     country: "Ghana",
     ISO_code: "GH",
+    local_branch: "",
     geometry: {
       city: "Accra",
       lat: 5.6037,
@@ -55,6 +60,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 6,
     country: "Ethiopia",
     ISO_code: "ET",
+    local_branch: "",
     geometry: {
       city: "Addis Ababa",
       lat: 8.9806,
@@ -65,6 +71,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 7,
     country: "Russia",
     ISO_code: "RU",
+    local_branch: "",
     geometry: {
       city: "Moscow",
       lat: 55.7558,
@@ -75,6 +82,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 8,
     country: "Canada",
     ISO_code: "CA",
+    local_branch: "",
     geometry: {
       city: "Toronto",
       lat: 43.653225,
@@ -85,6 +93,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 9,
     country: "Germany",
     ISO_code: "DE",
+    local_branch: "",
     geometry: {
       city: "Berlin",
       lat: 52.52,
@@ -95,6 +104,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 10,
     country: "The United Kingdom",
     ISO_code: "GB",
+    local_branch: "",
     geometry: {
       city: "london",
       lat: 51.5072,
@@ -105,6 +115,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 11,
     country: "The United States",
     ISO_code: "US",
+    local_branch: "",
     geometry: {
       city: "Nevada",
       lat: 38.8026,
@@ -115,6 +126,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 12,
     country: "The United States",
     ISO_code: "US",
+    local_branch: "",
     geometry: {
       city: "California",
       lat: 36.7783,
@@ -125,6 +137,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 13,
     country: "The United States",
     ISO_code: "US",
+    local_branch: "",
     geometry: {
       city: "Iowa",
       lat: 41.878,
@@ -135,6 +148,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 14,
     country: "The United States",
     ISO_code: "US",
+    local_branch: "",
     geometry: {
       city: "Illinois",
       lat: 40.6331,
@@ -145,6 +159,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 15,
     country: "The United States",
     ISO_code: "US",
+    local_branch: "",
     geometry: {
       city: "Ohio",
       lat: 40.4173,
@@ -155,6 +170,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 16,
     country: "The United States",
     ISO_code: "US",
+    local_branch: "",
     geometry: {
       city: "Texas",
       lat: 31.9686,
@@ -165,6 +181,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 17,
     country: "The United States",
     ISO_code: "US",
+    local_branch: "",
     geometry: {
       city: "Tennessee",
       lat: 35.5175,
@@ -175,6 +192,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 18,
     country: "The United States",
     ISO_code: "US",
+    local_branch: "",
     geometry: {
       city: "Georgia",
       lat: 32.1656,
@@ -185,6 +203,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 19,
     country: "The United States",
     ISO_code: "US",
+    local_branch: "",
     geometry: {
       city: "Pennsylvania",
       lat: 41.2033,
@@ -195,6 +214,7 @@ export let GEOLOCATION: Geolocation[] = [
     id: 20,
     country: "The United States",
     ISO_code: "US",
+    local_branch: "",
     geometry: {
       city: "Massachusetts",
       lat: 42.4072,

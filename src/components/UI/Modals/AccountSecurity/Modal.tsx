@@ -6,7 +6,6 @@ import {
   FormControlTypeMap,
   GridTypeMap,
   IconButtonTypeMap,
-  MenuItemTypeMap,
   RadioGroupProps,
   RadioProps,
   SvgIconTypeMap,
@@ -30,7 +29,6 @@ const Modal: React.FC<{
   FormControlLabel: (props: FormControlLabelProps) => JSX.Element;
   RadioGroup: (props: RadioGroupProps) => JSX.Element;
   Radio: (props: RadioProps) => JSX.Element;
-  MenuItem: ExtendButtonBase<MenuItemTypeMap<{}, "li">>;
   Lock: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
   };
@@ -48,6 +46,7 @@ const Modal: React.FC<{
   LOCKACCOUNT: string;
   LOCKEDACCOUNT: string;
   LOCKEDACCOUNTMSG: string;
+  isCardLocked: boolean;
   setChoice: Dispatch<
     SetStateAction<{
       choice: boolean;
@@ -81,12 +80,12 @@ const Modal: React.FC<{
   LOCKACCOUNT,
   LOCKCARD,
   CreditCard,
-  MenuItem,
   Lock,
   choice,
   setChoice,
   setView,
   view,
+  isCardLocked,
 }) => {
   const SECURITYOPTIONS: { key: number; title: string; svg: ReactElement }[] = [
     { key: 1, title: LOCKACCOUNT, svg: <Lock /> },
@@ -102,7 +101,6 @@ const Modal: React.FC<{
           FormControl={FormControl}
           RadioGroup={RadioGroup}
           Radio={Radio}
-          MenuItem={MenuItem}
           FormControlLabel={FormControlLabel}
           setChoice={setChoice}
           setView={setView}
@@ -114,12 +112,13 @@ const Modal: React.FC<{
       title: LOCKCARD,
       view: (
         <CardLock
+          isCardLocked={isCardLocked}
+          LOCKEDCARDMSG={LOCKEDCARDMSG}
           setView={setView}
           Grid={Grid}
           FormControl={FormControl}
           RadioGroup={RadioGroup}
           Radio={Radio}
-          MenuItem={MenuItem}
           FormControlLabel={FormControlLabel}
           setChoice={setChoice}
         />

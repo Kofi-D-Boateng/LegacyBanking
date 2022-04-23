@@ -1,9 +1,7 @@
 import {
-  ExtendButtonBase,
   FormControlLabelProps,
   FormControlTypeMap,
   GridTypeMap,
-  MenuItemTypeMap,
   RadioGroupProps,
   RadioProps,
 } from "@mui/material";
@@ -16,7 +14,6 @@ const CardLock: React.FC<{
   Grid: OverridableComponent<GridTypeMap<{}, "div">>;
   FormControl: OverridableComponent<FormControlTypeMap<{}, "div">>;
   RadioGroup: (props: RadioGroupProps) => JSX.Element;
-  MenuItem: ExtendButtonBase<MenuItemTypeMap<{}, "li">>;
   Radio: (props: RadioProps) => JSX.Element;
   FormControlLabel: (props: FormControlLabelProps) => JSX.Element;
   setChoice: React.Dispatch<
@@ -25,6 +22,8 @@ const CardLock: React.FC<{
       item: string;
     }>
   >;
+  isCardLocked: boolean;
+  LOCKEDCARDMSG: string;
 }> = ({
   Grid,
   setView,
@@ -33,6 +32,8 @@ const CardLock: React.FC<{
   Radio,
   FormControlLabel,
   setChoice,
+  isCardLocked,
+  LOCKEDCARDMSG,
 }) => {
   const changeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void = ({
     currentTarget,
@@ -47,29 +48,40 @@ const CardLock: React.FC<{
   return (
     <>
       <Grid container>
-        <Grid sx={{ margin: "auto", textAlign: "center" }} xs={6} md={6} item>
-          Lock card due to theft or lost card
-        </Grid>
-        <Grid sx={{ textAlign: "center" }} xs={6} md={6} item>
-          <FormControl>
-            <RadioGroup onChange={changeHandler} defaultValue="none">
-              <FormControlLabel
-                value={true}
-                control={
-                  <Radio
-                    color="success"
-                    sx={{
-                      "&:hover": {
-                        backgroundColor: "transparent",
-                      },
-                    }}
+        {isCardLocked ? (
+          LOCKEDCARDMSG
+        ) : (
+          <>
+            <Grid
+              sx={{ margin: "auto", textAlign: "center" }}
+              xs={6}
+              md={6}
+              item
+            >
+              Lock card due to theft or lost card
+            </Grid>
+            <Grid sx={{ textAlign: "center" }} xs={6} md={6} item>
+              <FormControl>
+                <RadioGroup onChange={changeHandler} defaultValue="none">
+                  <FormControlLabel
+                    value={true}
+                    control={
+                      <Radio
+                        color="success"
+                        sx={{
+                          "&:hover": {
+                            backgroundColor: "transparent",
+                          },
+                        }}
+                      />
+                    }
+                    label="Yes"
                   />
-                }
-                label="Yes"
-              />
-            </RadioGroup>
-          </FormControl>
-        </Grid>
+                </RadioGroup>
+              </FormControl>
+            </Grid>
+          </>
+        )}
       </Grid>
     </>
   );

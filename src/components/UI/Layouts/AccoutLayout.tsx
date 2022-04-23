@@ -11,7 +11,7 @@ const AccountLayout: React.FC<GlobalLayouts> = ({ children, mobile }) => {
   ];
 
   return (
-    <div style={{ width: "100%", height: "100%" }}>
+    <div style={{ width: "100%", position: "relative" }}>
       <AccountNavbar options={options} mobile={mobile} />
       <div style={{ width: "100%" }}>{children}</div>
       <AccountFooter />

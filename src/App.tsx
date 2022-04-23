@@ -69,19 +69,6 @@ const App: FC = () => {
       {profile?.pattern.end ? (
         <AccountLayout mobile={mobile} login={null} signup={null} auth={false}>
           <Routes>
-            <Route path={HOME} element={<Home mobile={mobile} />} />
-            <Route path={ABOUT} element={<About />} />
-            <Route
-              path={LOCATIONS}
-              element={<Locations URL={AUTHAPI} isMobile={mobile} />}
-            />
-            <Route path={INVESTMENTS} element={<Investment />} />
-            <Route path={CONTACT} element={<Contact />} />
-            <Route
-              path={LOGIN}
-              element={<Login URL={AUTHAPI} isMobile={mobile} />}
-            />
-            <Route path={SIGNUP} element={<Signup URL={AUTHAPI} />} />
             {auth.authenticated && (
               <Route
                 path={PROFILE}
@@ -93,7 +80,9 @@ const App: FC = () => {
                       token={auth.token}
                       mobile={mobile}
                     />
-                  ) : null
+                  ) : (
+                    <h1>IT WORKED</h1>
+                  )
                 }
               />
             )}
@@ -121,19 +110,6 @@ const App: FC = () => {
               element={<Login URL={AUTHAPI} isMobile={mobile} />}
             />
             <Route path={SIGNUP} element={<Signup URL={AUTHAPI} />} />
-            {auth.authenticated && (
-              <Route
-                path={PROFILE}
-                element={
-                  <Profile
-                    customer={customer}
-                    URL={AUTHAPI}
-                    token={auth.token}
-                    mobile={mobile}
-                  />
-                }
-              />
-            )}
             <Route path={REDIRECT} element={<Navigate replace to={HOME} />} />
           </Routes>
         </Layout>

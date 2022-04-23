@@ -8,7 +8,6 @@ import {
   FormControl,
   RadioGroup,
   Radio,
-  MenuItem,
   FormControlLabel,
 } from "@mui/material";
 import { AxiosStatic } from "axios";
@@ -37,6 +36,7 @@ const AccountSecurity: FC<{
   URL: string;
   token: string;
   accountNumber: string;
+  isCardLocked: boolean;
   Location: Location;
   axios: AxiosStatic;
 }> = ({
@@ -50,12 +50,15 @@ const AccountSecurity: FC<{
   accountNumber,
   Location,
   axios,
+  isCardLocked,
 }) => {
   const [view, setView] = useState<string>("");
   const [choice, setChoice] = useState<{ choice: boolean; item: string }>({
     choice: false,
     item: "",
   });
+
+  console.log(choice);
 
   useEffect(() => {
     if (!choice.choice) {
@@ -78,12 +81,15 @@ const AccountSecurity: FC<{
           },
           { headers: { authorization: token } }
         )
+        .then(() => {
+          Location.reload();
+        })
         .catch(() => {
           setChoice({ choice: true, item: SECURITYERRORMSG });
         });
     };
     fetchSettings(choice, accountNumber);
-  }, [URL, token, choice, axios, accountNumber]);
+  }, [URL, token, choice, axios, accountNumber, Location]);
 
   return (
     <>
@@ -100,7 +106,7 @@ const AccountSecurity: FC<{
           LOCKACCOUNT={LOCKACCOUNT}
           LOCKEDACCOUNTMSG={LOCKEDACCOUNTMSG}
           LOCKEDACCOUNT={LOCKEDACCOUNT}
-          MenuItem={MenuItem}
+          isCardLocked={isCardLocked}
           Card={Card}
           CardContent={CardContent}
           Grid={Grid}

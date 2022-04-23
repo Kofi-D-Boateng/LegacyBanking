@@ -63,6 +63,8 @@ const Profile: FC<{
     country: string | undefined;
     area: string | undefined;
     zipCode: string | undefined;
+    isLocked: boolean;
+    isEnabled: boolean;
     funds: number;
     transactions: {
       id: number;
@@ -241,6 +243,7 @@ const Profile: FC<{
       modal: (
         <AccountSecurity
           Location={Location}
+          isCardLocked={customer.isLocked}
           accountNumber={customer.accountNum}
           axios={axios}
           URL={URL}

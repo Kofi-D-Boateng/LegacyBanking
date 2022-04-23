@@ -72,8 +72,18 @@ const Transaction: React.FC<{
                   a.type.includes(TRANSFER) ||
                   a.type.includes(WITHDRAWAL) ||
                   a.type.includes(ACHDEBIT)
-                    ? `-$${a.amount.toLocaleString("en-us")}`
-                    : `+$${a.amount.toLocaleString("en-us")}`}
+                    ? `-${a.amount.toLocaleString("en-us", {
+                        style: "currency",
+                        currency: "USD",
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}`
+                    : `+${a.amount.toLocaleString("en-us", {
+                        style: "currency",
+                        currency: "USD",
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}`}
                 </Typography>
               </Grid>
               <div

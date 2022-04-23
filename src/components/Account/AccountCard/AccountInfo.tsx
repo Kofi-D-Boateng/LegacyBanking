@@ -87,17 +87,32 @@ const AccountInfo: React.FC<{
   const details: { key: number; value: string; desc: string }[] = [
     {
       key: 1,
-      value: `$${funds.toLocaleString("en-us")}`,
+      value: `${funds.toLocaleString("en-us", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
       desc: "Available balance",
     },
     {
       key: 2,
-      value: `+$${deposits.toLocaleString("en-us")}`,
+      value: `+${deposits.toLocaleString("en-us", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
       desc: "Deposits this month",
     },
     {
       key: 3,
-      value: `-$${withdrawals.toLocaleString("en-us")}`,
+      value: `-${withdrawals.toLocaleString("en-us", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
       desc: "Withdrawls this month",
     },
   ];

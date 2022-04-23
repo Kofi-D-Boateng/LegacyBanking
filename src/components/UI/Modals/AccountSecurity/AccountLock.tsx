@@ -1,9 +1,7 @@
 import {
-  ExtendButtonBase,
   FormControlLabelProps,
   FormControlTypeMap,
   GridTypeMap,
-  MenuItemTypeMap,
   RadioGroupProps,
   RadioProps,
 } from "@mui/material";
@@ -15,7 +13,6 @@ const AccountLock: React.FC<{
   Grid: OverridableComponent<GridTypeMap<{}, "div">>;
   FormControl: OverridableComponent<FormControlTypeMap<{}, "div">>;
   RadioGroup: (props: RadioGroupProps) => JSX.Element;
-  MenuItem: ExtendButtonBase<MenuItemTypeMap<{}, "li">>;
   Radio: (props: RadioProps) => JSX.Element;
   FormControlLabel: (props: FormControlLabelProps) => JSX.Element;
   setChoice: React.Dispatch<
@@ -29,7 +26,6 @@ const AccountLock: React.FC<{
   setView,
   FormControl,
   FormControlLabel,
-  MenuItem,
   Radio,
   RadioGroup,
   setChoice,
@@ -47,7 +43,7 @@ const AccountLock: React.FC<{
     <>
       <Grid container>
         <Grid sx={{ margin: "auto", textAlign: "center" }} xs={6} md={6} item>
-          Lock card due to theft or lost card
+          Lock your account due to identity theft or lost card?
         </Grid>
         <Grid sx={{ textAlign: "center" }} xs={6} md={6} item>
           <FormControl>

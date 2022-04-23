@@ -51,7 +51,7 @@ const AccountNavbar: React.FC<{
           {!mobile ? (
             <Grid container>
               {options.map((o) => {
-                if (o.key !== options.length) {
+                if (!o.title.includes("Sign out")) {
                   return (
                     <NavLink
                       key={o.key}

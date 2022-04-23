@@ -23,6 +23,7 @@ export interface Geolocation {
   id: number;
   country: string;
   ISO_code: string;
+  local_branch: string;
   geometry: {
     city: string;
     lat: number;
