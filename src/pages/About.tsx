@@ -1,6 +1,6 @@
-import React, { Fragment } from "react";
+import { FC } from "react";
 
-const About: React.FC = () => {
+const About: FC = () => {
   return <h1>Hello</h1>;
 };
 

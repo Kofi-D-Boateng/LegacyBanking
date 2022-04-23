@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@mui/material";
-import React, { Fragment, useState } from "react";
+import { FC, Fragment, useState } from "react";
 import cityscape from "../assets/videos/cityscape.mp4";
 import Services from "../components/Homepage/Services";
 import startUp from "../assets/photos/startup.jpg";
@@ -11,7 +11,7 @@ import Misc from "../components/Homepage/Misc";
 import MailLetter from "../components/Homepage/MailLetter";
 import { BACKWARD, FORWARD } from "../components/UI/Constants/Constants";
 
-const Home: React.FC<{ mobile: boolean }> = ({ mobile }) => {
+const Home: FC<{ mobile: boolean }> = ({ mobile }) => {
   const NAVIGATE: NavigateFunction = useNavigate();
   const year = new Date().getFullYear();
   const [view, setView] = useState<number>(0);

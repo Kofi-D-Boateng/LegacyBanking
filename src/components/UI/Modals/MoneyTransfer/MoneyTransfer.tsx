@@ -1,204 +1,15 @@
-import React, { useRef, useState } from "react";
+import { FC, Dispatch, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Backdrop from "../../Backdrops/Backdrop";
-import {
-  Button,
-  Card,
-  CardContent,
-  FormControl,
-  Grid,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  TextField,
-  Typography,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { SelectChangeEvent } from "@mui/material";
+import Modal from "./Modal";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import { AxiosStatic } from "axios";
 
-const Modal: React.FC<{
-  classes: {
-    readonly [key: string]: string;
-  };
-  Exit: () => void;
-  Transfer: (data: {
-    email: string | undefined;
-    phoneNumber: string | undefined;
-    amount: number;
-  }) => void;
-  choiceHandler: (event: SelectChangeEvent) => void;
-  view: boolean;
-  termsOfChoice: string;
-  isMobile: boolean;
-}> = ({
-  classes,
-  Exit,
-  Transfer,
-  choiceHandler,
-  view,
-  termsOfChoice,
-  isMobile,
-}) => {
-  const [amount, setAmount] = useState<number>(0);
-  const emailRef = useRef<HTMLInputElement | undefined>();
-  const phoneNumberRef = useRef<HTMLInputElement | undefined>();
-
-  const amountHandler = (event: React.FocusEvent<HTMLInputElement>) => {
-    const regex = /[A-Za-z]/;
-    const { value } = event.target;
-    if (regex.test(value)) {
-      return;
-    }
-    setAmount(+parseFloat(value).toFixed(2));
-  };
-
-  const submitHandler = (event: React.FormEvent) => {
-    event.preventDefault();
-    const data: {
-      email: string | undefined;
-      phoneNumber: string | undefined;
-      amount: number;
-    } = {
-      email: emailRef.current?.value,
-      phoneNumber: phoneNumberRef.current?.value,
-      amount: amount,
-    };
-    Transfer(data);
-  };
-
-  return (
-    <Card className={!isMobile ? classes.card : classes.mobileCard}>
-      <Grid
-        sx={{
-          backgroundColor: "purple",
-          padding: "20px 0",
-        }}
-        container
-      >
-        <Typography
-          sx={{
-            flexGrow: "1",
-            margin: "auto",
-            textAlign: "center",
-            color: "white",
-          }}
-          variant="h6"
-        >
-          Transfer Money from account
-        </Typography>
-        <IconButton
-          onClick={Exit}
-          sx={{
-            "&:hover": {
-              backgroundColor: "transparent",
-            },
-          }}
-        >
-          <CloseIcon sx={{ color: "white" }} />
-        </IconButton>
-      </Grid>
-      <CardContent sx={{ margin: "auto" }}>
-        {!view ? (
-          <FormControl sx={{ width: "100%" }}>
-            <InputLabel id="Choice">Send By....</InputLabel>
-            <Select
-              labelId="Choice"
-              value={termsOfChoice}
-              label="Send By"
-              onChange={choiceHandler}
-            >
-              <MenuItem value={"email"}>Email</MenuItem>
-              <MenuItem value={"number"}>Phone Number</MenuItem>
-            </Select>
-          </FormControl>
-        ) : (
-          <form onSubmit={submitHandler}>
-            <Grid sx={{ margin: "50px 0" }} container>
-              <Grid
-                sx={{ margin: "auto", textAlign: "center" }}
-                xs={3}
-                md={3}
-                item
-              >
-                <Typography variant="h6">
-                  {termsOfChoice === "email" ? "Email: " : "Phone number: "}
-                </Typography>
-              </Grid>
-              {termsOfChoice === "email" ? (
-                <Grid xs={9} md={9} item>
-                  <TextField
-                    label="Email"
-                    size="small"
-                    type="email"
-                    inputRef={emailRef}
-                    placeholder="enter transfee's email"
-                    fullWidth
-                  />
-                </Grid>
-              ) : (
-                <Grid xs={9} md={9} item>
-                  <TextField
-                    label="Phone Number"
-                    size="small"
-                    type="tel"
-                    inputRef={phoneNumberRef}
-                    placeholder="enter transfee's phone number"
-                    fullWidth
-                  />
-                </Grid>
-              )}
-            </Grid>
-            <Grid sx={{ margin: "50px 0" }} container>
-              <Grid
-                sx={{ margin: "auto", textAlign: "center" }}
-                xs={3}
-                md={3}
-                item
-              >
-                <Typography variant="h6">Amount: </Typography>
-              </Grid>
-              <Grid xs={9} md={9} item>
-                <TextField
-                  label="amount"
-                  size="small"
-                  placeholder="enter transfer amount"
-                  type="number"
-                  inputProps={{
-                    step: "0.01",
-                    lang: "en-US",
-                  }}
-                  onBlur={amountHandler}
-                  fullWidth
-                />
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Button
-                className={classes.btn}
-                variant="outlined"
-                size="small"
-                type="submit"
-                fullWidth
-              >
-                Send
-              </Button>
-            </Grid>
-          </form>
-        )}
-      </CardContent>
-    </Card>
-  );
-};
-
-const MoneyTransfer: React.FC<{
-  Exit: () => void;
-  onChoice: (event: SelectChangeEvent) => void;
-  onTransfer: (data: {
-    email: string | undefined;
-    phoneNumber: string | undefined;
-    amount: number;
-  }) => void;
+const MoneyTransfer: FC<{
+  Location: Location;
+  URL: string;
+  token: string;
   view: boolean;
   termsOfChoice: string;
   isMobile: boolean;
@@ -207,24 +18,125 @@ const MoneyTransfer: React.FC<{
   };
   BACKDROPDIV: HTMLElement;
   OVERLAYDIV: HTMLElement;
+  accountNum: string;
+  DEBITTRANSFER: string;
+  dispatch: Dispatch<any>;
+  CreateTransfer: ActionCreatorWithPayload<
+    {
+      email: string | undefined;
+      amount: number;
+      accountNumber: string;
+      type: string;
+      phoneNumber: string | undefined;
+    },
+    string
+  >;
+  Exit: () => void;
+  onChoice: (event: SelectChangeEvent) => void;
+  axios: AxiosStatic;
+  setView: ActionCreatorWithPayload<
+    {
+      view: string;
+    },
+    string
+  >;
+  accountTransfer: {
+    email: string | undefined;
+    amount: number;
+    accountNumber: string;
+    type: string;
+    phoneNumber: string | undefined;
+  };
 }> = ({
-  Exit,
-  onTransfer,
-  onChoice,
   view,
   termsOfChoice,
   isMobile,
   classes,
   BACKDROPDIV,
   OVERLAYDIV,
+  DEBITTRANSFER,
+  accountNum,
+  token,
+  Exit,
+  onChoice,
+  dispatch,
+  accountTransfer,
+  CreateTransfer,
+  axios,
+  setView,
+  URL,
+  Location,
 }) => {
+  useEffect(() => {
+    const fetchTransfer = async (accountTransfer: {
+      email: string | undefined;
+      amount: number;
+      accountNumber: string | undefined;
+      type: string;
+      phoneNumber: string | undefined;
+    }) => {
+      await axios
+        .post(`${URL}/authentication/transaction`, accountTransfer, {
+          headers: { authorization: token },
+        })
+        .then((response) => {
+          if (response.status >= 200 && response.status <= 299) {
+            dispatch(
+              CreateTransfer({
+                accountNumber: "",
+                amount: 0,
+                email: undefined,
+                phoneNumber: undefined,
+                type: "",
+              })
+            );
+          }
+          Location.reload();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    if (accountTransfer.email || accountTransfer.phoneNumber) {
+      fetchTransfer(accountTransfer);
+    }
+  }, [
+    accountTransfer,
+    dispatch,
+    CreateTransfer,
+    URL,
+    Location,
+    axios,
+    setView,
+    token,
+  ]);
+
+  const transferHandler = useCallback(
+    (data: {
+      email: string | undefined;
+      phoneNumber: string | undefined;
+      amount: number;
+    }) => {
+      dispatch(
+        CreateTransfer({
+          email: data.email,
+          accountNumber: accountNum,
+          amount: data.amount,
+          type: DEBITTRANSFER,
+          phoneNumber: data.phoneNumber,
+        })
+      );
+    },
+    [accountNum, dispatch, CreateTransfer, DEBITTRANSFER]
+  );
+
   return (
     <>
       {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV)}
       {createPortal(
         <Modal
           Exit={Exit}
-          Transfer={onTransfer}
+          Transfer={transferHandler}
           choiceHandler={onChoice}
           view={view}
           termsOfChoice={termsOfChoice}

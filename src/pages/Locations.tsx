@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { Dispatch, useEffect } from "react";
+import { FC, Dispatch, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bankActions } from "../store/bank/bank-slice";
 import { RootState } from "../store/store";
@@ -10,7 +10,7 @@ import BankSearch from "../components/Locations/BankSearch";
 import Banner from "../components/Locations/Banner";
 import classes from "../styles/LocationsStyles.module.css";
 
-const Locations: React.FC<{ isMobile: boolean; URL: string }> = ({
+const Locations: FC<{ isMobile: boolean; URL: string }> = ({
   isMobile,
   URL,
 }) => {

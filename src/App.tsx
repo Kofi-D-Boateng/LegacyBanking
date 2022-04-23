@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import { Suspense, lazy, FC } from "react";
 import { useSelector } from "react-redux";
 import {
   matchPath,
@@ -27,17 +27,16 @@ import {
   REDIRECT,
   SIGNUP,
 } from "./components/UI/Constants/Constants";
-const About = React.lazy(() => import("./pages/About"));
-const Contact = React.lazy(() => import("./pages/Contact"));
-const International = React.lazy(() => import("./pages/International"));
-const Investment = React.lazy(() => import("./pages/Investments"));
-const Loans = React.lazy(() => import("./pages/Loans"));
-const Locations = React.lazy(() => import("./pages/Locations"));
-const Login = React.lazy(() => import("./pages/Login"));
-const Signup = React.lazy(() => import("./pages/Signup"));
-const Profile = React.lazy(() => import("./pages/Profile"));
+const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Investment = lazy(() => import("./pages/Investments"));
+const Locations = lazy(() => import("./pages/Locations"));
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
+const Profile = lazy(() => import("./pages/Profile"));
 
-const App: React.FC = () => {
+const App: FC = () => {
+  const customer = useSelector((state: RootState) => state.cust);
   const theme = useTheme<Theme>();
   const mobile: boolean = useMediaQuery<unknown>(theme.breakpoints.down("md"));
   const auth: {
@@ -87,7 +86,14 @@ const App: React.FC = () => {
               <Route
                 path={PROFILE}
                 element={
-                  <Profile URL={AUTHAPI} token={auth.token} mobile={mobile} />
+                  customer.isEnabled ? (
+                    <Profile
+                      customer={customer}
+                      URL={AUTHAPI}
+                      token={auth.token}
+                      mobile={mobile}
+                    />
+                  ) : null
                 }
               />
             )}
@@ -119,7 +125,12 @@ const App: React.FC = () => {
               <Route
                 path={PROFILE}
                 element={
-                  <Profile URL={AUTHAPI} token={auth.token} mobile={mobile} />
+                  <Profile
+                    customer={customer}
+                    URL={AUTHAPI}
+                    token={auth.token}
+                    mobile={mobile}
+                  />
                 }
               />
             )}

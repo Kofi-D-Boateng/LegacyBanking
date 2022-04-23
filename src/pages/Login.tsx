@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, Fragment } from "react";
+import { FC, useState, useRef, useEffect, Fragment } from "react";
 import { Grid, Typography } from "@mui/material";
 import LoginForm from "../components/Forms/LoginForm/LoginForm";
 import axios from "axios";
@@ -8,10 +8,7 @@ import { authActions } from "../store/authentication/auth-slice";
 import classes from "../styles/LoginStyles.module.css";
 import { credentials } from "../Interfaces/Credentials";
 
-const Login: React.FC<{ isMobile: boolean; URL: string }> = ({
-  isMobile,
-  URL,
-}) => {
+const Login: FC<{ isMobile: boolean; URL: string }> = ({ isMobile, URL }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [invalid, setInvalid] = useState<boolean>(false);

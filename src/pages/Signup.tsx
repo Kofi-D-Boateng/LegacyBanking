@@ -1,4 +1,4 @@
-import React, { SetStateAction, useEffect, useState } from "react";
+import { FC, SetStateAction, useEffect, useState } from "react";
 import axios from "axios";
 import { CardContent, Grid, Typography } from "@mui/material";
 import SignupForm from "../components/Forms/SignupForm/SignupForm";
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import classes from "../styles/SignupStyles.module.css";
 import { PROFILE } from "../components/UI/Constants/Constants";
 
-const Signup: React.FC<{ URL: string }> = ({ URL }) => {
+const Signup: FC<{ URL: string }> = ({ URL }) => {
   const [user, setUser] = useState<{} | null>(null);
   const [isValid, setIsValid] = useState<boolean>(true);
   const navigate = useNavigate();

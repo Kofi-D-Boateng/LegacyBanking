@@ -1,9 +1,11 @@
-import React, {
+import {
+  FC,
   ChangeEvent,
   Dispatch,
   useCallback,
   useEffect,
   useState,
+  memo,
 } from "react";
 import {
   NavigateFunction,
@@ -35,7 +37,6 @@ import {
   MONEYTRANSFER,
   PAPERLESS,
   PAYMENT,
-  REDIRECT,
   SECURITY,
   STATEMENT,
   SUMMARY,
@@ -49,11 +50,37 @@ import Payment from "../components/Account/Payments/Payment";
 import AccountSecurity from "../components/UI/Modals/AccountSecurity/AccountSecurity";
 import { backdropDiv, overlayDiv } from "../components/UI/Layouts/RootElement";
 
-const Profile: React.FC<{
+const Profile: FC<{
   token: string;
   mobile: boolean;
   URL: string;
-}> = ({ token, mobile, URL }) => {
+  customer: {
+    fName: string;
+    lName: string;
+    email: string;
+    accountNum: string;
+    routingNum: string;
+    country: string | undefined;
+    area: string | undefined;
+    zipCode: string | undefined;
+    funds: number;
+    transactions: {
+      id: number;
+      type: string;
+      dateOfTransaction: string;
+      amount: number;
+      location: string;
+    }[];
+    accountTransfer: {
+      email: string | undefined;
+      amount: number;
+      accountNumber: string;
+      type: string;
+      phoneNumber: string | undefined;
+    };
+  };
+}> = ({ token, mobile, URL, customer }) => {
+  const Location: Location = window.location;
   const DateAmount: DateAmountType[] = [];
   const PARAMS = useParams<string>();
   const currentYear: number = new Date().getFullYear();
@@ -63,9 +90,9 @@ const Profile: React.FC<{
   const [withdrawals, setWithdrawals] = useState<number>(0);
   const [deposits, setDeposits] = useState<number>(0);
   const modal = useSelector((state: RootState) => state.view);
-  const customer = useSelector((state: RootState) => state.cust);
   const dispatch = useDispatch<Dispatch<any>>();
   const navigate: NavigateFunction = useNavigate();
+
   useEffect(() => {
     const fetchAccount: (token: string) => void = async (token) => {
       await axios({
@@ -90,72 +117,30 @@ const Profile: React.FC<{
             isEnabled,
             isLocked,
           } = response.data;
-          if (isEnabled && !isLocked) {
-            dispatch(
-              customerActions.createCustomer({
-                fName: fName,
-                lName: lName,
-                email: email,
-                country: country,
-                zipCode: zipCode,
-                area: state,
-                funds: funds,
-                accountingNum: accountNum,
-                routingNum: routingNum,
-                transactions: transactions,
-              })
-            );
-            return;
-          }
-          navigate(REDIRECT, { replace: true });
+
+          dispatch(
+            customerActions.createCustomer({
+              fName: fName,
+              lName: lName,
+              email: email,
+              country: country,
+              zipCode: zipCode,
+              area: state,
+              funds: funds,
+              accountingNum: accountNum,
+              routingNum: routingNum,
+              transactions: transactions,
+              isEnabled: isEnabled,
+              isLocked: isLocked,
+            })
+          );
         })
         .catch(() => {
           dispatch(authActions.logout());
         });
     };
-
-    const fetchTransfer = async (accountTransfer: {
-      email: string | undefined;
-      amount: number;
-      accountNumber: string | undefined;
-      type: string;
-      phoneNumber: string | undefined;
-    }) => {
-      await axios
-        .post(
-          "http://localhost:8081/api/v1/authentication/transaction",
-          accountTransfer,
-          { headers: { authorization: token } }
-        )
-        .then((response) => {
-          if (response.status >= 200 && response.status <= 299) {
-            dispatch(
-              customerActions.createTransfer({
-                accountNumber: "",
-                amount: 0,
-                email: undefined,
-                phoneNumber: undefined,
-                type: "",
-              })
-            );
-          }
-          dispatch(modalActions.setView({ view: "" }));
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-    if (
-      (customer.accountTransfer.amount > 0 &&
-        customer.accountTransfer.accountNumber &&
-        customer.accountTransfer.email) ||
-      customer.accountTransfer.phoneNumber
-    ) {
-      fetchTransfer(customer.accountTransfer);
-      return;
-    }
     fetchAccount(token);
-  }, [token, dispatch, customer.accountTransfer, navigate, URL]);
+  }, [token, dispatch, navigate, URL]);
 
   const viewHandler = useCallback(
     (event: ChangeEvent<HTMLElement>) => {
@@ -171,33 +156,6 @@ const Profile: React.FC<{
     setView(false);
   }, [dispatch]);
 
-  const transferHandler = useCallback(
-    (data: {
-      email: string | undefined;
-      phoneNumber: string | undefined;
-      amount: number;
-    }) => {
-      dispatch(
-        customerActions.createTransfer({
-          email: data.email,
-          accountNumber: customer.accountNum,
-          amount: data.amount,
-          type: DEBITTRASFER,
-          phoneNumber: data.phoneNumber,
-        })
-      );
-    },
-    [customer.accountNum, dispatch]
-  );
-
-  const paperlessHandler = useCallback(
-    (event: SelectChangeEvent<string | boolean>) => {
-      const { value } = event.target;
-      console.log(value);
-    },
-    []
-  );
-
   const choiceHandler = useCallback((event: SelectChangeEvent) => {
     const { value } = event.target;
     console.log(value);
@@ -211,15 +169,24 @@ const Profile: React.FC<{
       type: MONEYTRANSFER,
       modal: (
         <MoneyTransfer
+          Location={Location}
+          URL={URL}
+          token={token}
           BACKDROPDIV={backdropDiv}
           OVERLAYDIV={overlayDiv}
           classes={MoneyTransferStyles}
-          onTransfer={transferHandler}
-          Exit={exitHandler}
-          onChoice={choiceHandler}
+          accountNum={customer.accountNum}
+          accountTransfer={customer.accountTransfer}
+          DEBITTRANSFER={DEBITTRASFER}
           termsOfChoice={termsOfChoice}
           view={view}
           isMobile={mobile}
+          axios={axios}
+          dispatch={dispatch}
+          Exit={exitHandler}
+          onChoice={choiceHandler}
+          CreateTransfer={customerActions.createTransfer}
+          setView={modalActions.setView}
         />
       ),
     },
@@ -242,11 +209,13 @@ const Profile: React.FC<{
       type: PAPERLESS,
       modal: (
         <Paperless
+          token={token}
+          URL={URL}
+          axios={axios}
           BACKDROPDIV={backdropDiv}
           OVERLAYDIV={overlayDiv}
           classes={MoneyTransferStyles}
           Exit={exitHandler}
-          onChoice={paperlessHandler}
           isMobile={mobile}
         />
       ),
@@ -271,7 +240,9 @@ const Profile: React.FC<{
       type: SECURITY,
       modal: (
         <AccountSecurity
+          Location={Location}
           accountNumber={customer.accountNum}
+          axios={axios}
           URL={URL}
           token={token}
           Exit={exitHandler}
@@ -356,4 +327,4 @@ const Profile: React.FC<{
   );
 };
 
-export default React.memo(Profile);
+export default memo(Profile);
