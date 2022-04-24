@@ -1,3 +1,4 @@
+import { Grid, Typography } from "@mui/material";
 import {
   Icon,
   LatLngExpression,
@@ -8,23 +9,23 @@ import {
 } from "leaflet";
 import { useState } from "react";
 import { MarkerProps, Popup } from "react-leaflet";
-import { Geolocation } from "../../../Interfaces/Maps";
 
 const LocationMarker: React.FC<{
   Marker: React.ForwardRefExoticComponent<
     MarkerProps & React.RefAttributes<Marker<any>>
   >;
-  geo: Geolocation;
   markerIcon: string;
   useMap: () => Map;
   branch: {
     name: string;
     country: string;
-    area: string;
+    state: string;
     zipcode: string;
     totalHoldings: number;
-  }[];
-}> = ({ Marker, geo, markerIcon, useMap, branch }) => {
+    latitude: number;
+    longitude: number;
+  };
+}> = ({ Marker, markerIcon, useMap, branch }) => {
   const [position, setPosition] = useState<LatLngExpression | undefined>(
     undefined
   );
@@ -32,7 +33,6 @@ const LocationMarker: React.FC<{
   const MAP: Map = useMap();
   const MarkerFn: LeafletEventHandlerFnMap = {
     click(e: LeafletMouseEvent) {
-      console.log(e.latlng);
       setPosition(e.latlng);
       MAP.flyTo(e.latlng, MAP.getZoom());
     },
@@ -41,7 +41,7 @@ const LocationMarker: React.FC<{
   return (
     <>
       <Marker
-        position={[geo.geometry.lat, geo.geometry.lng]}
+        position={[branch.latitude, branch.longitude]}
         icon={
           new Icon({
             iconUrl: markerIcon,
@@ -53,7 +53,13 @@ const LocationMarker: React.FC<{
       />
       {position && (
         <Popup position={position} onClose={() => setPosition(undefined)}>
-          <h1>{geo.geometry.city}</h1>
+          <Grid container>
+            <Typography variant="body1">{"Name: " + branch.name}</Typography>
+            <Typography variant="body1">
+              {"Country: " + branch.country}
+            </Typography>
+            <Typography variant="body1">{"Area: " + branch.state}</Typography>
+          </Grid>
         </Popup>
       )}
     </>

@@ -9,9 +9,11 @@ function initialState(): {
   branches: {
     name: string;
     country: string;
-    area: string;
+    state: string;
     zipcode: string;
     totalHoldings: number;
+    latitude: number;
+    longitude: number;
   }[];
 } {
   return {
@@ -39,9 +41,11 @@ const bankSlice = createSlice({
         branches: {
           name: string;
           country: string;
-          area: string;
+          state: string;
           zipcode: string;
           totalHoldings: number;
+          latitude: number;
+          longitude: number;
         }[];
       }>
     ) {

@@ -1,6 +1,5 @@
 import { Grid, Typography } from "@mui/material";
 import React from "react";
-import { Geolocation } from "../../Interfaces/Maps";
 import GlobalMap from "../UI/WorldMap/GlobalMap";
 
 const BankSearch: React.FC<{
@@ -13,16 +12,17 @@ const BankSearch: React.FC<{
     branches: {
       name: string;
       country: string;
-      area: string;
+      state: string;
       zipcode: string;
       totalHoldings: number;
+      latitude: number;
+      longitude: number;
     }[];
   };
   classes: {
     readonly [key: string]: string;
   };
-  Geolocation: Geolocation[];
-}> = ({ bank, Geolocation, classes }) => {
+}> = ({ bank, classes }) => {
   return (
     <Grid sx={{ padding: "30px 0" }} container>
       <Grid sx={{ textAlign: "center" }} xs={12} md={12} item>
@@ -31,11 +31,7 @@ const BankSearch: React.FC<{
         </Typography>
       </Grid>
       <div className={classes.mapContainer}>
-        <GlobalMap
-          classes={classes}
-          Geolocation={Geolocation}
-          branch={bank.branches}
-        />
+        <GlobalMap classes={classes} branch={bank.branches} />
       </div>
     </Grid>
   );

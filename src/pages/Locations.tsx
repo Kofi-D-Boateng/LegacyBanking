@@ -3,7 +3,6 @@ import { FC, Dispatch, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bankActions } from "../store/bank/bank-slice";
 import { RootState } from "../store/store";
-import { GEOLOCATION } from "../assets/data/Geolocation";
 import BM from "../assets/photos/business_man.jpg";
 import BankInfo from "../components/Locations/BankInfo";
 import BankSearch from "../components/Locations/BankSearch";
@@ -23,16 +22,18 @@ const Locations: FC<{ isMobile: boolean; URL: string }> = ({
     branches: {
       name: string;
       country: string;
-      area: string;
+      state: string;
       zipcode: string;
       totalHoldings: number;
+      latitude: number;
+      longitude: number;
     }[];
   } = useSelector((state: RootState) => state.bank);
   const dispatch: Dispatch<any> = useDispatch();
 
   useEffect(() => {
     const fetchBankData: () => void = async () => {
-      await axios.get(`${URL}/v1/bank/info`).then((response) => {
+      await axios.get(`${URL}/bank/info`).then((response) => {
         const { name, country, state, zipcode, totalHoldings, branches } =
           response.data;
         dispatch(
@@ -54,7 +55,7 @@ const Locations: FC<{ isMobile: boolean; URL: string }> = ({
     <>
       <Banner classes={classes} />
       <BankInfo photo={BM} classes={classes} />
-      <BankSearch classes={classes} Geolocation={GEOLOCATION} bank={LEGACY} />
+      <BankSearch classes={classes} bank={LEGACY} />
     </>
   );
 };
