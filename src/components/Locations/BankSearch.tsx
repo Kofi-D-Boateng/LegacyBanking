@@ -1,6 +1,6 @@
-import React, { useRef, useState } from "react";
-import { LocationMap } from "../../Interfaces/Maps";
-import WorldMap from "../UI/SVGs/WorldMap";
+import { Grid, Typography } from "@mui/material";
+import React from "react";
+import GlobalMap from "../UI/WorldMap/GlobalMap";
 
 const BankSearch: React.FC<{
   bank: {
@@ -12,29 +12,29 @@ const BankSearch: React.FC<{
     branches: {
       name: string;
       country: string;
-      area: string;
+      state: string;
       zipcode: string;
       totalHoldings: number;
+      latitude: number;
+      longitude: number;
     }[];
   };
-  param: {
-    state: string | undefined;
-    zipcode: string | undefined;
-    country: string | undefined;
+  classes: {
+    readonly [key: string]: string;
   };
-  onParam: React.Dispatch<
-    React.SetStateAction<{
-      state: string | undefined;
-      zipcode: string | undefined;
-      country: string | undefined;
-    }>
-  >;
-  location: (e: React.MouseEvent<HTMLImageElement>) => void;
-  Map: string;
-}> = ({ bank, onParam, param, location, Map }) => {
-  const COORDINATES: LocationMap[] = [];
-
-  return <WorldMap location={location} Map={Map} bank={bank} />;
+}> = ({ bank, classes }) => {
+  return (
+    <Grid sx={{ padding: "30px 0" }} container>
+      <Grid sx={{ textAlign: "center" }} xs={12} md={12} item>
+        <Typography variant="h4" sx={{ color: "purple" }}>
+          View our locations around the world
+        </Typography>
+      </Grid>
+      <div className={classes.mapContainer}>
+        <GlobalMap classes={classes} branch={bank.branches} />
+      </div>
+    </Grid>
+  );
 };
 
 export default BankSearch;

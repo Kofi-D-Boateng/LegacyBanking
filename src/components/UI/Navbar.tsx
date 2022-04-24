@@ -11,7 +11,6 @@ import {
   Toolbar,
   Button,
   Grid,
-  Container,
 } from "@mui/material/";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -41,22 +40,6 @@ const AccountNavbar: React.FC<{
     [dispatch]
   );
 
-  const navigation: (e: React.MouseEvent<HTMLButtonElement>) => void = ({
-    currentTarget,
-  }) => {
-    const { innerText } = currentTarget;
-    console.log(innerText);
-    if (innerText.includes("Accounts")) {
-      navigate("/profile", { replace: true });
-    }
-    if (innerText.includes("Payments")) {
-      navigate("payments", { replace: true });
-    }
-    if (innerText.includes("Security & Privacy")) {
-    }
-    return;
-  };
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -68,37 +51,32 @@ const AccountNavbar: React.FC<{
           {!mobile ? (
             <Grid container>
               {options.map((o) => {
-                if (o.key !== options.length) {
+                if (!o.title.includes("Sign out")) {
                   return (
-                    <Button
+                    <NavLink
                       key={o.key}
-                      variant="text"
-                      sx={{
+                      to={o.link}
+                      style={{
                         fontSize: "1.1rem",
-                        textTransform: "none",
+                        textDecoration: "none",
                         margin: "auto 20px",
                         display: "inline-flex",
                         color: "white",
-                        "&:hover": {
-                          backgroundColor: "transparent",
-                        },
                       }}
-                      onClick={navigation}
                     >
                       {o.title}
-                    </Button>
+                    </NavLink>
                   );
                 } else {
                   return (
                     <Button
                       key={o.key}
-                      variant="outlined"
+                      variant="text"
                       sx={{
                         borderColor: "white",
                         display: "inline-flex",
                         color: "white",
                         float: "right",
-                        marginLeft: "60%",
                         textTransform: "none",
 
                         "&:hover": {
@@ -147,30 +125,30 @@ const AccountNavbar: React.FC<{
               >
                 {options.map((o) => {
                   return (
-                    <Container
+                    <Button
                       key={o.key}
-                      sx={
-                        o.key !== options.length
-                          ? {
-                              borderBottom: "1px solid black",
-                              margin: "auto",
-                              padding: "5px 0",
-                            }
-                          : {
-                              margin: "auto",
-                              padding: "5px 0",
-                            }
-                      }
+                      variant="text"
+                      sx={{
+                        fontSize: "1.1rem",
+                        textTransform: "none",
+                        margin: "auto 20px",
+                        color: "purple",
+                        display: "block",
+                        "&:hover": {
+                          backgroundColor: "transparent",
+                        },
+                      }}
+                      onClick={() => {
+                        if (!o.title.includes("Sign out")) {
+                          navigate(o.link, { replace: true });
+                        } else {
+                          dispatch(authActions.logout());
+                        }
+                        setShowLinks(null);
+                      }}
                     >
-                      <NavLink style={{ textDecoration: "none" }} to={o.link}>
-                        <Typography
-                          sx={{ textAlign: "center", color: "purple" }}
-                          variant="h6"
-                        >
-                          {o.title}
-                        </Typography>
-                      </NavLink>
-                    </Container>
+                      {o.title}
+                    </Button>
                   );
                 })}
               </Menu>

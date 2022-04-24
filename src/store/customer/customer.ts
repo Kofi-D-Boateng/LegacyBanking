@@ -10,6 +10,8 @@ function initialState(): {
   area: string | undefined;
   zipCode: string | undefined;
   funds: number;
+  isLocked: boolean;
+  isEnabled: boolean;
   transactions: {
     id: number;
     type: string;
@@ -35,6 +37,8 @@ function initialState(): {
     area: "",
     zipCode: "",
     funds: 0,
+    isLocked: false,
+    isEnabled: true,
     transactions: [
       { id: 0, amount: 0, dateOfTransaction: "", location: "", type: "" },
     ],
@@ -64,6 +68,8 @@ const customerSlice = createSlice({
         area: string | undefined;
         zipCode: string | undefined;
         funds: number;
+        isEnabled: boolean;
+        isLocked: boolean;
         transactions: {
           id: number;
           type: string;
@@ -84,6 +90,8 @@ const customerSlice = createSlice({
         zipCode,
         funds,
         transactions,
+        isEnabled,
+        isLocked,
       } = action.payload;
       state.fName = fName ? fName : state.fName;
       state.lName = lName ? lName : state.lName;
@@ -94,6 +102,8 @@ const customerSlice = createSlice({
       state.area = area ? area : state.area;
       state.zipCode = zipCode ? zipCode : state.zipCode;
       state.funds = funds ? funds : state.funds;
+      state.isEnabled = isEnabled;
+      state.isLocked = isLocked;
       state.transactions =
         transactions.length > state.transactions.length
           ? transactions.reverse()

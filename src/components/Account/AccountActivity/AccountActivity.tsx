@@ -1,15 +1,10 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import {
   Typography,
   Card,
   CardContent,
   Grid,
   IconButton,
-  FormControl,
-  InputLabel,
-  Select,
-  SelectChangeEvent,
-  MenuItem,
   ClassNameMap,
 } from "@mui/material";
 import Inactive from "@mui/icons-material/ChevronRight";
@@ -25,11 +20,10 @@ const AccountActivity: React.FC<{
     amount: number;
     location: string;
   }[];
-  YEAR: string;
-  MONTH: string;
-}> = ({ classes, transactions, MONTH, YEAR }) => {
+  YEAR: number;
+}> = ({ classes, transactions, YEAR }) => {
   const [view, setView] = useState<React.SetStateAction<boolean>>(false);
-  const [filter, setFilter] = useState<string | undefined>("");
+  const [count, setCount] = useState<number>(10);
 
   const categories: { key: number; title: string }[] = [
     { key: 1, title: "Date" },
@@ -45,13 +39,6 @@ const AccountActivity: React.FC<{
       setView(true);
     }
   };
-
-  const filterHandler = useCallback((event: SelectChangeEvent) => {
-    const { value } = event.target;
-    console.log(value);
-    console.log(typeof value);
-    setFilter(value);
-  }, []);
 
   return (
     <Card className={classes.card}>
@@ -79,39 +66,7 @@ const AccountActivity: React.FC<{
             borderBottom: "0.5px solid black",
             width: "100%",
           }}
-        >
-          {" "}
-        </div>
-        <Grid container>
-          <Grid
-            sx={{ display: "inline-flex", padding: "10px 0" }}
-            xs={12}
-            md={12}
-            item
-          >
-            <Typography sx={{ margin: "auto 10px auto 0" }} variant="h6">
-              Filter By:{" "}
-            </Typography>
-            <FormControl sx={{ width: "30%" }} size="small" fullWidth>
-              <InputLabel id="input-label">Select...</InputLabel>
-              <Select
-                labelId="input-label"
-                value={filter}
-                label="Filter"
-                onChange={filterHandler}
-              >
-                <MenuItem value={"type"}>Type</MenuItem>
-                <MenuItem value={"date"}>Date</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-        <div
-          style={{
-            borderBottom: "0.5px solid black",
-            width: "100%",
-          }}
-        />
+        ></div>
         {view && (
           <>
             <Grid className={classes.activityTitles} container>
@@ -134,10 +89,10 @@ const AccountActivity: React.FC<{
             <Transaction
               transactions={transactions}
               classes={classes}
-              filter={filter}
               categories={categories}
               YEAR={YEAR}
-              MONTH={MONTH}
+              count={count}
+              setCount={setCount}
             />
           </>
         )}

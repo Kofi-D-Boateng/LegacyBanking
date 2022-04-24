@@ -1,21 +1,12 @@
-import {
-  Card,
-  CardContent,
-  Grid,
-  Typography,
-  ClassNameMap,
-} from "@mui/material";
+import { Card, CardContent, Grid, Typography } from "@mui/material";
 
 const MainPanel: React.FC<{
-  transactions: {
-    id: number;
-    type: string;
-    dateOfTransaction: string;
-    amount: number;
-    location: string;
-  }[];
-  classes: ClassNameMap<string>;
-}> = ({ transactions, classes }) => {
+  classes: {
+    readonly [key: string]: string;
+  };
+  withdrawals: number;
+  changeYear: (e: any) => void;
+}> = ({ classes, changeYear, withdrawals }) => {
   return (
     <Grid container>
       <Card className={classes.card}>
@@ -32,7 +23,9 @@ const MainPanel: React.FC<{
             container
           >
             <Typography sx={{ margin: "0 10px" }} variant="h5">
-              {`You have spent $${0} this month`}
+              {`You have spent $${withdrawals.toLocaleString(
+                "en-us"
+              )} this month`}
             </Typography>
           </Grid>
         </CardContent>

@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 function initialState(): {
-  view: string | undefined;
+  view: string;
   paperless: boolean | undefined;
 } {
   return {
-    view: undefined,
+    view: "",
     paperless: undefined,
   };
 }
@@ -14,7 +14,7 @@ const modalSlice = createSlice({
   name: "views",
   initialState: initialState(),
   reducers: {
-    setView(state, action: PayloadAction<{ view: string | undefined }>) {
+    setView(state, action: PayloadAction<{ view: string }>) {
       const { view } = action.payload;
       state.view = view;
     },

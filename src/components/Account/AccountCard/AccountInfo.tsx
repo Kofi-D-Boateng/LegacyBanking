@@ -1,17 +1,17 @@
+import { Grid, Typography, Card, CardContent, Button } from "@mui/material";
+import React, { useEffect } from "react";
 import {
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  Button,
-  ClassNameMap,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import useConverter from "../../../hooks/useConverter";
+  ACHDEBIT,
+  DEBITTRASFER,
+  TRANSFER,
+  WITHDRAWAL,
+} from "../../UI/Constants/Constants";
 import MonthlyExpenditure from "./MonthlyExpenditure/MonthlyExpenditure";
 
 const AccountInfo: React.FC<{
-  classes: ClassNameMap<string>;
+  classes: {
+    readonly [key: string]: string;
+  };
   fName: string;
   lName: string;
   funds: number;
@@ -23,8 +23,17 @@ const AccountInfo: React.FC<{
     location: string;
   }[];
   mobile: boolean;
-  YEAR: string;
-  MONTH: string;
+  YEAR: number;
+  MONTH: number;
+  withdrawals: number;
+  deposits: number;
+  STATEMENT: string;
+  SECURITY: string;
+  MONEYTRANSFER: string;
+  PAPERLESS: string;
+  ACCOUNTNUMBER: string;
+  setWithdrawals: React.Dispatch<React.SetStateAction<number>>;
+  setDeposits: React.Dispatch<React.SetStateAction<number>>;
   onSetView: (event: any) => void;
 }> = ({
   classes,
@@ -32,29 +41,36 @@ const AccountInfo: React.FC<{
   lName,
   funds,
   transactions,
-  onSetView,
   mobile,
   MONTH,
   YEAR,
+  deposits,
+  withdrawals,
+  ACCOUNTNUMBER,
+  MONEYTRANSFER,
+  PAPERLESS,
+  SECURITY,
+  STATEMENT,
+  setDeposits,
+  setWithdrawals,
+  onSetView,
 }) => {
-  const [withdrawals, setWithdrawals] = useState<number>(0);
-  const [deposits, setDeposits] = useState<number>(0);
   useEffect(() => {
     let withdrawal: number = 0;
     let deposit: number = 0;
     transactions
       .filter((a) => {
         return (
-          a.dateOfTransaction.substring(0, 4) === YEAR &&
-          a.dateOfTransaction.substring(6, 7) === MONTH
+          +a.dateOfTransaction.substring(0, 4) === YEAR &&
+          +a.dateOfTransaction.substring(6, 7) === MONTH
         );
       })
       .map((a) => {
         if (
-          a.type === "withdrawal" ||
-          a.type === "transfer" ||
-          a.type === "ACH Debit" ||
-          a.type === "Debit transfer"
+          a.type.includes(WITHDRAWAL) ||
+          a.type.includes(TRANSFER) ||
+          a.type.includes(ACHDEBIT) ||
+          a.type.includes(DEBITTRASFER)
         ) {
           withdrawal = withdrawal + a.amount;
         } else {
@@ -66,27 +82,46 @@ const AccountInfo: React.FC<{
     const floatDeposit = parseFloat(deposit.toFixed(2));
     setDeposits(floatDeposit);
     setWithdrawals(floatWithdrawal);
-  }, [YEAR, MONTH, transactions]);
+  }, [YEAR, MONTH, transactions, setDeposits, setWithdrawals]);
 
   const details: { key: number; value: string; desc: string }[] = [
-    { key: 1, value: `$${useConverter(funds)}`, desc: "Available balance" },
+    {
+      key: 1,
+      value: `${funds.toLocaleString("en-us", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      desc: "Available balance",
+    },
     {
       key: 2,
-      value: `+$${useConverter(deposits)}`,
+      value: `+${deposits.toLocaleString("en-us", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
       desc: "Deposits this month",
     },
     {
       key: 3,
-      value: `-$${useConverter(withdrawals)}`,
+      value: `-${withdrawals.toLocaleString("en-us", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
       desc: "Withdrawls this month",
     },
   ];
 
   const links: { key: number; title: string }[] = [
-    { key: 1, title: "Statement" },
-    { key: 2, title: "Paperless" },
-    { key: 3, title: "Transfer Money" },
-    { key: 4, title: "More" },
+    { key: 1, title: STATEMENT },
+    { key: 2, title: PAPERLESS },
+    { key: 3, title: MONEYTRANSFER },
+    { key: 4, title: SECURITY },
   ];
   return (
     <Card className={classes.card}>
@@ -106,7 +141,7 @@ const AccountInfo: React.FC<{
             onClick={onSetView}
             variant="text"
           >
-            Full account numbers
+            {ACCOUNTNUMBER}
           </Button>
         </Typography>
         <Grid sx={{ margin: "10px 0" }} container>

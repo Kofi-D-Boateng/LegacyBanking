@@ -1,14 +1,14 @@
-import React, { Dispatch, useEffect, useState } from "react";
-import { Card, CardContent, Grid, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Grid } from "@mui/material";
 import classes from "../../../styles/BarGraphSVGStyles.module.css";
 import BarChart from "../../UI/SVGs/BarChart";
 import MainPanel from "./MainPanel/MainPanel";
-import { DateAmount } from "../../../Interfaces/Maps";
-import { useDispatch } from "react-redux";
+import { DateAmountType } from "../../../Interfaces/Maps";
 
 const Summary: React.FC<{
-  year: string;
-  month: string;
+  year: number;
+  month: number;
+  withdrawals: number;
   customer: {
     fName: string;
     lName: string;
@@ -27,12 +27,12 @@ const Summary: React.FC<{
       location: string;
     }[];
   };
-  DateAmount: DateAmount[];
-}> = ({ customer, month, year, DateAmount }) => {
-  const dispatch = useDispatch<Dispatch<any>>();
+  DateAmount: DateAmountType[];
+  isMobile: boolean;
+}> = ({ customer, month, year, DateAmount, isMobile, withdrawals }) => {
   const [view, setView] = useState<number>(1);
-  const [yearView, setYearView] = useState<string>(year);
-  const [monthView, setMonthView] = useState<string>(month);
+  // INITIAL STATE IS HELD BY CURRENTYEAR IN PROFILE.TSX
+  const [yearView, setYearView] = useState<number>(year);
   const { transactions } = customer;
   const SVGs: { key: number; title: string; svg: JSX.Element }[] = [
     {
@@ -44,11 +44,13 @@ const Summary: React.FC<{
           transactions={transactions}
           DateAmount={DateAmount}
           year={yearView}
-          month={monthView}
+          isMobile={isMobile}
         />
       ),
     },
   ];
+
+  const yearHandler: (e: any) => void = () => {};
 
   return (
     <>
@@ -57,12 +59,16 @@ const Summary: React.FC<{
           return s.key === view;
         }).map((s) => {
           return (
-            <Grid key={s.key} container>
+            <Grid key={s.key} xs={12} md={12} item>
               {s.svg}
             </Grid>
           );
         })}
-        <MainPanel classes={classes} transactions={transactions} />
+        <MainPanel
+          changeYear={yearHandler}
+          classes={classes}
+          withdrawals={withdrawals}
+        />
       </Grid>
     </>
   );

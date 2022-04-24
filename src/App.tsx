@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import { Suspense, lazy, FC } from "react";
 import { useSelector } from "react-redux";
 import {
   matchPath,
@@ -15,17 +15,28 @@ import AccountLayout from "./components/UI/Layouts/AccoutLayout";
 import { RootState } from "./store/store";
 import Layout from "./components/UI/Layouts/Layout";
 import Home from "./pages/Home";
-const About = React.lazy(() => import("./pages/About"));
-const Contact = React.lazy(() => import("./pages/Contact"));
-const International = React.lazy(() => import("./pages/International"));
-const Investment = React.lazy(() => import("./pages/Investments"));
-const Loans = React.lazy(() => import("./pages/Loans"));
-const Locations = React.lazy(() => import("./pages/Locations"));
-const Login = React.lazy(() => import("./pages/Login"));
-const Signup = React.lazy(() => import("./pages/Signup"));
-const Profile = React.lazy(() => import("./pages/Profile"));
+import {
+  ABOUT,
+  AUTHAPI,
+  CONTACT,
+  HOME,
+  INVESTMENTS,
+  LOCATIONS,
+  LOGIN,
+  PROFILE,
+  REDIRECT,
+  SIGNUP,
+} from "./components/UI/Constants/Constants";
+const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Investment = lazy(() => import("./pages/Investments"));
+const Locations = lazy(() => import("./pages/Locations"));
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
+const Profile = lazy(() => import("./pages/Profile"));
 
-const App: React.FC = () => {
+const App: FC = () => {
+  const customer = useSelector((state: RootState) => state.cust);
   const theme = useTheme<Theme>();
   const mobile: boolean = useMediaQuery<unknown>(theme.breakpoints.down("md"));
   const auth: {
@@ -33,6 +44,7 @@ const App: React.FC = () => {
     authenticated: boolean;
   } = useSelector((state: RootState) => state.auth);
   const { pathname } = useLocation();
+  console.log(pathname);
   const login: PathMatch<string> | null = matchPath<string, string>(
     "/login",
     pathname
@@ -57,25 +69,24 @@ const App: React.FC = () => {
       {profile?.pattern.end ? (
         <AccountLayout mobile={mobile} login={null} signup={null} auth={false}>
           <Routes>
-            <Route path="/" element={<Home mobile={mobile} />} />
-            <Route path="/about" element={<About />} />
-            <Route
-              path="/locations"
-              element={<Locations isMobile={mobile} />}
-            />
-            <Route path="/investment" element={<Investment />} />
-            <Route path="/loans" element={<Loans />} />
-            <Route path="/international" element={<International />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/login" element={<Login isMobile={mobile} />} />
-            <Route path="/signup" element={<Signup />} />
             {auth.authenticated && (
               <Route
-                path="/profile/*"
-                element={<Profile token={auth.token} mobile={mobile} />}
+                path={PROFILE}
+                element={
+                  customer.isEnabled ? (
+                    <Profile
+                      customer={customer}
+                      URL={AUTHAPI}
+                      token={auth.token}
+                      mobile={mobile}
+                    />
+                  ) : (
+                    <h1>IT WORKED</h1>
+                  )
+                }
               />
             )}
-            <Route path="*" element={<Navigate replace to="/" />} />
+            <Route path={REDIRECT} element={<Navigate replace to={HOME} />} />
           </Routes>
         </AccountLayout>
       ) : (
@@ -86,25 +97,20 @@ const App: React.FC = () => {
           signup={signup}
         >
           <Routes>
-            <Route path="/" element={<Home mobile={mobile} />} />
-            <Route path="/about" element={<About />} />
+            <Route path={HOME} element={<Home mobile={mobile} />} />
+            <Route path={ABOUT} element={<About />} />
             <Route
-              path="/locations"
-              element={<Locations isMobile={mobile} />}
+              path={LOCATIONS}
+              element={<Locations URL={AUTHAPI} isMobile={mobile} />}
             />
-            <Route path="/investment" element={<Investment />} />
-            <Route path="/loans" element={<Loans />} />
-            <Route path="/international" element={<International />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/login" element={<Login isMobile={mobile} />} />
-            <Route path="/signup" element={<Signup />} />
-            {auth.authenticated && (
-              <Route
-                path="/profile/*"
-                element={<Profile token={auth.token} mobile={mobile} />}
-              />
-            )}
-            <Route path="*" element={<Navigate replace to="/" />} />
+            <Route path={INVESTMENTS} element={<Investment />} />
+            <Route path={CONTACT} element={<Contact />} />
+            <Route
+              path={LOGIN}
+              element={<Login URL={AUTHAPI} isMobile={mobile} />}
+            />
+            <Route path={SIGNUP} element={<Signup URL={AUTHAPI} />} />
+            <Route path={REDIRECT} element={<Navigate replace to={HOME} />} />
           </Routes>
         </Layout>
       )}

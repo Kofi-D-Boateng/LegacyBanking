@@ -1,12 +1,13 @@
-import React, { SetStateAction, useEffect, useState } from "react";
+import { FC, SetStateAction, useEffect, useState } from "react";
 import axios from "axios";
 import { CardContent, Grid, Typography } from "@mui/material";
 import SignupForm from "../components/Forms/SignupForm/SignupForm";
 import Kard from "../components/UI/Card";
 import { useNavigate } from "react-router-dom";
 import classes from "../styles/SignupStyles.module.css";
+import { PROFILE } from "../components/UI/Constants/Constants";
 
-const Signup: React.FC = () => {
+const Signup: FC<{ URL: string }> = ({ URL }) => {
   const [user, setUser] = useState<{} | null>(null);
   const [isValid, setIsValid] = useState<boolean>(true);
   const navigate = useNavigate();
@@ -15,23 +16,19 @@ const Signup: React.FC = () => {
     if (user === null) {
       return;
     }
-    const fetchUserSignup = async (register: {}) => {
-      console.log(register);
+    const fetchUserSignup: (user: {}) => void = async (user) => {
       await axios
-        .post(
-          "http://localhost:8081/api/v1/authentication/registration",
-          register
-        )
+        .post(`${URL}/authentication/registration`, user)
         .then((response) => {
           if (response.data.isSaved === true) {
-            navigate("/", { replace: true });
+            navigate(PROFILE, { replace: true });
           } else {
             setIsValid(false);
           }
         });
     };
     fetchUserSignup(user);
-  }, [user, navigate]);
+  }, [user, navigate, URL]);
 
   const userInfo = (
     data: SetStateAction<{

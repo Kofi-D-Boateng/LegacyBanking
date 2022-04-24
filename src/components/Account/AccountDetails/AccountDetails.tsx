@@ -1,21 +1,15 @@
 import Wallet from "@mui/icons-material/AccountBalanceWallet";
-import Credit from "@mui/icons-material/Speed";
 import Loan from "@mui/icons-material/CreditCard";
-import Debt from "@mui/icons-material/ReportProblem";
-import {
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  ClassNameMap,
-} from "@mui/material";
+import { Grid, Typography, Card, CardContent } from "@mui/material";
 import React, { ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 import { ArrowForwardIos } from "@mui/icons-material";
-import { CREDITSCORE, LOANS, SUMMARY } from "../../UI/Constants/Constants";
+import { LOANS, SUMMARY } from "../../UI/Constants/Constants";
 
 const AccountDetails: React.FC<{
-  classes: ClassNameMap<string>;
+  classes: {
+    readonly [key: string]: string;
+  };
 }> = ({ classes }) => {
   const clickableDetails: {
     key: number;
@@ -33,24 +27,10 @@ const AccountDetails: React.FC<{
     },
     {
       key: 2,
-      title: "Credit score",
-      link: CREDITSCORE,
-      desc: "Check your credit score",
-      icon: <Credit fontSize="large" sx={{ color: "purple" }} />,
-    },
-    {
-      key: 3,
       title: "Loans",
       link: LOANS,
       desc: "See what loans you have taken",
       icon: <Loan fontSize="large" sx={{ color: "purple" }} />,
-    },
-    {
-      key: 4,
-      title: "Unpaid debt",
-      link: "/",
-      desc: "Check your unpaid debt",
-      icon: <Debt fontSize="large" sx={{ color: "purple" }} />,
     },
   ];
   return (

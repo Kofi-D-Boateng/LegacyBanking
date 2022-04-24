@@ -2,18 +2,12 @@ export interface DateAmountHash {
   [date: string]: number;
 }
 
-export interface DateAmount {
+export interface DateAmountType {
   date: string;
   amount: number;
+  type: string;
 }
 
 export interface MonthsMap {
   [date: number]: string;
-}
-
-export interface LocationMap {
-  country: string;
-  state: string;
-  x: number;
-  y: number;
 }

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, Fragment } from "react";
+import { FC, useState, useRef, useEffect, Fragment } from "react";
 import { Grid, Typography } from "@mui/material";
 import LoginForm from "../components/Forms/LoginForm/LoginForm";
 import axios from "axios";
@@ -8,7 +8,7 @@ import { authActions } from "../store/authentication/auth-slice";
 import classes from "../styles/LoginStyles.module.css";
 import { credentials } from "../Interfaces/Credentials";
 
-const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
+const Login: FC<{ isMobile: boolean; URL: string }> = ({ isMobile, URL }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [invalid, setInvalid] = useState<boolean>(false);
@@ -25,20 +25,22 @@ const Login: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
     }
     const fetchUserLogin = async (login: {}) => {
       await axios
-        .post("http://localhost:8081/api/v1/authentication/login", login)
+        .post(`${URL}/authentication/login`, login)
         .then((response) => {
+          console.log(response.status);
           if (response.status === 200) {
             const { token } = response.data;
             dispatch(authActions.getCreds({ token: token }));
-            navigate("/", { replace: true });
+            navigate("/profile", { replace: true });
           }
         })
-        .catch((error) => {
+        .catch(() => {
+          console.log("HIT");
           setInvalid(true);
         });
     };
     fetchUserLogin(user);
-  }, [user, dispatch, navigate]);
+  }, [user, dispatch, navigate, URL]);
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();

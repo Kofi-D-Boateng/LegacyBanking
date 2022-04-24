@@ -1,5 +1,4 @@
 import React, { Fragment, ReactElement } from "react";
-import { PathMatch } from "react-router-dom";
 import { Footer } from "../Footer";
 import { Navbar } from "../Navbar";
 import { Twitter, Facebook, Instagram, LinkedIn } from "@mui/icons-material";
@@ -16,9 +15,7 @@ const Layout: React.FC<GlobalLayouts> = ({
     { key: 1, title: "About Us", link: "/about" },
     { key: 2, title: "Locations", link: "/locations" },
     { key: 3, title: "Investments", link: "/investments/*" },
-    { key: 4, title: "Loans", link: "/loans/*" },
-    { key: 5, title: "International", link: "/international/*" },
-    { key: 6, title: "Contact", link: "/contact" },
+    { key: 4, title: "Contact", link: "/contact" },
   ];
 
   const authLinks: { key: number; title: string; link: string }[] = [
@@ -46,7 +43,7 @@ const Layout: React.FC<GlobalLayouts> = ({
       )}
       <div style={{ width: "100%" }}>{children}</div>
       {signup?.pattern.end || login?.pattern.end ? null : (
-        <Footer socials={Socials} isMobile={mobile} />
+        <Footer socials={Socials} links={Links} isMobile={mobile} />
       )}
     </Fragment>
   );

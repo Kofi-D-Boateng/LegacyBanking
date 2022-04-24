@@ -30,8 +30,13 @@ const Footer: React.FC<{
     svg: ReactElement;
     link: string;
   }[];
+  links: {
+    key: number;
+    title: string;
+    link: string;
+  }[];
   isMobile: boolean;
-}> = ({ socials, isMobile }) => {
+}> = ({ socials, isMobile, links }) => {
   const year = new Date().getFullYear();
   return (
     <footer className={classes.footer}>
@@ -41,14 +46,42 @@ const Footer: React.FC<{
             Legacy Bank
           </Typography>
         </Grid>
-        <Grid className={classes.footerLink} xs={4} md={4} item>
-          <Typography variant="h5">Hello</Typography>
+        <Grid xs={4} md={4} item>
+          {links
+            .filter((l) => {
+              return l.key <= 2;
+            })
+            .map((l) => {
+              return (
+                <NavLink className={classes.footerLink} key={l.key} to={l.link}>
+                  <Typography variant="body1" sx={{ fontSize: "1.2rem" }}>
+                    {l.title}
+                  </Typography>
+                </NavLink>
+              );
+            })}
         </Grid>
-        <Grid className={classes.footerLink} xs={4} md={4} item>
-          <Typography variant="h5">Hello</Typography>
+        <Grid xs={4} md={4} item>
+          {links
+            .filter((l) => {
+              return l.key >= 3;
+            })
+            .map((l) => {
+              return (
+                <NavLink className={classes.footerLink} key={l.key} to={l.link}>
+                  <Typography variant="body1" sx={{ fontSize: "1.2rem" }}>
+                    {l.title}
+                  </Typography>
+                </NavLink>
+              );
+            })}
         </Grid>
       </Grid>
-      <Grid className={classes.footerLink} sx={{ margin: "20px 0" }} container>
+      <Grid
+        className={classes.footerSocialContainer}
+        sx={{ margin: "20px 0" }}
+        container
+      >
         <Grid xs={6} md={6} item>
           {socials.map((s) => {
             return (

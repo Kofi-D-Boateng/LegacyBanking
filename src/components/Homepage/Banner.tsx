@@ -1,4 +1,4 @@
-import { Button, ClassNameMap, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import React from "react";
 import { NavigateFunction } from "react-router-dom";
 
@@ -39,9 +39,15 @@ const Banner: React.FC<{
       </Grid>
       <Grid className={classes.videoContainer} container>
         <Grid className={classes.vidOverlay} container />
-        <video autoPlay muted loop>
-          <source src={cityscape} type="video/mp4" />
-        </video>
+        {!isMobile ? (
+          <video autoPlay muted loop>
+            <source
+              style={{ width: "100%", height: "auto" }}
+              src={cityscape}
+              type="video/mp4"
+            />
+          </video>
+        ) : null}
       </Grid>
     </Grid>
   );

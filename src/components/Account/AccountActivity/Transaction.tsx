@@ -1,8 +1,16 @@
-import { ClassNameMap, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import React from "react";
+import {
+  ACHDEBIT,
+  DEBITTRASFER,
+  TRANSFER,
+  WITHDRAWAL,
+} from "../../UI/Constants/Constants";
 
 const Transaction: React.FC<{
-  classes: ClassNameMap<string>;
+  classes: {
+    readonly [key: string]: string;
+  };
   transactions: {
     id: number;
     type: string;
@@ -14,17 +22,16 @@ const Transaction: React.FC<{
     key: number;
     title: string;
   }[];
-  filter: string | undefined;
-  YEAR: string;
-  MONTH: string;
-}> = ({ classes, categories, filter, transactions, MONTH, YEAR }) => {
+  YEAR: number;
+  count: number;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
+}> = ({ classes, categories, transactions, YEAR, count, setCount }) => {
   return (
-    <Grid container>
+    <Grid sx={{ margin: "auto" }} container>
       {transactions
-        .filter((a) => {
+        .filter((a, index) => {
           return (
-            a.dateOfTransaction.substring(0, 4) === YEAR &&
-            a.dateOfTransaction.substring(6, 7) === MONTH
+            +a.dateOfTransaction.substring(0, 4) === YEAR && index <= count
           );
         })
         .map((a) => {
@@ -60,13 +67,23 @@ const Transaction: React.FC<{
                 md={12 / categories.length}
                 item
               >
-                <Typography variant="body1">
-                  {a.type === "Debit transfer" ||
-                  a.type === "transfer" ||
-                  a.type === "withdrawal" ||
-                  a.type === "ACH Debit"
-                    ? `-$${a.amount}`
-                    : `+$${a.amount}`}
+                <Typography sx={{ fontWeight: "bold" }} variant="body1">
+                  {a.type.includes(DEBITTRASFER) ||
+                  a.type.includes(TRANSFER) ||
+                  a.type.includes(WITHDRAWAL) ||
+                  a.type.includes(ACHDEBIT)
+                    ? `-${a.amount.toLocaleString("en-us", {
+                        style: "currency",
+                        currency: "USD",
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}`
+                    : `+${a.amount.toLocaleString("en-us", {
+                        style: "currency",
+                        currency: "USD",
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}`}
                 </Typography>
               </Grid>
               <div
@@ -80,6 +97,25 @@ const Transaction: React.FC<{
             </Grid>
           );
         })}
+      <Grid sx={{ marginTop: "10px" }} container>
+        <Button
+          sx={{
+            margin: "auto",
+            color: "purple",
+            "&:hover": {
+              backgroundColor: "transparent",
+            },
+          }}
+          type="button"
+          variant="text"
+          // THIS DOES NOT WORK AS INTENDED!!! MUST DECREMENT CURRENT TO SHOW PREVIOUS MONTHS.
+          onClick={() => {
+            setCount((prevState) => prevState + 5);
+          }}
+        >
+          See more activity
+        </Button>
+      </Grid>
     </Grid>
   );
 };
