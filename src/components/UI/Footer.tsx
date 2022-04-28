@@ -6,7 +6,13 @@ import { NavLink } from "react-router-dom";
 
 const AccountFooter: React.FC = () => {
   return (
-    <Box style={{ backgroundColor: "purple", padding: "50px 0" }}>
+    <Box
+      style={{
+        backgroundColor: "purple",
+        padding: "40px 0",
+        marginTop: "auto",
+      }}
+    >
       <footer>
         <Grid container>
           <Grid sx={{ margin: "auto" }} xs={10} md={10} item>

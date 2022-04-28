@@ -9,13 +9,7 @@ import {
   format,
 } from "d3";
 import { DateAmountType, MonthsMap } from "../../../Interfaces/Maps";
-import {
-  Card,
-  CardContent,
-  ClassNameMap,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, Grid, Typography } from "@mui/material";
 import {
   ACHDEBIT,
   DEBITTRASFER,
@@ -38,16 +32,21 @@ const BarChart: React.FC<{
   isMobile: boolean;
 }> = ({ transactions, DateAmount, year, classes, isMobile }) => {
   const svgRef: React.LegacyRef<SVGSVGElement> | undefined = useRef<any>();
-  const MARGIN: { top: number; bottom: number; left: number; right: number } = {
-    top: 30,
-    bottom: 30,
-    left: 20,
-    right: 20,
-  };
-  const CHART_HEIGHT: number = 600 - MARGIN.top - MARGIN.bottom;
-  const CHART_WIDTH: number = 800 - MARGIN.left - MARGIN.right;
-  let count = 0;
   useEffect(() => {
+    const MARGIN: {
+      top: number;
+      bottom: number;
+      left: number;
+      right: number;
+    } = {
+      top: 30,
+      bottom: 30,
+      left: 20,
+      right: 20,
+    };
+    const CHART_HEIGHT: number = 600 - MARGIN.top - MARGIN.bottom;
+    const CHART_WIDTH: number = 800 - MARGIN.left - MARGIN.right;
+    let count = 0;
     const Dates: MonthsMap = {
       1: "Jan",
       2: "Feb",
@@ -137,10 +136,10 @@ const BarChart: React.FC<{
       ] as Iterable<Number>)
       .range([CHART_HEIGHT, 0]);
 
-    const TOOLTIP = svg
-      .append("div")
-      .style("visibility", "hidden")
-      .style("background-color", "red");
+    // const TOOLTIP = svg
+    //   .append("div")
+    //   .style("visibility", "hidden")
+    //   .style("background-color", "red");
 
     svg
       .append("g")
@@ -165,10 +164,9 @@ const BarChart: React.FC<{
       .attr("x", (data: { date: any }) => x(data.date) as string | number)
       .attr("y", (data: { amount: any }) => y(data.amount))
       .on("mouseover", (e: any, d: { date: any; amount: any }) => {
-        console.log(`${d.date}:  $${d.amount}`);
         RECT.append("div").text(`${d.date}:  $${d.amount}`);
       });
-  }, [year]);
+  });
   return (
     <>
       <Card className={!isMobile ? classes.card : classes.mobileCard}>

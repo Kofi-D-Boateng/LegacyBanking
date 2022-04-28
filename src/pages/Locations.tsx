@@ -53,8 +53,8 @@ const Locations: FC<{ isMobile: boolean; URL: string }> = ({
 
   return (
     <>
-      <Banner classes={classes} />
-      <BankInfo photo={BM} classes={classes} />
+      <Banner classes={classes} isMobile={isMobile} />
+      <BankInfo photo={BM} classes={classes} isMobile={isMobile} />
       <BankSearch classes={classes} bank={LEGACY} />
     </>
   );

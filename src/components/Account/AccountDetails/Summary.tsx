@@ -7,7 +7,6 @@ import { DateAmountType } from "../../../Interfaces/Maps";
 
 const Summary: React.FC<{
   year: number;
-  month: number;
   withdrawals: number;
   customer: {
     fName: string;
@@ -29,7 +28,7 @@ const Summary: React.FC<{
   };
   DateAmount: DateAmountType[];
   isMobile: boolean;
-}> = ({ customer, month, year, DateAmount, isMobile, withdrawals }) => {
+}> = ({ customer, year, DateAmount, isMobile, withdrawals }) => {
   const [view, setView] = useState<number>(1);
   // INITIAL STATE IS HELD BY CURRENTYEAR IN PROFILE.TSX
   const [yearView, setYearView] = useState<number>(year);

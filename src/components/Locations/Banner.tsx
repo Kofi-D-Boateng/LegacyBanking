@@ -4,11 +4,19 @@ const Banner: React.FC<{
   classes: {
     readonly [key: string]: string;
   };
-}> = ({ classes }) => {
+  isMobile: boolean;
+}> = ({ classes, isMobile }) => {
   return (
     <>
-      <Grid className={classes.banner} container>
-        <Grid className={classes.bannerTitle} item>
+      <Grid
+        className={!isMobile ? classes.banner : classes.mobileBanner}
+        container
+      >
+        <Grid
+          className={classes.bannerTitle}
+          sx={{ margin: "auto", padding: "10px", width: "60%" }}
+          item
+        >
           <Typography
             variant="h3"
             sx={{

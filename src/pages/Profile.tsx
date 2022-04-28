@@ -301,7 +301,6 @@ const Profile: FC<{
           isMobile={mobile}
           customer={customer}
           year={currentYear}
-          month={currentMonth}
           DateAmount={DateAmount}
           withdrawals={withdrawals}
         />

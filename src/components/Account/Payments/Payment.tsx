@@ -1,7 +1,3 @@
-import { AttachMoney, Send } from "@mui/icons-material";
-import { Grid, SvgIconTypeMap, Typography } from "@mui/material";
-import { ReactElement, useState } from "react";
-
 const Payment: React.FC<{
   isMobile: boolean;
   customer: {

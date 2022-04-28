@@ -24,7 +24,7 @@ const BankSearch: React.FC<{
   };
 }> = ({ bank, classes }) => {
   return (
-    <Grid sx={{ padding: "30px 0" }} container>
+    <Grid sx={{ padding: "10px 0" }} container>
       <Grid sx={{ textAlign: "center" }} xs={12} md={12} item>
         <Typography variant="h4" sx={{ color: "purple" }}>
           View our locations around the world

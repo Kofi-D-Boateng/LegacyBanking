@@ -38,26 +38,28 @@ const LocationMarker: React.FC<{
     },
   };
 
+  const BankIcon = new Icon({
+    iconUrl: markerIcon,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+  });
+
   return (
     <>
       <Marker
         position={[branch.latitude, branch.longitude]}
-        icon={
-          new Icon({
-            iconUrl: markerIcon,
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-          })
-        }
+        icon={BankIcon}
         eventHandlers={MarkerFn}
       />
       {position && (
-        <Popup position={position} onClose={() => setPosition(undefined)}>
+        <Popup position={position}>
           <Grid container>
-            <Typography variant="body1">{"Name: " + branch.name}</Typography>
+            <Typography variant="h6"> {branch.name}</Typography>
             <Typography variant="body1">
               {"Country: " + branch.country}
             </Typography>
+          </Grid>
+          <Grid container>
             <Typography variant="body1">{"Area: " + branch.state}</Typography>
           </Grid>
         </Popup>

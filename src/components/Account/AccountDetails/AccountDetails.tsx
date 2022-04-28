@@ -32,6 +32,20 @@ const AccountDetails: React.FC<{
       desc: "See what loans you have taken",
       icon: <Loan fontSize="large" sx={{ color: "purple" }} />,
     },
+    // {
+    //   key: 3,
+    //   title: "Loans",
+    //   link: LOANS,
+    //   desc: "See what loans you have taken",
+    //   icon: <Loan fontSize="large" sx={{ color: "purple" }} />,
+    // },
+    // {
+    //   key: 4,
+    //   title: "Loans",
+    //   link: LOANS,
+    //   desc: "See what loans you have taken",
+    //   icon: <Loan fontSize="large" sx={{ color: "purple" }} />,
+    // },
   ];
   return (
     <Card className={classes.card}>

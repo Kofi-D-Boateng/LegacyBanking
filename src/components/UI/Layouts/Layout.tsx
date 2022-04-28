@@ -25,7 +25,7 @@ const Layout: React.FC<GlobalLayouts> = ({
   ];
 
   const Socials: { key: number; svg: ReactElement; link: string }[] = [
-    { key: 1, svg: <Twitter />, link: "/about" },
+    { key: 1, svg: <Twitter />, link: "about" },
     { key: 2, svg: <Facebook />, link: "/locations" },
     { key: 3, svg: <Instagram />, link: "/investments/*" },
     { key: 4, svg: <LinkedIn />, link: "/loans/*" },
