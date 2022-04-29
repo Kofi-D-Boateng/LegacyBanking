@@ -27,6 +27,7 @@ import {
   REDIRECT,
   SIGNUP,
 } from "./components/UI/Constants/Constants";
+import axios from "axios";
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Investment = lazy(() => import("./pages/Investments"));
@@ -104,7 +105,12 @@ const App: FC = () => {
               element={<Locations URL={AUTHAPI} isMobile={mobile} />}
             />
             <Route path={INVESTMENTS} element={<Investment />} />
-            <Route path={CONTACT} element={<Contact />} />
+            <Route
+              path={CONTACT}
+              element={
+                <Contact isMobile={mobile} URL={AUTHAPI} axios={axios} />
+              }
+            />
             <Route
               path={LOGIN}
               element={<Login URL={AUTHAPI} isMobile={mobile} />}

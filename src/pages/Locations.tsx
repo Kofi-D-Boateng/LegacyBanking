@@ -3,7 +3,8 @@ import { FC, Dispatch, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bankActions } from "../store/bank/bank-slice";
 import { RootState } from "../store/store";
-import BM from "../assets/photos/business_man.jpg";
+import BM from "../assets/photos/business.jpg";
+import Seoul from "../assets/photos/Seoul.jpg";
 import BankInfo from "../components/Locations/BankInfo";
 import BankSearch from "../components/Locations/BankSearch";
 import Banner from "../components/Locations/Banner";
@@ -54,7 +55,12 @@ const Locations: FC<{ isMobile: boolean; URL: string }> = ({
   return (
     <>
       <Banner classes={classes} isMobile={isMobile} />
-      <BankInfo photo={BM} classes={classes} isMobile={isMobile} />
+      <BankInfo
+        photoOne={BM}
+        photoTwo={Seoul}
+        classes={classes}
+        isMobile={isMobile}
+      />
       <BankSearch classes={classes} bank={LEGACY} />
     </>
   );

@@ -2,12 +2,13 @@ import { Grid, Typography } from "@mui/material";
 import React from "react";
 
 const BankInfo: React.FC<{
-  photo: string;
+  photoOne: string;
+  photoTwo: string;
   classes: {
     readonly [key: string]: string;
   };
   isMobile: boolean;
-}> = ({ photo, classes, isMobile }) => {
+}> = ({ photoOne, photoTwo, classes, isMobile }) => {
   const info: {
     key: number;
     title: string;
@@ -20,14 +21,14 @@ const BankInfo: React.FC<{
       title: "Banking with legacy",
       desc: "Legacy has many strategical positions around the world. Our goal is to aid give strategical advise and opportunities to our global community.",
       imgCss: classes.img,
-      img: photo,
+      img: photoOne,
     },
     {
       key: 2,
       title: "International Locations",
       desc: "Legacy has locations ranging from The United States, to China, to Africa. Placing ourselves in strategics area to allow foreign investment to be easily obtained within these communities.",
       imgCss: classes.img,
-      img: photo,
+      img: photoTwo,
     },
   ];
 

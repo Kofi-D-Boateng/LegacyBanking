@@ -24,7 +24,7 @@ import { RootState } from "../store/store";
 import { authActions } from "../store/authentication/auth-slice";
 import classes from "../styles/ProfileStyles.module.css";
 import MoneyTransfer from "../components/UI/Modals/MoneyTransfer/MoneyTransfer";
-import MoneyTransferStyles from "../styles/MoneyTransfer.module.css";
+import MoneyTransferStyles from "../styles/modals.module.css";
 import Statement from "../components/UI/Modals/Statement/Statement";
 import Paperless from "../components/UI/Modals/Paperless/Paperless";
 import AccountNumbers from "../components/UI/Modals/AccountNumber/AccountNumbers";
