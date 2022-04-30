@@ -107,9 +107,7 @@ const App: FC = () => {
             <Route path={INVESTMENTS} element={<Investment />} />
             <Route
               path={CONTACT}
-              element={
-                <Contact isMobile={mobile} URL={AUTHAPI} axios={axios} />
-              }
+              element={<Contact isMobile={mobile} axios={axios} />}
             />
             <Route
               path={LOGIN}

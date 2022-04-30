@@ -1,5 +1,10 @@
 // BACKEND URL
-const AUTHAPI: string = "http://localhost:8081/api/v1";
+const AUTHAPI: string = process.env.ENVIRONMENT?.includes("prod")
+  ? ""
+  : "http://localhost:8081/api/v1";
+const MAILERURL: string = process.env.ENVIRONMENT?.includes("prod")
+  ? ""
+  : "http://localhost:5500/customer-service/email";
 
 // PROFILE STRING COMPARISON
 const DEBITTRASFER: string = "Debit transfer";
@@ -79,4 +84,5 @@ export {
   LOCKEDCARDMSG,
   AUTHAPI,
   SECURITYERRORMSG,
+  MAILERURL,
 };
