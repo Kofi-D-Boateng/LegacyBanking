@@ -14,8 +14,7 @@ const Layout: React.FC<GlobalLayouts> = ({
   const Links: { key: number; title: string; link: string }[] = [
     { key: 1, title: "About Us", link: "/about" },
     { key: 2, title: "Locations", link: "/locations" },
-    { key: 3, title: "Investments", link: "/investments/*" },
-    { key: 4, title: "Contact", link: "/contact" },
+    { key: 3, title: "Contact", link: "/contact" },
   ];
 
   const authLinks: { key: number; title: string; link: string }[] = [

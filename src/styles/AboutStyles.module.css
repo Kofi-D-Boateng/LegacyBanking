@@ -1,0 +1,32 @@
+.banner {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../assets/photos/business_lady.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 90vh;
+}
+
+.infoContainer {
+  margin: 100px 0;
+}
+
+.infoBox {
+  color: purple;
+  justify-content: center;
+  padding: 50px 0;
+}
+
+.leadershipContainer {
+  margin: 50px 0;
+}
+
+.img {
+  width: 300px;
+  border-radius: 200px;
+  height: 300px;
+}
+
+.leadershipInfo {
+  margin: 10px 0;
+}
