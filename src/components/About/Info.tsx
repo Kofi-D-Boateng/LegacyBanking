@@ -3,7 +3,6 @@ import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { FC } from "react";
 import Leadership from "./Leadership";
 import Partners from "./Partners";
-import holderImg from "../../assets/photos/holderphoto.jpg";
 
 const Info: FC<{
   classes: {
@@ -12,16 +11,40 @@ const Info: FC<{
   isMobile: boolean;
   Grid: OverridableComponent<GridTypeMap<{}, "div">>;
   Typography: OverridableComponent<TypographyTypeMap<{}, "span">>;
-}> = ({ classes, isMobile, Grid, Typography }) => {
+  group: string;
+  holder: string;
+  google: string;
+  ford: string;
+  homeDepot: string;
+  toyota: string;
+  AA: string;
+  aetna: string;
+}> = ({
+  classes,
+  isMobile,
+  Grid,
+  Typography,
+  group,
+  holder,
+  ford,
+  google,
+  homeDepot,
+  AA,
+  aetna,
+  toyota,
+}) => {
   const DESC_SX: { width: string; margin: string } = {
     margin: "auto",
     width: "60%",
   };
-  const TITLE_SX: { margin: string; justifyContent: string } = {
-    margin: "30px 0",
-    justifyContent: "center",
-  };
-  const PARTNERS: { key: number; img: string }[] = [];
+  const PARTNERS: { key: number; img: string }[] = [
+    { key: 1, img: google },
+    { key: 2, img: ford },
+    { key: 3, img: homeDepot },
+    { key: 4, img: toyota },
+    { key: 5, img: AA },
+    { key: 6, img: aetna },
+  ];
   const LEADERSHIP: {
     key: number;
     name: string;
@@ -70,7 +93,7 @@ const Info: FC<{
     <>
       <Grid className={classes.infoContainer} container>
         <Grid className={classes.infoBox} container>
-          <Grid sx={TITLE_SX} container>
+          <Grid className={classes.title} container>
             <Typography variant="h5">Who we are</Typography>
           </Grid>
           <Grid sx={DESC_SX} container>
@@ -84,9 +107,12 @@ const Info: FC<{
               Nisi, veniam. Quidem laboriosam unde veniam recusandae et enim.
             </Typography>
           </Grid>
+          <Grid container>
+            <img src={group} className={classes.groupImg} alt="group.jpg" />
+          </Grid>
         </Grid>
         <Grid className={classes.infoBox} container>
-          <Grid sx={TITLE_SX} container>
+          <Grid className={classes.title} container>
             <Typography variant="h5">Purpose and values</Typography>
           </Grid>
           <Grid sx={DESC_SX} container>
@@ -106,7 +132,7 @@ const Info: FC<{
           </Grid>
         </Grid>
         <Grid className={classes.infoBox} container>
-          <Grid sx={TITLE_SX} container>
+          <Grid className={classes.title} container>
             <Typography variant="h5">Leadership and Partners</Typography>
           </Grid>
           <Grid sx={DESC_SX} container>
@@ -121,13 +147,19 @@ const Info: FC<{
             </Typography>
           </Grid>
           <Leadership
+            isMobile={isMobile}
             Grid={Grid}
             Typography={Typography}
             LEADERSHIP={LEADERSHIP}
             classes={classes}
-            photo={holderImg}
+            photo={holder}
           />
-          <Partners classes={classes} PARTNERS={PARTNERS} />
+          <Partners
+            classes={classes}
+            PARTNERS={PARTNERS}
+            Grid={Grid}
+            Typography={Typography}
+          />
         </Grid>
       </Grid>
     </>

@@ -30,3 +30,17 @@
 .leadershipInfo {
   margin: 10px 0;
 }
+
+.groupImg {
+  width: 50%;
+  margin: 50px auto;
+}
+
+.title {
+  margin: 30px 0;
+  justify-content: center;
+}
+
+.partnerContainer {
+  width: 100%;
+}
