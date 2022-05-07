@@ -20,7 +20,6 @@ import {
   AUTHAPI,
   CONTACT,
   HOME,
-  INVESTMENTS,
   LOCATIONS,
   LOGIN,
   PROFILE,
@@ -30,7 +29,6 @@ import {
 import axios from "axios";
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
-const Investment = lazy(() => import("./pages/Investments"));
 const Locations = lazy(() => import("./pages/Locations"));
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
@@ -45,7 +43,7 @@ const App: FC = () => {
     authenticated: boolean;
   } = useSelector((state: RootState) => state.auth);
   const { pathname } = useLocation();
-  console.log(pathname);
+
   const login: PathMatch<string> | null = matchPath<string, string>(
     "/login",
     pathname
@@ -68,7 +66,7 @@ const App: FC = () => {
       }
     >
       {profile?.pattern.end ? (
-        <AccountLayout mobile={mobile} login={null} signup={null} auth={false}>
+        <AccountLayout mobile={mobile} axios={axios} URL={AUTHAPI}>
           <Routes>
             {auth.authenticated && (
               <Route
@@ -99,17 +97,14 @@ const App: FC = () => {
         >
           <Routes>
             <Route path={HOME} element={<Home mobile={mobile} />} />
-            <Route path={ABOUT} element={<About />} />
+            <Route path={ABOUT} element={<About isMobile={mobile} />} />
             <Route
               path={LOCATIONS}
               element={<Locations URL={AUTHAPI} isMobile={mobile} />}
             />
-            <Route path={INVESTMENTS} element={<Investment />} />
             <Route
               path={CONTACT}
-              element={
-                <Contact isMobile={mobile} URL={AUTHAPI} axios={axios} />
-              }
+              element={<Contact isMobile={mobile} axios={axios} />}
             />
             <Route
               path={LOGIN}

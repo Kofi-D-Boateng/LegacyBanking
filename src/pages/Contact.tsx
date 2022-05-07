@@ -10,12 +10,12 @@ import {
 import { AxiosStatic } from "axios";
 import { FC, FormEvent, useEffect, useRef, useState } from "react";
 import BM from "../assets/photos/business_man.jpg";
+import { MAILERURL } from "../components/UI/Constants/Constants";
 import ContactEmail from "../components/UI/Modals/ContactEmail/ContactEmail";
 import classes from "../styles/ContactStyles.module.css";
 
-const Contact: FC<{ isMobile: boolean; URL: string; axios: AxiosStatic }> = ({
+const Contact: FC<{ isMobile: boolean; axios: AxiosStatic }> = ({
   isMobile,
-  URL,
   axios,
 }) => {
   const [limit, setLimit] = useState<number>(500);
@@ -34,7 +34,7 @@ const Contact: FC<{ isMobile: boolean; URL: string; axios: AxiosStatic }> = ({
       text: string | undefined
     ) => void = async (email, text) => {
       await axios
-        .post(`${URL}/authentication/customer-service`, {
+        .post(`${MAILERURL}`, {
           email: email,
           text: text,
         })
@@ -47,7 +47,7 @@ const Contact: FC<{ isMobile: boolean; URL: string; axios: AxiosStatic }> = ({
       return;
     }
     fetchContact(emailRef.current?.value, textRef.current?.value);
-  }, [ready, URL, axios]);
+  }, [ready, axios]);
 
   const submitHandler: (e: FormEvent<HTMLFormElement>) => void = (e) => {
     e.preventDefault();

@@ -95,8 +95,6 @@ const ContactForm: FC<{
     key,
     code,
   }) => {
-    console.log(key);
-    console.log(code);
     const regex = /[A-Za-z0-9]/;
     const spaceRegEx = /Space/;
     const regTest = regex.test(key);
@@ -149,6 +147,7 @@ const ContactForm: FC<{
             <Grid sx={{ textAlign: "center" }} container>
               <Grid xs={6} md={6} item>
                 <Button
+                  type="submit"
                   sx={{
                     textTransform: "none",
                     fontSize: "1.1rem",
@@ -169,6 +168,7 @@ const ContactForm: FC<{
               </Grid>
               <Grid xs={6} md={6} item>
                 <Button
+                  type="button"
                   sx={{
                     textTransform: "none",
                     fontSize: "1.1rem",

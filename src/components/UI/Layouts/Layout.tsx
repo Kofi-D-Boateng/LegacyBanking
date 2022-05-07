@@ -1,21 +1,20 @@
-import React, { Fragment, ReactElement } from "react";
+import { FC, ReactNode, Fragment, ReactElement } from "react";
 import { Footer } from "../Footer";
-import { Navbar } from "../Navbar";
+import { Navbar } from "../Navbars/Navbar";
 import { Twitter, Facebook, Instagram, LinkedIn } from "@mui/icons-material";
-import { GlobalLayouts } from "../../../GlobalTypes/types";
+import { PathMatch } from "react-router-dom";
 
-const Layout: React.FC<GlobalLayouts> = ({
-  mobile,
-  auth,
-  children,
-  login,
-  signup,
-}) => {
+const Layout: FC<{
+  mobile: boolean;
+  login: PathMatch<string> | null;
+  signup: PathMatch<string> | null;
+  children: ReactNode;
+  auth: boolean;
+}> = ({ mobile, auth, children, login, signup }) => {
   const Links: { key: number; title: string; link: string }[] = [
     { key: 1, title: "About Us", link: "/about" },
     { key: 2, title: "Locations", link: "/locations" },
-    { key: 3, title: "Investments", link: "/investments/*" },
-    { key: 4, title: "Contact", link: "/contact" },
+    { key: 3, title: "Contact", link: "/contact" },
   ];
 
   const authLinks: { key: number; title: string; link: string }[] = [

@@ -3,6 +3,7 @@ import { authSlice } from "./authentication/auth-slice";
 import { bankSlice } from "./bank/bank-slice";
 import { customerSlice } from "./customer/customer";
 import { modalSlice } from "./modals/modal-slice";
+import { notisSlice } from "./notifications/notifications";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     cust: customerSlice.reducer,
     bank: bankSlice.reducer,
     view: modalSlice.reducer,
+    notis: notisSlice.reducer,
   },
 });
 

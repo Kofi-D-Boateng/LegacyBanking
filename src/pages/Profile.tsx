@@ -49,6 +49,7 @@ import { DateAmountType } from "../Interfaces/Maps";
 import Payment from "../components/Account/Payments/Payment";
 import AccountSecurity from "../components/UI/Modals/AccountSecurity/AccountSecurity";
 import { backdropDiv, overlayDiv } from "../components/UI/Layouts/RootElement";
+import { notisActions } from "../store/notifications/notifications";
 
 const Profile: FC<{
   token: string;
@@ -118,8 +119,8 @@ const Profile: FC<{
             transactions,
             isEnabled,
             isLocked,
+            notis,
           } = response.data;
-
           dispatch(
             customerActions.createCustomer({
               fName: fName,
@@ -136,6 +137,7 @@ const Profile: FC<{
               isLocked: isLocked,
             })
           );
+          dispatch(notisActions.getNotis({ notis: notis }));
         })
         .catch(() => {
           dispatch(authActions.logout());
