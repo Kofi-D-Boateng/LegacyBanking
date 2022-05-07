@@ -93,7 +93,6 @@ const Profile: FC<{
   const [withdrawals, setWithdrawals] = useState<number>(0);
   const [deposits, setDeposits] = useState<number>(0);
   const modal = useSelector((state: RootState) => state.view);
-  const notis = useSelector((state: RootState) => state.notis);
   const dispatch = useDispatch<Dispatch<any>>();
   const navigate: NavigateFunction = useNavigate();
 

@@ -1,8 +1,7 @@
 import { Card } from "@mui/material";
-import React from "react";
-import { GlobalLayouts } from "../../GlobalTypes/types";
+import { FC, ReactNode } from "react";
 
-const Kard: React.FC<GlobalLayouts> = ({ children }) => {
+const Kard: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <Card
       sx={{

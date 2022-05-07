@@ -49,7 +49,7 @@ const Signup: FC<{ URL: string }> = ({ URL }) => {
   };
   return (
     <Grid container>
-      <Kard mobile={false} login={null} signup={null} auth={false}>
+      <Kard>
         <Typography className={classes.cardTitle} variant="h4">
           Please Signup
         </Typography>

@@ -43,7 +43,7 @@ const App: FC = () => {
     authenticated: boolean;
   } = useSelector((state: RootState) => state.auth);
   const { pathname } = useLocation();
-  console.log(pathname);
+
   const login: PathMatch<string> | null = matchPath<string, string>(
     "/login",
     pathname
@@ -66,7 +66,7 @@ const App: FC = () => {
       }
     >
       {profile?.pattern.end ? (
-        <AccountLayout mobile={mobile} login={null} signup={null} auth={false}>
+        <AccountLayout mobile={mobile} axios={axios} URL={AUTHAPI}>
           <Routes>
             {auth.authenticated && (
               <Route

@@ -9,9 +9,11 @@ function initialState(): {
     date: string;
     read: boolean;
   }[];
+  unread: number;
 } {
   return {
     notis: [],
+    unread: 0,
   };
 }
 
@@ -34,6 +36,11 @@ const notisSlice = createSlice({
     ) {
       const { notis } = action.payload;
       state.notis = notis ? notis : state.notis;
+      for (const n of notis) {
+        if (n.read === false) {
+          state.unread = state.unread + 1;
+        }
+      }
     },
   },
 });
