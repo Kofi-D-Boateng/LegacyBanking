@@ -1,6 +1,5 @@
 import {
   Grid,
-  Typography,
   TextField,
   Card,
   CardContent,
@@ -8,8 +7,17 @@ import {
   Container,
 } from "@mui/material";
 import { AxiosStatic } from "axios";
-import { FC, FormEvent, useEffect, useRef, useState } from "react";
+import {
+  FC,
+  FormEvent,
+  ReactElement,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import BM from "../assets/photos/business_man.jpg";
+import Banner from "../components/Contact/Banner";
+import ContactInfo from "../components/Contact/ContactInfo";
 import { MAILERURL } from "../components/UI/Constants/Constants";
 import ContactEmail from "../components/UI/Modals/ContactEmail/ContactEmail";
 import classes from "../styles/ContactStyles.module.css";
@@ -58,6 +66,94 @@ const Contact: FC<{ isMobile: boolean; axios: AxiosStatic }> = ({
     setReady(true);
   };
 
+  const contactMethod: {
+    key: number;
+    title: string;
+    img: string;
+    btn: ReactElement;
+    classes: string;
+    imgCss: string;
+  }[] = [
+    {
+      key: 1,
+      title: "Call us by email",
+      img: BM,
+      btn: (
+        <Button
+          variant="outlined"
+          sx={{
+            margin: "30px 0",
+            borderColor: "red",
+            color: "red",
+            "&:hover": {
+              backgroundColor: "red",
+              color: "white",
+              borderColor: "red",
+            },
+          }}
+          onClick={() => setView(true)}
+          fullWidth
+        >
+          Send Email
+        </Button>
+      ),
+      classes: classes.contactEmail,
+      imgCss: classes.img,
+    },
+    {
+      key: 2,
+      title: "Call us by phone",
+      img: BM,
+      btn: (
+        <Button
+          variant="outlined"
+          sx={{
+            margin: "30px 0",
+            borderColor: "red",
+            color: "red",
+            "&:hover": {
+              backgroundColor: "red",
+              color: "white",
+              borderColor: "red",
+            },
+          }}
+          onClick={() => setView(true)}
+          fullWidth
+        >
+          Send Email
+        </Button>
+      ),
+      classes: classes.contactEmail,
+      imgCss: classes.img,
+    },
+    {
+      key: 3,
+      title: "Chat with us",
+      img: BM,
+      btn: (
+        <Button
+          variant="outlined"
+          sx={{
+            margin: "30px 0",
+            borderColor: "red",
+            color: "red",
+            "&:hover": {
+              backgroundColor: "red",
+              color: "white",
+              borderColor: "red",
+            },
+          }}
+          onClick={() => setView(true)}
+          fullWidth
+        >
+          Send Email
+        </Button>
+      ),
+      classes: classes.contactEmail,
+      imgCss: classes.img,
+    },
+  ];
+
   return (
     <>
       {view && (
@@ -81,48 +177,13 @@ const Contact: FC<{ isMobile: boolean; axios: AxiosStatic }> = ({
           />
         </Container>
       )}
-      <Grid className={classes.container} container>
-        <Grid sx={{ margin: "auto" }} md={6} item>
-          <Typography className={classes.contactTitle} variant="h5">
-            Get in contact with our representitve
-          </Typography>
-          <Grid className={classes.contactSocials} container>
-            <Grid xs={12} md={12} item>
-              <Typography variant="h6">
-                Reach out to us on our social media platforms.
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid className={classes.contactEmail} container>
-            <Grid xs={12} md={12} item>
-              <Typography variant="h6">Send us an email!</Typography>
-            </Grid>
-            <Grid xs={12} md={12} item>
-              <Button
-                variant="outlined"
-                sx={{
-                  width: "60%",
-                  margin: "30px 0",
-                  borderColor: "red",
-                  color: "red",
-                  "&:hover": {
-                    backgroundColor: "red",
-                    color: "white",
-                    borderColor: "red",
-                  },
-                }}
-                onClick={() => setView(true)}
-                fullWidth
-              >
-                Send Email
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid md={6} item>
-          <img className={classes.img} src={BM} alt="lady.jpg" />
-        </Grid>
-      </Grid>
+      <Banner />
+      <ContactInfo
+        CM={contactMethod}
+        Grid={Grid}
+        classes={classes}
+        isMobile={isMobile}
+      />
     </>
   );
 };

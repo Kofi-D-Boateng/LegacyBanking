@@ -15,6 +15,8 @@ const Layout: FC<{
     { key: 1, title: "About Us", link: "/about" },
     { key: 2, title: "Locations", link: "/locations" },
     { key: 3, title: "Contact", link: "/contact" },
+    { key: 4, title: "Insight", link: "/insight" },
+    { key: 5, title: "Startups", link: "/startups" },
   ];
 
   const authLinks: { key: number; title: string; link: string }[] = [
