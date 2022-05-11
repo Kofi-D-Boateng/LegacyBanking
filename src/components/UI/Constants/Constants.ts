@@ -26,6 +26,8 @@ const INVESTMENTS: string = "/investments/*";
 const CONTACT: string = "/contact";
 const SIGNUP: string = "/signup";
 const LOGIN: string = "/login";
+const INSIGHT: string = "/insight";
+const STARTUPS: string = "/startups";
 const REDIRECT: string = "*";
 
 // MODAL VALUES
@@ -85,4 +87,6 @@ export {
   AUTHAPI,
   SECURITYERRORMSG,
   MAILERURL,
+  INSIGHT,
+  STARTUPS,
 };

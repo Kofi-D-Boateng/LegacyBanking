@@ -10,7 +10,8 @@ const Layout: FC<{
   signup: PathMatch<string> | null;
   children: ReactNode;
   auth: boolean;
-}> = ({ mobile, auth, children, login, signup }) => {
+  YEAR: number;
+}> = ({ mobile, auth, children, login, signup, YEAR }) => {
   const Links: { key: number; title: string; link: string }[] = [
     { key: 1, title: "About Us", link: "/about" },
     { key: 2, title: "Locations", link: "/locations" },
@@ -44,7 +45,7 @@ const Layout: FC<{
       )}
       <div style={{ width: "100%" }}>{children}</div>
       {signup?.pattern.end || login?.pattern.end ? null : (
-        <Footer socials={Socials} links={Links} isMobile={mobile} />
+        <Footer socials={Socials} links={Links} isMobile={mobile} YEAR={YEAR} />
       )}
     </Fragment>
   );

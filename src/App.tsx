@@ -20,13 +20,17 @@ import {
   AUTHAPI,
   CONTACT,
   HOME,
+  INSIGHT,
   LOCATIONS,
   LOGIN,
   PROFILE,
   REDIRECT,
   SIGNUP,
+  STARTUPS,
 } from "./components/UI/Constants/Constants";
 import axios from "axios";
+const Startups = lazy(() => import("./pages/Startups"));
+const Insight = lazy(() => import("./pages/Insight"));
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Locations = lazy(() => import("./pages/Locations"));
@@ -35,6 +39,7 @@ const Signup = lazy(() => import("./pages/Signup"));
 const Profile = lazy(() => import("./pages/Profile"));
 
 const App: FC = () => {
+  const YEAR: number = new Date().getFullYear();
   const customer = useSelector((state: RootState) => state.cust);
   const theme = useTheme<Theme>();
   const mobile: boolean = useMediaQuery<unknown>(theme.breakpoints.down("md"));
@@ -94,6 +99,7 @@ const App: FC = () => {
           auth={auth.authenticated}
           login={login}
           signup={signup}
+          YEAR={YEAR}
         >
           <Routes>
             <Route path={HOME} element={<Home mobile={mobile} />} />
@@ -105,6 +111,11 @@ const App: FC = () => {
             <Route
               path={CONTACT}
               element={<Contact isMobile={mobile} axios={axios} />}
+            />
+            <Route path={STARTUPS} element={<Startups isMobile={mobile} />} />
+            <Route
+              path={INSIGHT}
+              element={<Insight isMobile={mobile} YEAR={YEAR} />}
             />
             <Route
               path={LOGIN}

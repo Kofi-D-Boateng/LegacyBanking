@@ -1,10 +1,10 @@
 import { Grid, IconButton, Typography } from "@mui/material";
 import classes from "../../styles/FooterStyles.module.css";
 import { Box } from "@mui/system";
-import React, { ReactElement } from "react";
+import { FC, ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 
-const AccountFooter: React.FC = () => {
+const AccountFooter: FC = () => {
   return (
     <Box
       style={{
@@ -30,7 +30,7 @@ const AccountFooter: React.FC = () => {
   );
 };
 
-const Footer: React.FC<{
+const Footer: FC<{
   socials: {
     key: number;
     svg: ReactElement;
@@ -42,8 +42,8 @@ const Footer: React.FC<{
     link: string;
   }[];
   isMobile: boolean;
-}> = ({ socials, isMobile, links }) => {
-  const year = new Date().getFullYear();
+  YEAR: number;
+}> = ({ socials, isMobile, links, YEAR }) => {
   return (
     <footer className={classes.footer}>
       <Grid sx={{ margin: isMobile ? "30px 0" : "70px 0" }} container>
@@ -101,7 +101,7 @@ const Footer: React.FC<{
           })}
         </Grid>
         <Grid sx={isMobile ? { margin: "20px 0" } : null} xs={12} md={6} item>
-          <Typography variant="h5">© {year} Legacy Bank</Typography>
+          <Typography variant="h5">© {YEAR} Legacy Bank</Typography>
         </Grid>
       </Grid>
     </footer>
