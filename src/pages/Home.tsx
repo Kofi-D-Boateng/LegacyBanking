@@ -9,7 +9,13 @@ import classes from "../styles/HomeStyles.module.css";
 import Banner from "../components/Homepage/Banner";
 import Misc from "../components/Homepage/Misc";
 import MailLetter from "../components/Homepage/MailLetter";
-import { BACKWARD, FORWARD } from "../components/UI/Constants/Constants";
+import {
+  BACKWARD,
+  FORWARD,
+  STARTUPS,
+  INSIGHT,
+  LOCATIONS,
+} from "../components/UI/Constants/Constants";
 
 const Home: FC<{ mobile: boolean }> = ({ mobile }) => {
   const NAVIGATE: NavigateFunction = useNavigate();
@@ -21,6 +27,7 @@ const Home: FC<{ mobile: boolean }> = ({ mobile }) => {
     desc: string;
     css: string;
     src: string | undefined;
+    link: string;
   }[] = [
     {
       key: 1,
@@ -29,6 +36,7 @@ const Home: FC<{ mobile: boolean }> = ({ mobile }) => {
       desc: " We work with startups and small business around the world to allow their continued growth to be substainable.",
       css: classes.img,
       src: startUp ? startUp : undefined,
+      link: STARTUPS,
     },
     {
       key: 2,
@@ -36,6 +44,7 @@ const Home: FC<{ mobile: boolean }> = ({ mobile }) => {
       desc: "Meet a the people behind the scenes that we work with that helps us help your reach your goals.",
       css: classes.img,
       src: biz ? biz : undefined,
+      link: "/about#partners",
     },
   ];
 
@@ -47,7 +56,7 @@ const Home: FC<{ mobile: boolean }> = ({ mobile }) => {
         "A deep dive into our foreign strategies and relations with around the world.",
       css: !mobile ? classes.international : classes.mobInternational,
       css2: classes.cardDescription,
-      link: "/international",
+      link: LOCATIONS + "#map",
     },
     {
       key: 2,
@@ -55,16 +64,16 @@ const Home: FC<{ mobile: boolean }> = ({ mobile }) => {
       description: `A look at our ${year} organizational plans.`,
       css: !mobile ? classes.insight : classes.mobInsight,
       css2: classes.cardDescription,
-      link: "/Insight",
+      link: INSIGHT,
     },
-    {
-      key: 3,
-      title: "Investor Relations",
-      description: "Engage with our team on our monetary strategies.",
-      css: !mobile ? classes.investments : classes.mobInvestments,
-      css2: classes.cardDescription,
-      link: "/investments",
-    },
+    // {
+    //   key: 3,
+    //   title: "Investor Relations",
+    //   description: "Engage with our team on our monetary strategies.",
+    //   css: !mobile ? classes.investments : classes.mobInvestments,
+    //   css2: classes.cardDescription,
+    //   link: INSIGHT + "#",
+    // },
   ];
 
   const viewHandler: (e: React.MouseEvent<HTMLButtonElement>) => void = ({
@@ -118,7 +127,7 @@ const Home: FC<{ mobile: boolean }> = ({ mobile }) => {
           FORWARD={FORWARD}
           BACKWARD={BACKWARD}
         />
-        <Misc classes={classes} isMobile={mobile} info={info} />
+        <Misc isMobile={mobile} info={info} navigate={NAVIGATE} />
       </Grid>
       <MailLetter classes={classes} isMobile={mobile} />
     </Fragment>

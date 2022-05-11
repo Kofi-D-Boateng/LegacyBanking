@@ -27,7 +27,7 @@ const Services: React.FC<{
         <>
           {cards.map((c) => {
             return (
-              <Grid key={c?.key} xs={12} md={4} item>
+              <Grid key={c?.key} xs={12} md={12 / cards.length} item>
                 <NavLink to={c.link} style={{ textDecoration: "none" }}>
                   <Card className={c.css || undefined}>
                     <Grid className={c.css2} container>

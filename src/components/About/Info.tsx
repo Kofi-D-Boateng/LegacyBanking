@@ -131,7 +131,7 @@ const Info: FC<{
             </Typography>
           </Grid>
         </Grid>
-        <Grid className={classes.infoBox} container>
+        <Grid id="partners" className={classes.infoBox} container>
           <Grid className={classes.title} container>
             <Typography variant="h5">Leadership and Partners</Typography>
           </Grid>
