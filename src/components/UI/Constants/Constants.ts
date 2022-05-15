@@ -1,10 +1,8 @@
 // BACKEND URL
-const AUTHAPI: string = process.env.ENVIRONMENT?.includes("prod")
-  ? ""
-  : "http://localhost:8081/api/v1";
-const MAILERURL: string = process.env.ENVIRONMENT?.includes("prod")
-  ? ""
-  : "http://localhost:5500/customer-service/email";
+const AUTHAPI: string =
+  process.env.LB_AUTH_URI || "http://localhost:8081/api/v1";
+const MAILERURL: string =
+  process.env.LB_NOTI_URI || "http://localhost:5500/api/v1";
 
 // PROFILE STRING COMPARISON
 const DEBITTRASFER: string = "Debit transfer";

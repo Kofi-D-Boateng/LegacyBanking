@@ -42,7 +42,7 @@ const Contact: FC<{ isMobile: boolean; axios: AxiosStatic }> = ({
       text: string | undefined
     ) => void = async (email, text) => {
       await axios
-        .post(`${MAILERURL}`, {
+        .post(`${MAILERURL}/customer-service/email`, {
           email: email,
           text: text,
         })
