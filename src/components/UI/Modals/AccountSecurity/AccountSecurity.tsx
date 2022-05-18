@@ -33,7 +33,7 @@ const AccountSecurity: FC<{
   classes: {
     readonly [key: string]: string;
   };
-  URL: string;
+  URL: string | undefined;
   token: string;
   accountNumber: string;
   isCardLocked: boolean;

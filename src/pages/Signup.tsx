@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import classes from "../styles/SignupStyles.module.css";
 import { PROFILE } from "../components/UI/Constants/Constants";
 
-const Signup: FC<{ URL: string }> = ({ URL }) => {
+const Signup: FC<{ URL: string | undefined }> = ({ URL }) => {
   const [user, setUser] = useState<{} | null>(null);
   const [isValid, setIsValid] = useState<boolean>(true);
   const navigate = useNavigate();

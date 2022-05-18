@@ -8,7 +8,7 @@ import { AxiosStatic } from "axios";
 
 const MoneyTransfer: FC<{
   Location: Location;
-  URL: string;
+  URL: string | undefined;
   token: string;
   view: boolean;
   termsOfChoice: string;

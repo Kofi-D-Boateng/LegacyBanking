@@ -54,7 +54,7 @@ import { notisActions } from "../store/notifications/notifications";
 const Profile: FC<{
   token: string;
   mobile: boolean;
-  URL: string;
+  URL: string | undefined;
   customer: {
     fName: string;
     lName: string;

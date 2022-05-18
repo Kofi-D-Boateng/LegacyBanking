@@ -17,7 +17,7 @@ import Layout from "./components/UI/Layouts/Layout";
 import Home from "./pages/Home";
 import {
   ABOUT,
-  AUTHAPI,
+  FRONTEND_DOMAIN,
   CONTACT,
   HOME,
   INSIGHT,
@@ -71,7 +71,7 @@ const App: FC = () => {
       }
     >
       {profile?.pattern.end ? (
-        <AccountLayout mobile={mobile} axios={axios} URL={AUTHAPI}>
+        <AccountLayout mobile={mobile} axios={axios} URL={FRONTEND_DOMAIN}>
           <Routes>
             {auth.authenticated && (
               <Route
@@ -80,7 +80,7 @@ const App: FC = () => {
                   customer.isEnabled ? (
                     <Profile
                       customer={customer}
-                      URL={AUTHAPI}
+                      URL={FRONTEND_DOMAIN}
                       token={auth.token}
                       mobile={mobile}
                     />
@@ -106,7 +106,7 @@ const App: FC = () => {
             <Route path={ABOUT} element={<About isMobile={mobile} />} />
             <Route
               path={LOCATIONS}
-              element={<Locations URL={AUTHAPI} isMobile={mobile} />}
+              element={<Locations URL={FRONTEND_DOMAIN} isMobile={mobile} />}
             />
             <Route
               path={CONTACT}
@@ -119,9 +119,9 @@ const App: FC = () => {
             />
             <Route
               path={LOGIN}
-              element={<Login URL={AUTHAPI} isMobile={mobile} />}
+              element={<Login URL={FRONTEND_DOMAIN} isMobile={mobile} />}
             />
-            <Route path={SIGNUP} element={<Signup URL={AUTHAPI} />} />
+            <Route path={SIGNUP} element={<Signup URL={FRONTEND_DOMAIN} />} />
             <Route path={REDIRECT} element={<Navigate replace to={HOME} />} />
           </Routes>
         </Layout>

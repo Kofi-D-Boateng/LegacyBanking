@@ -25,7 +25,7 @@ const Paperless: FC<{
   };
   BACKDROPDIV: HTMLElement;
   OVERLAYDIV: HTMLElement;
-  URL: string;
+  URL: string | undefined;
   token: string;
   axios: AxiosStatic;
 }> = ({

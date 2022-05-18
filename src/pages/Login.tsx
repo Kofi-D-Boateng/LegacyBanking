@@ -8,7 +8,10 @@ import { authActions } from "../store/authentication/auth-slice";
 import classes from "../styles/LoginStyles.module.css";
 import { credentials } from "../Interfaces/Credentials";
 
-const Login: FC<{ isMobile: boolean; URL: string }> = ({ isMobile, URL }) => {
+const Login: FC<{ isMobile: boolean; URL: string | undefined }> = ({
+  isMobile,
+  URL,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [invalid, setInvalid] = useState<boolean>(false);

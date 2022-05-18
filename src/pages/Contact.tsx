@@ -18,7 +18,7 @@ import {
 import BM from "../assets/photos/business_man.jpg";
 import Banner from "../components/Contact/Banner";
 import ContactInfo from "../components/Contact/ContactInfo";
-import { MAILERURL } from "../components/UI/Constants/Constants";
+import { FRONTEND_DOMAIN } from "../components/UI/Constants/Constants";
 import ContactEmail from "../components/UI/Modals/ContactEmail/ContactEmail";
 import classes from "../styles/ContactStyles.module.css";
 
@@ -42,7 +42,7 @@ const Contact: FC<{ isMobile: boolean; axios: AxiosStatic }> = ({
       text: string | undefined
     ) => void = async (email, text) => {
       await axios
-        .post(`${MAILERURL}/customer-service/email`, {
+        .post(`${FRONTEND_DOMAIN}/customer-service/email`, {
           email: email,
           text: text,
         })

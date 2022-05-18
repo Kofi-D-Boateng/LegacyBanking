@@ -1,8 +1,7 @@
 // BACKEND URL
-const AUTHAPI: string =
-  process.env.LB_AUTH_URI || "http://localhost:8081/api/v1";
-const MAILERURL: string =
-  process.env.LB_NOTI_URI || "http://localhost:5500/api/v1";
+const FRONTEND_DOMAIN: string = process.env.LB_DOMAIN_NAME || "api/v1";
+console.log(FRONTEND_DOMAIN);
+console.log(process.env.TEST);
 
 // PROFILE STRING COMPARISON
 const DEBITTRASFER: string = "Debit transfer";
@@ -82,9 +81,8 @@ export {
   LOCKEDCARD,
   LOCKEDACCOUNTMSG,
   LOCKEDCARDMSG,
-  AUTHAPI,
   SECURITYERRORMSG,
-  MAILERURL,
   INSIGHT,
   STARTUPS,
+  FRONTEND_DOMAIN,
 };

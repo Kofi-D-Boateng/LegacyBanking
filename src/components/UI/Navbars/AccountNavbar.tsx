@@ -44,7 +44,7 @@ const AccountNavbar: FC<{
   };
   token: string;
   axios: AxiosStatic;
-  URL: string;
+  URL: string | undefined;
 }> = ({ mobile, options, noti, token, axios, URL }) => {
   const { notis, unread } = noti;
   const dispatch = useDispatch<Dispatch<any>>();
