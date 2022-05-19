@@ -1,5 +1,6 @@
 // BACKEND URL
-const FRONTEND_DOMAIN: string = process.env.LB_DOMAIN_NAME || "api/v1";
+const FRONTEND_DOMAIN: string =
+  process.env.LB_DOMAIN_NAME || "http://localhost:8081/api/v1";
 console.log(FRONTEND_DOMAIN);
 console.log(process.env.TEST);
 

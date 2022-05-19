@@ -29,6 +29,7 @@ import {
   STARTUPS,
 } from "./components/UI/Constants/Constants";
 import axios from "axios";
+import LoadingSpinner from "./components/UI/Modals/LoadingSpinner/LoadingSpinner";
 const Startups = lazy(() => import("./pages/Startups"));
 const Insight = lazy(() => import("./pages/Insight"));
 const About = lazy(() => import("./pages/About"));
@@ -63,13 +64,7 @@ const App: FC = () => {
   );
 
   return (
-    <Suspense
-      fallback={
-        <div>
-          <h1>....Loading</h1>
-        </div>
-      }
-    >
+    <Suspense fallback={<LoadingSpinner />}>
       {profile?.pattern.end ? (
         <AccountLayout mobile={mobile} axios={axios} URL={FRONTEND_DOMAIN}>
           <Routes>

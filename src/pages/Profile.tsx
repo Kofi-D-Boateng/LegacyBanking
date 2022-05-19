@@ -16,6 +16,7 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import MoneyTransfer from "../components/UI/Modals/MoneyTransfer/MoneyTransfer";
 import { modalActions } from "../store/modals/modal-slice";
 import { MockStatements } from "../assets/data/MockData";
 import { SelectChangeEvent } from "@mui/material";
@@ -23,7 +24,6 @@ import { customerActions } from "../store/customer/customer";
 import { RootState } from "../store/store";
 import { authActions } from "../store/authentication/auth-slice";
 import classes from "../styles/ProfileStyles.module.css";
-import MoneyTransfer from "../components/UI/Modals/MoneyTransfer/MoneyTransfer";
 import MoneyTransferStyles from "../styles/modals.module.css";
 import Statement from "../components/UI/Modals/Statement/Statement";
 import Paperless from "../components/UI/Modals/Paperless/Paperless";

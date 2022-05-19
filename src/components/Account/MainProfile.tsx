@@ -77,101 +77,100 @@ const MainProfile: React.FC<{
           .map((a) => {
             return <Container key={a.key}>{a.modal}</Container>;
           })}
-      <Grid className={classes.profile} container>
-        {!mobile ? (
-          <>
-            <Grid xs={12} md={7} item>
-              <Grid container>
-                <Grid xs={12} md={12} item>
-                  <AccountInfo
-                    STATEMENT={STATEMENT}
-                    SECURITY={SECURITY}
-                    MONEYTRANSFER={MONEYTRANSFER}
-                    PAPERLESS={PAPERLESS}
-                    ACCOUNTNUMBER={ACCOUNTNUMBER}
-                    YEAR={currentYear}
-                    MONTH={currentMonth}
-                    mobile={mobile}
-                    classes={classes}
-                    fName={customer.fName}
-                    lName={customer.lName}
-                    funds={customer.funds}
-                    transactions={customer.transactions}
-                    withdrawals={withdrawals}
-                    setWithdrawals={setWithdrawals}
-                    deposits={deposits}
-                    setDeposits={setDeposits}
-                    onSetView={viewHandler}
-                  />
-                </Grid>
-                <Grid xs={12} md={12} item>
-                  <AccountActivity
-                    YEAR={currentYear}
-                    transactions={customer.transactions}
-                    classes={classes}
-                  />
-                </Grid>
+      {!mobile ? (
+        <Grid className={classes.profile} container>
+          <Grid xs={12} md={7} item>
+            <Grid container>
+              <Grid xs={12} md={12} item>
+                <AccountInfo
+                  STATEMENT={STATEMENT}
+                  SECURITY={SECURITY}
+                  MONEYTRANSFER={MONEYTRANSFER}
+                  PAPERLESS={PAPERLESS}
+                  ACCOUNTNUMBER={ACCOUNTNUMBER}
+                  YEAR={currentYear}
+                  MONTH={currentMonth}
+                  mobile={mobile}
+                  classes={classes}
+                  fName={customer.fName}
+                  lName={customer.lName}
+                  funds={customer.funds}
+                  transactions={customer.transactions}
+                  withdrawals={withdrawals}
+                  setWithdrawals={setWithdrawals}
+                  deposits={deposits}
+                  setDeposits={setDeposits}
+                  onSetView={viewHandler}
+                />
+              </Grid>
+              <Grid xs={12} md={12} item>
+                <AccountActivity
+                  YEAR={currentYear}
+                  transactions={customer.transactions}
+                  classes={classes}
+                />
               </Grid>
             </Grid>
-            <Grid xs={12} md={5} item>
-              <Grid container>
-                <Grid xs={12} md={12} item>
-                  <AccountDetails classes={classes} />
-                </Grid>
-                <Grid xs={12} md={12} item>
-                  <AccountCoupons classes={classes} isMobile={mobile} />
-                </Grid>
+          </Grid>
+          <Grid xs={12} md={5} item>
+            <Grid container>
+              <Grid xs={12} md={12} item>
+                <AccountDetails classes={classes} />
+              </Grid>
+              <Grid xs={12} md={12} item>
+                <AccountCoupons classes={classes} isMobile={mobile} />
               </Grid>
             </Grid>
-          </>
-        ) : (
-          <>
-            <Grid xs={12} item>
-              <Grid container>
-                <Grid xs={12} item>
-                  <AccountInfo
-                    STATEMENT={STATEMENT}
-                    SECURITY={SECURITY}
-                    MONEYTRANSFER={MONEYTRANSFER}
-                    PAPERLESS={PAPERLESS}
-                    ACCOUNTNUMBER={ACCOUNTNUMBER}
-                    YEAR={currentYear}
-                    MONTH={currentMonth}
-                    mobile={mobile}
-                    classes={classes}
-                    fName={customer.fName}
-                    lName={customer.lName}
-                    funds={customer.funds}
-                    transactions={customer.transactions}
-                    onSetView={viewHandler}
-                    withdrawals={withdrawals}
-                    setWithdrawals={setWithdrawals}
-                    deposits={deposits}
-                    setDeposits={setDeposits}
-                  />
-                </Grid>
-                <Grid xs={12} item>
-                  <Grid container>
-                    <Grid xs={12} item>
-                      <AccountDetails classes={classes} />
-                    </Grid>
-                    <Grid xs={12} item>
-                      <AccountCoupons classes={classes} isMobile={mobile} />
-                    </Grid>
+          </Grid>
+        </Grid>
+      ) : (
+        <Grid className={classes.profile} container>
+          {" "}
+          <Grid xs={12} item>
+            <Grid container>
+              <Grid xs={12} item>
+                <AccountInfo
+                  STATEMENT={STATEMENT}
+                  SECURITY={SECURITY}
+                  MONEYTRANSFER={MONEYTRANSFER}
+                  PAPERLESS={PAPERLESS}
+                  ACCOUNTNUMBER={ACCOUNTNUMBER}
+                  YEAR={currentYear}
+                  MONTH={currentMonth}
+                  mobile={mobile}
+                  classes={classes}
+                  fName={customer.fName}
+                  lName={customer.lName}
+                  funds={customer.funds}
+                  transactions={customer.transactions}
+                  onSetView={viewHandler}
+                  withdrawals={withdrawals}
+                  setWithdrawals={setWithdrawals}
+                  deposits={deposits}
+                  setDeposits={setDeposits}
+                />
+              </Grid>
+              <Grid xs={12} item>
+                <Grid container>
+                  <Grid xs={12} item>
+                    <AccountDetails classes={classes} />
+                  </Grid>
+                  <Grid xs={12} item>
+                    <AccountCoupons classes={classes} isMobile={mobile} />
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
-            <Grid xs={12} item>
-              <AccountActivity
-                YEAR={currentYear}
-                transactions={customer.transactions}
-                classes={classes}
-              />
-            </Grid>
-          </>
-        )}
-      </Grid>
+          </Grid>
+          <Grid xs={12} item>
+            <AccountActivity
+              YEAR={currentYear}
+              transactions={customer.transactions}
+              classes={classes}
+            />
+          </Grid>
+        </Grid>
+      )}
     </>
   );
 };

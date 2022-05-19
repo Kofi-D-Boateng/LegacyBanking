@@ -35,7 +35,9 @@ const notisSlice = createSlice({
       }>
     ) {
       const { notis } = action.payload;
+      console.log(notis);
       state.notis = notis ? notis : state.notis;
+      state.unread = 0;
       for (const n of notis) {
         if (n.read === false) {
           state.unread = state.unread + 1;
