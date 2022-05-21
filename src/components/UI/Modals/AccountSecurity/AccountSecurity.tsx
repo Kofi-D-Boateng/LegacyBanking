@@ -34,7 +34,7 @@ const AccountSecurity: FC<{
     readonly [key: string]: string;
   };
   URL: string | undefined;
-  token: string;
+  token: string | null;
   accountNumber: string;
   isCardLocked: boolean;
   Location: Location;
@@ -69,7 +69,8 @@ const AccountSecurity: FC<{
         choice: boolean;
         item: string;
       },
-      accountNumber: string
+      accountNumber: string,
+      token: string | null
     ) => void = async ({ item }) => {
       await axios
         .post(
@@ -79,7 +80,7 @@ const AccountSecurity: FC<{
             account: item.includes(LOCKEDACCOUNT) && true,
             accountNumber: accountNumber,
           },
-          { headers: { authorization: token } }
+          { headers: { authorization: token as string } }
         )
         .then(() => {
           Location.reload();
@@ -88,7 +89,7 @@ const AccountSecurity: FC<{
           setChoice({ choice: true, item: SECURITYERRORMSG });
         });
     };
-    fetchSettings(choice, accountNumber);
+    fetchSettings(choice, accountNumber, token);
   }, [URL, token, choice, axios, accountNumber, Location]);
 
   return (

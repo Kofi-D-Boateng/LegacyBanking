@@ -26,7 +26,7 @@ const Paperless: FC<{
   BACKDROPDIV: HTMLElement;
   OVERLAYDIV: HTMLElement;
   URL: string | undefined;
-  token: string;
+  token: string | null;
   axios: AxiosStatic;
 }> = ({
   Exit,
@@ -44,16 +44,16 @@ const Paperless: FC<{
   }>({ isSelected: false, choice: "" });
 
   useEffect(() => {
-    const fetchPaperless: (choice: string, token: string) => void = async (
-      choice,
-      token
-    ) => {
+    const fetchPaperless: (
+      choice: string,
+      token: string | null
+    ) => void = async (choice, token) => {
       await axios
         .post(
           `${URL}/authentication/billing`,
           { choice: choice },
           {
-            headers: { authorization: token },
+            headers: { authorization: token as string },
           }
         )
         .then((response) => {

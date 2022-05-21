@@ -9,7 +9,7 @@ import { AxiosStatic } from "axios";
 const MoneyTransfer: FC<{
   Location: Location;
   URL: string | undefined;
-  token: string;
+  token: string | null;
   view: boolean;
   termsOfChoice: string;
   isMobile: boolean;
@@ -68,16 +68,19 @@ const MoneyTransfer: FC<{
   Location,
 }) => {
   useEffect(() => {
-    const fetchTransfer = async (accountTransfer: {
-      email: string | undefined;
-      amount: number;
-      accountNumber: string | undefined;
-      type: string;
-      phoneNumber: string | undefined;
-    }) => {
+    const fetchTransfer = async (
+      accountTransfer: {
+        email: string | undefined;
+        amount: number;
+        accountNumber: string | undefined;
+        type: string;
+        phoneNumber: string | undefined;
+      },
+      token: string | null
+    ) => {
       await axios
         .post(`${URL}/authentication/transaction`, accountTransfer, {
-          headers: { authorization: token },
+          headers: { authorization: token as string },
         })
         .then((response) => {
           if (response.status >= 200 && response.status <= 299) {
@@ -98,7 +101,7 @@ const MoneyTransfer: FC<{
         });
     };
     if (accountTransfer.email || accountTransfer.phoneNumber) {
-      fetchTransfer(accountTransfer);
+      fetchTransfer(accountTransfer, token);
     }
   }, [
     accountTransfer,

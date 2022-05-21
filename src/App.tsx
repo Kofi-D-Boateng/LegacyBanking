@@ -27,9 +27,16 @@ import {
   REDIRECT,
   SIGNUP,
   STARTUPS,
+  DISABLED,
+  TWITTER,
+  FACEBOOK,
+  INSTAGRAM,
+  LINKEDIN,
 } from "./components/UI/Constants/Constants";
 import axios from "axios";
 import LoadingSpinner from "./components/UI/Modals/LoadingSpinner/LoadingSpinner";
+import { Auth } from "./Interfaces/Auth";
+import WaitingPage from "./pages/WaitingPage";
 const Startups = lazy(() => import("./pages/Startups"));
 const Insight = lazy(() => import("./pages/Insight"));
 const About = lazy(() => import("./pages/About"));
@@ -44,22 +51,23 @@ const App: FC = () => {
   const customer = useSelector((state: RootState) => state.cust);
   const theme = useTheme<Theme>();
   const mobile: boolean = useMediaQuery<unknown>(theme.breakpoints.down("md"));
-  const auth: {
-    token: string;
-    authenticated: boolean;
-  } = useSelector((state: RootState) => state.auth);
+  const auth: Auth = useSelector((state: RootState) => state.auth);
   const { pathname } = useLocation();
 
   const login: PathMatch<string> | null = matchPath<string, string>(
-    "/login",
+    LOGIN,
     pathname
   );
   const signup: PathMatch<string> | null = matchPath<string, string>(
-    "/signup",
+    SIGNUP,
     pathname
   );
   const profile: PathMatch<string> | null = matchPath<string, string>(
-    "/profile/*",
+    PROFILE,
+    pathname
+  );
+  const error: PathMatch<string> | null = matchPath<string, string>(
+    DISABLED,
     pathname
   );
 
@@ -72,7 +80,7 @@ const App: FC = () => {
               <Route
                 path={PROFILE}
                 element={
-                  customer.isEnabled ? (
+                  auth.isEnabled && !auth.isLocked ? (
                     <Profile
                       customer={customer}
                       URL={FRONTEND_DOMAIN}
@@ -80,7 +88,7 @@ const App: FC = () => {
                       mobile={mobile}
                     />
                   ) : (
-                    <h1>IT WORKED</h1>
+                    <Navigate replace to={DISABLED} />
                   )
                 }
               />
@@ -94,7 +102,20 @@ const App: FC = () => {
           auth={auth.authenticated}
           login={login}
           signup={signup}
+          error={error}
           YEAR={YEAR}
+          ABOUT={ABOUT}
+          LOCATIONS={LOCATIONS}
+          CONTACT={CONTACT}
+          INSIGHT={INSIGHT}
+          STARTUPS={STARTUPS}
+          PROFILE={PROFILE}
+          REDIRECT={REDIRECT}
+          LOGIN={LOGIN}
+          TWITTER={TWITTER}
+          FACEBOOK={FACEBOOK}
+          INSTAGRAM={INSTAGRAM}
+          LINKEDIN={LINKEDIN}
         >
           <Routes>
             <Route path={HOME} element={<Home mobile={mobile} />} />
@@ -117,6 +138,7 @@ const App: FC = () => {
               element={<Login URL={FRONTEND_DOMAIN} isMobile={mobile} />}
             />
             <Route path={SIGNUP} element={<Signup URL={FRONTEND_DOMAIN} />} />
+            <Route path={DISABLED} element={<WaitingPage />} />
             <Route path={REDIRECT} element={<Navigate replace to={HOME} />} />
           </Routes>
         </Layout>

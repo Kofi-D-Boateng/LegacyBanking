@@ -52,7 +52,7 @@ import { backdropDiv, overlayDiv } from "../components/UI/Layouts/RootElement";
 import { notisActions } from "../store/notifications/notifications";
 
 const Profile: FC<{
-  token: string;
+  token: string | null;
   mobile: boolean;
   URL: string | undefined;
   customer: {
@@ -97,12 +97,12 @@ const Profile: FC<{
   const navigate: NavigateFunction = useNavigate();
 
   useEffect(() => {
-    const fetchAccount: (token: string) => void = async (token) => {
+    const fetchAccount: (token: string | null) => void = async (token) => {
       await axios({
         method: "GET",
         url: `${URL}/authentication/profile/info`,
         headers: {
-          authorization: token,
+          authorization: token as string,
         },
       })
         .then((response) => {
