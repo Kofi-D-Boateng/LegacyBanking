@@ -16,6 +16,7 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import MoneyTransfer from "../components/UI/Modals/MoneyTransfer/MoneyTransfer";
 import { modalActions } from "../store/modals/modal-slice";
 import { MockStatements } from "../assets/data/MockData";
 import { SelectChangeEvent } from "@mui/material";
@@ -23,7 +24,6 @@ import { customerActions } from "../store/customer/customer";
 import { RootState } from "../store/store";
 import { authActions } from "../store/authentication/auth-slice";
 import classes from "../styles/ProfileStyles.module.css";
-import MoneyTransfer from "../components/UI/Modals/MoneyTransfer/MoneyTransfer";
 import MoneyTransferStyles from "../styles/modals.module.css";
 import Statement from "../components/UI/Modals/Statement/Statement";
 import Paperless from "../components/UI/Modals/Paperless/Paperless";
@@ -52,9 +52,9 @@ import { backdropDiv, overlayDiv } from "../components/UI/Layouts/RootElement";
 import { notisActions } from "../store/notifications/notifications";
 
 const Profile: FC<{
-  token: string;
+  token: string | null;
   mobile: boolean;
-  URL: string;
+  URL: string | undefined;
   customer: {
     fName: string;
     lName: string;
@@ -97,12 +97,12 @@ const Profile: FC<{
   const navigate: NavigateFunction = useNavigate();
 
   useEffect(() => {
-    const fetchAccount: (token: string) => void = async (token) => {
+    const fetchAccount: (token: string | null) => void = async (token) => {
       await axios({
         method: "GET",
         url: `${URL}/authentication/profile/info`,
         headers: {
-          authorization: token,
+          authorization: token as string,
         },
       })
         .then((response) => {

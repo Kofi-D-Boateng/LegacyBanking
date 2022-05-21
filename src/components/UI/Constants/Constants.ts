@@ -1,10 +1,6 @@
 // BACKEND URL
-const AUTHAPI: string = process.env.ENVIRONMENT?.includes("prod")
-  ? ""
-  : "http://localhost:8081/api/v1";
-const MAILERURL: string = process.env.ENVIRONMENT?.includes("prod")
-  ? ""
-  : "http://localhost:5500/customer-service/email";
+const FRONTEND_DOMAIN: string =
+  process.env.LB_DOMAIN_NAME || "http://localhost:8081/api/v1";
 
 // PROFILE STRING COMPARISON
 const DEBITTRASFER: string = "Debit transfer";
@@ -26,6 +22,9 @@ const INVESTMENTS: string = "/investments/*";
 const CONTACT: string = "/contact";
 const SIGNUP: string = "/signup";
 const LOGIN: string = "/login";
+const INSIGHT: string = "/insight";
+const STARTUPS: string = "/startups";
+const DISABLED: string = "/error/locked-account";
 const REDIRECT: string = "*";
 
 // MODAL VALUES
@@ -43,6 +42,12 @@ const BACKWARD: string = "backward";
 const LOCKEDCARD: string = "Locked Card";
 const LOCKEDACCOUNT: string = "Locked Account";
 
+// SOCIAL LINKS
+const TWITTER: string = "www.twitter.com";
+const FACEBOOK: string = "www.facebook.com";
+const INSTAGRAM: string = "www.instagram.com";
+const LINKEDIN: string = "www.linkedin.com";
+
 // MESSAGES
 const LOCKEDCARDMSG: string =
   "Your card has been recently locked by you or for fraudulent activities. Please check your email for steps on access to a new card";
@@ -50,6 +55,7 @@ const LOCKEDACCOUNTMSG: string =
   "Your account has been temporarily locked. Please check your email in regards for next steps on gaining access to your account.";
 const SECURITYERRORMSG: string =
   "We are sorry, there was an error processing your request on our end.";
+
 export {
   DEBITTRASFER,
   ACHDEBIT,
@@ -82,7 +88,13 @@ export {
   LOCKEDCARD,
   LOCKEDACCOUNTMSG,
   LOCKEDCARDMSG,
-  AUTHAPI,
   SECURITYERRORMSG,
-  MAILERURL,
+  INSIGHT,
+  STARTUPS,
+  FRONTEND_DOMAIN,
+  DISABLED,
+  FACEBOOK,
+  INSTAGRAM,
+  LINKEDIN,
+  TWITTER,
 };

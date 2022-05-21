@@ -1,31 +1,33 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Auth } from "../../Interfaces/Auth";
 
-function initialState(): {
-  token: string;
-  authenticated: boolean;
-} {
+function initialState(): Auth {
   const token = sessionStorage.getItem("lb-token");
-  if (token !== null) {
-    return {
-      token: token,
-      authenticated: true,
-    };
-  } else {
-    return {
-      token: "",
-      authenticated: false,
-    };
-  }
+  return {
+    token: token,
+    authenticated: token ? true : false,
+    isEnabled: false,
+    isLocked: true,
+  };
 }
 
 const authSlice = createSlice({
   name: "authentication",
   initialState: initialState(),
   reducers: {
-    getCreds(state, action: PayloadAction<{ token: string }>) {
-      const { token } = action.payload;
+    getCreds(
+      state,
+      action: PayloadAction<{
+        token: string;
+        isLocked: boolean;
+        isEnabled: boolean;
+      }>
+    ) {
+      const { token, isEnabled, isLocked } = action.payload;
       state.token = token;
       state.authenticated = true;
+      state.isEnabled = isEnabled;
+      state.isLocked = isLocked;
       sessionStorage.setItem("lb-token", token);
     },
     logout(state) {

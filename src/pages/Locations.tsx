@@ -10,7 +10,7 @@ import BankSearch from "../components/Locations/BankSearch";
 import Banner from "../components/Locations/Banner";
 import classes from "../styles/LocationsStyles.module.css";
 
-const Locations: FC<{ isMobile: boolean; URL: string }> = ({
+const Locations: FC<{ isMobile: boolean; URL: string | undefined }> = ({
   isMobile,
   URL,
 }) => {

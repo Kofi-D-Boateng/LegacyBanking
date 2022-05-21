@@ -1,0 +1,40 @@
+.banner {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../assets/photos/small_business.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 90vh;
+}
+
+.mobileBanner {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../assets/photos/small_business.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 70vh;
+}
+
+.bannerTitle {
+  margin: auto;
+  padding: 10px;
+  width: 60%;
+}
+
+.infoContainer {
+  width: 80%;
+  margin: 100px auto;
+  color: purple;
+  justify-content: center;
+}
+
+.img {
+  width: 90%;
+  margin: auto;
+}
+
+.infoBox {
+  text-align: center;
+  margin: 100px 0;
+}

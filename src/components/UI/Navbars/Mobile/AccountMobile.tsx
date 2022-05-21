@@ -167,17 +167,15 @@ const AccountMobile: FC<{
       >
         {notis.map((n, i) => {
           return (
-            <>
-              <Notis
-                n={n}
-                index={i}
-                length={notis.length}
-                markRead={markRead}
-                Grid={Grid}
-                Typography={Typography}
-                Button={Button}
-              />
-            </>
+            <Notis
+              n={n}
+              index={i}
+              length={notis.length}
+              markRead={markRead}
+              Grid={Grid}
+              Typography={Typography}
+              Button={Button}
+            />
           );
         })}
       </Menu>

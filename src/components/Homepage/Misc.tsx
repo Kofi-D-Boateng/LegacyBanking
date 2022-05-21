@@ -1,7 +1,7 @@
-import { Button, ClassNameMap, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
+import { NavigateFunction } from "react-router-dom";
 
 const Misc: React.FC<{
-  classes: ClassNameMap<string>;
   isMobile: boolean;
   info: {
     key: number;
@@ -9,8 +9,10 @@ const Misc: React.FC<{
     desc: string;
     css: string;
     src: string | undefined;
+    link: string;
   }[];
-}> = ({ classes, isMobile, info }) => {
+  navigate: NavigateFunction;
+}> = ({ isMobile, info, navigate }) => {
   return (
     <>
       {!isMobile ? (
@@ -60,6 +62,9 @@ const Misc: React.FC<{
                             color: "white",
                             borderColor: "purple",
                           },
+                        }}
+                        onClick={() => {
+                          navigate(i.link, { replace: true });
                         }}
                         fullWidth
                       >
@@ -111,6 +116,9 @@ const Misc: React.FC<{
                             color: "white",
                             borderColor: "purple",
                           },
+                        }}
+                        onClick={() => {
+                          navigate(i.link, { replace: true });
                         }}
                         fullWidth
                       >

@@ -1,10 +1,10 @@
 import { Grid, IconButton, Typography } from "@mui/material";
 import classes from "../../styles/FooterStyles.module.css";
 import { Box } from "@mui/system";
-import React, { ReactElement } from "react";
+import { FC, ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 
-const AccountFooter: React.FC = () => {
+const AccountFooter: FC = () => {
   return (
     <Box
       style={{
@@ -30,7 +30,7 @@ const AccountFooter: React.FC = () => {
   );
 };
 
-const Footer: React.FC<{
+const Footer: FC<{
   socials: {
     key: number;
     svg: ReactElement;
@@ -42,11 +42,11 @@ const Footer: React.FC<{
     link: string;
   }[];
   isMobile: boolean;
-}> = ({ socials, isMobile, links }) => {
-  const year = new Date().getFullYear();
+  YEAR: number;
+}> = ({ socials, isMobile, links, YEAR }) => {
   return (
     <footer className={classes.footer}>
-      <Grid sx={{ margin: "70px 0" }} container>
+      <Grid sx={{ margin: isMobile ? "30px 0" : "70px 0" }} container>
         <Grid xs={4} md={4} item>
           <Typography className={classes.Logo} variant="h4">
             Legacy Bank
@@ -55,7 +55,7 @@ const Footer: React.FC<{
         <Grid xs={4} md={4} item>
           {links
             .filter((l) => {
-              return l.key <= 2;
+              return l.key <= 3;
             })
             .map((l) => {
               return (
@@ -70,7 +70,7 @@ const Footer: React.FC<{
         <Grid xs={4} md={4} item>
           {links
             .filter((l) => {
-              return l.key >= 3;
+              return l.key >= 4;
             })
             .map((l) => {
               return (
@@ -83,12 +83,8 @@ const Footer: React.FC<{
             })}
         </Grid>
       </Grid>
-      <Grid
-        className={classes.footerSocialContainer}
-        sx={{ margin: "20px 0" }}
-        container
-      >
-        <Grid xs={6} md={6} item>
+      <Grid className={classes.footerSocialContainer} container>
+        <Grid xs={12} md={6} item>
           {socials.map((s) => {
             return (
               <NavLink
@@ -104,8 +100,8 @@ const Footer: React.FC<{
             );
           })}
         </Grid>
-        <Grid xs={6} md={6} item>
-          <Typography variant="h5">© {year} Legacy Bank</Typography>
+        <Grid sx={isMobile ? { margin: "20px 0" } : null} xs={12} md={6} item>
+          <Typography variant="h5">© {YEAR} Legacy Bank</Typography>
         </Grid>
       </Grid>
     </footer>

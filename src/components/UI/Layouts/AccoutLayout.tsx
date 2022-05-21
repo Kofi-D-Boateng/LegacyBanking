@@ -10,7 +10,7 @@ const AccountLayout: FC<{
   mobile: boolean;
   children: ReactNode;
   axios: AxiosStatic;
-  URL: string;
+  URL: string | undefined;
 }> = ({ children, mobile, axios, URL }) => {
   const notis = useSelector((state: RootState) => state.notis);
   const auth = useSelector((state: RootState) => state.auth);

@@ -42,18 +42,20 @@ const AccountNavbar: FC<{
     }[];
     unread: number;
   };
-  token: string;
+  token: string | null;
   axios: AxiosStatic;
-  URL: string;
+  URL: string | undefined;
 }> = ({ mobile, options, noti, token, axios, URL }) => {
   const { notis, unread } = noti;
   const dispatch = useDispatch<Dispatch<any>>();
   const navigate: NavigateFunction = useNavigate();
   const [showLinks, setShowLinks] = useState<HTMLElement | null>(null);
-  const [readMsg, setReadMsg] = useState<{ token: string; _id: string }>({
-    _id: "",
-    token: "",
-  });
+  const [readMsg, setReadMsg] = useState<{ token: string | null; _id: string }>(
+    {
+      _id: "",
+      token: "",
+    }
+  );
 
   useEffect(() => {
     if (readMsg._id.trim().length <= 0) {
@@ -61,17 +63,17 @@ const AccountNavbar: FC<{
     }
     const fetchMarkMessage: (readMsg: {
       _id: string;
-      token: string;
+      token: string | null;
     }) => void = async ({ _id, token }) => {
       await axios
         .post(
           `${URL}/authentication/notifications`,
           { msgID: _id },
-          { headers: { authorization: token } }
+          { headers: { authorization: token as string } }
         )
         .then((response) => {
           const { notis } = response.data;
-          dispatch(notisActions.getNotis(notis));
+          dispatch(notisActions.getNotis({ notis: notis }));
         })
         .catch((error) => {
           console.log(error);
