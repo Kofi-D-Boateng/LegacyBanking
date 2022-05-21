@@ -17,7 +17,6 @@ import {
   MouseEvent,
 } from "react";
 import { NavLinkProps } from "react-router-dom";
-import { authActions } from "../../../../store/authentication/auth-slice";
 
 const AccountWeb: FC<{
   NavLink: ForwardRefExoticComponent<
@@ -74,7 +73,6 @@ const AccountWeb: FC<{
   Typography,
   options,
   Button,
-  dispatch,
   Badge,
   Menu,
   Notifications,
@@ -124,9 +122,7 @@ const AccountWeb: FC<{
                     borderColor: "purple",
                   },
                 }}
-                onClick={() => {
-                  dispatch(authActions.logout());
-                }}
+                onClick={handleClose}
               >
                 <Typography key={o.key} variant="h6">
                   {o.title}

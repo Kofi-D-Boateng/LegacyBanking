@@ -31,7 +31,7 @@ const Banner: React.FC<{
                 borderColor: "white",
               },
             }}
-            onClick={() => navigate("/locations", { replace: true })}
+            onClick={() => navigate("/locations", { replace: false })}
           >
             Find A Location
           </Button>

@@ -1,4 +1,4 @@
-import { NavigateFunction, NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   FC,
   Dispatch,
@@ -48,7 +48,6 @@ const AccountNavbar: FC<{
 }> = ({ mobile, options, noti, token, axios, URL }) => {
   const { notis, unread } = noti;
   const dispatch = useDispatch<Dispatch<any>>();
-  const navigate: NavigateFunction = useNavigate();
   const [showLinks, setShowLinks] = useState<HTMLElement | null>(null);
   const [readMsg, setReadMsg] = useState<{ token: string | null; _id: string }>(
     {
@@ -98,14 +97,21 @@ const AccountNavbar: FC<{
     }
   }, []);
   const handleClose = useCallback(
-    (event: React.MouseEvent<HTMLElement>) => {
+    async (event: React.MouseEvent<HTMLElement>) => {
       const { innerText } = event.currentTarget;
-      if (innerText === "Logout") {
+      if (innerText === "Log out") {
+        await axios
+          .get(`${URL}/logout`, {
+            headers: { authorization: token as string },
+          })
+          .catch(() => {
+            dispatch(authActions.logout());
+          });
         dispatch(authActions.logout());
       }
       setShowLinks(null);
     },
-    [dispatch]
+    [dispatch, axios, URL, token]
   );
 
   return (
@@ -151,10 +157,7 @@ const AccountNavbar: FC<{
               unread={unread}
               showLinks={showLinks}
               handleMenu={handleMenu}
-              setShowLinks={setShowLinks}
               handleClose={handleClose}
-              dispatch={dispatch}
-              navigate={navigate}
               markRead={markRead}
               Notis={Notis}
             />

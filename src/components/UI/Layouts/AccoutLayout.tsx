@@ -3,7 +3,7 @@ import { FC, ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import { HOME, PROFILE } from "../Constants/Constants";
-import { AccountFooter } from "../Footer";
+import AccountFooter from "../Footers/AccountFooter";
 import { AccountNavbar } from "../Navbars/AccountNavbar";
 
 const AccountLayout: FC<{
@@ -16,7 +16,7 @@ const AccountLayout: FC<{
   const auth = useSelector((state: RootState) => state.auth);
   const options: { key: number; title: string; link: string }[] = [
     { key: 1, title: "Accounts", link: PROFILE.substring(0, 8) },
-    { key: 3, title: "Sign out", link: HOME },
+    { key: 3, title: "Log out", link: HOME },
   ];
 
   return (

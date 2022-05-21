@@ -85,7 +85,7 @@ const MainMobile: FC<{
         {links.map((l) => {
           return (
             <MenuItem key={l.key} onClick={handleClose}>
-              <NavLink className={classes.menuLink} to={l.link}>
+              <NavLink className={classes.menuLink} to={l.link} replace={false}>
                 {l.title}
               </NavLink>
             </MenuItem>
@@ -109,7 +109,11 @@ const MainMobile: FC<{
                 }}
                 onClick={handleClose}
               >
-                <NavLink className={classes.menuLink} to={l.link}>
+                <NavLink
+                  className={classes.menuLink}
+                  to={l.link}
+                  replace={false}
+                >
                   {l.title}
                 </NavLink>
               </MenuItem>

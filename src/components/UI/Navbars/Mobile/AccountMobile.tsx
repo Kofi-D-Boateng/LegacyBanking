@@ -9,9 +9,7 @@ import {
   TypographyTypeMap,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import { FC, Dispatch, SetStateAction, MouseEvent } from "react";
-import { NavigateFunction } from "react-router-dom";
-import { authActions } from "../../../../store/authentication/auth-slice";
+import { FC, MouseEvent } from "react";
 
 const AccountMobile: FC<{
   Grid: OverridableComponent<GridTypeMap<{}, "div">>;
@@ -44,9 +42,6 @@ const AccountMobile: FC<{
   handleMenu: (event: React.MouseEvent<any>) => void;
   handleClose: (event: MouseEvent<HTMLElement>) => void;
   markRead: (event: MouseEvent<HTMLButtonElement>) => void;
-  setShowLinks: Dispatch<SetStateAction<HTMLElement | null>>;
-  dispatch: Dispatch<any>;
-  navigate: NavigateFunction;
   Notis: FC<{
     n: {
       _id: string;
@@ -75,10 +70,7 @@ const AccountMobile: FC<{
   handleMenu,
   Badge,
   Notifications,
-  dispatch,
   handleClose,
-  navigate,
-  setShowLinks,
   Grid,
   Typography,
   markRead,
@@ -125,14 +117,7 @@ const AccountMobile: FC<{
                   backgroundColor: "transparent",
                 },
               }}
-              onClick={() => {
-                if (!o.title.includes("Sign out")) {
-                  navigate(o.link, { replace: true });
-                } else {
-                  dispatch(authActions.logout());
-                }
-                setShowLinks(null);
-              }}
+              onClick={handleClose}
             >
               {o.title}
             </Button>

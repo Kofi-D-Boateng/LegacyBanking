@@ -17,13 +17,15 @@ const Info: FC<{
   }[];
 }> = ({ Grid, Typography, classes, isMobile, info }) => {
   const GRIDSX: { margin: string } = { margin: "50px 0" };
-  const INFOSX: { width: string; margin: string } = {
+  const INFOSX: { width: string; margin: string; color: string } = {
     width: "50%",
     margin: "auto",
+    color: "purple",
   };
-  const TITLESX: { margin: string; width: string } = {
+  const TITLESX: { margin: string; width: string; color: string } = {
     margin: "15px auto",
     width: "50%",
+    color: "purple",
   };
   const PHOTOHOLDERSX: { width: string; margin: string } = {
     width: "50%",

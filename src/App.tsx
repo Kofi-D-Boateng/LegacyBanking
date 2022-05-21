@@ -98,8 +98,10 @@ const App: FC = () => {
         </AccountLayout>
       ) : (
         <Layout
+          URL={FRONTEND_DOMAIN}
+          axios={axios}
           mobile={mobile}
-          auth={auth.authenticated}
+          auth={auth}
           login={login}
           signup={signup}
           error={error}

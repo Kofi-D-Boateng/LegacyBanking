@@ -67,7 +67,7 @@ const MainWeb: FC<{
             sx={l.key === links.length ? { flexGrow: 1 } : undefined}
             variant="h6"
           >
-            <NavLink className={classes.navLink} to={l.link}>
+            <NavLink className={classes.navLink} to={l.link} replace={false}>
               {l.title}
             </NavLink>
           </Typography>
@@ -118,7 +118,11 @@ const MainWeb: FC<{
                     key={l.key}
                     onClick={handleClose}
                   >
-                    <NavLink className={classes.menuLink} to={l.link}>
+                    <NavLink
+                      className={classes.menuLink}
+                      to={l.link}
+                      replace={false}
+                    >
                       {l.title}
                     </NavLink>
                   </MenuItem>

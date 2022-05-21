@@ -1,16 +1,20 @@
 import { FC, ReactNode, Fragment, ReactElement } from "react";
-import { Footer } from "../Footer";
+import Footer from "../Footers/Footer";
 import { Navbar } from "../Navbars/Navbar";
 import { Twitter, Facebook, Instagram, LinkedIn } from "@mui/icons-material";
 import { PathMatch } from "react-router-dom";
+import { Auth } from "../../../Interfaces/Auth";
+import { AxiosStatic } from "axios";
 
 const Layout: FC<{
+  URL: string;
+  axios: AxiosStatic;
   mobile: boolean;
   login: PathMatch<string> | null;
   signup: PathMatch<string> | null;
   error: PathMatch<string> | null;
   children: ReactNode;
-  auth: boolean;
+  auth: Auth;
   YEAR: number;
   ABOUT: string;
   LOCATIONS: string;
@@ -44,6 +48,8 @@ const Layout: FC<{
   INSTAGRAM,
   LINKEDIN,
   TWITTER,
+  axios,
+  URL,
 }) => {
   console.log(error);
   const Links: { key: number; title: string; link: string }[] = [
@@ -56,15 +62,20 @@ const Layout: FC<{
 
   const authLinks: { key: number; title: string; link: string }[] = [
     { key: 1, title: "Profile", link: PROFILE },
-    { key: 2, title: "Logout", link: REDIRECT },
+    { key: 2, title: "Log out", link: REDIRECT },
     { key: 3, title: "Login", link: LOGIN },
   ];
 
-  const Socials: { key: number; svg: ReactElement; link: string }[] = [
-    { key: 1, svg: <Twitter />, link: TWITTER },
-    { key: 2, svg: <Facebook />, link: FACEBOOK },
-    { key: 3, svg: <Instagram />, link: INSTAGRAM },
-    { key: 4, svg: <LinkedIn />, link: LINKEDIN },
+  const Socials: {
+    key: number;
+    title: string;
+    svg: ReactElement;
+    link: string;
+  }[] = [
+    { key: 1, title: "twitter", svg: <Twitter />, link: TWITTER },
+    { key: 2, title: "facebook", svg: <Facebook />, link: FACEBOOK },
+    { key: 3, title: "instagram", svg: <Instagram />, link: INSTAGRAM },
+    { key: 4, title: "linkedin", svg: <LinkedIn />, link: LINKEDIN },
   ];
 
   return (
@@ -73,6 +84,8 @@ const Layout: FC<{
       login?.pattern.end ||
       error?.pattern.end ? null : (
         <Navbar
+          URL={URL}
+          axios={axios}
           isMobile={mobile}
           auth={auth}
           links={Links}

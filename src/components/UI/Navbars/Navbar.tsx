@@ -16,13 +16,17 @@ import { authActions } from "../../../store/authentication/auth-slice";
 import classes from "../../../styles/NavbarStyles.module.css";
 import MainMobile from "./Mobile/MainMobile";
 import MainWeb from "./Web/MainWeb";
+import { Auth } from "../../../Interfaces/Auth";
+import { AxiosStatic } from "axios";
 
 const Navbar: React.FC<{
+  URL: string;
+  axios: AxiosStatic;
   isMobile: boolean;
-  auth: boolean;
+  auth: Auth;
   links: { key: number; title: string; link: string }[];
   authLinks: { key: number; title: string; link: string }[];
-}> = ({ auth, isMobile, links, authLinks }) => {
+}> = ({ auth, isMobile, links, authLinks, axios, URL }) => {
   const [anchorEl, setAnchorEl] = useState<any>(null);
   const dispatch = useDispatch<Dispatch<any>>();
 
@@ -31,14 +35,20 @@ const Navbar: React.FC<{
   }, []);
 
   const handleClose = useCallback(
-    (event: React.MouseEvent<HTMLElement>) => {
+    async (event: React.MouseEvent<HTMLElement>) => {
       const { innerText } = event.currentTarget;
-      if (innerText === "Logout") {
+      console.log(innerText);
+      if (innerText === "Log out") {
+        await axios
+          .get(`${URL}/logout`, {
+            headers: { authorization: auth.token as string },
+          })
+          .catch(() => dispatch(authActions.logout()));
         dispatch(authActions.logout());
       }
       setAnchorEl(null);
     },
-    [dispatch]
+    [dispatch, axios, auth.token, URL]
   );
 
   return (
@@ -57,7 +67,7 @@ const Navbar: React.FC<{
           </Typography>
           {isMobile ? (
             <MainMobile
-              auth={auth}
+              auth={auth.authenticated}
               classes={classes}
               handleClose={handleClose}
               handleMenu={handleMenu}
@@ -72,7 +82,7 @@ const Navbar: React.FC<{
             />
           ) : (
             <MainWeb
-              auth={auth}
+              auth={auth.authenticated}
               classes={classes}
               handleClose={handleClose}
               handleMenu={handleMenu}

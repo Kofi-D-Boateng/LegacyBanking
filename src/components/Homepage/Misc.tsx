@@ -64,7 +64,7 @@ const Misc: React.FC<{
                           },
                         }}
                         onClick={() => {
-                          navigate(i.link, { replace: true });
+                          navigate(i.link, { replace: false });
                         }}
                         fullWidth
                       >
