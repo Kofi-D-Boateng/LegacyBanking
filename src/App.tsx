@@ -140,7 +140,16 @@ const App: FC = () => {
               element={<Login URL={FRONTEND_DOMAIN} isMobile={mobile} />}
             />
             <Route path={SIGNUP} element={<Signup URL={FRONTEND_DOMAIN} />} />
-            <Route path={DISABLED} element={<WaitingPage />} />
+            <Route
+              path={DISABLED}
+              element={
+                <WaitingPage
+                  token={auth.token}
+                  axios={axios}
+                  URL={FRONTEND_DOMAIN}
+                />
+              }
+            />
             <Route path={REDIRECT} element={<Navigate replace to={HOME} />} />
           </Routes>
         </Layout>
