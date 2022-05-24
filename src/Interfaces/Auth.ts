@@ -3,4 +3,5 @@ export interface Auth {
   authenticated: boolean;
   isLocked: boolean;
   isEnabled: boolean;
+  expiresIn: number;
 }

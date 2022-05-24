@@ -25,13 +25,13 @@ const AccountDetails: React.FC<{
       desc: "Get insight into your spending",
       icon: <Wallet fontSize="large" sx={{ color: "purple" }} />,
     },
-    {
-      key: 2,
-      title: "Loans",
-      link: LOANS,
-      desc: "See what loans you have taken",
-      icon: <Loan fontSize="large" sx={{ color: "purple" }} />,
-    },
+    // {
+    //   key: 2,
+    //   title: "Loans",
+    //   link: LOANS,
+    //   desc: "See what loans you have taken",
+    //   icon: <Loan fontSize="large" sx={{ color: "purple" }} />,
+    // },
     // {
     //   key: 3,
     //   title: "Loans",

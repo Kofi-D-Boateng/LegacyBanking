@@ -32,12 +32,14 @@ const Login: FC<{ isMobile: boolean; URL: string | undefined }> = ({
         .then((response) => {
           console.log(response.status);
           if (response.status === 200) {
-            const { token, isLocked, isEnabled } = response.data;
+            const { token, isLocked, isEnabled, expiresIn } = response.data;
+            console.log(expiresIn);
             dispatch(
               authActions.getCreds({
                 token: token,
                 isEnabled: isEnabled,
                 isLocked: isLocked,
+                expiresIn: +expiresIn,
               })
             );
             navigate("/profile", { replace: true });

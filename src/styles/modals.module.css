@@ -17,3 +17,17 @@
   width: 80%;
   z-index: 5;
 }
+
+.titleContainer {
+  margin: 20px 0;
+  color: purple;
+}
+
+.bodyContainer {
+  margin: 20px 0;
+  color: purple;
+}
+
+.buttonContainer {
+  text-align: center;
+}

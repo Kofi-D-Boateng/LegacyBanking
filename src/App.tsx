@@ -32,11 +32,12 @@ import {
   FACEBOOK,
   INSTAGRAM,
   LINKEDIN,
+  BUFFERTIME,
 } from "./components/UI/Constants/Constants";
 import axios from "axios";
 import LoadingSpinner from "./components/UI/Modals/LoadingSpinner/LoadingSpinner";
+import Timer from "./components/UI/Modals/Timer/Timer";
 import { Auth } from "./Interfaces/Auth";
-import WaitingPage from "./pages/WaitingPage";
 const Startups = lazy(() => import("./pages/Startups"));
 const Insight = lazy(() => import("./pages/Insight"));
 const About = lazy(() => import("./pages/About"));
@@ -45,14 +46,19 @@ const Locations = lazy(() => import("./pages/Locations"));
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const Profile = lazy(() => import("./pages/Profile"));
+const WaitingPage = lazy(() => import("./pages/WaitingPage"));
 
 const App: FC = () => {
-  const YEAR: number = new Date().getFullYear();
+  const DATE: Date = new Date();
+  const YEAR: number = DATE.getFullYear();
   const customer = useSelector((state: RootState) => state.cust);
   const theme = useTheme<Theme>();
   const mobile: boolean = useMediaQuery<unknown>(theme.breakpoints.down("md"));
   const auth: Auth = useSelector((state: RootState) => state.auth);
   const { pathname } = useLocation();
+  const Location: Location = window.location;
+
+  const isTimeUp: boolean = auth.expiresIn < BUFFERTIME;
 
   const login: PathMatch<string> | null = matchPath<string, string>(
     LOGIN,
@@ -74,14 +80,22 @@ const App: FC = () => {
   return (
     <Suspense fallback={<LoadingSpinner />}>
       {profile?.pattern.end ? (
-        <AccountLayout mobile={mobile} axios={axios} URL={FRONTEND_DOMAIN}>
+        <AccountLayout
+          Location={Location}
+          Timer={Timer}
+          isTimeUp={isTimeUp}
+          mobile={mobile}
+          axios={axios}
+          URL={FRONTEND_DOMAIN}
+        >
           <Routes>
             {auth.authenticated && (
               <Route
                 path={PROFILE}
                 element={
-                  auth.isEnabled && !auth.isLocked ? (
+                  !auth.isEnabled && !auth.isLocked ? (
                     <Profile
+                      Location={Location}
                       customer={customer}
                       URL={FRONTEND_DOMAIN}
                       token={auth.token}
@@ -98,6 +112,9 @@ const App: FC = () => {
         </AccountLayout>
       ) : (
         <Layout
+          Timer={Timer}
+          Location={Location}
+          isTimeUp={isTimeUp}
           URL={FRONTEND_DOMAIN}
           axios={axios}
           mobile={mobile}
@@ -144,7 +161,8 @@ const App: FC = () => {
               path={DISABLED}
               element={
                 <WaitingPage
-                  token={auth.token}
+                  auth={auth}
+                  isMobile={mobile}
                   axios={axios}
                   URL={FRONTEND_DOMAIN}
                 />
