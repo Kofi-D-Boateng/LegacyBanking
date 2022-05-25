@@ -4,20 +4,22 @@ import { CSSProperties, Dispatch, FC, MouseEvent } from "react";
 import { useDispatch } from "react-redux";
 import { NavigateFunction, NavLink, useNavigate } from "react-router-dom";
 import { CONTACT, REDIRECT } from "../components/UI/Constants/Constants";
+import { Auth } from "../Interfaces/Auth";
 import { authActions } from "../store/authentication/auth-slice";
 
 const WaitingPage: FC<{
-  token: string | null;
+  isMobile: boolean;
+  auth: Auth;
   axios: AxiosStatic;
   URL: string;
-}> = ({ token, axios, URL }) => {
+}> = ({ auth, axios, URL, isMobile }) => {
   const dispatch: Dispatch<any> = useDispatch();
   const navigate: NavigateFunction = useNavigate();
   const STYLE: CSSProperties = {
     position: "absolute",
     top: "50%",
     left: "50%",
-    width: "50%",
+    width: !isMobile ? "50%" : "90%",
     transform: "translate(-50%, -50%)",
     fontSize: "1.3rem",
     color: "purple",
@@ -26,7 +28,7 @@ const WaitingPage: FC<{
   const GenerateLink: (e: MouseEvent<HTMLButtonElement>) => void = async () => {
     await axios
       .post(`${URL}/authentication/new-verification-link`, {
-        token: token,
+        token: auth.token,
       })
       .catch(() => {
         dispatch(authActions.logout());

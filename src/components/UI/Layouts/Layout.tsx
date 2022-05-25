@@ -7,6 +7,14 @@ import { Auth } from "../../../Interfaces/Auth";
 import { AxiosStatic } from "axios";
 
 const Layout: FC<{
+  DATE: Date;
+  Timer: FC<{
+    isMobile: boolean;
+    auth: Auth;
+    location: Location;
+  }>;
+  Location: Location;
+  BUFFER: number;
   URL: string;
   axios: AxiosStatic;
   mobile: boolean;
@@ -50,8 +58,12 @@ const Layout: FC<{
   TWITTER,
   axios,
   URL,
+  Location,
+  Timer,
+  BUFFER,
+  DATE,
 }) => {
-  console.log(error);
+  const TIMER: number = auth.expiresIn - DATE.getTime();
   const Links: { key: number; title: string; link: string }[] = [
     { key: 1, title: "About Us", link: ABOUT },
     { key: 2, title: "Locations", link: LOCATIONS },
@@ -77,7 +89,6 @@ const Layout: FC<{
     { key: 3, title: "instagram", svg: <Instagram />, link: INSTAGRAM },
     { key: 4, title: "linkedin", svg: <LinkedIn />, link: LINKEDIN },
   ];
-
   return (
     <Fragment>
       {signup?.pattern.end ||
@@ -92,11 +103,20 @@ const Layout: FC<{
           authLinks={authLinks}
         />
       )}
+      {TIMER < BUFFER && auth.expiresIn !== 0 ? (
+        <Timer isMobile={mobile} auth={auth} location={Location} />
+      ) : null}
       <div style={{ width: "100%" }}>{children}</div>
       {signup?.pattern.end ||
       login?.pattern.end ||
       error?.pattern.end ? null : (
-        <Footer socials={Socials} links={Links} isMobile={mobile} YEAR={YEAR} />
+        <Footer
+          socials={Socials}
+          links={Links}
+          isMobile={mobile}
+          YEAR={YEAR}
+          Location={Location}
+        />
       )}
     </Fragment>
   );

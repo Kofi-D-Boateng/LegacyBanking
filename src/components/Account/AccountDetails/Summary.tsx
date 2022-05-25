@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { FC, memo } from "react";
 import { Grid } from "@mui/material";
 import classes from "../../../styles/BarGraphSVGStyles.module.css";
 import BarChart from "../../UI/SVGs/BarChart";
 import MainPanel from "./MainPanel/MainPanel";
 import { DateAmountType } from "../../../Interfaces/Maps";
 
-const Summary: React.FC<{
+const Summary: FC<{
   year: number;
   withdrawals: number;
   customer: {
@@ -29,9 +29,7 @@ const Summary: React.FC<{
   DateAmount: DateAmountType[];
   isMobile: boolean;
 }> = ({ customer, year, DateAmount, isMobile, withdrawals }) => {
-  const [view, setView] = useState<number>(1);
-  // INITIAL STATE IS HELD BY CURRENTYEAR IN PROFILE.TSX
-  const [yearView, setYearView] = useState<number>(year);
+  const view: number = 1;
   const { transactions } = customer;
   const SVGs: { key: number; title: string; svg: JSX.Element }[] = [
     {
@@ -42,7 +40,7 @@ const Summary: React.FC<{
           classes={classes}
           transactions={transactions}
           DateAmount={DateAmount}
-          year={yearView}
+          year={year}
           isMobile={isMobile}
         />
       ),
@@ -73,4 +71,4 @@ const Summary: React.FC<{
   );
 };
 
-export default React.memo(Summary);
+export default memo(Summary);

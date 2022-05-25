@@ -1,10 +1,9 @@
 import Wallet from "@mui/icons-material/AccountBalanceWallet";
-import Loan from "@mui/icons-material/CreditCard";
 import { Grid, Typography, Card, CardContent } from "@mui/material";
 import React, { ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 import { ArrowForwardIos } from "@mui/icons-material";
-import { LOANS, SUMMARY } from "../../UI/Constants/Constants";
+import { SUMMARY } from "../../UI/Constants/Constants";
 
 const AccountDetails: React.FC<{
   classes: {
@@ -25,27 +24,6 @@ const AccountDetails: React.FC<{
       desc: "Get insight into your spending",
       icon: <Wallet fontSize="large" sx={{ color: "purple" }} />,
     },
-    {
-      key: 2,
-      title: "Loans",
-      link: LOANS,
-      desc: "See what loans you have taken",
-      icon: <Loan fontSize="large" sx={{ color: "purple" }} />,
-    },
-    // {
-    //   key: 3,
-    //   title: "Loans",
-    //   link: LOANS,
-    //   desc: "See what loans you have taken",
-    //   icon: <Loan fontSize="large" sx={{ color: "purple" }} />,
-    // },
-    // {
-    //   key: 4,
-    //   title: "Loans",
-    //   link: LOANS,
-    //   desc: "See what loans you have taken",
-    //   icon: <Loan fontSize="large" sx={{ color: "purple" }} />,
-    // },
   ];
   return (
     <Card className={classes.card}>

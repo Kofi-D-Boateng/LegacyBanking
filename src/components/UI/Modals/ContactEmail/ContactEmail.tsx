@@ -11,7 +11,7 @@ import { createPortal } from "react-dom";
 import ContactForm from "../../../Forms/ContactForm/ContactForm";
 import Backdrop from "../../Backdrops/Backdrop";
 import { backdropDiv, overlayDiv } from "../../Layouts/RootElement";
-import classes from "../../../../styles/modals.module.css";
+import classes from "../../../../styles/Modals.module.css";
 
 const ContactEmail: FC<{
   setLimit: Dispatch<React.SetStateAction<number>>;

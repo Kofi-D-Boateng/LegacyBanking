@@ -15,6 +15,7 @@ import {
   ForwardRefExoticComponent,
   RefAttributes,
   MouseEvent,
+  Fragment,
 } from "react";
 import { NavLinkProps } from "react-router-dom";
 
@@ -46,7 +47,7 @@ const AccountWeb: FC<{
     read: boolean;
   }[];
   unread: number;
-  showLinks: HTMLElement | null;
+  showNotis: HTMLElement | null;
   handleMenu: (event: React.MouseEvent<any>) => void;
   handleClose: (event: MouseEvent<HTMLElement>) => void;
   markRead: (event: MouseEvent<HTMLButtonElement>) => void;
@@ -80,14 +81,14 @@ const AccountWeb: FC<{
   handleMenu,
   markRead,
   notis,
-  showLinks,
+  showNotis,
   unread,
   Notis,
 }) => {
   return (
     <Grid container>
       {options.map((o) => {
-        if (!o.title.includes("Sign out")) {
+        if (!o.title.includes("Log out")) {
           return (
             <NavLink
               key={o.key}
@@ -105,9 +106,8 @@ const AccountWeb: FC<{
           );
         } else {
           return (
-            <>
+            <Fragment key={o.key}>
               <Button
-                key={o.key}
                 variant="text"
                 sx={{
                   borderColor: "white",
@@ -115,7 +115,7 @@ const AccountWeb: FC<{
                   color: "white",
                   float: "right",
                   textTransform: "none",
-
+                  margin: "0 10px 0 0",
                   "&:hover": {
                     backgroundColor: "white",
                     color: "purple",
@@ -124,13 +124,12 @@ const AccountWeb: FC<{
                 }}
                 onClick={handleClose}
               >
-                <Typography key={o.key} variant="h6">
-                  {o.title}
-                </Typography>
+                <Typography variant="h6">{o.title}</Typography>
               </Button>
               <IconButton
                 size="small"
                 aria-controls="menu-appbar"
+                aria-label="notifications"
                 aria-haspopup="true"
                 onClick={handleMenu}
                 color="inherit"
@@ -141,7 +140,7 @@ const AccountWeb: FC<{
               </IconButton>
               <Menu
                 id="menu-appbar"
-                anchorEl={showLinks}
+                anchorEl={showNotis}
                 anchorOrigin={{
                   vertical: "top",
                   horizontal: "right",
@@ -151,26 +150,26 @@ const AccountWeb: FC<{
                   vertical: "top",
                   horizontal: "right",
                 }}
-                open={Boolean(showLinks)}
+                sx={{ height: "30vh" }}
+                open={Boolean(showNotis)}
                 onClose={handleClose}
               >
                 {notis.map((n, i) => {
                   return (
-                    <>
-                      <Notis
-                        n={n}
-                        index={i}
-                        length={notis.length}
-                        markRead={markRead}
-                        Grid={Grid}
-                        Typography={Typography}
-                        Button={Button}
-                      />
-                    </>
+                    <Notis
+                      key={n._id}
+                      n={n}
+                      index={i}
+                      length={notis.length}
+                      markRead={markRead}
+                      Grid={Grid}
+                      Typography={Typography}
+                      Button={Button}
+                    />
                   );
                 })}
               </Menu>
-            </>
+            </Fragment>
           );
         }
       })}

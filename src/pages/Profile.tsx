@@ -24,7 +24,7 @@ import { customerActions } from "../store/customer/customer";
 import { RootState } from "../store/store";
 import { authActions } from "../store/authentication/auth-slice";
 import classes from "../styles/ProfileStyles.module.css";
-import MoneyTransferStyles from "../styles/modals.module.css";
+import MoneyTransferStyles from "../styles/Modals.module.css";
 import Statement from "../components/UI/Modals/Statement/Statement";
 import Paperless from "../components/UI/Modals/Paperless/Paperless";
 import AccountNumbers from "../components/UI/Modals/AccountNumber/AccountNumbers";
@@ -52,6 +52,7 @@ import { backdropDiv, overlayDiv } from "../components/UI/Layouts/RootElement";
 import { notisActions } from "../store/notifications/notifications";
 
 const Profile: FC<{
+  Location: Location;
   token: string | null;
   mobile: boolean;
   URL: string | undefined;
@@ -82,8 +83,7 @@ const Profile: FC<{
       phoneNumber: string | undefined;
     };
   };
-}> = ({ token, mobile, URL, customer }) => {
-  const Location: Location = window.location;
+}> = ({ token, mobile, URL, customer, Location }) => {
   const DateAmount: DateAmountType[] = [];
   const PARAMS = useParams<string>();
   const currentYear: number = new Date().getFullYear();
