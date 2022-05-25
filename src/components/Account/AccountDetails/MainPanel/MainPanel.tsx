@@ -23,9 +23,12 @@ const MainPanel: React.FC<{
             container
           >
             <Typography sx={{ margin: "0 10px" }} variant="h5">
-              {`You have spent $${withdrawals.toLocaleString(
-                "en-us"
-              )} this month`}
+              {`You have spent ${withdrawals.toLocaleString("en-us", {
+                style: "currency",
+                currency: "USD",
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })} this month`}
             </Typography>
           </Grid>
         </CardContent>

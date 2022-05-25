@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavigateFunction, NavLink, useNavigate } from "react-router-dom";
 import {
   FC,
   Dispatch,
@@ -47,13 +47,50 @@ const AccountNavbar: FC<{
   URL: string | undefined;
 }> = ({ mobile, options, noti, token, axios, URL }) => {
   const { notis, unread } = noti;
+  const nav: NavigateFunction = useNavigate();
   const dispatch = useDispatch<Dispatch<any>>();
   const [showLinks, setShowLinks] = useState<HTMLElement | null>(null);
+  const [showNotis, setShowNotis] = useState<HTMLElement | null>(null);
   const [readMsg, setReadMsg] = useState<{ token: string | null; _id: string }>(
     {
       _id: "",
       token: "",
     }
+  );
+
+  const handleMenu = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+    const { ariaLabel } = event.currentTarget;
+    if (ariaLabel?.includes("notifications")) {
+      setShowNotis(event.currentTarget);
+      return;
+    }
+    if (ariaLabel?.includes("menu-links")) {
+      setShowLinks(event.currentTarget);
+    }
+  }, []);
+  const handleClose = useCallback(
+    async (event: MouseEvent<HTMLElement>) => {
+      const { innerText } = event.currentTarget;
+      if (innerText === "Log out") {
+        await axios
+          .get(`${URL}/logout`, {
+            headers: { authorization: token as string },
+          })
+          .catch(() => {
+            dispatch(authActions.logout());
+          });
+        dispatch(authActions.logout());
+      } else {
+        options.forEach((o) => {
+          if (o.title === innerText) {
+            nav(o.link, { replace: false });
+          }
+        });
+      }
+      setShowLinks(null);
+      setShowNotis(null);
+    },
+    [dispatch, axios, URL, token, nav, options]
   );
 
   useEffect(() => {
@@ -91,29 +128,6 @@ const AccountNavbar: FC<{
     }
   };
 
-  const handleMenu = useCallback((event: React.MouseEvent<any>) => {
-    if (event.currentTarget) {
-      setShowLinks(event.currentTarget);
-    }
-  }, []);
-  const handleClose = useCallback(
-    async (event: React.MouseEvent<HTMLElement>) => {
-      const { innerText } = event.currentTarget;
-      if (innerText === "Log out") {
-        await axios
-          .get(`${URL}/logout`, {
-            headers: { authorization: token as string },
-          })
-          .catch(() => {
-            dispatch(authActions.logout());
-          });
-        dispatch(authActions.logout());
-      }
-      setShowLinks(null);
-    },
-    [dispatch, axios, URL, token]
-  );
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -135,7 +149,7 @@ const AccountNavbar: FC<{
               Badge={Badge}
               Menu={Menu}
               unread={unread}
-              showLinks={showLinks}
+              showNotis={showNotis}
               handleMenu={handleMenu}
               handleClose={handleClose}
               notis={notis}
@@ -156,6 +170,7 @@ const AccountNavbar: FC<{
               notis={notis}
               unread={unread}
               showLinks={showLinks}
+              showNotis={showNotis}
               handleMenu={handleMenu}
               handleClose={handleClose}
               markRead={markRead}

@@ -39,6 +39,7 @@ const AccountMobile: FC<{
   }[];
   unread: number;
   showLinks: HTMLElement | null;
+  showNotis: HTMLElement | null;
   handleMenu: (event: React.MouseEvent<any>) => void;
   handleClose: (event: MouseEvent<HTMLElement>) => void;
   markRead: (event: MouseEvent<HTMLButtonElement>) => void;
@@ -75,12 +76,14 @@ const AccountMobile: FC<{
   Typography,
   markRead,
   Notis,
+  showNotis,
 }) => {
   return (
     <>
       <IconButton
         size="small"
         aria-controls="menu-appbar"
+        aria-label="menu-links"
         aria-haspopup="true"
         onClick={handleMenu}
         color="inherit"
@@ -127,6 +130,7 @@ const AccountMobile: FC<{
       <IconButton
         size="small"
         aria-controls="menu-appbar"
+        aria-label="notifications"
         aria-haspopup="true"
         onClick={handleMenu}
         color="inherit"
@@ -137,7 +141,7 @@ const AccountMobile: FC<{
       </IconButton>
       <Menu
         id="menu-appbar"
-        anchorEl={showLinks}
+        anchorEl={showNotis}
         anchorOrigin={{
           vertical: "top",
           horizontal: "right",
@@ -147,12 +151,14 @@ const AccountMobile: FC<{
           vertical: "top",
           horizontal: "right",
         }}
-        open={Boolean(showLinks)}
+        open={Boolean(showNotis)}
+        sx={{ height: "30vh" }}
         onClose={handleClose}
       >
         {notis.map((n, i) => {
           return (
             <Notis
+              key={n._id}
               n={n}
               index={i}
               length={notis.length}

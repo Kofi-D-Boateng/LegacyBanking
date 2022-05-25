@@ -1,14 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BUFFERTIME } from "../../components/UI/Constants/Constants";
 import { Auth } from "../../Interfaces/Auth";
+const DATE: Date = new Date();
 
 function initialState(): Auth {
-  const DATE: Date = new Date();
   const token = sessionStorage.getItem("lb-token");
   const exp = sessionStorage.getItem("exp");
-  const RemainingTime: number = exp
-    ? DATE.getTime() + +exp - (DATE.getTime() + BUFFERTIME)
-    : 0;
+  const RemainingTime = +exp! || 0;
+
   return {
     token: token,
     authenticated: token ? true : false,
@@ -35,7 +33,7 @@ const authSlice = createSlice({
       state.authenticated = true;
       state.isEnabled = isEnabled;
       state.isLocked = isLocked;
-      state.expiresIn = expiresIn;
+      state.expiresIn = expiresIn + DATE.getTime();
       sessionStorage.setItem("lb-token", state.token);
       sessionStorage.setItem("exp", state.expiresIn.toString());
     },
@@ -50,7 +48,7 @@ const authSlice = createSlice({
     ) {
       const { token, expiresIn } = action.payload;
       state.token = token;
-      state.expiresIn = expiresIn;
+      state.expiresIn = expiresIn + DATE.getTime();
       sessionStorage.setItem("lb-token", state.token);
       sessionStorage.setItem("exp", state.expiresIn.toString());
     },

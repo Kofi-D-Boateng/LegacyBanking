@@ -7,13 +7,14 @@ import { Auth } from "../../../Interfaces/Auth";
 import { AxiosStatic } from "axios";
 
 const Layout: FC<{
+  DATE: Date;
   Timer: FC<{
     isMobile: boolean;
     auth: Auth;
     location: Location;
   }>;
   Location: Location;
-  isTimeUp: boolean;
+  BUFFER: number;
   URL: string;
   axios: AxiosStatic;
   mobile: boolean;
@@ -58,9 +59,11 @@ const Layout: FC<{
   axios,
   URL,
   Location,
-  isTimeUp,
   Timer,
+  BUFFER,
+  DATE,
 }) => {
+  const TIMER: number = auth.expiresIn - DATE.getTime();
   const Links: { key: number; title: string; link: string }[] = [
     { key: 1, title: "About Us", link: ABOUT },
     { key: 2, title: "Locations", link: LOCATIONS },
@@ -100,7 +103,7 @@ const Layout: FC<{
           authLinks={authLinks}
         />
       )}
-      {isTimeUp && auth.expiresIn !== 0 ? (
+      {TIMER < BUFFER && auth.expiresIn !== 0 ? (
         <Timer isMobile={mobile} auth={auth} location={Location} />
       ) : null}
       <div style={{ width: "100%" }}>{children}</div>

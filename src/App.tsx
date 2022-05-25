@@ -58,8 +58,6 @@ const App: FC = () => {
   const { pathname } = useLocation();
   const Location: Location = window.location;
 
-  const isTimeUp: boolean = auth.expiresIn < BUFFERTIME;
-
   const login: PathMatch<string> | null = matchPath<string, string>(
     LOGIN,
     pathname
@@ -81,9 +79,11 @@ const App: FC = () => {
     <Suspense fallback={<LoadingSpinner />}>
       {profile?.pattern.end ? (
         <AccountLayout
+          BUFFER={BUFFERTIME}
+          DATE={DATE}
           Location={Location}
           Timer={Timer}
-          isTimeUp={isTimeUp}
+          auth={auth}
           mobile={mobile}
           axios={axios}
           URL={FRONTEND_DOMAIN}
@@ -93,7 +93,7 @@ const App: FC = () => {
               <Route
                 path={PROFILE}
                 element={
-                  !auth.isEnabled && !auth.isLocked ? (
+                  !auth.isEnabled || !auth.isLocked ? (
                     <Profile
                       Location={Location}
                       customer={customer}
@@ -112,9 +112,10 @@ const App: FC = () => {
         </AccountLayout>
       ) : (
         <Layout
+          DATE={DATE}
+          BUFFER={BUFFERTIME}
           Timer={Timer}
           Location={Location}
-          isTimeUp={isTimeUp}
           URL={FRONTEND_DOMAIN}
           axios={axios}
           mobile={mobile}
