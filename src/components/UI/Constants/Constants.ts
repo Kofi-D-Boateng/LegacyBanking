@@ -2,7 +2,7 @@
 const FRONTEND_DOMAIN: string =
   process.env.LB_DOMAIN_NAME || "http://localhost:8081/api/v1";
 
-const BUFFERTIME: number = parseInt(process.env.BUFFERTIME!) || 60000;
+const BUFFERTIME: number = parseInt(process.env.BUFFERTIME!);
 // PROFILE STRING COMPARISON
 const DEBITTRASFER: string = "Debit transfer";
 const TRANSFER: string = "transfer";
