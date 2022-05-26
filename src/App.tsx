@@ -37,7 +37,6 @@ import {
 import axios from "axios";
 import LoadingSpinner from "./components/UI/Modals/LoadingSpinner/LoadingSpinner";
 import Timer from "./components/UI/Modals/Timer/Timer";
-import { Auth } from "./Interfaces/Auth";
 const Startups = lazy(() => import("./pages/Startups"));
 const Insight = lazy(() => import("./pages/Insight"));
 const About = lazy(() => import("./pages/About"));
@@ -54,7 +53,6 @@ const App: FC = () => {
   const customer = useSelector((state: RootState) => state.cust);
   const theme = useTheme<Theme>();
   const mobile: boolean = useMediaQuery<unknown>(theme.breakpoints.down("md"));
-  const auth: Auth = useSelector((state: RootState) => state.auth);
   const { pathname } = useLocation();
   const Location: Location = window.location;
   console.log(customer.isEnabled);
@@ -83,13 +81,13 @@ const App: FC = () => {
           DATE={DATE}
           Location={Location}
           Timer={Timer}
-          auth={auth}
+          customer={customer}
           mobile={mobile}
           axios={axios}
           URL={FRONTEND_DOMAIN}
         >
           <Routes>
-            {auth.authenticated && (
+            {customer.authenticated && (
               <Route
                 path={PROFILE + "/*"}
                 element={
@@ -98,7 +96,7 @@ const App: FC = () => {
                       Location={Location}
                       customer={customer}
                       URL={FRONTEND_DOMAIN}
-                      token={auth.token}
+                      token={customer.token}
                       mobile={mobile}
                     />
                   ) : (
@@ -119,7 +117,7 @@ const App: FC = () => {
           URL={FRONTEND_DOMAIN}
           axios={axios}
           mobile={mobile}
-          auth={auth}
+          customer={customer}
           login={login}
           signup={signup}
           error={error}
@@ -162,7 +160,7 @@ const App: FC = () => {
               path={DISABLED}
               element={
                 <WaitingPage
-                  auth={auth}
+                  customer={customer}
                   isMobile={mobile}
                   axios={axios}
                   URL={FRONTEND_DOMAIN}

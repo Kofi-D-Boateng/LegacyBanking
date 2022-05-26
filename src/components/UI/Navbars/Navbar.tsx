@@ -12,21 +12,22 @@ import {
 } from "@mui/material/";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { authActions } from "../../../store/authentication/auth-slice";
 import classes from "../../../styles/NavbarStyles.module.css";
 import MainMobile from "./Mobile/MainMobile";
 import MainWeb from "./Web/MainWeb";
-import { Auth } from "../../../Interfaces/Auth";
+
 import { AxiosStatic } from "axios";
+import { customerActions } from "../../../store/customer/customer-slice";
+import { Customer } from "../../../Interfaces/Customer";
 
 const Navbar: React.FC<{
   URL: string;
   axios: AxiosStatic;
   isMobile: boolean;
-  auth: Auth;
+  customer: Customer;
   links: { key: number; title: string; link: string }[];
   authLinks: { key: number; title: string; link: string }[];
-}> = ({ auth, isMobile, links, authLinks, axios, URL }) => {
+}> = ({ customer, isMobile, links, authLinks, axios, URL }) => {
   const [anchorEl, setAnchorEl] = useState<any>(null);
   const dispatch = useDispatch<Dispatch<any>>();
 
@@ -41,14 +42,14 @@ const Navbar: React.FC<{
       if (innerText === "Log out") {
         await axios
           .get(`${URL}/logout`, {
-            headers: { authorization: auth.token as string },
+            headers: { authorization: customer.token as string },
           })
-          .catch(() => dispatch(authActions.logout()));
-        dispatch(authActions.logout());
+          .catch(() => dispatch(customerActions.logout()));
+        dispatch(customerActions.logout());
       }
       setAnchorEl(null);
     },
-    [dispatch, axios, auth.token, URL]
+    [dispatch, axios, customer.token, URL]
   );
 
   return (
@@ -67,7 +68,7 @@ const Navbar: React.FC<{
           </Typography>
           {isMobile ? (
             <MainMobile
-              auth={auth.authenticated}
+              auth={customer.authenticated}
               classes={classes}
               handleClose={handleClose}
               handleMenu={handleMenu}
@@ -82,7 +83,7 @@ const Navbar: React.FC<{
             />
           ) : (
             <MainWeb
-              auth={auth.authenticated}
+              auth={customer.authenticated}
               classes={classes}
               handleClose={handleClose}
               handleMenu={handleMenu}

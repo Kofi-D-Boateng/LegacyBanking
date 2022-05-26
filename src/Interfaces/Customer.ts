@@ -24,4 +24,7 @@ export interface Customer {
     type: string;
     phoneNumber: string | undefined;
   };
+  token: string | null;
+  authenticated: boolean;
+  expiresIn: number;
 }

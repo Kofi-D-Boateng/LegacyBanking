@@ -3,7 +3,7 @@ import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { authActions } from "../store/authentication/auth-slice";
+import { customerActions } from "../store/customer/customer-slice";
 import classes from "../styles/LoginStyles.module.css";
 import { credentials } from "../Interfaces/Credentials";
 import LoginMobile from "../components/Login/LoginMobile";
@@ -37,12 +37,12 @@ const Login: FC<{
           console.log(response.status);
           if (response.status === 200) {
             const { token, isLocked, isEnabled, expiresIn } = response.data;
-            console.log("isEnabled: " + isEnabled);
-            console.log("isLocked: " + isLocked);
             dispatch(
-              authActions.getCreds({
+              customerActions.getCreds({
                 token: token,
                 expiresIn: +expiresIn,
+                isEnabled: isEnabled,
+                isLocked: isLocked,
               })
             );
             navigate("/profile", { replace: true });

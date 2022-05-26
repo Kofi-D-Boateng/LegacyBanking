@@ -20,9 +20,8 @@ import MoneyTransfer from "../components/UI/Modals/MoneyTransfer/MoneyTransfer";
 import { modalActions } from "../store/modals/modal-slice";
 import { MockStatements } from "../assets/data/MockData";
 import { SelectChangeEvent } from "@mui/material";
-import { customerActions } from "../store/customer/customer";
+import { customerActions } from "../store/customer/customer-slice";
 import { RootState } from "../store/store";
-import { authActions } from "../store/authentication/auth-slice";
 import classes from "../styles/ProfileStyles.module.css";
 import MoneyTransferStyles from "../styles/Modals.module.css";
 import Statement from "../components/UI/Modals/Statement/Statement";
@@ -140,7 +139,7 @@ const Profile: FC<{
           dispatch(notisActions.getNotis({ notis: notis }));
         })
         .catch(() => {
-          dispatch(authActions.logout());
+          dispatch(customerActions.logout());
         });
     };
     fetchAccount(token);
