@@ -10,8 +10,6 @@ function initialState(): Auth {
   return {
     token: token,
     authenticated: token ? true : false,
-    isEnabled: false,
-    isLocked: true,
     expiresIn: RemainingTime,
   };
 }
@@ -23,16 +21,12 @@ const authSlice = createSlice({
       state,
       action: PayloadAction<{
         token: string;
-        isLocked: boolean;
-        isEnabled: boolean;
         expiresIn: number;
       }>
     ) {
-      const { token, isEnabled, isLocked, expiresIn } = action.payload;
+      const { token, expiresIn } = action.payload;
       state.token = token;
       state.authenticated = true;
-      state.isEnabled = isEnabled;
-      state.isLocked = isLocked;
       state.expiresIn = expiresIn + DATE.getTime();
       sessionStorage.setItem("lb-token", state.token);
       sessionStorage.setItem("exp", state.expiresIn.toString());

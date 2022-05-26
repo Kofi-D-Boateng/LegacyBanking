@@ -1,17 +1,17 @@
 import React from "react";
-import { Button, ClassNameMap, Grid, TextField } from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
 
 const LoginForm: React.FC<{
-  classes: ClassNameMap<string>;
+  isMobile: boolean;
   submit: (event: React.FormEvent) => void;
   password: React.MutableRefObject<HTMLInputElement | undefined>;
   email: React.MutableRefObject<HTMLInputElement | undefined>;
-}> = ({ submit, email, password }) => {
+}> = ({ submit, email, password, isMobile }) => {
   return (
     <form onSubmit={submit}>
       <Grid container>
         <TextField
-          sx={{ width: "70%", margin: "20px 30px" }}
+          sx={{ width: !isMobile ? "70%" : "100%", margin: "20px 30px" }}
           variant="outlined"
           size="small"
           type="email"
@@ -22,7 +22,7 @@ const LoginForm: React.FC<{
       </Grid>
       <Grid container>
         <TextField
-          sx={{ width: "70%", margin: "20px 30px" }}
+          sx={{ width: !isMobile ? "70%" : "100%", margin: "20px 30px" }}
           variant="outlined"
           size="small"
           type="password"
@@ -34,7 +34,7 @@ const LoginForm: React.FC<{
       <Grid container>
         <Button
           sx={{
-            width: "30%",
+            width: !isMobile ? "30%" : "100%",
             margin: "20px 30px",
             borderColor: "green",
             color: "black",

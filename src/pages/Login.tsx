@@ -1,19 +1,22 @@
 import { FC, useState, useRef, useEffect, Fragment } from "react";
-import { Grid, Typography } from "@mui/material";
-import LoginForm from "../components/Forms/LoginForm/LoginForm";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { authActions } from "../store/authentication/auth-slice";
 import classes from "../styles/LoginStyles.module.css";
 import { credentials } from "../Interfaces/Credentials";
+import LoginMobile from "../components/Login/LoginMobile";
+import LoginWeb from "../components/Login/LoginWeb";
+import LoginForm from "../components/Forms/LoginForm/LoginForm";
 
-const Login: FC<{ isMobile: boolean; URL: string | undefined }> = ({
-  isMobile,
-  URL,
-}) => {
+const Login: FC<{
+  isMobile: boolean;
+  URL: string | undefined;
+}> = ({ isMobile, URL }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
   const [invalid, setInvalid] = useState<boolean>(false);
   const [user, setUser] = useState<credentials>({
     email: "",
@@ -27,18 +30,18 @@ const Login: FC<{ isMobile: boolean; URL: string | undefined }> = ({
       return;
     }
     const fetchUserLogin = async (login: {}) => {
+      setLoading(true);
       await axios
         .post(`${URL}/authentication/login`, login)
         .then((response) => {
           console.log(response.status);
           if (response.status === 200) {
             const { token, isLocked, isEnabled, expiresIn } = response.data;
-            console.log(expiresIn);
+            console.log("isEnabled: " + isEnabled);
+            console.log("isLocked: " + isLocked);
             dispatch(
               authActions.getCreds({
                 token: token,
-                isEnabled: isEnabled,
-                isLocked: isLocked,
                 expiresIn: +expiresIn,
               })
             );
@@ -46,7 +49,7 @@ const Login: FC<{ isMobile: boolean; URL: string | undefined }> = ({
           }
         })
         .catch(() => {
-          console.log("HIT");
+          setLoading(false);
           setInvalid(true);
         });
     };
@@ -64,104 +67,37 @@ const Login: FC<{ isMobile: boolean; URL: string | undefined }> = ({
   return (
     <Fragment>
       {isMobile ? (
-        <Grid className={classes.loginContainer} container>
-          <Grid sx={{ margin: "auto" }} xs={6} md={6} item>
-            <Typography
-              sx={{
-                color: "purple",
-                margin: "20px 30px",
-                padding: "20px 0",
-                textAlign: "justify",
-              }}
-              variant="h4"
-            >
-              Please Login
-            </Typography>
-            {invalid && (
-              <Grid className={classes.invalid}>
-                <Typography variant="h6">Invalid email or password</Typography>
-              </Grid>
-            )}
-            <LoginForm
-              classes={classes}
-              submit={submitHandler}
-              password={passwordRef}
-              email={emailRef}
-            />
-            <Grid sx={{ margin: "10px 30px" }} container>
-              <Grid xs={12} md={12} item>
-                <NavLink to={"/forgot-password"} placeholder="test">
-                  <Typography variant="body1">Forgot password</Typography>
-                </NavLink>
-              </Grid>
-            </Grid>
-            <NavLink
-              style={{
-                textDecoration: "none",
-                margin: "0 30px",
-                width: "50%",
-              }}
-              to={"/signup"}
-            >
-              <Typography
-                sx={{ margin: "0 30px", fontSize: "1.2rem", color: "green" }}
-                variant="body1"
-              >
-                Open an account
-              </Typography>
-            </NavLink>
-          </Grid>
-        </Grid>
+        <LoginMobile
+          Box={Box}
+          Loader={CircularProgress}
+          loading={loading}
+          isMobile={isMobile}
+          invalid={invalid}
+          Grid={Grid}
+          classes={classes}
+          Typography={Typography}
+          NavLink={NavLink}
+          submitHandler={submitHandler}
+          PASSWORD={passwordRef}
+          EMAIL={emailRef}
+          LoginForm={LoginForm}
+        />
       ) : (
-        <Grid className={classes.loginContainer} container>
-          <Grid sx={{ margin: "auto" }} xs={6} md={6} item>
-            <Typography
-              sx={{
-                color: "purple",
-                margin: "20px 30px",
-                padding: "20px 0",
-                textAlign: "justify",
-              }}
-              variant="h4"
-            >
-              Please Login
-            </Typography>
-            {invalid && (
-              <Grid className={classes.invalid}>
-                <Typography variant="h6">Invalid email or password</Typography>
-              </Grid>
-            )}
-            <LoginForm
-              classes={classes}
-              submit={submitHandler}
-              password={passwordRef}
-              email={emailRef}
-            />
-            <Grid sx={{ margin: "10px 30px" }} container>
-              <Grid xs={12} md={12} item>
-                <NavLink to={"/forgot-password"} placeholder="test">
-                  <Typography variant="body1">Forgot password</Typography>
-                </NavLink>
-              </Grid>
-            </Grid>
-            <NavLink
-              style={{
-                textDecoration: "none",
-                margin: "0 30px",
-                width: "50%",
-              }}
-              to={"/signup"}
-            >
-              <Typography
-                sx={{ margin: "0 30px", fontSize: "1.2rem", color: "green" }}
-                variant="body1"
-              >
-                Open an account
-              </Typography>
-            </NavLink>
-          </Grid>
-          <Grid className={classes.imgContainer} xs={6} md={6} item />
-        </Grid>
+        <LoginWeb
+          Box={Box}
+          Loader={CircularProgress}
+          loading={loading}
+          isMobile={isMobile}
+          invalid={invalid}
+          Grid={Grid}
+          classes={classes}
+          Typography={Typography}
+          NavLink={NavLink}
+          submitHandler={submitHandler}
+          PASSWORD={passwordRef}
+          EMAIL={emailRef}
+          LoginForm={LoginForm}
+        />
       )}
     </Fragment>
   );

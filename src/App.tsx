@@ -57,7 +57,7 @@ const App: FC = () => {
   const auth: Auth = useSelector((state: RootState) => state.auth);
   const { pathname } = useLocation();
   const Location: Location = window.location;
-
+  console.log(customer.isEnabled);
   const login: PathMatch<string> | null = matchPath<string, string>(
     LOGIN,
     pathname
@@ -91,9 +91,9 @@ const App: FC = () => {
           <Routes>
             {auth.authenticated && (
               <Route
-                path={PROFILE}
+                path={PROFILE + "/*"}
                 element={
-                  !auth.isEnabled || !auth.isLocked ? (
+                  customer.isEnabled ? (
                     <Profile
                       Location={Location}
                       customer={customer}
