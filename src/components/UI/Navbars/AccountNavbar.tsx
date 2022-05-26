@@ -21,12 +21,12 @@ import {
 } from "@mui/material/";
 import MenuIcon from "@mui/icons-material/Menu";
 import Notifications from "@mui/icons-material/Notifications";
-import { authActions } from "../../../store/authentication/auth-slice";
 import Notis from "../Notifications/Notis";
 import { AxiosStatic } from "axios";
 import { notisActions } from "../../../store/notifications/notifications";
 import AccountMobile from "./Mobile/AccountMobile";
 import AccountWeb from "./Web/AccountWeb";
+import { customerActions } from "../../../store/customer/customer-slice";
 
 const AccountNavbar: FC<{
   mobile: boolean;
@@ -77,9 +77,9 @@ const AccountNavbar: FC<{
             headers: { authorization: token as string },
           })
           .catch(() => {
-            dispatch(authActions.logout());
+            dispatch(customerActions.logout());
           });
-        dispatch(authActions.logout());
+        dispatch(customerActions.logout());
       } else {
         options.forEach((o) => {
           if (o.title === innerText) {
@@ -113,7 +113,7 @@ const AccountNavbar: FC<{
         })
         .catch((error) => {
           console.log(error);
-          dispatch(authActions.logout());
+          dispatch(customerActions.logout());
         });
     };
     fetchMarkMessage(readMsg);

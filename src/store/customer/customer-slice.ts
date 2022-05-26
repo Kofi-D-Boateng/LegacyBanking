@@ -1,8 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Customer } from "../../Interfaces/Customer";
+const DATE: Date = new Date();
 
 function initialState(): Customer {
+  const token: string | null = sessionStorage.getItem("lb-token");
+  const exp: string | null = sessionStorage.getItem("exp");
+  const status: string | null = sessionStorage.getItem("status");
+  const RemainingTime: number = +exp! || 0;
   return {
+    token: token,
+    authenticated: token ? true : false,
+    expiresIn: RemainingTime,
     fName: "",
     lName: "",
     email: "",
@@ -12,8 +20,8 @@ function initialState(): Customer {
     area: "",
     zipCode: "",
     funds: 0,
-    isLocked: false,
-    isEnabled: true,
+    isLocked: true,
+    isEnabled: status as unknown as boolean,
     transactions: [
       { id: 0, amount: 0, dateOfTransaction: "", location: "", type: "" },
     ],
@@ -31,6 +39,25 @@ const customerSlice = createSlice({
   name: "customer",
   initialState: initialState(),
   reducers: {
+    getCreds(
+      state,
+      action: PayloadAction<{
+        token: string;
+        expiresIn: number;
+        isLocked: boolean;
+        isEnabled: boolean;
+      }>
+    ) {
+      const { token, expiresIn, isLocked, isEnabled } = action.payload;
+      state.token = token;
+      state.authenticated = true;
+      state.isEnabled = isEnabled ? true : state.isEnabled;
+      state.isLocked = !isLocked ? isLocked : state.isLocked;
+      state.expiresIn = expiresIn + DATE.getTime();
+      sessionStorage.setItem("lb-token", state.token);
+      sessionStorage.setItem("exp", state.expiresIn.toString());
+      sessionStorage.setItem("status", state.isEnabled as unknown as string);
+    },
     createCustomer(
       state,
       action: PayloadAction<{
@@ -101,6 +128,21 @@ const customerSlice = createSlice({
       state.accountTransfer.email = email;
       state.accountTransfer.type = type;
       state.accountTransfer.phoneNumber = phoneNumber;
+    },
+    logout(state) {
+      sessionStorage.removeItem("lb-token");
+      sessionStorage.removeItem("exp");
+      state.authenticated = false;
+    },
+    refreshToken(
+      state,
+      action: PayloadAction<{ token: string; expiresIn: number }>
+    ) {
+      const { token, expiresIn } = action.payload;
+      state.token = token;
+      state.expiresIn = expiresIn + DATE.getTime();
+      sessionStorage.setItem("lb-token", state.token);
+      sessionStorage.setItem("exp", state.expiresIn.toString());
     },
   },
 });

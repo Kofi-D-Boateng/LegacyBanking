@@ -1,14 +1,14 @@
 import { AxiosStatic } from "axios";
 import { FC, ReactNode } from "react";
 import { useSelector } from "react-redux";
-import { Auth } from "../../../Interfaces/Auth";
+import { Customer } from "../../../Interfaces/Customer";
 import { RootState } from "../../../store/store";
 import { PROFILE, REDIRECT } from "../Constants/Constants";
 import AccountFooter from "../Footers/AccountFooter";
 import { AccountNavbar } from "../Navbars/AccountNavbar";
 
 const AccountLayout: FC<{
-  auth: Auth;
+  customer: Customer;
   DATE: Date;
   Location: Location;
   mobile: boolean;
@@ -18,7 +18,7 @@ const AccountLayout: FC<{
   BUFFER: number;
   Timer: FC<{
     isMobile: boolean;
-    auth: Auth;
+    customer: Customer;
     location: Location;
   }>;
 }> = ({
@@ -30,9 +30,9 @@ const AccountLayout: FC<{
   Location,
   DATE,
   BUFFER,
-  auth,
+  customer,
 }) => {
-  const TIMER: number = auth.expiresIn - DATE.getTime();
+  const TIMER: number = customer.expiresIn - DATE.getTime();
   const notis = useSelector((state: RootState) => state.notis);
   const options: { key: number; title: string; link: string }[] = [
     { key: 1, title: "Accounts", link: PROFILE.substring(0, 8) },
@@ -44,13 +44,13 @@ const AccountLayout: FC<{
       <AccountNavbar
         URL={URL}
         axios={axios}
-        token={auth.token}
+        token={customer.token}
         options={options}
         mobile={mobile}
         noti={notis}
       />
-      {TIMER < BUFFER && auth.expiresIn !== 0 ? (
-        <Timer isMobile={mobile} auth={auth} location={Location} />
+      {TIMER < BUFFER && customer.expiresIn !== 0 ? (
+        <Timer isMobile={mobile} customer={customer} location={Location} />
       ) : null}
       <div>{children}</div>
       <AccountFooter />

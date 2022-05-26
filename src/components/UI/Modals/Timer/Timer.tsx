@@ -4,9 +4,7 @@ import Backdrop from "../../Backdrops/Backdrop";
 import { backdropDiv, overlayDiv } from "../../Layouts/RootElement";
 import Modal from "./Modal";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../store/store";
-import { authActions } from "../../../../store/authentication/auth-slice";
+import { useDispatch } from "react-redux";
 import {
   Button,
   Card,
@@ -15,17 +13,17 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { Auth } from "../../../../Interfaces/Auth";
 import classes from "../../../../styles/Modals.module.css";
+import { Customer } from "../../../../Interfaces/Customer";
+import { customerActions } from "../../../../store/customer/customer-slice";
 
-const Timer: FC<{ isMobile: boolean; auth: Auth; location: Location }> = ({
-  isMobile,
-  location,
-}) => {
+const Timer: FC<{
+  isMobile: boolean;
+  customer: Customer;
+  location: Location;
+}> = ({ isMobile, location, customer }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const TOKEN: string | null = useSelector(
-    (state: RootState) => state.auth.token
-  );
+
   const dispatch: Dispatch<any> = useDispatch();
   const getRefreshToken: (e: MouseEvent<HTMLButtonElement>) => void = async ({
     currentTarget,
@@ -36,17 +34,17 @@ const Timer: FC<{ isMobile: boolean; auth: Auth; location: Location }> = ({
       setLoading(true);
       await axios
         .get(`http://localhost:8081/api/v1/authentication/get-refresh-token`, {
-          params: { token: TOKEN },
+          params: { token: customer.token },
         })
         .then((response) => {
           const { token, expiresIn } = response.data;
           dispatch(
-            authActions.refreshToken({ token: token, expiresIn: expiresIn })
+            customerActions.refreshToken({ token: token, expiresIn: expiresIn })
           );
         })
-        .catch(() => dispatch(authActions.logout()));
+        .catch(() => dispatch(customerActions.logout()));
     } else {
-      dispatch(authActions.logout());
+      dispatch(customerActions.logout());
     }
     location.reload();
   };

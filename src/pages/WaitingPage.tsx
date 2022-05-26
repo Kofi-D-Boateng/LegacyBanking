@@ -4,15 +4,15 @@ import { CSSProperties, Dispatch, FC, MouseEvent } from "react";
 import { useDispatch } from "react-redux";
 import { NavigateFunction, NavLink, useNavigate } from "react-router-dom";
 import { CONTACT, REDIRECT } from "../components/UI/Constants/Constants";
-import { Auth } from "../Interfaces/Auth";
-import { authActions } from "../store/authentication/auth-slice";
+import { Customer } from "../Interfaces/Customer";
+import { customerActions } from "../store/customer/customer-slice";
 
 const WaitingPage: FC<{
   isMobile: boolean;
-  auth: Auth;
   axios: AxiosStatic;
   URL: string;
-}> = ({ auth, axios, URL, isMobile }) => {
+  customer: Customer;
+}> = ({ axios, URL, isMobile, customer }) => {
   const dispatch: Dispatch<any> = useDispatch();
   const navigate: NavigateFunction = useNavigate();
   const STYLE: CSSProperties = {
@@ -28,10 +28,10 @@ const WaitingPage: FC<{
   const GenerateLink: (e: MouseEvent<HTMLButtonElement>) => void = async () => {
     await axios
       .post(`${URL}/authentication/new-verification-link`, {
-        token: auth.token,
+        token: customer.token,
       })
       .catch(() => {
-        dispatch(authActions.logout());
+        dispatch(customerActions.logout());
         navigate(REDIRECT, { replace: true });
       });
   };

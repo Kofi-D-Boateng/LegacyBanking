@@ -3,14 +3,14 @@ import Footer from "../Footers/Footer";
 import { Navbar } from "../Navbars/Navbar";
 import { Twitter, Facebook, Instagram, LinkedIn } from "@mui/icons-material";
 import { PathMatch } from "react-router-dom";
-import { Auth } from "../../../Interfaces/Auth";
 import { AxiosStatic } from "axios";
+import { Customer } from "../../../Interfaces/Customer";
 
 const Layout: FC<{
   DATE: Date;
   Timer: FC<{
     isMobile: boolean;
-    auth: Auth;
+    customer: Customer;
     location: Location;
   }>;
   Location: Location;
@@ -22,7 +22,7 @@ const Layout: FC<{
   signup: PathMatch<string> | null;
   error: PathMatch<string> | null;
   children: ReactNode;
-  auth: Auth;
+  customer: Customer;
   YEAR: number;
   ABOUT: string;
   LOCATIONS: string;
@@ -38,7 +38,7 @@ const Layout: FC<{
   LINKEDIN: string;
 }> = ({
   mobile,
-  auth,
+  customer,
   children,
   login,
   signup,
@@ -63,7 +63,7 @@ const Layout: FC<{
   BUFFER,
   DATE,
 }) => {
-  const TIMER: number = auth.expiresIn - DATE.getTime();
+  const TIMER: number = customer.expiresIn - DATE.getTime();
   const Links: { key: number; title: string; link: string }[] = [
     { key: 1, title: "About Us", link: ABOUT },
     { key: 2, title: "Locations", link: LOCATIONS },
@@ -98,13 +98,13 @@ const Layout: FC<{
           URL={URL}
           axios={axios}
           isMobile={mobile}
-          auth={auth}
+          customer={customer}
           links={Links}
           authLinks={authLinks}
         />
       )}
-      {TIMER < BUFFER && auth.expiresIn !== 0 ? (
-        <Timer isMobile={mobile} auth={auth} location={Location} />
+      {TIMER < BUFFER && customer.expiresIn !== 0 ? (
+        <Timer isMobile={mobile} customer={customer} location={Location} />
       ) : null}
       <div style={{ width: "100%" }}>{children}</div>
       {signup?.pattern.end ||
