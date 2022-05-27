@@ -287,16 +287,6 @@ const Profile: FC<{
     },
     {
       key: 2,
-      view: <CreditScore customer={customer} isMobile={mobile} />,
-      link: CREDITSCORE,
-    },
-    {
-      key: 3,
-      view: <PersonalLoans customer={customer} isMobile={mobile} />,
-      link: LOANS,
-    },
-    {
-      key: 4,
       view: (
         <Summary
           isMobile={mobile}
@@ -307,11 +297,6 @@ const Profile: FC<{
         />
       ),
       link: SUMMARY,
-    },
-    {
-      key: 5,
-      view: <Payment customer={customer} isMobile={mobile} />,
-      link: PAYMENT,
     },
   ];
 

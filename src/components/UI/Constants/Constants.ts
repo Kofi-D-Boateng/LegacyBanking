@@ -26,6 +26,7 @@ const LOGIN: string = "/login";
 const INSIGHT: string = "/insight";
 const STARTUPS: string = "/startups";
 const DISABLED: string = "/error/locked-account";
+const VERIFYACCOUNT: string = "/authentication/*";
 const REDIRECT: string = "*";
 
 // MODAL VALUES
@@ -99,4 +100,5 @@ export {
   LINKEDIN,
   TWITTER,
   BUFFERTIME,
+  VERIFYACCOUNT,
 };

@@ -7,6 +7,7 @@ import {
   Route,
   Routes,
   useLocation,
+  useSearchParams,
 } from "react-router-dom";
 import useTheme from "@mui/material/styles/useTheme";
 import { Theme } from "@mui/material/styles";
@@ -33,10 +34,12 @@ import {
   INSTAGRAM,
   LINKEDIN,
   BUFFERTIME,
+  VERIFYACCOUNT,
 } from "./components/UI/Constants/Constants";
 import axios from "axios";
 import LoadingSpinner from "./components/UI/Modals/LoadingSpinner/LoadingSpinner";
 import Timer from "./components/UI/Modals/Timer/Timer";
+import VerifyAccount from "./pages/VerifyAccount";
 const Startups = lazy(() => import("./pages/Startups"));
 const Insight = lazy(() => import("./pages/Insight"));
 const About = lazy(() => import("./pages/About"));
@@ -55,7 +58,7 @@ const App: FC = () => {
   const mobile: boolean = useMediaQuery<unknown>(theme.breakpoints.down("md"));
   const { pathname } = useLocation();
   const Location: Location = window.location;
-  console.log(customer.isEnabled);
+  const [searchParams] = useSearchParams();
   const login: PathMatch<string> | null = matchPath<string, string>(
     LOGIN,
     pathname
@@ -70,6 +73,11 @@ const App: FC = () => {
   );
   const error: PathMatch<string> | null = matchPath<string, string>(
     DISABLED,
+    pathname
+  );
+
+  const verification: PathMatch<string> | null = matchPath<string, string>(
+    VERIFYACCOUNT,
     pathname
   );
 
@@ -110,6 +118,7 @@ const App: FC = () => {
         </AccountLayout>
       ) : (
         <Layout
+          verification={verification}
           DATE={DATE}
           BUFFER={BUFFERTIME}
           Timer={Timer}
@@ -164,6 +173,18 @@ const App: FC = () => {
                   isMobile={mobile}
                   axios={axios}
                   URL={FRONTEND_DOMAIN}
+                />
+              }
+            />
+            <Route
+              path={VERIFYACCOUNT}
+              element={
+                <VerifyAccount
+                  isMobile={mobile}
+                  axios={axios}
+                  searchParams={searchParams}
+                  URL={FRONTEND_DOMAIN}
+                  LoadingSpinner={LoadingSpinner}
                 />
               }
             />
