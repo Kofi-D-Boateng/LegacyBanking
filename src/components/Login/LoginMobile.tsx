@@ -53,12 +53,7 @@ const LoginMobile: FC<{
 }) => {
   return (
     <Grid
-      className={!isMobile ? classes.loginContainer : ""}
-      sx={
-        isMobile
-          ? { width: "100%", height: "100vh", textAlign: "center" }
-          : null
-      }
+      sx={{ width: "100%", height: "100vh", textAlign: "center" }}
       container
     >
       {!loading ? (

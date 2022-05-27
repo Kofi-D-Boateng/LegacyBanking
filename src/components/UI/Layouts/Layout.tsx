@@ -21,6 +21,7 @@ const Layout: FC<{
   login: PathMatch<string> | null;
   signup: PathMatch<string> | null;
   error: PathMatch<string> | null;
+  verification: PathMatch<string> | null;
   children: ReactNode;
   customer: Customer;
   YEAR: number;
@@ -62,6 +63,7 @@ const Layout: FC<{
   Timer,
   BUFFER,
   DATE,
+  verification,
 }) => {
   const TIMER: number = customer.expiresIn - DATE.getTime();
   const Links: { key: number; title: string; link: string }[] = [
@@ -93,7 +95,8 @@ const Layout: FC<{
     <Fragment>
       {signup?.pattern.end ||
       login?.pattern.end ||
-      error?.pattern.end ? null : (
+      error?.pattern.end ||
+      verification?.pattern.end ? null : (
         <Navbar
           URL={URL}
           axios={axios}
@@ -109,7 +112,8 @@ const Layout: FC<{
       <div style={{ width: "100%" }}>{children}</div>
       {signup?.pattern.end ||
       login?.pattern.end ||
-      error?.pattern.end ? null : (
+      error?.pattern.end ||
+      verification?.pattern.end ? null : (
         <Footer
           socials={Socials}
           links={Links}
