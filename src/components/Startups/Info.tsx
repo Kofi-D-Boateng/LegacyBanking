@@ -24,8 +24,10 @@ const Info: FC<{
             return (
               <Grid className={classes.infoBox} key={i.key} container>
                 <Grid sx={TEXTSX} xs={12} md={6} item>
-                  <Typography variant="h5">{i.title}</Typography>
-                  <Typography paragraph={true}>{i.info}</Typography>
+                  <Typography variant="h4">{i.title}</Typography>
+                  <Typography paragraph={true} sx={{ fontSize: "1.3rem" }}>
+                    {i.info}
+                  </Typography>
                 </Grid>
                 <Grid xs={12} md={6} item>
                   <img className={classes.img} src={i.img} alt="img.jpg" />
@@ -39,8 +41,10 @@ const Info: FC<{
                   <img className={classes.img} src={i.img} alt="img.jpg" />
                 </Grid>
                 <Grid sx={TEXTSX} xs={12} md={6} item>
-                  <Typography variant="h5">{i.title}</Typography>
-                  <Typography paragraph={true}>{i.info}</Typography>
+                  <Typography variant="h4">{i.title}</Typography>
+                  <Typography paragraph={true} sx={{ fontSize: "1.3rem" }}>
+                    {i.info}
+                  </Typography>
                 </Grid>
               </Grid>
             );

@@ -18,7 +18,7 @@ import Layout from "./components/UI/Layouts/Layout";
 import Home from "./pages/Home";
 import {
   ABOUT,
-  FRONTEND_DOMAIN,
+  LB_AUTH_DOMAIN,
   CONTACT,
   HOME,
   INSIGHT,
@@ -92,18 +92,18 @@ const App: FC = () => {
           customer={customer}
           mobile={mobile}
           axios={axios}
-          URL={FRONTEND_DOMAIN}
+          URL={LB_AUTH_DOMAIN}
         >
           <Routes>
             {customer.authenticated && (
               <Route
-                path={PROFILE + "/*"}
+                path={PROFILE}
                 element={
                   customer.isEnabled ? (
                     <Profile
                       Location={Location}
                       customer={customer}
-                      URL={FRONTEND_DOMAIN}
+                      URL={LB_AUTH_DOMAIN}
                       token={customer.token}
                       mobile={mobile}
                     />
@@ -123,7 +123,7 @@ const App: FC = () => {
           BUFFER={BUFFERTIME}
           Timer={Timer}
           Location={Location}
-          URL={FRONTEND_DOMAIN}
+          URL={LB_AUTH_DOMAIN}
           axios={axios}
           mobile={mobile}
           customer={customer}
@@ -149,11 +149,13 @@ const App: FC = () => {
             <Route path={ABOUT} element={<About isMobile={mobile} />} />
             <Route
               path={LOCATIONS}
-              element={<Locations URL={FRONTEND_DOMAIN} isMobile={mobile} />}
+              element={<Locations URL={LB_AUTH_DOMAIN} isMobile={mobile} />}
             />
             <Route
               path={CONTACT}
-              element={<Contact isMobile={mobile} axios={axios} />}
+              element={
+                <Contact isMobile={mobile} axios={axios} URL={LB_AUTH_DOMAIN} />
+              }
             />
             <Route path={STARTUPS} element={<Startups isMobile={mobile} />} />
             <Route
@@ -162,9 +164,9 @@ const App: FC = () => {
             />
             <Route
               path={LOGIN}
-              element={<Login URL={FRONTEND_DOMAIN} isMobile={mobile} />}
+              element={<Login URL={LB_AUTH_DOMAIN} isMobile={mobile} />}
             />
-            <Route path={SIGNUP} element={<Signup URL={FRONTEND_DOMAIN} />} />
+            <Route path={SIGNUP} element={<Signup URL={LB_AUTH_DOMAIN} />} />
             <Route
               path={DISABLED}
               element={
@@ -172,7 +174,7 @@ const App: FC = () => {
                   customer={customer}
                   isMobile={mobile}
                   axios={axios}
-                  URL={FRONTEND_DOMAIN}
+                  URL={LB_AUTH_DOMAIN}
                 />
               }
             />
@@ -183,7 +185,7 @@ const App: FC = () => {
                   isMobile={mobile}
                   axios={axios}
                   searchParams={searchParams}
-                  URL={FRONTEND_DOMAIN}
+                  URL={LB_AUTH_DOMAIN}
                   LoadingSpinner={LoadingSpinner}
                 />
               }

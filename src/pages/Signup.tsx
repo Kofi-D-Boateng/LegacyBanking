@@ -21,7 +21,7 @@ const Signup: FC<{ URL: string | undefined }> = ({ URL }) => {
         .post(`${URL}/authentication/registration`, user)
         .then((response) => {
           if (response.data.isSaved === true) {
-            navigate(PROFILE, { replace: true });
+            navigate(PROFILE.substring(0, 8), { replace: true });
           } else {
             setIsValid(false);
           }

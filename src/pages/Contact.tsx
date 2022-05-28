@@ -18,13 +18,13 @@ import {
 import BM from "../assets/photos/business_man.jpg";
 import Banner from "../components/Contact/Banner";
 import ContactInfo from "../components/Contact/ContactInfo";
-import { FRONTEND_DOMAIN } from "../components/UI/Constants/Constants";
 import ContactEmail from "../components/UI/Modals/ContactEmail/ContactEmail";
 import classes from "../styles/ContactStyles.module.css";
 
-const Contact: FC<{ isMobile: boolean; axios: AxiosStatic }> = ({
+const Contact: FC<{ isMobile: boolean; axios: AxiosStatic; URL: string }> = ({
   isMobile,
   axios,
+  URL,
 }) => {
   const [limit, setLimit] = useState<number>(500);
   const [invalid, setInvalid] = useState<boolean>(false);
@@ -42,7 +42,7 @@ const Contact: FC<{ isMobile: boolean; axios: AxiosStatic }> = ({
       text: string | undefined
     ) => void = async (email, text) => {
       await axios
-        .post(`${FRONTEND_DOMAIN}/customer-service/email`, {
+        .post(`${URL}/customer-service/email`, {
           email: email,
           text: text,
         })
@@ -55,7 +55,7 @@ const Contact: FC<{ isMobile: boolean; axios: AxiosStatic }> = ({
       return;
     }
     fetchContact(emailRef.current?.value, textRef.current?.value);
-  }, [ready, axios]);
+  }, [ready, axios, URL]);
 
   const submitHandler: (e: FormEvent<HTMLFormElement>) => void = (e) => {
     e.preventDefault();

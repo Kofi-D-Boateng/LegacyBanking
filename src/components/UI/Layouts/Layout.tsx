@@ -75,7 +75,7 @@ const Layout: FC<{
   ];
 
   const authLinks: { key: number; title: string; link: string }[] = [
-    { key: 1, title: "Profile", link: PROFILE },
+    { key: 1, title: "Profile", link: PROFILE.substring(0, 8) },
     { key: 2, title: "Log out", link: REDIRECT },
     { key: 3, title: "Login", link: LOGIN },
   ];

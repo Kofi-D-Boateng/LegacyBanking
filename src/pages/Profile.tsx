@@ -29,23 +29,17 @@ import Paperless from "../components/UI/Modals/Paperless/Paperless";
 import AccountNumbers from "../components/UI/Modals/AccountNumber/AccountNumbers";
 import {
   ACCOUNTNUMBER,
-  CREDITSCORE,
   DEBITTRASFER,
-  LOANS,
   MAINPROFILE,
   MONEYTRANSFER,
   PAPERLESS,
-  PAYMENT,
   SECURITY,
   STATEMENT,
   SUMMARY,
 } from "../components/UI/Constants/Constants";
 import MainProfile from "../components/Account/MainProfile";
-import CreditScore from "../components/Account/CreditScore/CreditScore";
-import PersonalLoans from "../components/Account/Loans/PersonalLoans";
 import Summary from "../components/Account/AccountDetails/Summary";
 import { DateAmountType } from "../Interfaces/Maps";
-import Payment from "../components/Account/Payments/Payment";
 import AccountSecurity from "../components/UI/Modals/AccountSecurity/AccountSecurity";
 import { backdropDiv, overlayDiv } from "../components/UI/Layouts/RootElement";
 import { notisActions } from "../store/notifications/notifications";

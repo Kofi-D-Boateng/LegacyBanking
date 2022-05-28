@@ -9,6 +9,7 @@ import { credentials } from "../Interfaces/Credentials";
 import LoginMobile from "../components/Login/LoginMobile";
 import LoginWeb from "../components/Login/LoginWeb";
 import LoginForm from "../components/Forms/LoginForm/LoginForm";
+import { PROFILE } from "../components/UI/Constants/Constants";
 
 const Login: FC<{
   isMobile: boolean;
@@ -45,7 +46,7 @@ const Login: FC<{
                 isLocked: isLocked,
               })
             );
-            navigate("/profile", { replace: true });
+            navigate(PROFILE.substring(0, 8), { replace: true });
           }
         })
         .catch(() => {

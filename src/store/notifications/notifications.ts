@@ -35,7 +35,7 @@ const notisSlice = createSlice({
       }>
     ) {
       const { notis } = action.payload;
-      state.notis = notis ? notis : state.notis;
+      state.notis = notis ? notis.reverse() : state.notis;
       state.unread = 0;
       for (const n of notis) {
         if (n.read === false) {

@@ -1,8 +1,9 @@
 // BACKEND URL
-const FRONTEND_DOMAIN: string =
+const LB_AUTH_DOMAIN: string =
   process.env.LB_DOMAIN_NAME || "http://localhost:8081/api/v1";
 
 const BUFFERTIME: number = parseInt(process.env.BUFFERTIME!);
+
 // PROFILE STRING COMPARISON
 const DEBITTRASFER: string = "Debit transfer";
 const TRANSFER: string = "transfer";
@@ -15,7 +16,7 @@ const SUMMARY: string = "account-summary";
 const CREDITSCORE: string = "credit-score";
 const LOANS: string = "personal-loans";
 const PAYMENT: string = "payments";
-const PROFILE: string = "/profile";
+const PROFILE: string = "/profile/*";
 const HOME: string = "/";
 const ABOUT: string = "/about";
 const LOCATIONS: string = "/locations";
@@ -93,7 +94,7 @@ export {
   SECURITYERRORMSG,
   INSIGHT,
   STARTUPS,
-  FRONTEND_DOMAIN,
+  LB_AUTH_DOMAIN,
   DISABLED,
   FACEBOOK,
   INSTAGRAM,
