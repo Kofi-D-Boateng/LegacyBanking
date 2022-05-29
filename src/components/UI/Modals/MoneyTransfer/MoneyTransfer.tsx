@@ -8,7 +8,8 @@ import { AxiosStatic } from "axios";
 
 const MoneyTransfer: FC<{
   Location: Location;
-  URL: string | undefined;
+  DOMAIN: string | undefined;
+  API_VERSION: string | undefined;
   token: string | null;
   view: boolean;
   termsOfChoice: string;
@@ -64,7 +65,8 @@ const MoneyTransfer: FC<{
   CreateTransfer,
   axios,
   setView,
-  URL,
+  API_VERSION,
+  DOMAIN,
   Location,
 }) => {
   useEffect(() => {
@@ -79,9 +81,13 @@ const MoneyTransfer: FC<{
       token: string | null
     ) => {
       await axios
-        .post(`${URL}/authentication/transaction`, accountTransfer, {
-          headers: { authorization: token as string },
-        })
+        .post(
+          `${DOMAIN}/${API_VERSION}/authentication/transaction`,
+          accountTransfer,
+          {
+            headers: { authorization: token as string },
+          }
+        )
         .then((response) => {
           if (response.status >= 200 && response.status <= 299) {
             dispatch(
@@ -107,7 +113,8 @@ const MoneyTransfer: FC<{
     accountTransfer,
     dispatch,
     CreateTransfer,
-    URL,
+    API_VERSION,
+    DOMAIN,
     Location,
     axios,
     setView,

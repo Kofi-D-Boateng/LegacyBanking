@@ -15,7 +15,8 @@ const Layout: FC<{
   }>;
   Location: Location;
   BUFFER: number;
-  URL: string;
+  DOMAIN: string | undefined;
+  API_VERSION: string | undefined;
   axios: AxiosStatic;
   mobile: boolean;
   login: PathMatch<string> | null;
@@ -58,7 +59,8 @@ const Layout: FC<{
   LINKEDIN,
   TWITTER,
   axios,
-  URL,
+  API_VERSION,
+  DOMAIN,
   Location,
   Timer,
   BUFFER,
@@ -98,7 +100,8 @@ const Layout: FC<{
       error?.pattern.end ||
       verification?.pattern.end ? null : (
         <Navbar
-          URL={URL}
+          DOMAIN={DOMAIN}
+          API_VERSION={API_VERSION}
           axios={axios}
           isMobile={mobile}
           customer={customer}

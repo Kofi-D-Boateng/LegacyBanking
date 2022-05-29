@@ -14,7 +14,8 @@ const AccountLayout: FC<{
   mobile: boolean;
   children: ReactNode;
   axios: AxiosStatic;
-  URL: string | undefined;
+  DOMAIN: string | undefined;
+  API_VERSION: string | undefined;
   BUFFER: number;
   Timer: FC<{
     isMobile: boolean;
@@ -25,12 +26,13 @@ const AccountLayout: FC<{
   children,
   mobile,
   axios,
-  URL,
+  DOMAIN,
   Timer,
   Location,
   DATE,
   BUFFER,
   customer,
+  API_VERSION,
 }) => {
   const TIMER: number = customer.expiresIn - DATE.getTime();
   const notis = useSelector((state: RootState) => state.notis);
@@ -42,7 +44,8 @@ const AccountLayout: FC<{
   return (
     <div>
       <AccountNavbar
-        URL={URL}
+        DOMAIN={DOMAIN}
+        API_VERSION={API_VERSION}
         axios={axios}
         token={customer.token}
         options={options}

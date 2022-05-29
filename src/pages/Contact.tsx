@@ -21,11 +21,12 @@ import ContactInfo from "../components/Contact/ContactInfo";
 import ContactEmail from "../components/UI/Modals/ContactEmail/ContactEmail";
 import classes from "../styles/ContactStyles.module.css";
 
-const Contact: FC<{ isMobile: boolean; axios: AxiosStatic; URL: string }> = ({
-  isMobile,
-  axios,
-  URL,
-}) => {
+const Contact: FC<{
+  isMobile: boolean;
+  axios: AxiosStatic;
+  DOMAIN: string | undefined;
+  API_VERSION: string | undefined;
+}> = ({ isMobile, axios, API_VERSION, DOMAIN }) => {
   const [limit, setLimit] = useState<number>(500);
   const [invalid, setInvalid] = useState<boolean>(false);
   const [ready, setReady] = useState<boolean>(false);
@@ -42,7 +43,7 @@ const Contact: FC<{ isMobile: boolean; axios: AxiosStatic; URL: string }> = ({
       text: string | undefined
     ) => void = async (email, text) => {
       await axios
-        .post(`${URL}/customer-service/email`, {
+        .post(`${DOMAIN}/${API_VERSION}/customer-service/email`, {
           email: email,
           text: text,
         })
@@ -55,7 +56,7 @@ const Contact: FC<{ isMobile: boolean; axios: AxiosStatic; URL: string }> = ({
       return;
     }
     fetchContact(emailRef.current?.value, textRef.current?.value);
-  }, [ready, axios, URL]);
+  }, [ready, axios, API_VERSION, DOMAIN]);
 
   const submitHandler: (e: FormEvent<HTMLFormElement>) => void = (e) => {
     e.preventDefault();

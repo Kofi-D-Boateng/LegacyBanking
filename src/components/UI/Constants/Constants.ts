@@ -1,6 +1,6 @@
 // BACKEND URL
-const LB_AUTH_DOMAIN: string =
-  process.env.LB_DOMAIN_NAME || "http://localhost:8081/api/v1";
+const LB_AUTH_DOMAIN: string | undefined = process.env.LB_DOMAIN_NAME;
+const API_VERSION: string | undefined = process.env.API_VERSION;
 
 const BUFFERTIME: number = parseInt(process.env.BUFFERTIME!);
 
@@ -102,4 +102,5 @@ export {
   TWITTER,
   BUFFERTIME,
   VERIFYACCOUNT,
+  API_VERSION,
 };

@@ -10,10 +10,11 @@ import BankSearch from "../components/Locations/BankSearch";
 import Banner from "../components/Locations/Banner";
 import classes from "../styles/LocationsStyles.module.css";
 
-const Locations: FC<{ isMobile: boolean; URL: string | undefined }> = ({
-  isMobile,
-  URL,
-}) => {
+const Locations: FC<{
+  isMobile: boolean;
+  DOMAIN: string | undefined;
+  API_VERSION: string | undefined;
+}> = ({ isMobile, API_VERSION, DOMAIN }) => {
   const LEGACY: {
     name: string;
     country: string;
@@ -34,7 +35,7 @@ const Locations: FC<{ isMobile: boolean; URL: string | undefined }> = ({
 
   useEffect(() => {
     const fetchBankData: () => void = async () => {
-      await axios.get(`${URL}/bank/info`).then((response) => {
+      await axios.get(`${DOMAIN}/${API_VERSION}/bank/info`).then((response) => {
         const { name, country, state, zipcode, totalHoldings, branches } =
           response.data;
         dispatch(
@@ -50,7 +51,7 @@ const Locations: FC<{ isMobile: boolean; URL: string | undefined }> = ({
       });
     };
     fetchBankData();
-  }, [dispatch, URL]);
+  }, [dispatch, API_VERSION, DOMAIN]);
 
   return (
     <>

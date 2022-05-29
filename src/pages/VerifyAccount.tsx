@@ -11,9 +11,17 @@ const VerifyAccount: FC<{
   isMobile: boolean;
   axios: AxiosStatic;
   searchParams: URLSearchParams;
-  URL: string;
+  DOMAIN: string | undefined;
+  API_VERSION: string | undefined;
   LoadingSpinner: FC<{}>;
-}> = ({ searchParams, axios, URL, LoadingSpinner, isMobile }) => {
+}> = ({
+  searchParams,
+  axios,
+  API_VERSION,
+  DOMAIN,
+  LoadingSpinner,
+  isMobile,
+}) => {
   const navigate: NavigateFunction = useNavigate();
   const [loading, setLoading] = useState<boolean>(true);
   const [verified, setVerified] = useState<boolean | null>(null);
@@ -22,7 +30,7 @@ const VerifyAccount: FC<{
       SP
     ) => {
       await axios
-        .get(`${URL}/authentication/confirm-account`, {
+        .get(`${DOMAIN}/${API_VERSION}/authentication/confirm-account`, {
           params: { token: SP.get("token") },
         })
         .then((repsonse) => {

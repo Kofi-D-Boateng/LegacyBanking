@@ -25,6 +25,8 @@ const Banner: React.FC<{
               margin: "10px 0",
               color: "white",
               borderColor: "white",
+              transitionDuration: "500ms",
+              transitionProperty: "background, color",
               "&:hover": {
                 backgroundColor: "white",
                 color: "black",

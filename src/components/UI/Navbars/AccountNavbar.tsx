@@ -44,8 +44,9 @@ const AccountNavbar: FC<{
   };
   token: string | null;
   axios: AxiosStatic;
-  URL: string | undefined;
-}> = ({ mobile, options, noti, token, axios, URL }) => {
+  DOMAIN: string | undefined;
+  API_VERSION: string | undefined;
+}> = ({ mobile, options, noti, token, axios, API_VERSION, DOMAIN }) => {
   const { notis, unread } = noti;
   const nav: NavigateFunction = useNavigate();
   const dispatch = useDispatch<Dispatch<any>>();
@@ -73,7 +74,7 @@ const AccountNavbar: FC<{
       const { innerText } = event.currentTarget;
       if (innerText === "Log out") {
         await axios
-          .get(`${URL}/logout`, {
+          .get(`${DOMAIN}/${API_VERSION}/logout`, {
             headers: { authorization: token as string },
           })
           .catch(() => {
@@ -90,7 +91,7 @@ const AccountNavbar: FC<{
       setShowLinks(null);
       setShowNotis(null);
     },
-    [dispatch, axios, URL, token, nav, options]
+    [dispatch, axios, DOMAIN, API_VERSION, token, nav, options]
   );
 
   useEffect(() => {
@@ -103,7 +104,7 @@ const AccountNavbar: FC<{
     }) => void = async ({ _id, token }) => {
       await axios
         .post(
-          `${URL}/authentication/notifications`,
+          `${DOMAIN}/${API_VERSION}/authentication/notifications`,
           { msgID: _id },
           { headers: { authorization: token as string } }
         )
@@ -117,7 +118,7 @@ const AccountNavbar: FC<{
         });
     };
     fetchMarkMessage(readMsg);
-  }, [readMsg, URL, axios, dispatch]);
+  }, [readMsg, DOMAIN, API_VERSION, axios, dispatch]);
 
   const markRead: (e: MouseEvent<HTMLButtonElement>) => void = ({
     currentTarget,

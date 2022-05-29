@@ -5,10 +5,8 @@ WORKDIR /local/legacy-bank
 COPY package*.json ./
 COPY tsconfig.json ./
 
-RUN npm install
+RUN npm install && npm install -g serve
 
-COPY . .
+COPY build/ .
 
-# RUN npm build
-
-CMD ["npm", "start"]
+CMD ["serve","-s", "build"]
