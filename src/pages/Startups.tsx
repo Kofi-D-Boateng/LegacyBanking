@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Banner from "../components/Startups/Banner";
 import { Grid, Typography } from "@mui/material";
-import classes from "../styles/StartupStyles.module.css";
+import classes from "../styles/Startup/StartupStyles.module.css";
 import Info from "../components/Startups/Info";
 import HANDSHAKE from "../assets/photos/handshake.jpg";
 import BS from "../assets/photos/business_shop.jpg";

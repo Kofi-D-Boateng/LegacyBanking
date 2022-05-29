@@ -36,7 +36,7 @@
 
 .imgContainer {
   background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)),
-    url("../assets/photos/japan.jpg");
+    url("../../assets/photos/japan.jpg");
   background-repeat: no-repeat;
   background-size: cover;
 }

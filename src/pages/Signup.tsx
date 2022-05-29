@@ -4,7 +4,7 @@ import { CardContent, Grid, Typography } from "@mui/material";
 import SignupForm from "../components/Forms/SignupForm/SignupForm";
 import Kard from "../components/UI/Card";
 import { useNavigate } from "react-router-dom";
-import classes from "../styles/SignupStyles.module.css";
+import classes from "../styles/Signup/SignupStyles.module.css";
 import { PROFILE } from "../components/UI/Constants/Constants";
 
 const Signup: FC<{

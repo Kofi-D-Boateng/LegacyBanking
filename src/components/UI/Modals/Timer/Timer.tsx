@@ -13,7 +13,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import classes from "../../../../styles/Modals.module.css";
+import classes from "../../../../styles/Modals/Modals.module.css";
 import { Customer } from "../../../../Interfaces/Customer";
 import { customerActions } from "../../../../store/customer/customer-slice";
 

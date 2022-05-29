@@ -4,7 +4,7 @@ import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { customerActions } from "../store/customer/customer-slice";
-import classes from "../styles/LoginStyles.module.css";
+import classes from "../styles/Login/LoginStyles.module.css";
 import { credentials } from "../Interfaces/Credentials";
 import LoginMobile from "../components/Login/LoginMobile";
 import LoginWeb from "../components/Login/LoginWeb";

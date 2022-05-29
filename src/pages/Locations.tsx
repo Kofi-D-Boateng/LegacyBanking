@@ -8,7 +8,7 @@ import Seoul from "../assets/photos/Seoul.jpg";
 import BankInfo from "../components/Locations/BankInfo";
 import BankSearch from "../components/Locations/BankSearch";
 import Banner from "../components/Locations/Banner";
-import classes from "../styles/LocationsStyles.module.css";
+import classes from "../styles/Location/LocationsStyles.module.css";
 
 const Locations: FC<{
   isMobile: boolean;

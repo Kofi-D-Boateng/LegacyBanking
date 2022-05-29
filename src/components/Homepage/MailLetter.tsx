@@ -1,5 +1,6 @@
 import { Grid, Typography } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import { AxiosStatic } from "axios";
+import React, { useRef, useState } from "react";
 import Form from "../Forms/MailLetterForm/MailLetterForm";
 
 const MailLetter: React.FC<{
@@ -7,19 +8,24 @@ const MailLetter: React.FC<{
     readonly [key: string]: string;
   };
   isMobile: boolean;
-}> = ({ classes, isMobile }) => {
+  axios: AxiosStatic;
+  DOMAIN: string | undefined;
+  API_VERSION: string | undefined;
+}> = ({ classes, isMobile, API_VERSION, DOMAIN, axios }) => {
   const [show, setShow] = useState<boolean>(false);
   const [ready, setReady] = useState<boolean>(false);
   const emailRef = useRef<HTMLInputElement>();
 
-  useEffect(() => {
-    // WE WILL SEND THIS EMAIL TO BACK END TO BE ADDED TO THE NEWSLETTER
-  }, [ready]);
-
-  const submitHandler: (e: React.FormEvent) => void = (e) => {
+  const submitHandler: (e: React.FormEvent) => void = async (e) => {
     e.preventDefault();
     if (emailRef.current?.value) {
       setReady(true);
+    }
+
+    if (ready) {
+      await axios.post(`${DOMAIN}/${API_VERSION}`, {
+        email: emailRef.current?.value,
+      });
     }
   };
 

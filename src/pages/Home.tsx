@@ -5,7 +5,7 @@ import Services from "../components/Homepage/Services";
 import startUp from "../assets/photos/startup.jpg";
 import biz from "../assets/photos/business.jpg";
 import { NavigateFunction, NavLink, useNavigate } from "react-router-dom";
-import classes from "../styles/HomeStyles.module.css";
+import classes from "../styles/Home/HomeStyles.module.css";
 import Banner from "../components/Homepage/Banner";
 import Misc from "../components/Homepage/Misc";
 import MailLetter from "../components/Homepage/MailLetter";
@@ -16,8 +16,14 @@ import {
   INSIGHT,
   LOCATIONS,
 } from "../components/UI/Constants/Constants";
+import { AxiosStatic } from "axios";
 
-const Home: FC<{ mobile: boolean }> = ({ mobile }) => {
+const Home: FC<{
+  mobile: boolean;
+  axios: AxiosStatic;
+  DOMAIN: string | undefined;
+  API_VERSION: string | undefined;
+}> = ({ mobile, API_VERSION, DOMAIN, axios }) => {
   const NAVIGATE: NavigateFunction = useNavigate();
   const year = new Date().getFullYear();
   const [view, setView] = useState<number>(0);
@@ -129,7 +135,13 @@ const Home: FC<{ mobile: boolean }> = ({ mobile }) => {
         />
         <Misc isMobile={mobile} info={info} navigate={NAVIGATE} />
       </Grid>
-      <MailLetter classes={classes} isMobile={mobile} />
+      <MailLetter
+        classes={classes}
+        isMobile={mobile}
+        axios={axios}
+        DOMAIN={DOMAIN}
+        API_VERSION={API_VERSION}
+      />
     </Fragment>
   );
 };

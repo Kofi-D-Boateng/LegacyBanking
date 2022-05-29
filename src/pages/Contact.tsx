@@ -19,7 +19,7 @@ import BM from "../assets/photos/business_man.jpg";
 import Banner from "../components/Contact/Banner";
 import ContactInfo from "../components/Contact/ContactInfo";
 import ContactEmail from "../components/UI/Modals/ContactEmail/ContactEmail";
-import classes from "../styles/ContactStyles.module.css";
+import classes from "../styles/Contact/ContactStyles.module.css";
 
 const Contact: FC<{
   isMobile: boolean;
