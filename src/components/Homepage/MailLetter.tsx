@@ -23,7 +23,7 @@ const MailLetter: React.FC<{
     }
 
     if (ready) {
-      await axios.post(`${DOMAIN}/${API_VERSION}`, {
+      await axios.put(`http://localhost:5500/api/v1/mail-list/add-to-list`, {
         email: emailRef.current?.value,
       });
     }

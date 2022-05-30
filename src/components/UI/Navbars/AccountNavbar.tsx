@@ -103,7 +103,7 @@ const AccountNavbar: FC<{
       token: string | null;
     }) => void = async ({ _id, token }) => {
       await axios
-        .post(
+        .put(
           `${DOMAIN}/${API_VERSION}/authentication/notifications`,
           { msgID: _id },
           { headers: { authorization: token as string } }

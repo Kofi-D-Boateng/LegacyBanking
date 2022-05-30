@@ -81,7 +81,7 @@ const MoneyTransfer: FC<{
       token: string | null
     ) => {
       await axios
-        .post(
+        .put(
           `${DOMAIN}/${API_VERSION}/authentication/transaction`,
           accountTransfer,
           {
