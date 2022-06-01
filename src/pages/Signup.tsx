@@ -1,8 +1,7 @@
 import { FC, SetStateAction, useEffect, useState } from "react";
 import axios from "axios";
-import { CardContent, Grid, Typography } from "@mui/material";
+import { Card, CardContent, Grid, Typography } from "@mui/material";
 import SignupForm from "../components/Forms/SignupForm/SignupForm";
-import Kard from "../components/UI/Card";
 import { useNavigate } from "react-router-dom";
 import classes from "../styles/Signup/SignupStyles.module.css";
 import { PROFILE } from "../components/UI/Constants/Constants";
@@ -10,7 +9,8 @@ import { PROFILE } from "../components/UI/Constants/Constants";
 const Signup: FC<{
   DOMAIN: string | undefined;
   API_VERSION: string | undefined;
-}> = ({ API_VERSION, DOMAIN }) => {
+  isMobile: boolean;
+}> = ({ API_VERSION, DOMAIN, isMobile }) => {
   const [user, setUser] = useState<{} | null>(null);
   const [isValid, setIsValid] = useState<boolean>(true);
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ const Signup: FC<{
   };
   return (
     <Grid container>
-      <Kard>
+      <Card className={!isMobile ? classes.card : classes.mobCard}>
         <Typography className={classes.cardTitle} variant="h4">
           Please Signup
         </Typography>
@@ -63,7 +63,7 @@ const Signup: FC<{
             onGetUserInfo={userInfo}
           />
         </CardContent>
-      </Kard>
+      </Card>
     </Grid>
   );
 };

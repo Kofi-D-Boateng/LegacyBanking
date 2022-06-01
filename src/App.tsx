@@ -200,7 +200,11 @@ const App: FC = () => {
             <Route
               path={SIGNUP}
               element={
-                <Signup DOMAIN={LB_AUTH_DOMAIN} API_VERSION={API_VERSION} />
+                <Signup
+                  DOMAIN={LB_AUTH_DOMAIN}
+                  API_VERSION={API_VERSION}
+                  isMobile={mobile}
+                />
               }
             />
             <Route

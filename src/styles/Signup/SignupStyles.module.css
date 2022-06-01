@@ -1,17 +1,34 @@
+.card {
+  border: 0.5px solid purple;
+  margin: 50px auto;
+  max-width: 70%;
+  text-align: center;
+}
+
+.mobCard {
+  border: 1px solid purple 20px;
+  margin: 50px auto;
+  max-width: 70%;
+  text-align: center;
+}
+
 .cardTitle {
-  background-color: lightgray;
+  background-color: purple;
   padding: 20px 0;
+  color: white;
 }
 
 .inputField {
   margin: 20px auto;
-  max-width: 80%;
+  max-width: 90%;
 }
 
 .btn {
   margin: 8px 0;
   border-color: green;
   color: black;
+  transition: 200ms ease-in;
+  transition-property: all;
 }
 
 .btn:hover {
@@ -21,8 +38,8 @@
 }
 
 .invalid {
-  background-color: red;
-  color: white;
-  padding: 20px 0;
-  transition: 0.5 ease-in;
+  margin: 20px auto;
+  max-width: 90%;
+  color: red;
+  border-color: red;
 }

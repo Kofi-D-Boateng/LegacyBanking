@@ -121,12 +121,14 @@ const SignupForm: React.FC<{
         <Grid xs={12} md={6} item>
           <TextField
             variant="outlined"
-            className={classes.inputField}
             type="email"
             size="small"
             fullWidth
             placeholder="email"
             inputRef={emailRef}
+            InputProps={{
+              className: isValid ? classes.inputField : classes.invalid,
+            }}
           />
         </Grid>
       </Grid>
@@ -164,6 +166,9 @@ const SignupForm: React.FC<{
             fullWidth
             placeholder="zip code"
             inputRef={zipcodeRef}
+            inputProps={{
+              maxLength: 5,
+            }}
           />
         </Grid>
       </Grid>
@@ -177,6 +182,9 @@ const SignupForm: React.FC<{
             fullWidth
             placeholder="social security"
             inputRef={socialSecurityRef}
+            inputProps={{
+              maxLength: 9,
+            }}
           />
         </Grid>
       </Grid>
@@ -190,6 +198,9 @@ const SignupForm: React.FC<{
             fullWidth
             placeholder="phone number"
             inputRef={phoneNumberRef}
+            inputProps={{
+              maxLength: 10,
+            }}
           />
         </Grid>
       </Grid>
@@ -203,6 +214,9 @@ const SignupForm: React.FC<{
             fullWidth
             placeholder="Password"
             onChange={passwordChecker}
+            inputProps={{
+              maxLength: 20,
+            }}
           />
         </Grid>
       </Grid>
@@ -210,17 +224,21 @@ const SignupForm: React.FC<{
         <Grid xs={12} md={12} item>
           <TextField
             variant="outlined"
+            sx={{ color: "red" }}
             className={confirmPassword ? classes.inputField : classes.invalid}
             type="text"
             size="small"
             fullWidth
             placeholder="Confirm Password"
             onChange={confirmPasswordChecker}
+            inputProps={{
+              maxLength: 20,
+            }}
           />
         </Grid>
       </Grid>
       <Grid container>
-        <Grid sx={{ margin: "auto" }} xs={12} md={10} item>
+        <Grid sx={{ margin: "auto" }} xs={12} md={11} item>
           <Button
             className={classes.btn}
             variant="outlined"

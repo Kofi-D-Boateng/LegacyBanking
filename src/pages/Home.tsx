@@ -1,5 +1,12 @@
 import { Grid, Typography } from "@mui/material";
-import { FC, Fragment, useState } from "react";
+import {
+  FC,
+  Fragment,
+  useState,
+  useRef,
+  useEffect,
+  MutableRefObject,
+} from "react";
 import cityscape from "../assets/videos/cityscape.mp4";
 import Services from "../components/Homepage/Services";
 import startUp from "../assets/photos/startup.jpg";
@@ -27,6 +34,22 @@ const Home: FC<{
   const NAVIGATE: NavigateFunction = useNavigate();
   const year = new Date().getFullYear();
   const [view, setView] = useState<number>(0);
+  const [serviceView, setServiceView] = useState<boolean>();
+  const serviceRef: MutableRefObject<any> = useRef();
+
+  useEffect(() => {
+    const oberserver: IntersectionObserver = new IntersectionObserver(
+      (entries: IntersectionObserverEntry[]) => {
+        const entry = entries[0];
+        console.log(entry.isIntersecting);
+        if (entry.target.id === "services" && entry.isIntersecting) {
+          setServiceView(entry.isIntersecting);
+        }
+      }
+    );
+    oberserver.observe(serviceRef.current);
+  }, []);
+
   const info: {
     key: number;
     title: string;
@@ -123,18 +146,22 @@ const Home: FC<{
           </NavLink>
         </Grid>
       </Grid>
-      <Grid className={classes.serviceContainer} container>
-        <Services
-          classes={classes}
-          isMobile={mobile}
-          view={view}
-          cards={cards}
-          setView={viewHandler}
-          FORWARD={FORWARD}
-          BACKWARD={BACKWARD}
-        />
-        <Misc isMobile={mobile} info={info} navigate={NAVIGATE} />
-      </Grid>
+      <div className={classes.serviceContainer} ref={serviceRef} id="services">
+        {serviceView && (
+          <Services
+            classes={classes}
+            isMobile={mobile}
+            view={view}
+            cards={cards}
+            setView={viewHandler}
+            FORWARD={FORWARD}
+            BACKWARD={BACKWARD}
+          />
+        )}
+        <div className={classes.miscContainer}>
+          <Misc isMobile={mobile} info={info} navigate={NAVIGATE} />
+        </div>
+      </div>
       <MailLetter
         classes={classes}
         isMobile={mobile}

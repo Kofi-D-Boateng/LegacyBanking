@@ -95,7 +95,12 @@
 
 .serviceContainer {
   background-color: rgb(235, 236, 237);
-  padding: 30px 0;
+  padding: 100px 0;
+}
+
+.miscContainer {
+  background-color: rgb(235, 236, 237);
+  padding: 100px 0;
 }
 
 .international {
@@ -111,9 +116,9 @@
   transition-duration: 500ms;
   transition-property: box-shadow;
   animation: fadein;
-  -webkit-animation: fadein 10s;
-  -moz-animation: fadein 10s;
-  -o-animation: fadein 10s;
+  -webkit-animation: fadein 6s;
+  -moz-animation: fadein 6s;
+  -o-animation: fadein 6s;
 }
 .mobInternational {
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
@@ -126,9 +131,9 @@
   margin: 10px auto;
   position: relative;
   animation: fadein;
-  -webkit-animation: fadein 7s;
-  -moz-animation: fadein 7s;
-  -o-animation: fadein 7s;
+  -webkit-animation: fadein 6s;
+  -moz-animation: fadein 6s;
+  -o-animation: fadein 6s;
 }
 
 .insight {
@@ -159,9 +164,9 @@
   margin: 10px auto;
   position: relative;
   animation: fadein;
-  -webkit-animation: fadein 7s;
-  -moz-animation: fadein 7s;
-  -o-animation: fadein 7s;
+  -webkit-animation: fadein 6s;
+  -moz-animation: fadein 6s;
+  -o-animation: fadein 6s;
 }
 
 .investments {

@@ -22,7 +22,7 @@ const Services: React.FC<{
   setView: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }> = ({ classes, isMobile, view, cards, setView, BACKWARD, FORWARD }) => {
   return (
-    <Grid className={classes?.serviceContainer} container>
+    <Grid container>
       {!isMobile ? (
         <>
           {cards.map((c) => {
