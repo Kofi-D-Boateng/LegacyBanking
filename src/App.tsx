@@ -9,8 +9,7 @@ import {
   useLocation,
   useSearchParams,
 } from "react-router-dom";
-import useTheme from "@mui/material/styles/useTheme";
-import { Theme } from "@mui/material/styles";
+import { Theme, useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AccountLayout from "./components/UI/Layouts/AccoutLayout";
 import { RootState } from "./store/store";
