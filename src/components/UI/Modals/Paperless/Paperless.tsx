@@ -51,7 +51,7 @@ const Paperless: FC<{
       token: string | null
     ) => void = async (choice, token) => {
       await axios
-        .post(
+        .put(
           `${DOMAIN}/${API_VERSION}/authentication/billing`,
           { choice: choice },
           {

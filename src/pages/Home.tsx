@@ -1,11 +1,18 @@
 import { Grid, Typography } from "@mui/material";
-import { FC, Fragment, useState } from "react";
+import {
+  FC,
+  Fragment,
+  useState,
+  useRef,
+  useEffect,
+  MutableRefObject,
+} from "react";
 import cityscape from "../assets/videos/cityscape.mp4";
 import Services from "../components/Homepage/Services";
 import startUp from "../assets/photos/startup.jpg";
 import biz from "../assets/photos/business.jpg";
 import { NavigateFunction, NavLink, useNavigate } from "react-router-dom";
-import classes from "../styles/HomeStyles.module.css";
+import classes from "../styles/Home/HomeStyles.module.css";
 import Banner from "../components/Homepage/Banner";
 import Misc from "../components/Homepage/Misc";
 import MailLetter from "../components/Homepage/MailLetter";
@@ -16,11 +23,33 @@ import {
   INSIGHT,
   LOCATIONS,
 } from "../components/UI/Constants/Constants";
+import { AxiosStatic } from "axios";
 
-const Home: FC<{ mobile: boolean }> = ({ mobile }) => {
+const Home: FC<{
+  mobile: boolean;
+  axios: AxiosStatic;
+  DOMAIN: string | undefined;
+  API_VERSION: string | undefined;
+}> = ({ mobile, API_VERSION, DOMAIN, axios }) => {
   const NAVIGATE: NavigateFunction = useNavigate();
   const year = new Date().getFullYear();
   const [view, setView] = useState<number>(0);
+  const [serviceView, setServiceView] = useState<boolean>();
+  const serviceRef: MutableRefObject<any> = useRef();
+
+  useEffect(() => {
+    const oberserver: IntersectionObserver = new IntersectionObserver(
+      (entries: IntersectionObserverEntry[]) => {
+        const entry = entries[0];
+        console.log(entry.isIntersecting);
+        if (entry.target.id === "services" && entry.isIntersecting) {
+          setServiceView(entry.isIntersecting);
+        }
+      }
+    );
+    oberserver.observe(serviceRef.current);
+  }, []);
+
   const info: {
     key: number;
     title: string;
@@ -117,19 +146,29 @@ const Home: FC<{ mobile: boolean }> = ({ mobile }) => {
           </NavLink>
         </Grid>
       </Grid>
-      <Grid className={classes.serviceContainer} container>
-        <Services
-          classes={classes}
-          isMobile={mobile}
-          view={view}
-          cards={cards}
-          setView={viewHandler}
-          FORWARD={FORWARD}
-          BACKWARD={BACKWARD}
-        />
-        <Misc isMobile={mobile} info={info} navigate={NAVIGATE} />
-      </Grid>
-      <MailLetter classes={classes} isMobile={mobile} />
+      <div className={classes.serviceContainer} ref={serviceRef} id="services">
+        {serviceView && (
+          <Services
+            classes={classes}
+            isMobile={mobile}
+            view={view}
+            cards={cards}
+            setView={viewHandler}
+            FORWARD={FORWARD}
+            BACKWARD={BACKWARD}
+          />
+        )}
+        <div className={classes.miscContainer}>
+          <Misc isMobile={mobile} info={info} navigate={NAVIGATE} />
+        </div>
+      </div>
+      <MailLetter
+        classes={classes}
+        isMobile={mobile}
+        axios={axios}
+        DOMAIN={DOMAIN}
+        API_VERSION={API_VERSION}
+      />
     </Fragment>
   );
 };

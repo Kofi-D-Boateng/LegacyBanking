@@ -149,7 +149,17 @@ const App: FC = () => {
           LINKEDIN={LINKEDIN}
         >
           <Routes>
-            <Route path={HOME} element={<Home mobile={mobile} />} />
+            <Route
+              path={HOME}
+              element={
+                <Home
+                  mobile={mobile}
+                  axios={axios}
+                  DOMAIN={LB_AUTH_DOMAIN}
+                  API_VERSION={API_VERSION}
+                />
+              }
+            />
             <Route path={ABOUT} element={<About isMobile={mobile} />} />
             <Route
               path={LOCATIONS}
@@ -190,7 +200,11 @@ const App: FC = () => {
             <Route
               path={SIGNUP}
               element={
-                <Signup DOMAIN={LB_AUTH_DOMAIN} API_VERSION={API_VERSION} />
+                <Signup
+                  DOMAIN={LB_AUTH_DOMAIN}
+                  API_VERSION={API_VERSION}
+                  isMobile={mobile}
+                />
               }
             />
             <Route

@@ -6,9 +6,9 @@ import {
   TypographyTypeMap,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import React from "react";
+import { FC } from "react";
 
-const Form: React.FC<{
+const Form: FC<{
   Grid: OverridableComponent<GridTypeMap<{}, "div">>;
   TextField: (props: TextFieldProps) => JSX.Element;
   Button: ExtendButtonBase<ButtonTypeMap<{}, "button">>;

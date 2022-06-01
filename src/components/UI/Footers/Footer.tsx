@@ -1,5 +1,5 @@
 import { Grid, IconButton, Typography } from "@mui/material";
-import classes from "../../../styles/FooterStyles.module.css";
+import classes from "../../../styles/Footer/FooterStyles.module.css";
 import { FC, ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 

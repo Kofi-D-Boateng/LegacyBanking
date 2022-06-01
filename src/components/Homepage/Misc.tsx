@@ -57,6 +57,8 @@ const Misc: React.FC<{
                           width: "30%",
                           color: "purple",
                           borderColor: "purple",
+                          transitionDuration: "500ms",
+                          transitionProperty: "background, color",
                           "&:hover": {
                             backgroundColor: "purple",
                             color: "white",
@@ -111,6 +113,8 @@ const Misc: React.FC<{
                           width: "30%",
                           color: "purple",
                           borderColor: "purple",
+                          transitionDuration: "500ms",
+                          transitionProperty: "background, color",
                           "&:hover": {
                             backgroundColor: "purple",
                             color: "white",
@@ -118,7 +122,7 @@ const Misc: React.FC<{
                           },
                         }}
                         onClick={() => {
-                          navigate(i.link, { replace: true });
+                          navigate(i.link, { replace: false });
                         }}
                         fullWidth
                       >

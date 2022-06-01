@@ -2,7 +2,7 @@ import { Grid, Typography } from "@mui/material";
 import { FC } from "react";
 import Banner from "../components/Insight/Banner";
 import Info from "../components/Insight/Info";
-import classes from "../styles/InsightStyles.module.css";
+import classes from "../styles/Insight/InsightStyles.module.css";
 import SPM from "../assets/photos/supply_chain.jpg";
 import money from "../assets/photos/money.jpg";
 import Fed from "../assets/photos/Fed.jpg";

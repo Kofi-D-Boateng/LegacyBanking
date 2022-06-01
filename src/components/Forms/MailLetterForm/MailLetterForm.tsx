@@ -35,7 +35,6 @@ const Form: React.FC<{
           InputProps={{
             className: classes.textfield,
           }}
-          color="primary"
           variant="filled"
           type="email"
           placeholder="enter email"

@@ -12,7 +12,7 @@ import {
 } from "@mui/material/";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import classes from "../../../styles/NavbarStyles.module.css";
+import classes from "../../../styles/Navbar/NavbarStyles.module.css";
 import MainMobile from "./Mobile/MainMobile";
 import MainWeb from "./Web/MainWeb";
 
