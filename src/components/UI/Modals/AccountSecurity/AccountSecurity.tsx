@@ -27,8 +27,8 @@ import Modal from "./Modal";
 
 const AccountSecurity: FC<{
   Exit: () => void;
-  BACKDROPDIV: HTMLElement;
-  OVERLAYDIV: HTMLElement;
+  BACKDROPDIV: HTMLElement | null;
+  OVERLAYDIV: HTMLElement | null;
   isMobile: boolean;
   classes: {
     readonly [key: string]: string;
@@ -96,7 +96,7 @@ const AccountSecurity: FC<{
 
   return (
     <>
-      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV)}
+      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV as Element)}
       {createPortal(
         <Modal
           setChoice={setChoice}
@@ -126,7 +126,7 @@ const AccountSecurity: FC<{
           classes={classes}
           isMobile={isMobile}
         />,
-        OVERLAYDIV
+        OVERLAYDIV as Element
       )}
     </>
   );

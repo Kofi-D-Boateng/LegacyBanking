@@ -14,6 +14,7 @@ import {
   FormEvent,
   KeyboardEvent,
   useCallback,
+  MutableRefObject,
 } from "react";
 
 const ContactForm: FC<{
@@ -31,8 +32,9 @@ const ContactForm: FC<{
   CardContent: OverridableComponent<CardTypeMap<{}, "div">>;
   Button: ExtendButtonBase<ButtonTypeMap<{}, "button">>;
   Grid: OverridableComponent<GridTypeMap<{}, "div">>;
-  email: React.MutableRefObject<HTMLElement | undefined>;
-  text: React.MutableRefObject<HTMLElement | undefined>;
+  email: MutableRefObject<HTMLElement | undefined>;
+  text: MutableRefObject<HTMLElement | undefined>;
+  topic: MutableRefObject<HTMLElement | undefined>;
   limit: number;
 }> = ({
   Card,
@@ -50,6 +52,7 @@ const ContactForm: FC<{
   invalid,
   limit,
   setLimit,
+  topic,
 }) => {
   const [label, setLabel] = useState<boolean>(false);
 
@@ -120,6 +123,9 @@ const ContactForm: FC<{
             <Grid sx={sx} container>
               <TextField
                 sx={!invalid ? invalidSx : null}
+                inputProps={{
+                  maxLength: 50,
+                }}
                 inputRef={email}
                 variant="outlined"
                 type="email"
@@ -131,7 +137,24 @@ const ContactForm: FC<{
             </Grid>
             <Grid sx={sx} container>
               <TextField
+                inputProps={{
+                  maxLength: 40,
+                }}
+                inputRef={topic}
+                variant="outlined"
+                type="text"
+                fullWidth
+                size="small"
+                placeholder="Enter Topic"
+                onBlur={emailCheck}
+              />
+            </Grid>
+            <Grid sx={sx} container>
+              <TextField
                 inputRef={text}
+                inputProps={{
+                  maxLength: 500,
+                }}
                 variant="outlined"
                 label={label && `${limit}/500`}
                 type="text"

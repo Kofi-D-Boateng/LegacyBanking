@@ -35,6 +35,7 @@ import {
   BUFFERTIME,
   VERIFYACCOUNT,
   API_VERSION,
+  LB_NOTI_DOMAIN,
 } from "./components/UI/Constants/Constants";
 import axios from "axios";
 import LoadingSpinner from "./components/UI/Modals/LoadingSpinner/LoadingSpinner";
@@ -176,7 +177,7 @@ const App: FC = () => {
                 <Contact
                   isMobile={mobile}
                   axios={axios}
-                  DOMAIN={LB_AUTH_DOMAIN}
+                  DOMAIN={LB_NOTI_DOMAIN}
                   API_VERSION={API_VERSION}
                 />
               }

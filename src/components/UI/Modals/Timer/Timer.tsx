@@ -51,7 +51,7 @@ const Timer: FC<{
   const exitHandler: () => void = () => {};
   return (
     <>
-      {createPortal(<Backdrop Exit={exitHandler} />, backdropDiv)}
+      {createPortal(<Backdrop Exit={exitHandler} />, backdropDiv as Element)}
       {createPortal(
         <Modal
           Loader={CircularProgress}
@@ -65,7 +65,7 @@ const Timer: FC<{
           Card={Card}
           CardContent={CardContent}
         />,
-        overlayDiv
+        overlayDiv as Element
       )}
     </>
   );

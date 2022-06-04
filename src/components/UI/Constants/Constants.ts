@@ -1,6 +1,9 @@
 // BACKEND URL
-const LB_AUTH_DOMAIN: string | undefined = process.env.LB_DOMAIN_NAME;
-const API_VERSION: string | undefined = process.env.API_VERSION;
+const LB_AUTH_DOMAIN: string | undefined =
+  process.env.REACT_APP_LB_DOMAIN_NAME || "http://localhost:8081";
+const API_VERSION: string | undefined =
+  process.env.REACT_APP_API_VERSION || "api/v1";
+const LB_NOTI_DOMAIN: string | undefined = process.env.REACT_APP_LB_NOTI_DOMAIN;
 
 const BUFFERTIME: number = parseInt(process.env.BUFFERTIME!);
 
@@ -103,4 +106,5 @@ export {
   BUFFERTIME,
   VERIFYACCOUNT,
   API_VERSION,
+  LB_NOTI_DOMAIN,
 };

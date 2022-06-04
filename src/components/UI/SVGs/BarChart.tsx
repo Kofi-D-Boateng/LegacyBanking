@@ -1,13 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import {
-  select,
-  max,
-  scaleBand,
-  axisBottom,
-  axisLeft,
-  scaleLinear,
-  format,
-} from "d3";
+import * as d3 from "d3";
 import { DateAmountType, MonthsMap } from "../../../Interfaces/Maps";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import {
@@ -105,25 +97,27 @@ const BarChart: React.FC<{
           count++;
         }
       });
-
     // SELECTS THE SVG
-    const svg = select(svgRef.current)
+    const svg = d3
+      .select(svgRef.current)
       .style("background-color", "white")
       .style("overflow", "visible")
       .attr("width", CHART_WIDTH)
       .attr("height", CHART_HEIGHT);
 
     // X-BAND FOR X-AXIS
-    const x = scaleBand()
+    const x = d3
+      .scaleBand()
       .domain(DateAmount.map((d) => d.date))
       .rangeRound([0, CHART_WIDTH])
       .padding(0.8);
 
     // YSCALE FOR AMOUNTS
-    const y = scaleLinear()
+    const y = d3
+      .scaleLinear()
       .domain([
         0,
-        max(
+        d3.max(
           DateAmount.filter((d) => {
             return (
               d.type.includes(DEBITTRASFER) ||
@@ -136,23 +130,20 @@ const BarChart: React.FC<{
       ] as Iterable<Number>)
       .range([CHART_HEIGHT, 0]);
 
-    // const TOOLTIP = svg
-    //   .append("div")
-    //   .style("visibility", "hidden")
-    //   .style("background-color", "red");
-
     svg
       .append("g")
       .style("color", "black")
       .attr("transform", `translate(0,${CHART_HEIGHT})`)
       .style("overflow", "visibile")
-      .call(axisBottom(x).tickSizeOuter(0));
+      .call(d3.axisBottom(x).tickSizeOuter(0));
     svg
       .append("g")
       .style("color", "black")
       .style("transform", `translate(${CHART_HEIGHT},0)`)
       .style("overflow", "visibile")
-      .call(axisLeft(y).ticks(5).tickSizeOuter(0).tickFormat(format("$,.2r")));
+      .call(
+        d3.axisLeft(y).ticks(5).tickSizeOuter(0).tickFormat(d3.format("$,.2r"))
+      );
 
     const RECT = svg.selectAll(".bar").data(DateAmount);
 

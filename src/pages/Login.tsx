@@ -36,7 +36,6 @@ const Login: FC<{
       await axios
         .post(`${DOMAIN}/${API_VERSION}/authentication/login`, login)
         .then((response) => {
-          console.log(response.status);
           if (response.status === 200) {
             const { token, isLocked, isEnabled, expiresIn } = response.data;
             dispatch(

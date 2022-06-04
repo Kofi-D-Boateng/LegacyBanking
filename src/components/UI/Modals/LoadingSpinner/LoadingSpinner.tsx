@@ -1,17 +1,16 @@
 import { Box, CircularProgress } from "@mui/material";
 import { FC } from "react";
-import { createPortal } from "react-dom";
-import Backdrop from "../../Backdrops/Backdrop";
-import { backdropDiv, overlayDiv } from "../../Layouts/RootElement";
-import Modal from "./Modal";
+import classes from "../../../../styles/Overlay/OverlayStyles.module.css";
 
 const LoadingSpinner: FC = () => {
   const exithandler: () => void = () => {};
 
   return (
     <>
-      {createPortal(<Backdrop Exit={exithandler} />, backdropDiv)}
-      {createPortal(<Modal Box={Box} Loader={CircularProgress} />, overlayDiv)}
+      <div onClick={exithandler} className={classes.overlay} />
+      <Box sx={{ position: "absolute", top: "50%", left: "50%", zIndex: "5" }}>
+        <CircularProgress />
+      </Box>
     </>
   );
 };
