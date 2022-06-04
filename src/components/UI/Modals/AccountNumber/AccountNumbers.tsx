@@ -80,8 +80,8 @@ const AccountNumbers: React.FC<{
   classes: {
     readonly [key: string]: string;
   };
-  BACKDROPDIV: HTMLElement;
-  OVERLAYDIV: HTMLElement;
+  BACKDROPDIV: HTMLElement | null;
+  OVERLAYDIV: HTMLElement | null;
 }> = ({
   Exit,
   isMobile,
@@ -93,7 +93,7 @@ const AccountNumbers: React.FC<{
 }) => {
   return (
     <>
-      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV)}
+      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV as Element)}
       {createPortal(
         <Modal
           AN={accountNum}
@@ -102,7 +102,7 @@ const AccountNumbers: React.FC<{
           Exit={Exit}
           classes={classes}
         />,
-        OVERLAYDIV
+        OVERLAYDIV as Element
       )}
     </>
   );

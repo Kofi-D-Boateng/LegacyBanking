@@ -33,6 +33,7 @@ const Contact: FC<{
   const [view, setView] = useState<boolean>(false);
   const emailRef = useRef<HTMLInputElement>();
   const textRef = useRef<HTMLInputElement>();
+  const topicRef = useRef<HTMLInputElement>();
   const Exit: () => void = () => {
     setView(false);
   };
@@ -40,13 +41,18 @@ const Contact: FC<{
   useEffect(() => {
     const fetchContact: (
       email: string | undefined,
-      text: string | undefined
-    ) => void = async (email, text) => {
+      text: string | undefined,
+      topic: string | undefined
+    ) => void = async (email, text, topic) => {
       await axios
-        .post(`${DOMAIN}/${API_VERSION}/customer-service/email`, {
-          email: email,
-          text: text,
-        })
+        .put(
+          `${DOMAIN}/${API_VERSION}/customer-service/email-customer-service`,
+          {
+            email: email,
+            text: text,
+            topic: topic,
+          }
+        )
         .then(() => {
           setView(false);
           setReady(false);
@@ -55,7 +61,11 @@ const Contact: FC<{
     if (!ready) {
       return;
     }
-    fetchContact(emailRef.current?.value, textRef.current?.value);
+    fetchContact(
+      emailRef.current?.value,
+      textRef.current?.value,
+      topicRef.current?.value
+    );
   }, [ready, axios, API_VERSION, DOMAIN]);
 
   const submitHandler: (e: FormEvent<HTMLFormElement>) => void = (e) => {
@@ -174,6 +184,7 @@ const Contact: FC<{
             Grid={Grid}
             email={emailRef}
             text={textRef}
+            topic={topicRef}
             limit={limit}
           />
         </Container>

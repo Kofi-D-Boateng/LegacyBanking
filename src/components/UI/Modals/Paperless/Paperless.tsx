@@ -23,8 +23,8 @@ const Paperless: FC<{
   classes: {
     readonly [key: string]: string;
   };
-  BACKDROPDIV: HTMLElement;
-  OVERLAYDIV: HTMLElement;
+  BACKDROPDIV: HTMLElement | null;
+  OVERLAYDIV: HTMLElement | null;
   DOMAIN: string | undefined;
   API_VERSION: string | undefined;
   token: string | null;
@@ -71,7 +71,7 @@ const Paperless: FC<{
 
   return (
     <>
-      {ReactDOM.createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV)}
+      {ReactDOM.createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV as Element)}
       {ReactDOM.createPortal(
         <Modal
           Card={Card}
@@ -89,7 +89,7 @@ const Paperless: FC<{
           setChoice={setChoice}
           isMobile={isMobile}
         />,
-        OVERLAYDIV
+        OVERLAYDIV as Element
       )}
     </>
   );

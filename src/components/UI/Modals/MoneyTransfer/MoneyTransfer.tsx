@@ -17,8 +17,8 @@ const MoneyTransfer: FC<{
   classes: {
     readonly [key: string]: string;
   };
-  BACKDROPDIV: HTMLElement;
-  OVERLAYDIV: HTMLElement;
+  BACKDROPDIV: HTMLElement | null;
+  OVERLAYDIV: HTMLElement | null;
   accountNum: string;
   DEBITTRANSFER: string;
   dispatch: Dispatch<any>;
@@ -142,7 +142,7 @@ const MoneyTransfer: FC<{
 
   return (
     <>
-      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV)}
+      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV as Element)}
       {createPortal(
         <Modal
           Exit={Exit}
@@ -153,7 +153,7 @@ const MoneyTransfer: FC<{
           classes={classes}
           isMobile={isMobile}
         />,
-        OVERLAYDIV
+        OVERLAYDIV as Element
       )}
     </>
   );

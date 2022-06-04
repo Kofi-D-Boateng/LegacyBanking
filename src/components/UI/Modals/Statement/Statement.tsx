@@ -124,12 +124,12 @@ const Statement: React.FC<{
     amount: number;
     amountPaid: number;
   }[];
-  BACKDROPDIV: HTMLElement;
-  OVERLAYDIV: HTMLElement;
+  BACKDROPDIV: HTMLElement | null;
+  OVERLAYDIV: HTMLElement | null;
 }> = ({ Exit, isMobile, classes, MockStatements, BACKDROPDIV, OVERLAYDIV }) => {
   return (
     <>
-      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV)}
+      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV as Element)}
       {createPortal(
         <Modal
           classes={classes}
@@ -137,7 +137,7 @@ const Statement: React.FC<{
           isMobile={isMobile}
           MockStatements={MockStatements}
         />,
-        OVERLAYDIV
+        OVERLAYDIV as Element
       )}
     </>
   );

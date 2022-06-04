@@ -39,7 +39,6 @@ const Navbar: React.FC<{
   const handleClose = useCallback(
     async (event: React.MouseEvent<HTMLElement>) => {
       const { innerText } = event.currentTarget;
-      console.log(innerText);
       if (innerText === "Log out") {
         await axios
           .get(`${DOMAIN}/${API_VERSION}/logout`, {

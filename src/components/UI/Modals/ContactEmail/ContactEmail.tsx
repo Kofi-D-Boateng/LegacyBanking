@@ -6,7 +6,7 @@ import {
   GridTypeMap,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import { Dispatch, FC, FormEvent } from "react";
+import { Dispatch, FC, FormEvent, MutableRefObject } from "react";
 import { createPortal } from "react-dom";
 import ContactForm from "../../../Forms/ContactForm/ContactForm";
 import Backdrop from "../../Backdrops/Backdrop";
@@ -24,8 +24,9 @@ const ContactEmail: FC<{
   CardContent: OverridableComponent<CardTypeMap<{}, "div">>;
   Button: ExtendButtonBase<ButtonTypeMap<{}, "button">>;
   Grid: OverridableComponent<GridTypeMap<{}, "div">>;
-  email: React.MutableRefObject<HTMLElement | undefined>;
-  text: React.MutableRefObject<HTMLElement | undefined>;
+  email: MutableRefObject<HTMLElement | undefined>;
+  text: MutableRefObject<HTMLElement | undefined>;
+  topic: MutableRefObject<HTMLElement | undefined>;
   isMobile: boolean;
   invalid: boolean;
   limit: number;
@@ -45,10 +46,11 @@ const ContactEmail: FC<{
   invalid,
   limit,
   setLimit,
+  topic,
 }) => {
   return (
     <>
-      {createPortal(<Backdrop Exit={Exit} />, backdropDiv)}
+      {createPortal(<Backdrop Exit={Exit} />, backdropDiv as Element)}
       {createPortal(
         <ContactForm
           Submit={Submit}
@@ -66,8 +68,9 @@ const ContactEmail: FC<{
           Grid={Grid}
           email={email}
           text={text}
+          topic={topic}
         />,
-        overlayDiv
+        overlayDiv as Element
       )}
     </>
   );
