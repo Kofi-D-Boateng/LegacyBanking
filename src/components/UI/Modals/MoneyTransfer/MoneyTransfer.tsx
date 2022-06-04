@@ -1,4 +1,4 @@
-import { FC, Dispatch, useCallback, useEffect } from "react";
+import { FC, Dispatch, useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Backdrop from "../../Backdrops/Backdrop";
 import { SelectChangeEvent } from "@mui/material";
@@ -69,6 +69,7 @@ const MoneyTransfer: FC<{
   DOMAIN,
   Location,
 }) => {
+  const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     const fetchTransfer = async (
       accountTransfer: {
@@ -80,6 +81,7 @@ const MoneyTransfer: FC<{
       },
       token: string | null
     ) => {
+      setLoading(true);
       await axios
         .put(
           `${DOMAIN}/${API_VERSION}/authentication/transaction`,
@@ -102,8 +104,8 @@ const MoneyTransfer: FC<{
           }
           Location.reload();
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          setLoading(false);
         });
     };
     if (accountTransfer.email || accountTransfer.phoneNumber) {
@@ -152,6 +154,7 @@ const MoneyTransfer: FC<{
           termsOfChoice={termsOfChoice}
           classes={classes}
           isMobile={isMobile}
+          loading={loading}
         />,
         OVERLAYDIV as Element
       )}
