@@ -10,10 +10,10 @@ import { customerActions } from "../store/customer/customer-slice";
 const WaitingPage: FC<{
   isMobile: boolean;
   axios: AxiosStatic;
-  DOMAIN: string | undefined;
+
   API_VERSION: string | undefined;
   customer: Customer;
-}> = ({ axios, API_VERSION, DOMAIN, isMobile, customer }) => {
+}> = ({ axios, API_VERSION, isMobile, customer }) => {
   const dispatch: Dispatch<any> = useDispatch();
   const navigate: NavigateFunction = useNavigate();
   const STYLE: CSSProperties = {
@@ -28,7 +28,7 @@ const WaitingPage: FC<{
 
   const GenerateLink: (e: MouseEvent<HTMLButtonElement>) => void = async () => {
     await axios
-      .post(`${DOMAIN}/${API_VERSION}/authentication/new-verification-link`, {
+      .post(`${API_VERSION}/authentication/new-verification-link`, {
         token: customer.token,
       })
       .catch(() => {

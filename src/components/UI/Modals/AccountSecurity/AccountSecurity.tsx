@@ -33,7 +33,7 @@ const AccountSecurity: FC<{
   classes: {
     readonly [key: string]: string;
   };
-  DOMAIN: string | undefined;
+
   API_VERSION: string | undefined;
   token: string | null;
   accountNumber: string;
@@ -47,7 +47,6 @@ const AccountSecurity: FC<{
   classes,
   isMobile,
   API_VERSION,
-  DOMAIN,
   token,
   accountNumber,
   Location,
@@ -76,7 +75,7 @@ const AccountSecurity: FC<{
     ) => void = async ({ item }) => {
       await axios
         .post(
-          `${DOMAIN}/${API_VERSION}/authentication/profile/security`,
+          `${API_VERSION}/authentication/profile/security`,
           {
             card: item.includes(LOCKEDCARD) && true,
             account: item.includes(LOCKEDACCOUNT) && true,
@@ -92,7 +91,7 @@ const AccountSecurity: FC<{
         });
     };
     fetchSettings(choice, accountNumber, token);
-  }, [DOMAIN, API_VERSION, token, choice, axios, accountNumber, Location]);
+  }, [API_VERSION, token, choice, axios, accountNumber, Location]);
 
   return (
     <>

@@ -1,9 +1,5 @@
 // BACKEND URL
-const LB_AUTH_DOMAIN: string | undefined =
-  process.env.LB_DOMAIN_NAME;
-const API_VERSION: string | undefined =
-  process.env.API_VERSION;
-const LB_NOTI_DOMAIN: string | undefined = process.env.LB_NOTI_DOMAIN;
+const API_VERSION: string | undefined = process.env.API_VERSION || "api/v1";
 
 const BUFFERTIME: number = parseInt(process.env.BUFFERTIME!);
 
@@ -97,7 +93,6 @@ export {
   SECURITYERRORMSG,
   INSIGHT,
   STARTUPS,
-  LB_AUTH_DOMAIN,
   DISABLED,
   FACEBOOK,
   INSTAGRAM,
@@ -106,5 +101,4 @@ export {
   BUFFERTIME,
   VERIFYACCOUNT,
   API_VERSION,
-  LB_NOTI_DOMAIN,
 };

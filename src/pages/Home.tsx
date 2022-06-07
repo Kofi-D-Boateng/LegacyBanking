@@ -28,9 +28,9 @@ import { AxiosStatic } from "axios";
 const Home: FC<{
   mobile: boolean;
   axios: AxiosStatic;
-  DOMAIN: string | undefined;
+
   API_VERSION: string | undefined;
-}> = ({ mobile, API_VERSION, DOMAIN, axios }) => {
+}> = ({ mobile, API_VERSION, axios }) => {
   const NAVIGATE: NavigateFunction = useNavigate();
   const year = new Date().getFullYear();
   const [view, setView] = useState<number>(0);
@@ -95,14 +95,6 @@ const Home: FC<{
       css2: classes.cardDescription,
       link: INSIGHT,
     },
-    // {
-    //   key: 3,
-    //   title: "Investor Relations",
-    //   description: "Engage with our team on our monetary strategies.",
-    //   css: !mobile ? classes.investments : classes.mobInvestments,
-    //   css2: classes.cardDescription,
-    //   link: INSIGHT + "#",
-    // },
   ];
 
   const viewHandler: (e: React.MouseEvent<HTMLButtonElement>) => void = ({
@@ -166,7 +158,6 @@ const Home: FC<{
         classes={classes}
         isMobile={mobile}
         axios={axios}
-        DOMAIN={DOMAIN}
         API_VERSION={API_VERSION}
       />
     </Fragment>

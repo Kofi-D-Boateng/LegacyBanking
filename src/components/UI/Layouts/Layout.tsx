@@ -15,7 +15,7 @@ const Layout: FC<{
   }>;
   Location: Location;
   BUFFER: number;
-  DOMAIN: string | undefined;
+
   API_VERSION: string | undefined;
   axios: AxiosStatic;
   mobile: boolean;
@@ -60,7 +60,6 @@ const Layout: FC<{
   TWITTER,
   axios,
   API_VERSION,
-  DOMAIN,
   Location,
   Timer,
   BUFFER,
@@ -100,7 +99,6 @@ const Layout: FC<{
       error?.pattern.end ||
       verification?.pattern.end ? null : (
         <Navbar
-          DOMAIN={DOMAIN}
           API_VERSION={API_VERSION}
           axios={axios}
           isMobile={mobile}

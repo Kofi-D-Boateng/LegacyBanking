@@ -12,9 +12,9 @@ import classes from "../styles/Location/LocationsStyles.module.css";
 
 const Locations: FC<{
   isMobile: boolean;
-  DOMAIN: string | undefined;
+
   API_VERSION: string | undefined;
-}> = ({ isMobile, API_VERSION, DOMAIN }) => {
+}> = ({ isMobile, API_VERSION }) => {
   const LEGACY: {
     name: string;
     country: string;
@@ -35,7 +35,7 @@ const Locations: FC<{
 
   useEffect(() => {
     const fetchBankData: () => void = async () => {
-      await axios.get(`${DOMAIN}/${API_VERSION}/bank/info`).then((response) => {
+      await axios.get(`${API_VERSION}/bank/info`).then((response) => {
         const { name, country, state, zipcode, totalHoldings, branches } =
           response.data;
         dispatch(
@@ -51,7 +51,7 @@ const Locations: FC<{
       });
     };
     fetchBankData();
-  }, [dispatch, API_VERSION, DOMAIN]);
+  }, [dispatch, API_VERSION]);
 
   return (
     <>

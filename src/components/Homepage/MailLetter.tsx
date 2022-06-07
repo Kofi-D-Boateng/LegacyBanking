@@ -9,9 +9,9 @@ const MailLetter: React.FC<{
   };
   isMobile: boolean;
   axios: AxiosStatic;
-  DOMAIN: string | undefined;
+
   API_VERSION: string | undefined;
-}> = ({ classes, isMobile, API_VERSION, DOMAIN, axios }) => {
+}> = ({ classes, isMobile, API_VERSION, axios }) => {
   const [show, setShow] = useState<boolean>(false);
   const [ready, setReady] = useState<boolean>(false);
   const emailRef = useRef<HTMLInputElement>();
@@ -23,7 +23,7 @@ const MailLetter: React.FC<{
     }
 
     if (ready) {
-      await axios.put(`http://localhost:5500/api/v1/mail-list/add-to-list`, {
+      await axios.put(`${API_VERSION}/api/v1/mail-list/add-to-list`, {
         email: emailRef.current?.value,
       });
     }
