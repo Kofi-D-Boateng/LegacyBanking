@@ -1,7 +1,7 @@
 // BACKEND URL
 const API_VERSION: string | undefined = process.env.API_VERSION || "api/v1";
 
-const BUFFERTIME: number = parseInt(process.env.BUFFERTIME!);
+const BUFFERTIME: number = parseInt(process.env.BUFFERTIME!) || 10000 * 6 * 5;
 
 // PROFILE STRING COMPARISON
 const DEBITTRASFER: string = "Debit transfer";
