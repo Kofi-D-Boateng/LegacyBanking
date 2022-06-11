@@ -21,14 +21,13 @@ import { customerActions } from "../../../store/customer/customer-slice";
 import { Customer } from "../../../Interfaces/Customer";
 
 const Navbar: React.FC<{
-  DOMAIN: string | undefined;
   API_VERSION: string | undefined;
   axios: AxiosStatic;
   isMobile: boolean;
   customer: Customer;
   links: { key: number; title: string; link: string }[];
   authLinks: { key: number; title: string; link: string }[];
-}> = ({ customer, isMobile, links, authLinks, axios, API_VERSION, DOMAIN }) => {
+}> = ({ customer, isMobile, links, authLinks, axios, API_VERSION }) => {
   const [anchorEl, setAnchorEl] = useState<any>(null);
   const dispatch = useDispatch<Dispatch<any>>();
 
@@ -41,7 +40,7 @@ const Navbar: React.FC<{
       const { innerText } = event.currentTarget;
       if (innerText === "Log out") {
         await axios
-          .get(`${DOMAIN}/${API_VERSION}/logout`, {
+          .get(`${API_VERSION}/logout`, {
             headers: { authorization: customer.token as string },
           })
           .catch(() => dispatch(customerActions.logout()));
@@ -49,7 +48,7 @@ const Navbar: React.FC<{
       }
       setAnchorEl(null);
     },
-    [dispatch, axios, customer.token, DOMAIN, API_VERSION]
+    [dispatch, axios, customer.token, API_VERSION]
   );
 
   return (

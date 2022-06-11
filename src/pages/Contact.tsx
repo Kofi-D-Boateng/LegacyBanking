@@ -24,9 +24,9 @@ import classes from "../styles/Contact/ContactStyles.module.css";
 const Contact: FC<{
   isMobile: boolean;
   axios: AxiosStatic;
-  DOMAIN: string | undefined;
+
   API_VERSION: string | undefined;
-}> = ({ isMobile, axios, API_VERSION, DOMAIN }) => {
+}> = ({ isMobile, axios, API_VERSION }) => {
   const [limit, setLimit] = useState<number>(500);
   const [invalid, setInvalid] = useState<boolean>(false);
   const [ready, setReady] = useState<boolean>(false);
@@ -45,14 +45,11 @@ const Contact: FC<{
       topic: string | undefined
     ) => void = async (email, text, topic) => {
       await axios
-        .put(
-          `${DOMAIN}/${API_VERSION}/customer-service/email-customer-service`,
-          {
-            email: email,
-            text: text,
-            topic: topic,
-          }
-        )
+        .put(`${API_VERSION}/customer-service/email-customer-service`, {
+          email: email,
+          text: text,
+          topic: topic,
+        })
         .then(() => {
           setView(false);
           setReady(false);
@@ -66,7 +63,7 @@ const Contact: FC<{
       textRef.current?.value,
       topicRef.current?.value
     );
-  }, [ready, axios, API_VERSION, DOMAIN]);
+  }, [ready, axios, API_VERSION]);
 
   const submitHandler: (e: FormEvent<HTMLFormElement>) => void = (e) => {
     e.preventDefault();

@@ -7,10 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import { store } from "../store/store";
 import { setupServer, SetupServerApi } from "msw/node";
 import { rest } from "msw";
-import {
-  API_VERSION,
-  LB_AUTH_DOMAIN,
-} from "../components/UI/Constants/Constants";
+import { API_VERSION } from "../components/UI/Constants/Constants";
 import Login from "../pages/Login";
 import "@testing-library/jest-dom/extend-expect";
 
@@ -38,20 +35,17 @@ const theme = createTheme({
 });
 
 const server: SetupServerApi = setupServer(
-  rest.post(
-    `${LB_AUTH_DOMAIN}/${API_VERSION}/authentication/login`,
-    (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          token: "abdb23231232jdsaWEDwdxaCDA",
-          expiresIn: 100000,
-          isEnabled: true,
-          isLocked: false,
-        })
-      );
-    }
-  )
+  rest.post(`/${API_VERSION}/authentication/login`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        token: "abdb23231232jdsaWEDwdxaCDA",
+        expiresIn: 100000,
+        isEnabled: true,
+        isLocked: false,
+      })
+    );
+  })
 );
 
 describe("Login test suite. Profile exclusive", () => {
@@ -64,11 +58,7 @@ describe("Login test suite. Profile exclusive", () => {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <BrowserRouter>
-            <Login
-              DOMAIN={LB_AUTH_DOMAIN}
-              API_VERSION={API_VERSION}
-              isMobile={false}
-            />
+            <Login API_VERSION={API_VERSION} isMobile={false} />
           </BrowserRouter>
         </ThemeProvider>
       </Provider>

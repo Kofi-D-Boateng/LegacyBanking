@@ -25,7 +25,7 @@ const Paperless: FC<{
   };
   BACKDROPDIV: HTMLElement | null;
   OVERLAYDIV: HTMLElement | null;
-  DOMAIN: string | undefined;
+
   API_VERSION: string | undefined;
   token: string | null;
   axios: AxiosStatic;
@@ -36,7 +36,6 @@ const Paperless: FC<{
   BACKDROPDIV,
   OVERLAYDIV,
   API_VERSION,
-  DOMAIN,
   token,
   axios,
 }) => {
@@ -52,7 +51,7 @@ const Paperless: FC<{
     ) => void = async (choice, token) => {
       await axios
         .put(
-          `${DOMAIN}/${API_VERSION}/authentication/billing`,
+          `${API_VERSION}/authentication/billing`,
           { choice: choice },
           {
             headers: { authorization: token as string },
@@ -67,7 +66,7 @@ const Paperless: FC<{
     if (choice.isSelected) {
       fetchPaperless(choice.choice, token);
     }
-  }, [choice, Exit, DOMAIN, API_VERSION, token, axios]);
+  }, [choice, Exit, API_VERSION, token, axios]);
 
   return (
     <>

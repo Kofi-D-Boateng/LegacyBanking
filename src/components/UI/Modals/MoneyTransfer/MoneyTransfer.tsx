@@ -8,7 +8,7 @@ import { AxiosStatic } from "axios";
 
 const MoneyTransfer: FC<{
   Location: Location;
-  DOMAIN: string | undefined;
+
   API_VERSION: string | undefined;
   token: string | null;
   view: boolean;
@@ -66,7 +66,6 @@ const MoneyTransfer: FC<{
   axios,
   setView,
   API_VERSION,
-  DOMAIN,
   Location,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -83,13 +82,9 @@ const MoneyTransfer: FC<{
     ) => {
       setLoading(true);
       await axios
-        .put(
-          `${DOMAIN}/${API_VERSION}/authentication/transaction`,
-          accountTransfer,
-          {
-            headers: { authorization: token as string },
-          }
-        )
+        .put(`${API_VERSION}/authentication/transaction`, accountTransfer, {
+          headers: { authorization: token as string },
+        })
         .then((response) => {
           if (response.status >= 200 && response.status <= 299) {
             dispatch(
@@ -116,7 +111,6 @@ const MoneyTransfer: FC<{
     dispatch,
     CreateTransfer,
     API_VERSION,
-    DOMAIN,
     Location,
     axios,
     setView,

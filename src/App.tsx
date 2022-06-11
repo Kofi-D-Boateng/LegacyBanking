@@ -17,7 +17,6 @@ import Layout from "./components/UI/Layouts/Layout";
 import Home from "./pages/Home";
 import {
   ABOUT,
-  LB_AUTH_DOMAIN,
   CONTACT,
   HOME,
   INSIGHT,
@@ -35,7 +34,6 @@ import {
   BUFFERTIME,
   VERIFYACCOUNT,
   API_VERSION,
-  LB_NOTI_DOMAIN,
 } from "./components/UI/Constants/Constants";
 import axios from "axios";
 import LoadingSpinner from "./components/UI/Modals/LoadingSpinner/LoadingSpinner";
@@ -93,7 +91,6 @@ const App: FC = () => {
           customer={customer}
           mobile={mobile}
           axios={axios}
-          DOMAIN={LB_AUTH_DOMAIN}
           API_VERSION={API_VERSION}
         >
           <Routes>
@@ -105,7 +102,6 @@ const App: FC = () => {
                     <Profile
                       Location={Location}
                       customer={customer}
-                      DOMAIN={LB_AUTH_DOMAIN}
                       API_VERSION={API_VERSION}
                       token={customer.token}
                       mobile={mobile}
@@ -126,7 +122,6 @@ const App: FC = () => {
           BUFFER={BUFFERTIME}
           Timer={Timer}
           Location={Location}
-          DOMAIN={LB_AUTH_DOMAIN}
           API_VERSION={API_VERSION}
           axios={axios}
           mobile={mobile}
@@ -152,23 +147,14 @@ const App: FC = () => {
             <Route
               path={HOME}
               element={
-                <Home
-                  mobile={mobile}
-                  axios={axios}
-                  DOMAIN={LB_AUTH_DOMAIN}
-                  API_VERSION={API_VERSION}
-                />
+                <Home mobile={mobile} axios={axios} API_VERSION={API_VERSION} />
               }
             />
             <Route path={ABOUT} element={<About isMobile={mobile} />} />
             <Route
               path={LOCATIONS}
               element={
-                <Locations
-                  DOMAIN={LB_AUTH_DOMAIN}
-                  API_VERSION={API_VERSION}
-                  isMobile={mobile}
-                />
+                <Locations API_VERSION={API_VERSION} isMobile={mobile} />
               }
             />
             <Route
@@ -177,7 +163,6 @@ const App: FC = () => {
                 <Contact
                   isMobile={mobile}
                   axios={axios}
-                  DOMAIN={LB_NOTI_DOMAIN}
                   API_VERSION={API_VERSION}
                 />
               }
@@ -189,23 +174,11 @@ const App: FC = () => {
             />
             <Route
               path={LOGIN}
-              element={
-                <Login
-                  DOMAIN={LB_AUTH_DOMAIN}
-                  API_VERSION={API_VERSION}
-                  isMobile={mobile}
-                />
-              }
+              element={<Login API_VERSION={API_VERSION} isMobile={mobile} />}
             />
             <Route
               path={SIGNUP}
-              element={
-                <Signup
-                  DOMAIN={LB_AUTH_DOMAIN}
-                  API_VERSION={API_VERSION}
-                  isMobile={mobile}
-                />
-              }
+              element={<Signup API_VERSION={API_VERSION} isMobile={mobile} />}
             />
             <Route
               path={DISABLED}
@@ -214,7 +187,6 @@ const App: FC = () => {
                   customer={customer}
                   isMobile={mobile}
                   axios={axios}
-                  DOMAIN={LB_AUTH_DOMAIN}
                   API_VERSION={API_VERSION}
                 />
               }
@@ -226,7 +198,6 @@ const App: FC = () => {
                   isMobile={mobile}
                   axios={axios}
                   searchParams={searchParams}
-                  DOMAIN={LB_AUTH_DOMAIN}
                   API_VERSION={API_VERSION}
                   LoadingSpinner={LoadingSpinner}
                 />

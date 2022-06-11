@@ -14,7 +14,7 @@ const AccountLayout: FC<{
   mobile: boolean;
   children: ReactNode;
   axios: AxiosStatic;
-  DOMAIN: string | undefined;
+
   API_VERSION: string | undefined;
   BUFFER: number;
   Timer: FC<{
@@ -26,7 +26,6 @@ const AccountLayout: FC<{
   children,
   mobile,
   axios,
-  DOMAIN,
   Timer,
   Location,
   DATE,
@@ -44,7 +43,6 @@ const AccountLayout: FC<{
   return (
     <div>
       <AccountNavbar
-        DOMAIN={DOMAIN}
         API_VERSION={API_VERSION}
         axios={axios}
         token={customer.token}

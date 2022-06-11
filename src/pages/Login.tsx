@@ -13,9 +13,9 @@ import { PROFILE } from "../components/UI/Constants/Constants";
 
 const Login: FC<{
   isMobile: boolean;
-  DOMAIN: string | undefined;
+
   API_VERSION: string | undefined;
-}> = ({ isMobile, API_VERSION, DOMAIN }) => {
+}> = ({ isMobile, API_VERSION }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -34,7 +34,7 @@ const Login: FC<{
     const fetchUserLogin = async (login: {}) => {
       setLoading(true);
       await axios
-        .post(`${DOMAIN}/${API_VERSION}/authentication/login`, login)
+        .post(`${API_VERSION}/authentication/login`, login)
         .then((response) => {
           if (response.status === 200) {
             const { token, isLocked, isEnabled, expiresIn } = response.data;
@@ -55,7 +55,7 @@ const Login: FC<{
         });
     };
     fetchUserLogin(user);
-  }, [user, dispatch, navigate, API_VERSION, DOMAIN]);
+  }, [user, dispatch, navigate, API_VERSION]);
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();

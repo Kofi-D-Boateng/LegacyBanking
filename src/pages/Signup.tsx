@@ -7,10 +7,9 @@ import classes from "../styles/Signup/SignupStyles.module.css";
 import { PROFILE } from "../components/UI/Constants/Constants";
 
 const Signup: FC<{
-  DOMAIN: string | undefined;
   API_VERSION: string | undefined;
   isMobile: boolean;
-}> = ({ API_VERSION, DOMAIN, isMobile }) => {
+}> = ({ API_VERSION, isMobile }) => {
   const [user, setUser] = useState<{} | null>(null);
   const [isValid, setIsValid] = useState<boolean>(true);
   const navigate = useNavigate();
@@ -21,7 +20,7 @@ const Signup: FC<{
     }
     const fetchUserSignup: (user: {}) => void = async (user) => {
       await axios
-        .post(`${DOMAIN}/${API_VERSION}/authentication/registration`, user)
+        .post(`${API_VERSION}/authentication/registration`, user)
         .then((response) => {
           if (response.data.isSaved === true) {
             navigate(PROFILE.substring(0, 8), { replace: true });
@@ -31,7 +30,7 @@ const Signup: FC<{
         });
     };
     fetchUserSignup(user);
-  }, [user, navigate, DOMAIN, API_VERSION]);
+  }, [user, navigate, API_VERSION]);
 
   const userInfo = (
     data: SetStateAction<{

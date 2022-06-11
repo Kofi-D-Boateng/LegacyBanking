@@ -48,7 +48,7 @@ const Profile: FC<{
   Location: Location;
   token: string | null;
   mobile: boolean;
-  DOMAIN: string | undefined;
+
   API_VERSION: string | undefined;
   customer: {
     fName: string;
@@ -77,7 +77,7 @@ const Profile: FC<{
       phoneNumber: string | undefined;
     };
   };
-}> = ({ token, mobile, DOMAIN, customer, Location, API_VERSION }) => {
+}> = ({ token, mobile, customer, Location, API_VERSION }) => {
   const DateAmount: DateAmountType[] = [];
   const PARAMS = useParams<string>();
   const currentYear: number = new Date().getFullYear();
@@ -94,7 +94,7 @@ const Profile: FC<{
     const fetchAccount: (token: string | null) => void = async (token) => {
       await axios({
         method: "GET",
-        url: `${DOMAIN}/${API_VERSION}/authentication/profile/info`,
+        url: `${API_VERSION}/authentication/profile/info`,
         headers: {
           authorization: token as string,
         },
@@ -138,7 +138,7 @@ const Profile: FC<{
         });
     };
     fetchAccount(token);
-  }, [token, dispatch, navigate, DOMAIN, API_VERSION]);
+  }, [token, dispatch, navigate, API_VERSION]);
 
   const viewHandler = useCallback(
     (event: ChangeEvent<HTMLElement>) => {
@@ -168,7 +168,6 @@ const Profile: FC<{
       modal: (
         <MoneyTransfer
           Location={Location}
-          DOMAIN={DOMAIN}
           API_VERSION={API_VERSION}
           token={token}
           BACKDROPDIV={backdropDiv}
@@ -209,7 +208,6 @@ const Profile: FC<{
       modal: (
         <Paperless
           token={token}
-          DOMAIN={DOMAIN}
           API_VERSION={API_VERSION}
           axios={axios}
           BACKDROPDIV={backdropDiv}
@@ -244,7 +242,6 @@ const Profile: FC<{
           isCardLocked={customer.isLocked}
           accountNumber={customer.accountNum}
           axios={axios}
-          DOMAIN={DOMAIN}
           API_VERSION={API_VERSION}
           token={token}
           Exit={exitHandler}
