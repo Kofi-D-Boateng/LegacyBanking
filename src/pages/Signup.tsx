@@ -4,7 +4,7 @@ import { Card, CardContent, Grid, Typography } from "@mui/material";
 import SignupForm from "../components/Forms/SignupForm/SignupForm";
 import { useNavigate } from "react-router-dom";
 import classes from "../styles/Signup/SignupStyles.module.css";
-import { PROFILE } from "../components/UI/Constants/Constants";
+import { LOGIN } from "../components/UI/Constants/Constants";
 
 const Signup: FC<{
   API_VERSION: string | undefined;
@@ -23,7 +23,7 @@ const Signup: FC<{
         .post(`${API_VERSION}/authentication/registration`, user)
         .then((response) => {
           if (response.data.isSaved === true) {
-            navigate(PROFILE.substring(0, 8), { replace: true });
+            navigate(LOGIN, { replace: true });
           } else {
             setIsValid(false);
           }
