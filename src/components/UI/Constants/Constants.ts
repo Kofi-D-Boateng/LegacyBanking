@@ -15,7 +15,7 @@ const SUMMARY: string = "account-summary";
 const CREDITSCORE: string = "credit-score";
 const LOANS: string = "personal-loans";
 const PAYMENT: string = "payments";
-const PROFILE: string = "/profile/*";
+const PROFILE: string = "/profile/**";
 const HOME: string = "/";
 const ABOUT: string = "/about";
 const LOCATIONS: string = "/locations";
@@ -26,7 +26,7 @@ const LOGIN: string = "/login";
 const INSIGHT: string = "/insight";
 const STARTUPS: string = "/startups";
 const DISABLED: string = "/error/locked-account";
-const VERIFYACCOUNT: string = "/authentication/*";
+const VERIFYACCOUNT: string = "/confirm-account";
 const REDIRECT: string = "*";
 
 // MODAL VALUES
