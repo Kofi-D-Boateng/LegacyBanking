@@ -125,7 +125,6 @@ const Modal: React.FC<{
       ),
     },
   ];
-  console.log(choice.choice);
 
   const viewHandler: (e: React.MouseEvent<HTMLButtonElement>) => void = ({
     currentTarget,

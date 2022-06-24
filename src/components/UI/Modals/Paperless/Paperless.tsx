@@ -57,8 +57,7 @@ const Paperless: FC<{
             headers: { authorization: token as string },
           }
         )
-        .then((response) => {
-          console.log(response);
+        .then(() => {
           Exit();
         });
     };

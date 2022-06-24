@@ -41,7 +41,6 @@ const Home: FC<{
     const oberserver: IntersectionObserver = new IntersectionObserver(
       (entries: IntersectionObserverEntry[]) => {
         const entry = entries[0];
-        console.log(entry.isIntersecting);
         if (entry.target.id === "services" && entry.isIntersecting) {
           setServiceView(entry.isIntersecting);
         }

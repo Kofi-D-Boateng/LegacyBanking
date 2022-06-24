@@ -65,9 +65,7 @@ const SignupForm: React.FC<{
     const regexUPPER = /^[A-Z]/;
     const specialCHAR = /[/!/@/#/$/%/^/&/*/()] /;
     const TO_UPPER_TEST: boolean = regexUPPER.test(value.charAt(0));
-    console.log(TO_UPPER_TEST);
     const specialChar: boolean = specialCHAR.test(value);
-    console.log(specialChar);
     if (value.length < 8 || !TO_UPPER_TEST) return;
     setPassword(value);
   };
