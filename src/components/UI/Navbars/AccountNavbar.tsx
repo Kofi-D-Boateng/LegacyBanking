@@ -112,8 +112,7 @@ const AccountNavbar: FC<{
           const { notis } = response.data;
           dispatch(notisActions.getNotis({ notis: notis }));
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
           dispatch(customerActions.logout());
         });
     };

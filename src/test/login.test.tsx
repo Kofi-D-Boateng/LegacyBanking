@@ -74,7 +74,6 @@ describe("Login test suite. Profile exclusive", () => {
     userEvent.type(password, pw);
     userEvent.dblClick(submit);
     const progressbar = await screen.findByRole("progressbar");
-    console.log(progressbar);
     await waitFor(() => expect(progressbar).toBeInTheDocument());
   });
 });

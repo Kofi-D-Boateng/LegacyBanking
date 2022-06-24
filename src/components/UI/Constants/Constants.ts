@@ -1,5 +1,6 @@
 // BACKEND URL
-const API_VERSION: string | undefined = process.env.REACT_APP_API_VERSION;
+const API_VERSION: string | undefined =
+  process.env.REACT_APP_API_VERSION || "api/v1";
 
 const BUFFERTIME: number =
   parseInt(process.env.REACT_APP_BUFFERTIME!) || 10000 * 6 * 5;

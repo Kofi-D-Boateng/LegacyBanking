@@ -59,8 +59,6 @@ const AccountSecurity: FC<{
     item: "",
   });
 
-  console.log(choice);
-
   useEffect(() => {
     if (!choice.choice) {
       return;

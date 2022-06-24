@@ -156,7 +156,6 @@ const Profile: FC<{
 
   const choiceHandler = useCallback((event: SelectChangeEvent) => {
     const { value } = event.target;
-    console.log(value);
     setTermsOfChoice(value);
     setView(true);
   }, []);

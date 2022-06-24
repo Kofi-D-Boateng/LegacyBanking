@@ -16,6 +16,7 @@ import {
 import classes from "../../../../styles/Modals/Modals.module.css";
 import { Customer } from "../../../../Interfaces/Customer";
 import { customerActions } from "../../../../store/customer/customer-slice";
+import { API_VERSION } from "../../Constants/Constants";
 
 const Timer: FC<{
   isMobile: boolean;
@@ -29,11 +30,10 @@ const Timer: FC<{
     currentTarget,
   }) => {
     const CHOICE: string = currentTarget.innerText;
-    console.log(CHOICE);
     if (CHOICE.includes("Yes")) {
       setLoading(true);
       await axios
-        .get(`http://localhost:8081/api/v1/authentication/get-refresh-token`, {
+        .get(`${API_VERSION}/authentication/get-refresh-token`, {
           params: { token: customer.token },
         })
         .then((response) => {
