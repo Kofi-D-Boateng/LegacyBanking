@@ -92,13 +92,12 @@ const Profile: FC<{
 
   useEffect(() => {
     const fetchAccount: (token: string | null) => void = async (token) => {
-      await axios({
-        method: "GET",
-        url: `${API_VERSION}/authentication/profile/info`,
-        headers: {
-          authorization: token as string,
-        },
-      })
+      await axios
+        .get(`${API_VERSION}/authentication/profile/info`, {
+          headers: {
+            authorization: token as string,
+          },
+        })
         .then((response) => {
           const {
             fName,
@@ -111,8 +110,6 @@ const Profile: FC<{
             accountNum,
             routingNum,
             transactions,
-            isEnabled,
-            isLocked,
             notis,
           } = response.data;
           dispatch(
@@ -127,8 +124,6 @@ const Profile: FC<{
               accountingNum: accountNum,
               routingNum: routingNum,
               transactions: transactions,
-              isEnabled: isEnabled,
-              isLocked: isLocked,
             })
           );
           dispatch(notisActions.getNotis({ notis: notis }));
