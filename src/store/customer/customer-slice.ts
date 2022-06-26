@@ -5,7 +5,8 @@ const DATE: Date = new Date();
 function initialState(): Customer {
   const token: string | null = sessionStorage.getItem("lb-token");
   const exp: string | null = sessionStorage.getItem("exp");
-  const status: string | null = sessionStorage.getItem("status");
+  const isEnabled: string | null = sessionStorage.getItem("enabled");
+  const isLocked: string | null = sessionStorage.getItem("locked");
   const RemainingTime: number = +exp! || 0;
   return {
     token: token,
@@ -20,8 +21,8 @@ function initialState(): Customer {
     area: "",
     zipCode: "",
     funds: 0,
-    isLocked: true,
-    isEnabled: status as unknown as boolean,
+    isLocked: isLocked as unknown as boolean,
+    isEnabled: isEnabled as unknown as boolean,
     transactions: [
       { id: 0, amount: 0, dateOfTransaction: "", location: "", type: "" },
     ],
@@ -51,12 +52,13 @@ const customerSlice = createSlice({
       const { token, expiresIn, isLocked, isEnabled } = action.payload;
       state.token = token;
       state.authenticated = true;
-      state.isEnabled = isEnabled ? true : state.isEnabled;
-      state.isLocked = !isLocked ? isLocked : state.isLocked;
+      state.isEnabled = isEnabled;
+      state.isLocked = isLocked;
       state.expiresIn = expiresIn + DATE.getTime();
       sessionStorage.setItem("lb-token", state.token);
       sessionStorage.setItem("exp", state.expiresIn.toString());
-      sessionStorage.setItem("status", state.isEnabled as unknown as string);
+      sessionStorage.setItem("enabled", state.isEnabled as unknown as string);
+      sessionStorage.setItem("locked", state.isLocked as unknown as string);
     },
     createCustomer(
       state,
@@ -70,8 +72,6 @@ const customerSlice = createSlice({
         area: string | undefined;
         zipCode: string | undefined;
         funds: number;
-        isEnabled: boolean;
-        isLocked: boolean;
         transactions: {
           id: number;
           type: string;
@@ -92,8 +92,6 @@ const customerSlice = createSlice({
         zipCode,
         funds,
         transactions,
-        isEnabled,
-        isLocked,
       } = action.payload;
       state.fName = fName ? fName : state.fName;
       state.lName = lName ? lName : state.lName;
@@ -104,8 +102,6 @@ const customerSlice = createSlice({
       state.area = area ? area : state.area;
       state.zipCode = zipCode ? zipCode : state.zipCode;
       state.funds = funds ? funds : state.funds;
-      state.isEnabled = isEnabled;
-      state.isLocked = isLocked;
       state.transactions =
         transactions.length > state.transactions.length
           ? transactions.reverse()
@@ -132,6 +128,8 @@ const customerSlice = createSlice({
     logout(state) {
       sessionStorage.removeItem("lb-token");
       sessionStorage.removeItem("exp");
+      sessionStorage.removeItem("enabled");
+      sessionStorage.removeItem("locked");
       state.authenticated = false;
     },
     refreshToken(

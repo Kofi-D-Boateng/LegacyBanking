@@ -75,8 +75,8 @@ const AccountSecurity: FC<{
         .post(
           `${API_VERSION}/authentication/profile/security`,
           {
-            card: item.includes(LOCKEDCARD) && true,
-            account: item.includes(LOCKEDACCOUNT) && true,
+            card: item.includes(LOCKEDCARD) && choice.choice,
+            account: item.includes(LOCKEDACCOUNT) && choice.choice,
             accountNumber: accountNumber,
           },
           { headers: { authorization: token as string } }
