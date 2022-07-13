@@ -7,13 +7,14 @@ import {
   Map,
   Marker,
 } from "leaflet";
-import { useState } from "react";
 import { MarkerProps, Popup } from "react-leaflet";
+import { NavigateFunction } from "react-router-dom";
 
 const LocationMarker: React.FC<{
   Marker: React.ForwardRefExoticComponent<
     MarkerProps & React.RefAttributes<Marker<any>>
   >;
+  nav: NavigateFunction;
   markerIcon: string;
   useMap: () => Map;
   branch: {
@@ -25,15 +26,19 @@ const LocationMarker: React.FC<{
     latitude: number;
     longitude: number;
   };
-}> = ({ Marker, markerIcon, useMap, branch }) => {
-  const [position, setPosition] = useState<LatLngExpression | undefined>(
-    undefined
-  );
-
+  param: URLSearchParams;
+}> = ({ Marker, markerIcon, useMap, branch, nav, param }) => {
+  const lat: number | undefined = param.get("lat")
+    ? parseFloat(param.get("lat") as string)
+    : undefined;
+  const lng: number | undefined = param.get("lng")
+    ? parseFloat(param.get("lng") as string)
+    : undefined;
+  const position: LatLngExpression = { lat: lat ? lat : 0, lng: lng ? lng : 0 };
   const MAP: Map = useMap();
   const MarkerFn: LeafletEventHandlerFnMap = {
     click(e: LeafletMouseEvent) {
-      setPosition(e.latlng);
+      nav(`/locations?lat=${e.latlng.lat}&lng=${e.latlng.lng}`);
       MAP.flyTo(e.latlng, MAP.getZoom());
     },
   };
@@ -51,7 +56,7 @@ const LocationMarker: React.FC<{
         icon={BankIcon}
         eventHandlers={MarkerFn}
       />
-      {position && (
+      {position.lat && (
         <Popup position={position}>
           <Grid container>
             <Typography variant="h6"> {branch.name}</Typography>

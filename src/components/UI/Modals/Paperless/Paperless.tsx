@@ -15,11 +15,12 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import Modal from "./Modal";
 import { AxiosStatic } from "axios";
+import { NavigateFunction } from "react-router-dom";
 
 const Paperless: FC<{
   Exit: () => void;
   isMobile: boolean;
-
+  nav: NavigateFunction;
   classes: {
     readonly [key: string]: string;
   };

@@ -7,21 +7,14 @@ import {
   useState,
   memo,
 } from "react";
-import {
-  NavigateFunction,
-  Route,
-  Routes,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { NavigateFunction, Route, Routes, useParams } from "react-router-dom";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import MoneyTransfer from "../components/UI/Modals/MoneyTransfer/MoneyTransfer";
 import { modalActions } from "../store/modals/modal-slice";
 import { MockStatements } from "../assets/data/MockData";
 import { SelectChangeEvent } from "@mui/material";
 import { customerActions } from "../store/customer/customer-slice";
-import { RootState } from "../store/store";
 import classes from "../styles/Profile/ProfileStyles.module.css";
 import MoneyTransferStyles from "../styles/Modals/Modals.module.css";
 import Statement from "../components/UI/Modals/Statement/Statement";
@@ -48,7 +41,8 @@ const Profile: FC<{
   Location: Location;
   token: string | null;
   mobile: boolean;
-
+  nav: NavigateFunction;
+  param: URLSearchParams;
   API_VERSION: string | undefined;
   customer: {
     fName: string;
@@ -77,7 +71,7 @@ const Profile: FC<{
       phoneNumber: string | undefined;
     };
   };
-}> = ({ token, mobile, customer, Location, API_VERSION }) => {
+}> = ({ token, mobile, customer, Location, API_VERSION, nav, param }) => {
   const DateAmount: DateAmountType[] = [];
   const PARAMS = useParams<string>();
   const currentYear: number = new Date().getFullYear();
@@ -86,9 +80,7 @@ const Profile: FC<{
   const [termsOfChoice, setTermsOfChoice] = useState<string>("");
   const [withdrawals, setWithdrawals] = useState<number>(0);
   const [deposits, setDeposits] = useState<number>(0);
-  const modal = useSelector((state: RootState) => state.view);
   const dispatch = useDispatch<Dispatch<any>>();
-  const navigate: NavigateFunction = useNavigate();
 
   useEffect(() => {
     const fetchAccount: (token: string | null) => void = async (token) => {
@@ -133,21 +125,21 @@ const Profile: FC<{
         });
     };
     fetchAccount(token);
-  }, [token, dispatch, navigate, API_VERSION]);
+  }, [token, dispatch, API_VERSION]);
 
   const viewHandler = useCallback(
     (event: ChangeEvent<HTMLElement>) => {
       const VIEW = event.target.innerText;
-      dispatch(modalActions.setView({ view: VIEW }));
+      nav(`?action=${VIEW}`, { replace: false });
     },
-    [dispatch]
+    [nav]
   );
 
   const exitHandler = useCallback(() => {
-    dispatch(modalActions.setView({ view: "" }));
+    nav("/profile", { replace: false });
     setTermsOfChoice("");
     setView(false);
-  }, [dispatch]);
+  }, [nav]);
 
   const choiceHandler = useCallback((event: SelectChangeEvent) => {
     const { value } = event.target;
@@ -179,6 +171,7 @@ const Profile: FC<{
           onChoice={choiceHandler}
           CreateTransfer={customerActions.createTransfer}
           setView={modalActions.setView}
+          nav={nav}
         />
       ),
     },
@@ -193,6 +186,7 @@ const Profile: FC<{
           Exit={exitHandler}
           isMobile={mobile}
           MockStatements={MockStatements}
+          nav={nav}
         />
       ),
     },
@@ -209,6 +203,7 @@ const Profile: FC<{
           classes={MoneyTransferStyles}
           Exit={exitHandler}
           isMobile={mobile}
+          nav={nav}
         />
       ),
     },
@@ -224,6 +219,7 @@ const Profile: FC<{
           routingNum={customer.routingNum}
           Exit={exitHandler}
           isMobile={mobile}
+          nav={nav}
         />
       ),
     },
@@ -243,6 +239,7 @@ const Profile: FC<{
           isMobile={mobile}
           BACKDROPDIV={backdropDiv}
           OVERLAYDIV={overlayDiv}
+          nav={nav}
         />
       ),
     },
@@ -262,7 +259,6 @@ const Profile: FC<{
           customer={customer}
           currentYear={currentYear}
           currentMonth={currentMonth}
-          modal={modal}
           modals={modals}
           classes={classes}
           mobile={mobile}
@@ -270,6 +266,7 @@ const Profile: FC<{
           setWithdrawals={setWithdrawals}
           deposits={deposits}
           setDeposits={setDeposits}
+          param={param}
         />
       ),
       link: MAINPROFILE,

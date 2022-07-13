@@ -9,12 +9,14 @@ import BankInfo from "../components/Locations/BankInfo";
 import BankSearch from "../components/Locations/BankSearch";
 import Banner from "../components/Locations/Banner";
 import classes from "../styles/Location/LocationsStyles.module.css";
+import { NavigateFunction } from "react-router-dom";
 
 const Locations: FC<{
   isMobile: boolean;
-
+  nav: NavigateFunction;
+  param: URLSearchParams;
   API_VERSION: string | undefined;
-}> = ({ isMobile, API_VERSION }) => {
+}> = ({ isMobile, API_VERSION, nav, param }) => {
   const LEGACY: {
     name: string;
     country: string;
@@ -51,7 +53,7 @@ const Locations: FC<{
       });
     };
     fetchBankData();
-  }, [dispatch, API_VERSION]);
+  }, [dispatch, API_VERSION, LEGACY.name]);
 
   return (
     <>
@@ -62,7 +64,7 @@ const Locations: FC<{
         classes={classes}
         isMobile={isMobile}
       />
-      <BankSearch classes={classes} bank={LEGACY} />
+      <BankSearch classes={classes} bank={LEGACY} nav={nav} param={param} />
     </>
   );
 };

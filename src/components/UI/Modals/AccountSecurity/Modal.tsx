@@ -93,7 +93,7 @@ const Modal: React.FC<{
   ];
   const SECURITYVIEW: { key: number; title: string; view: JSX.Element }[] = [
     {
-      key: 1,
+      key: 3,
       title: LOCKACCOUNT,
       view: (
         <AccountLock
@@ -108,7 +108,7 @@ const Modal: React.FC<{
       ),
     },
     {
-      key: 2,
+      key: 4,
       title: LOCKCARD,
       view: (
         <CardLock

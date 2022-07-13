@@ -5,10 +5,11 @@ import { SelectChangeEvent } from "@mui/material";
 import Modal from "./Modal";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { AxiosStatic } from "axios";
+import { NavigateFunction } from "react-router-dom";
 
 const MoneyTransfer: FC<{
   Location: Location;
-
+  nav: NavigateFunction;
   API_VERSION: string | undefined;
   token: string | null;
   view: boolean;
