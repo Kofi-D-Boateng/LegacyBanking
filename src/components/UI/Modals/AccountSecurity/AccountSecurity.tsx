@@ -13,6 +13,7 @@ import {
 import { AxiosStatic } from "axios";
 import { FC, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { NavigateFunction } from "react-router-dom";
 import Backdrop from "../../Backdrops/Backdrop";
 import {
   LOCKACCOUNT,
@@ -27,6 +28,7 @@ import Modal from "./Modal";
 
 const AccountSecurity: FC<{
   Exit: () => void;
+  nav: NavigateFunction;
   BACKDROPDIV: HTMLElement | null;
   OVERLAYDIV: HTMLElement | null;
   isMobile: boolean;

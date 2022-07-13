@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { Card, CardContent, Grid, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Backdrop from "../../Backdrops/Backdrop";
+import { NavigateFunction } from "react-router-dom";
 
 const Modal: React.FC<{
   Exit: () => void;
@@ -75,6 +76,7 @@ const Modal: React.FC<{
 const AccountNumbers: React.FC<{
   Exit: () => void;
   isMobile: boolean;
+  nav: NavigateFunction;
   accountNum: string;
   routingNum: string;
   classes: {

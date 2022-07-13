@@ -9,7 +9,7 @@ export const MockStatements: {
   { key: 3, date: "2022-04-05", amount: 280.52, amountPaid: 280.52 },
 ];
 
-export const MockStatementsTiles: { key: number; title: string }[] = [
+export const MockStatementsTitles: { key: number; title: string }[] = [
   { key: 1, title: "Date" },
   { key: 2, title: "Amount" },
   { key: 3, title: "Amount Paid" },

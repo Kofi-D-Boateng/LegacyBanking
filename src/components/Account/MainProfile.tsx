@@ -5,10 +5,6 @@ import AccountInfo from "./AccountCard/AccountInfo";
 import AccountCoupons from "./AccountCoupons/AccountCoupons";
 import AccountDetails from "./AccountDetails/AccountDetails";
 const MainProfile: React.FC<{
-  modal: {
-    view: string;
-    paperless: boolean | undefined;
-  };
   modals: {
     key: number;
     modal: JSX.Element;
@@ -48,8 +44,8 @@ const MainProfile: React.FC<{
   setWithdrawals: React.Dispatch<React.SetStateAction<number>>;
   setDeposits: React.Dispatch<React.SetStateAction<number>>;
   viewHandler: (event: ChangeEvent<HTMLElement>) => void;
+  param: URLSearchParams;
 }> = ({
-  modal,
   modals,
   classes,
   mobile,
@@ -66,13 +62,14 @@ const MainProfile: React.FC<{
   PAPERLESS,
   SECURITY,
   STATEMENT,
+  param,
 }) => {
   return (
     <>
-      {modal.view &&
+      {param.get("action") &&
         modals
           .filter((m) => {
-            return m.type.includes(modal.view);
+            return m.type.includes(param.get("action") as string);
           })
           .map((a) => {
             return <Container key={a.key}>{a.modal}</Container>;
@@ -125,7 +122,6 @@ const MainProfile: React.FC<{
         </Grid>
       ) : (
         <Grid className={classes.profile} container>
-          {" "}
           <Grid xs={12} item>
             <Grid container>
               <Grid xs={12} item>
