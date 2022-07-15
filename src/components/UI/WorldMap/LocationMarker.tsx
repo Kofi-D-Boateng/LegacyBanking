@@ -10,7 +10,6 @@ import {
 import { useState } from "react";
 import { MarkerProps, Popup } from "react-leaflet";
 import bank from "../../../assets/photos/bank.jpg";
-
 const LocationMarker: React.FC<{
   Marker: React.ForwardRefExoticComponent<
     MarkerProps & React.RefAttributes<Marker<any>>
@@ -49,6 +48,7 @@ const LocationMarker: React.FC<{
         icon={BankIcon}
         eventHandlers={MarkerFn}
       />
+
       {p && (
         <Popup position={p}>
           <Grid sx={{ display: "inline-block" }} container>
