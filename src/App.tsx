@@ -184,11 +184,15 @@ const App: FC = () => {
             />
             <Route
               path={LOGIN}
-              element={<Login API_VERSION={API_VERSION} isMobile={mobile} />}
+              element={
+                <Login API_VERSION={API_VERSION} isMobile={mobile} nav={nav} />
+              }
             />
             <Route
               path={SIGNUP}
-              element={<Signup API_VERSION={API_VERSION} isMobile={mobile} />}
+              element={
+                <Signup API_VERSION={API_VERSION} isMobile={mobile} nav={nav} />
+              }
             />
             <Route
               path={DISABLED}

@@ -1,7 +1,7 @@
 import { FC, useState, useRef, useEffect, Fragment } from "react";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import axios from "axios";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavigateFunction, NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { customerActions } from "../store/customer/customer-slice";
 import classes from "../styles/Login/LoginStyles.module.css";
@@ -13,11 +13,10 @@ import { PROFILE } from "../components/UI/Constants/Constants";
 
 const Login: FC<{
   isMobile: boolean;
-
+  nav: NavigateFunction;
   API_VERSION: string | undefined;
-}> = ({ isMobile, API_VERSION }) => {
+}> = ({ isMobile, API_VERSION, nav }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [invalid, setInvalid] = useState<boolean>(false);
   const [user, setUser] = useState<credentials>({
@@ -46,7 +45,7 @@ const Login: FC<{
                 isLocked: isLocked,
               })
             );
-            navigate(PROFILE.substring(0, 8), { replace: true });
+            nav(PROFILE.substring(0, 8), { replace: true });
           }
         })
         .catch(() => {
@@ -55,7 +54,7 @@ const Login: FC<{
         });
     };
     fetchUserLogin(user);
-  }, [user, dispatch, navigate, API_VERSION]);
+  }, [user, dispatch, nav, API_VERSION]);
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();

@@ -2,17 +2,17 @@ import { FC, SetStateAction, useEffect, useState } from "react";
 import axios from "axios";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import SignupForm from "../components/Forms/SignupForm/SignupForm";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction } from "react-router-dom";
 import classes from "../styles/Signup/SignupStyles.module.css";
 import { LOGIN } from "../components/UI/Constants/Constants";
 
 const Signup: FC<{
   API_VERSION: string | undefined;
+  nav: NavigateFunction;
   isMobile: boolean;
-}> = ({ API_VERSION, isMobile }) => {
+}> = ({ API_VERSION, isMobile, nav }) => {
   const [user, setUser] = useState<{} | null>(null);
   const [isValid, setIsValid] = useState<boolean>(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (user === null) {
@@ -23,14 +23,14 @@ const Signup: FC<{
         .post(`${API_VERSION}/authentication/registration`, user)
         .then((response) => {
           if (response.data.isSaved === true) {
-            navigate(LOGIN, { replace: true });
+            nav(LOGIN, { replace: true });
           } else {
             setIsValid(false);
           }
         });
     };
     fetchUserSignup(user);
-  }, [user, navigate, API_VERSION]);
+  }, [user, nav, API_VERSION]);
 
   const userInfo = (
     data: SetStateAction<{
