@@ -7,8 +7,10 @@ import {
   Map,
   Marker,
 } from "leaflet";
+import { useState } from "react";
 import { MarkerProps, Popup } from "react-leaflet";
 import { NavigateFunction } from "react-router-dom";
+import bank from "../../../assets/photos/bank.jpg";
 
 const LocationMarker: React.FC<{
   Marker: React.ForwardRefExoticComponent<
@@ -28,17 +30,11 @@ const LocationMarker: React.FC<{
   };
   param: URLSearchParams;
 }> = ({ Marker, markerIcon, useMap, branch, nav, param }) => {
-  const lat: number | undefined = param.get("lat")
-    ? parseFloat(param.get("lat") as string)
-    : undefined;
-  const lng: number | undefined = param.get("lng")
-    ? parseFloat(param.get("lng") as string)
-    : undefined;
-  const position: LatLngExpression = { lat: lat ? lat : 0, lng: lng ? lng : 0 };
+  const [p, setP] = useState<LatLngExpression | undefined>();
   const MAP: Map = useMap();
   const MarkerFn: LeafletEventHandlerFnMap = {
     click(e: LeafletMouseEvent) {
-      nav(`/locations?lat=${e.latlng.lat}&lng=${e.latlng.lng}`);
+      setP(e.latlng);
       MAP.flyTo(e.latlng, MAP.getZoom());
     },
   };
@@ -56,16 +52,19 @@ const LocationMarker: React.FC<{
         icon={BankIcon}
         eventHandlers={MarkerFn}
       />
-      {position.lat && (
-        <Popup position={position}>
-          <Grid container>
+      {p && (
+        <Popup position={p}>
+          <Grid sx={{ display: "inline-block" }} container>
             <Typography variant="h6"> {branch.name}</Typography>
-            <Typography variant="body1">
-              {"Country: " + branch.country}
-            </Typography>
+            <Typography variant="h6">{"Country: " + branch.country}</Typography>
+            <Typography variant="h6">{"Area: " + branch.state}</Typography>
           </Grid>
-          <Grid container>
-            <Typography variant="body1">{"Area: " + branch.state}</Typography>
+          <Grid sx={{ margin: "30px 0" }} container>
+            <img
+              style={{ width: "100%", margin: "auto" }}
+              src={bank}
+              alt="bank.jpg"
+            />
           </Grid>
         </Popup>
       )}
