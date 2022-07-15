@@ -7,11 +7,10 @@ import {
   Map,
   Marker,
 } from "leaflet";
-import { useState } from "react";
 import { MarkerProps, Popup } from "react-leaflet";
 import { NavigateFunction } from "react-router-dom";
-import bank from "../../../assets/photos/bank.jpg";
 
+import bank from "../../../assets/photos/bank.jpg";
 const LocationMarker: React.FC<{
   Marker: React.ForwardRefExoticComponent<
     MarkerProps & React.RefAttributes<Marker<any>>
@@ -30,6 +29,7 @@ const LocationMarker: React.FC<{
   };
   param: URLSearchParams;
 }> = ({ Marker, markerIcon, useMap, branch, nav, param }) => {
+
   const [p, setP] = useState<LatLngExpression | undefined>();
   const MAP: Map = useMap();
   const MarkerFn: LeafletEventHandlerFnMap = {
@@ -52,9 +52,11 @@ const LocationMarker: React.FC<{
         icon={BankIcon}
         eventHandlers={MarkerFn}
       />
+
       {p && (
         <Popup position={p}>
           <Grid sx={{ display: "inline-block" }} container>
+
             <Typography variant="h6"> {branch.name}</Typography>
             <Typography variant="h6">{"Country: " + branch.country}</Typography>
             <Typography variant="h6">{"Area: " + branch.state}</Typography>
