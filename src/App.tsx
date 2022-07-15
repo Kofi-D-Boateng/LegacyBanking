@@ -159,12 +159,7 @@ const App: FC = () => {
             <Route
               path={LOCATIONS}
               element={
-                <Locations
-                  API_VERSION={API_VERSION}
-                  param={searchParams}
-                  isMobile={mobile}
-                  nav={nav}
-                />
+                <Locations API_VERSION={API_VERSION} isMobile={mobile} />
               }
             />
             <Route
@@ -184,11 +179,15 @@ const App: FC = () => {
             />
             <Route
               path={LOGIN}
-              element={<Login API_VERSION={API_VERSION} isMobile={mobile} />}
+              element={
+                <Login API_VERSION={API_VERSION} isMobile={mobile} nav={nav} />
+              }
             />
             <Route
               path={SIGNUP}
-              element={<Signup API_VERSION={API_VERSION} isMobile={mobile} />}
+              element={
+                <Signup API_VERSION={API_VERSION} isMobile={mobile} nav={nav} />
+              }
             />
             <Route
               path={DISABLED}
