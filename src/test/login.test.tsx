@@ -3,13 +3,15 @@ import { createTheme } from "@mui/material";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, NavigateFunction, useNavigate } from "react-router-dom";
 import { store } from "../store/store";
 import { setupServer, SetupServerApi } from "msw/node";
 import { rest } from "msw";
 import { API_VERSION } from "../components/UI/Constants/Constants";
 import Login from "../pages/Login";
 import "@testing-library/jest-dom/extend-expect";
+
+const nav: NavigateFunction = useNavigate();
 
 const theme = createTheme({
   palette: {
@@ -58,7 +60,7 @@ describe("Login test suite. Profile exclusive", () => {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <BrowserRouter>
-            <Login API_VERSION={API_VERSION} isMobile={false} />
+            <Login API_VERSION={API_VERSION} isMobile={false} nav={nav} />
           </BrowserRouter>
         </ThemeProvider>
       </Provider>
