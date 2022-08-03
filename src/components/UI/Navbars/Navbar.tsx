@@ -18,7 +18,7 @@ import MainWeb from "./Web/MainWeb";
 
 import { AxiosStatic } from "axios";
 import { customerActions } from "../../../store/customer/customer-slice";
-import { CustomerDetails } from "../../../interfaces/Customer";
+import { CustomerDetails } from "../../../interfaces/CustomerDetails";
 
 const Navbar: React.FC<{
   API_VERSION: string | undefined;

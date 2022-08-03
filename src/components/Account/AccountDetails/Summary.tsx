@@ -3,7 +3,7 @@ import { Grid } from "@mui/material";
 import classes from "../../../styles/SVG/BarGraphSVGStyles.module.css";
 import BarChart from "../../UI/SVGs/BarChart";
 import MainPanel from "./MainPanel/MainPanel";
-import { CustomerDetails } from "../../../interfaces/Customer";
+import { CustomerDetails } from "../../../interfaces/CustomerDetails";
 import { DateAmountType } from "../../../interfaces/Maps";
 
 const Summary: FC<{

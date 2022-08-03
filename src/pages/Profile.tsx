@@ -42,7 +42,7 @@ import { DateAmountType } from "../interfaces/Maps";
 import AccountSecurity from "../components/UI/Modals/AccountSecurity/AccountSecurity";
 import { backdropDiv, overlayDiv } from "../components/UI/Layouts/RootElement";
 import { notisActions } from "../store/notifications/notifications";
-import { CustomerDetails } from "../interfaces/Customer";
+import { CustomerDetails } from "../interfaces/CustomerDetails";
 
 const Profile: FC<{
   Location: Location;

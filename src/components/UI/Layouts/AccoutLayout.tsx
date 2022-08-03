@@ -1,7 +1,7 @@
 import { AxiosStatic } from "axios";
 import { FC, ReactNode } from "react";
 import { useSelector } from "react-redux";
-import { CustomerDetails } from "../../../interfaces/Customer";
+import { CustomerDetails } from "../../../interfaces/CustomerDetails";
 import { NotificationDetails } from "../../../interfaces/Notification";
 import { RootState } from "../../../store/store";
 import { PROFILE, REDIRECT } from "../Constants/Constants";
