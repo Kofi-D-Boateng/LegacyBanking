@@ -38,11 +38,11 @@ import {
 } from "../components/UI/Constants/Constants";
 import MainProfile from "../components/Account/MainProfile";
 import Summary from "../components/Account/AccountDetails/Summary";
-import { DateAmountType } from "../interfaces/Maps";
+import { DateAmountType } from "../types/Maps";
 import AccountSecurity from "../components/UI/Modals/AccountSecurity/AccountSecurity";
 import { backdropDiv, overlayDiv } from "../components/UI/Layouts/RootElement";
 import { notisActions } from "../store/notifications/notifications";
-import { CustomerDetails } from "../interfaces/CustomerDetails";
+import { CustomerDetails } from "../types/CustomerDetails";
 
 const Profile: FC<{
   Location: Location;
@@ -66,11 +66,14 @@ const Profile: FC<{
   useEffect(() => {
     const fetchAccount: (token: string | null) => void = async (token) => {
       await axios
-        .get(`${API_VERSION}/authentication/profile/info`, {
-          headers: {
-            authorization: token as string,
-          },
-        })
+        .get(
+          `http://localhost:8081/${API_VERSION}/authentication/profile/info`,
+          {
+            headers: {
+              authorization: token as string,
+            },
+          }
+        )
         .then((response) => {
           const {
             fName,

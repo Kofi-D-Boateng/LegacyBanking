@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import React, { Dispatch, useCallback, useState } from "react";
+import { Dispatch, FC, useCallback, useState, MouseEvent } from "react";
 import { useDispatch } from "react-redux";
 import {
   Typography,
@@ -18,25 +18,26 @@ import MainWeb from "./Web/MainWeb";
 
 import { AxiosStatic } from "axios";
 import { customerActions } from "../../../store/customer/customer-slice";
-import { CustomerDetails } from "../../../interfaces/CustomerDetails";
+import { CustomerDetails } from "../../../types/CustomerDetails";
+import { Link } from "../../../types/Link";
 
-const Navbar: React.FC<{
+const Navbar: FC<{
   API_VERSION: string | undefined;
   axios: AxiosStatic;
   isMobile: boolean;
   customer: CustomerDetails;
-  links: { key: number; title: string; link: string }[];
-  authLinks: { key: number; title: string; link: string }[];
+  links: Link[];
+  authLinks: Link[];
 }> = ({ customer, isMobile, links, authLinks, axios, API_VERSION }) => {
   const [anchorEl, setAnchorEl] = useState<any>(null);
   const dispatch = useDispatch<Dispatch<any>>();
 
-  const handleMenu = useCallback((event: React.MouseEvent<any>) => {
+  const handleMenu = useCallback((event: MouseEvent<any>) => {
     setAnchorEl(event.currentTarget);
   }, []);
 
   const handleClose = useCallback(
-    async (event: React.MouseEvent<HTMLElement>) => {
+    async (event: MouseEvent<HTMLElement>) => {
       const { innerText } = event.currentTarget;
       if (innerText === "Log out") {
         await axios

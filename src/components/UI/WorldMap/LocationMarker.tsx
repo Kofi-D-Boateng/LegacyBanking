@@ -7,27 +7,17 @@ import {
   Map,
   Marker,
 } from "leaflet";
-import { Dispatch, SetStateAction } from "react";
+import { useState, FC, ForwardRefExoticComponent, RefAttributes } from "react";
 import { MarkerProps, Popup } from "react-leaflet";
+import { Branch } from "../../../types/Bank";
 
-const LocationMarker: React.FC<{
-  Marker: React.ForwardRefExoticComponent<
-    MarkerProps & React.RefAttributes<Marker<any>>
-  >;
+const LocationMarker: FC<{
+  Marker: ForwardRefExoticComponent<MarkerProps & RefAttributes<Marker<any>>>;
   markerIcon: string;
   useMap: () => Map;
-  branch: {
-    name: string;
-    country: string;
-    state: string;
-    zipcode: string;
-    totalHoldings: number;
-    latitude: number;
-    longitude: number;
-  };
-  pos: LatLngExpression | undefined;
-  setPos: Dispatch<SetStateAction<LatLngExpression | undefined>>;
-}> = ({ Marker, markerIcon, useMap, branch, pos, setPos }) => {
+  branch: Branch;
+}> = ({ Marker, markerIcon, useMap, branch }) => {
+  const [pos, setPos] = useState<LatLngExpression | undefined>(undefined);
   const MAP: Map = useMap();
   const MarkerFn: LeafletEventHandlerFnMap = {
     click(e: LeafletMouseEvent) {

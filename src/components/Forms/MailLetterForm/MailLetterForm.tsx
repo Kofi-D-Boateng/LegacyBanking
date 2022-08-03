@@ -1,18 +1,25 @@
 import { TextField, Button, Grid } from "@mui/material";
-import React from "react";
+import {
+  Dispatch,
+  FC,
+  FormEvent,
+  MutableRefObject,
+  SetStateAction,
+  FocusEvent,
+} from "react";
 
-const Form: React.FC<{
+const Form: FC<{
   isMobile: boolean;
   classes: {
     readonly [key: string]: string;
   };
   show: boolean;
-  emailRef: React.MutableRefObject<HTMLInputElement | undefined>;
-  setShow: React.Dispatch<React.SetStateAction<boolean>>;
-  submit: (e: React.FormEvent) => void;
+  emailRef: MutableRefObject<HTMLInputElement | undefined>;
+  setShow: Dispatch<SetStateAction<boolean>>;
+  submit: (e: FormEvent) => void;
 }> = ({ classes, show, setShow, emailRef, submit }) => {
   const inputCheck: (
-    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void = ({ currentTarget }) => {
     const { value } = currentTarget;
     if (

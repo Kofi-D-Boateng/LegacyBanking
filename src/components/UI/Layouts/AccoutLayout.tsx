@@ -1,8 +1,8 @@
 import { AxiosStatic } from "axios";
 import { FC, ReactNode } from "react";
 import { useSelector } from "react-redux";
-import { CustomerDetails } from "../../../interfaces/CustomerDetails";
-import { NotificationDetails } from "../../../interfaces/Notification";
+import { CustomerDetails } from "../../../types/CustomerDetails";
+import { NotificationDetails } from "../../../types/Notification";
 import { RootState } from "../../../store/store";
 import { PROFILE, REDIRECT } from "../Constants/Constants";
 import AccountFooter from "../Footers/AccountFooter";

@@ -6,7 +6,7 @@ import Modal from "./Modal";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { AxiosStatic } from "axios";
 import { NavigateFunction } from "react-router-dom";
-import { TransferDetails } from "../../../../interfaces/Transfer";
+import { TransferDetails } from "../../../../types/Transfer";
 
 const MoneyTransfer: FC<{
   Location: Location;

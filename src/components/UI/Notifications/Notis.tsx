@@ -6,16 +6,10 @@ import {
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { FC, MouseEvent } from "react";
+import { Notification } from "../../../types/Notification";
 
 const Notis: FC<{
-  n: {
-    _id: string;
-    sender: string;
-    receiver: string;
-    amount: number;
-    date: string;
-    read: boolean;
-  };
+  n: Notification;
   index: number;
   length: number;
   markRead: (e: MouseEvent<HTMLButtonElement>) => void;

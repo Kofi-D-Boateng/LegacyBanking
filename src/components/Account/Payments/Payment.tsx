@@ -1,4 +1,6 @@
-const Payment: React.FC<{
+import { FC } from "react";
+
+const Payment: FC<{
   isMobile: boolean;
   customer: {
     fName: string;

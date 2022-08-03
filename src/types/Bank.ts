@@ -1,4 +1,4 @@
-interface Branch {
+export type Branch = {
   name: string;
   country: string;
   state: string;
@@ -6,13 +6,13 @@ interface Branch {
   totalHoldings: number;
   latitude: number;
   longitude: number;
-}
+};
 
-export interface BankDetails {
+export type BankDetails = {
   name: string;
   country: string;
   area: string;
   zipcode: string;
   totalHoldings: number;
   branches: Branch[];
-}
+};

@@ -9,7 +9,7 @@ import BankInfo from "../components/Locations/BankInfo";
 import BankSearch from "../components/Locations/BankSearch";
 import Banner from "../components/Locations/Banner";
 import classes from "../styles/Location/LocationsStyles.module.css";
-import { BankDetails } from "../interfaces/Bank";
+import { BankDetails } from "../types/Bank";
 
 const Locations: FC<{
   isMobile: boolean;
@@ -20,20 +20,22 @@ const Locations: FC<{
 
   useEffect(() => {
     const fetchBankData: () => void = async () => {
-      await axios.get(`${API_VERSION}/bank/info`).then((response) => {
-        const { name, country, state, zipcode, totalHoldings, branches } =
-          response.data;
-        dispatch(
-          bankActions.getBankInfo({
-            name,
-            country,
-            area: state,
-            zipcode: zipcode,
-            totalHoldings,
-            branches,
-          })
-        );
-      });
+      await axios
+        .get(`http://localhost:8081/${API_VERSION}/bank/info`)
+        .then((response) => {
+          const { name, country, state, zipcode, totalHoldings, branches } =
+            response.data;
+          dispatch(
+            bankActions.getBankInfo({
+              name,
+              country,
+              area: state,
+              zipcode: zipcode,
+              totalHoldings,
+              branches,
+            })
+          );
+        });
     };
     fetchBankData();
   }, [dispatch, API_VERSION, LEGACY.name]);

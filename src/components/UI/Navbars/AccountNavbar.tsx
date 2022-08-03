@@ -27,7 +27,7 @@ import { notisActions } from "../../../store/notifications/notifications";
 import AccountMobile from "./Mobile/AccountMobile";
 import AccountWeb from "./Web/AccountWeb";
 import { customerActions } from "../../../store/customer/customer-slice";
-import { NotificationDetails } from "../../../interfaces/Notification";
+import { NotificationDetails } from "../../../types/Notification";
 
 const AccountNavbar: FC<{
   mobile: boolean;

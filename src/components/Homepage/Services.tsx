@@ -1,9 +1,9 @@
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Card, Grid, IconButton, Typography } from "@mui/material";
-import React from "react";
+import { FC, MouseEvent } from "react";
 import { NavLink } from "react-router-dom";
 
-const Services: React.FC<{
+const Services: FC<{
   classes: {
     readonly [key: string]: string;
   };
@@ -19,7 +19,7 @@ const Services: React.FC<{
   }[];
   FORWARD: string;
   BACKWARD: string;
-  setView: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  setView: (e: MouseEvent<HTMLButtonElement>) => void;
 }> = ({ classes, isMobile, view, cards, setView, BACKWARD, FORWARD }) => {
   return (
     <Grid container>

@@ -5,7 +5,13 @@ import {
   TypographyTypeMap,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import { FC, MutableRefObject } from "react";
+import {
+  FC,
+  FormEvent,
+  ForwardRefExoticComponent,
+  MutableRefObject,
+  RefAttributes,
+} from "react";
 import { NavLinkProps } from "react-router-dom";
 
 const LoginWeb: FC<{
@@ -19,15 +25,15 @@ const LoginWeb: FC<{
     readonly [key: string]: string;
   };
   Typography: OverridableComponent<TypographyTypeMap<{}, "span">>;
-  NavLink: React.ForwardRefExoticComponent<
-    NavLinkProps & React.RefAttributes<HTMLAnchorElement>
+  NavLink: ForwardRefExoticComponent<
+    NavLinkProps & RefAttributes<HTMLAnchorElement>
   >;
-  submitHandler: (event: React.FormEvent) => void;
-  PASSWORD: React.MutableRefObject<HTMLInputElement | undefined>;
-  EMAIL: React.MutableRefObject<HTMLInputElement | undefined>;
-  LoginForm: React.FC<{
+  submitHandler: (event: FormEvent) => void;
+  PASSWORD: MutableRefObject<HTMLInputElement | undefined>;
+  EMAIL: MutableRefObject<HTMLInputElement | undefined>;
+  LoginForm: FC<{
     isMobile: boolean;
-    submit: (event: React.FormEvent) => void;
+    submit: (event: FormEvent) => void;
     password: MutableRefObject<HTMLInputElement | undefined>;
     email: MutableRefObject<HTMLInputElement | undefined>;
   }>;

@@ -7,6 +7,7 @@ import {
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import {
   FC,
+  FormEvent,
   ForwardRefExoticComponent,
   MutableRefObject,
   RefAttributes,
@@ -27,12 +28,12 @@ const LoginMobile: FC<{
   NavLink: ForwardRefExoticComponent<
     NavLinkProps & RefAttributes<HTMLAnchorElement>
   >;
-  submitHandler: (event: React.FormEvent) => void;
+  submitHandler: (event: FormEvent) => void;
   PASSWORD: MutableRefObject<HTMLInputElement | undefined>;
   EMAIL: MutableRefObject<HTMLInputElement | undefined>;
-  LoginForm: React.FC<{
+  LoginForm: FC<{
     isMobile: boolean;
-    submit: (event: React.FormEvent) => void;
+    submit: (event: FormEvent) => void;
     password: MutableRefObject<HTMLInputElement | undefined>;
     email: MutableRefObject<HTMLInputElement | undefined>;
   }>;

@@ -1,6 +1,7 @@
 import { Grid, Typography } from "@mui/material";
+import { FC } from "react";
 
-const Banner: React.FC<{
+const Banner: FC<{
   classes: {
     readonly [key: string]: string;
   };

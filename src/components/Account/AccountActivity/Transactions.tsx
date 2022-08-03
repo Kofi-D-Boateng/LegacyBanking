@@ -1,5 +1,6 @@
 import { Button, Grid, Typography } from "@mui/material";
-import React from "react";
+import { Dispatch, FC, SetStateAction, useCallback } from "react";
+import { Transaction } from "../../../types/CustomerDetails";
 import {
   ACHDEBIT,
   DEBITTRASFER,
@@ -7,25 +8,27 @@ import {
   WITHDRAWAL,
 } from "../../UI/Constants/Constants";
 
-const Transaction: React.FC<{
+const Transactions: FC<{
   classes: {
     readonly [key: string]: string;
   };
-  transactions: {
-    id: number;
-    type: string;
-    dateOfTransaction: string;
-    amount: number;
-    location: string;
-  }[];
+  transactions: Transaction[];
   categories: {
     key: number;
     title: string;
   }[];
   YEAR: number;
   count: number;
-  setCount: React.Dispatch<React.SetStateAction<number>>;
+  setCount: Dispatch<SetStateAction<number>>;
 }> = ({ classes, categories, transactions, YEAR, count, setCount }) => {
+  const renderHandler = useCallback(() => {
+    if (count > transactions.length) {
+      setCount(10);
+    } else {
+      setCount((prevState) => prevState + 5);
+    }
+  }, [count, setCount, transactions.length]);
+
   return (
     <Grid sx={{ margin: "auto" }} container>
       {transactions
@@ -109,9 +112,7 @@ const Transaction: React.FC<{
           type="button"
           variant="text"
           // THIS DOES NOT WORK AS INTENDED!!! MUST DECREMENT CURRENT TO SHOW PREVIOUS MONTHS.
-          onClick={() => {
-            setCount((prevState) => prevState + 5);
-          }}
+          onClick={renderHandler}
         >
           See more activity
         </Button>
@@ -120,4 +121,4 @@ const Transaction: React.FC<{
   );
 };
 
-export default Transaction;
+export default Transactions;

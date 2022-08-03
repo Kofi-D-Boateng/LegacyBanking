@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import { FC, LegacyRef, useEffect, useRef } from "react";
 import * as d3 from "d3";
-import { DateAmountType, MonthsMap } from "../../../interfaces/Maps";
+import { DateAmountType, MonthsMap } from "../../../types/Maps";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import {
   ACHDEBIT,
@@ -8,14 +8,9 @@ import {
   TRANSFER,
   WITHDRAWAL,
 } from "../Constants/Constants";
-const BarChart: React.FC<{
-  transactions: {
-    id: number;
-    type: string;
-    dateOfTransaction: string;
-    amount: number;
-    location: string;
-  }[];
+import { Transaction } from "../../../types/CustomerDetails";
+const BarChart: FC<{
+  transactions: Transaction[];
   DateAmount: DateAmountType[];
   year: number;
   classes: {
@@ -23,7 +18,7 @@ const BarChart: React.FC<{
   };
   isMobile: boolean;
 }> = ({ transactions, DateAmount, year, classes, isMobile }) => {
-  const svgRef: React.LegacyRef<SVGSVGElement> | undefined = useRef<any>();
+  const svgRef: LegacyRef<SVGSVGElement> | undefined = useRef<any>();
   useEffect(() => {
     const MARGIN: {
       top: number;

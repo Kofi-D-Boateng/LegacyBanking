@@ -1,10 +1,10 @@
 import { Container, Grid } from "@mui/material";
-import React, { ChangeEvent } from "react";
+import { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
 import AccountActivity from "./AccountActivity/AccountActivity";
 import AccountInfo from "./AccountCard/AccountInfo";
 import AccountCoupons from "./AccountCoupons/AccountCoupons";
 import AccountDetails from "./AccountDetails/AccountDetails";
-const MainProfile: React.FC<{
+const MainProfile: FC<{
   modals: {
     key: number;
     modal: JSX.Element;
@@ -41,8 +41,8 @@ const MainProfile: React.FC<{
   MONEYTRANSFER: string;
   PAPERLESS: string;
   ACCOUNTNUMBER: string;
-  setWithdrawals: React.Dispatch<React.SetStateAction<number>>;
-  setDeposits: React.Dispatch<React.SetStateAction<number>>;
+  setWithdrawals: Dispatch<SetStateAction<number>>;
+  setDeposits: Dispatch<SetStateAction<number>>;
   viewHandler: (event: ChangeEvent<HTMLElement>) => void;
   param: URLSearchParams;
 }> = ({

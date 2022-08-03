@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BankDetails } from "../../interfaces/Bank";
+import { BankDetails } from "../../types/Bank";
 
 function initialState(): BankDetails {
   return {

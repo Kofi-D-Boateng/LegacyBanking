@@ -1,11 +1,11 @@
-import { FC, useState, useRef, useEffect, Fragment } from "react";
+import { FC, useState, useRef, useEffect, Fragment, FormEvent } from "react";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import { NavigateFunction, NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { customerActions } from "../store/customer/customer-slice";
 import classes from "../styles/Login/LoginStyles.module.css";
-import { LoginCredentials } from "../interfaces/Credentials";
+import { LoginCredentials } from "../types/Credentials";
 import LoginMobile from "../components/Login/LoginMobile";
 import LoginWeb from "../components/Login/LoginWeb";
 import LoginForm from "../components/Forms/LoginForm/LoginForm";
@@ -19,7 +19,7 @@ const Login: FC<{
   const nav: NavigateFunction = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [invalid, setInvalid] = useState<boolean>(false);
-  const [user, setUser] = useState<LoginCredentials>({
+  const [credentials, setCredentials] = useState<LoginCredentials>({
     email: "",
     password: "",
   });
@@ -27,13 +27,19 @@ const Login: FC<{
   const passwordRef = useRef<HTMLInputElement>();
 
   useEffect(() => {
-    if (user.email?.trim().length === 0 || user.password?.trim().length === 0) {
+    if (
+      credentials.email?.trim().length === 0 ||
+      credentials.password?.trim().length === 0
+    ) {
       return;
     }
-    const fetchUserLogin = async (login: {}) => {
+    const fetchUserLogin = async (userCredentials: LoginCredentials) => {
       setLoading(true);
       await axios
-        .post(`${API_VERSION}/authentication/login`, login)
+        .post(
+          `http://localhost:8081/${API_VERSION}/authentication/login`,
+          userCredentials
+        )
         .then((response) => {
           if (response.status === 200) {
             const { token, isLocked, isEnabled, expiresIn } = response.data;
@@ -53,16 +59,16 @@ const Login: FC<{
           setInvalid(true);
         });
     };
-    fetchUserLogin(user);
-  }, [user, dispatch, nav, API_VERSION]);
+    fetchUserLogin(credentials);
+  }, [credentials, dispatch, nav, API_VERSION]);
 
-  const submitHandler = (event: React.FormEvent) => {
+  const submitHandler = (event: FormEvent) => {
     event.preventDefault();
     const enteredValue: LoginCredentials = {
       email: emailRef.current?.value,
       password: passwordRef.current?.value,
     };
-    setUser(enteredValue);
+    setCredentials(enteredValue);
   };
   return (
     <Fragment>

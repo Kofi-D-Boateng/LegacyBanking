@@ -1,8 +1,8 @@
 import { Button, Grid, Typography } from "@mui/material";
-import React from "react";
+import { FC } from "react";
 import { NavigateFunction } from "react-router-dom";
 
-const Banner: React.FC<{
+const Banner: FC<{
   classes: {
     readonly [key: string]: string;
   };

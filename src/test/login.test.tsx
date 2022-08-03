@@ -12,7 +12,7 @@ import Login from "../pages/Login";
 import "@testing-library/jest-dom/extend-expect";
 import { Suspense } from "react";
 import LoadingSpinner from "../components/UI/Modals/LoadingSpinner/LoadingSpinner";
-import { LoginCredentials } from "../interfaces/Credentials";
+import { LoginCredentials } from "../types/Credentials";
 
 const theme = createTheme({
   palette: {

@@ -15,10 +15,10 @@ import {
   Box,
   CircularProgress,
 } from "@mui/material";
-import { useState, useRef } from "react";
+import { useState, useRef, FC, FormEvent, FocusEvent } from "react";
 import Form from "../../../Forms/MoneyTransferForm/Form";
 
-const Modal: React.FC<{
+const Modal: FC<{
   loading: boolean;
   classes: {
     readonly [key: string]: string;
@@ -47,7 +47,7 @@ const Modal: React.FC<{
   const emailRef = useRef<HTMLInputElement | undefined>();
   const phoneNumberRef = useRef<HTMLInputElement | undefined>();
 
-  const amountHandler = (event: React.FocusEvent<HTMLInputElement>) => {
+  const amountHandler = (event: FocusEvent<HTMLInputElement>) => {
     const regex = /[A-Za-z]/;
     const { value } = event.target;
     if (regex.test(value)) {
@@ -56,7 +56,7 @@ const Modal: React.FC<{
     setAmount(+parseFloat(value).toFixed(2));
   };
 
-  const submitHandler = (event: React.FormEvent) => {
+  const submitHandler = (event: FormEvent) => {
     event.preventDefault();
     const data: {
       email: string | undefined;

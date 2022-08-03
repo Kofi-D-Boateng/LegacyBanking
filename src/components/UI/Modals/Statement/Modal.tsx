@@ -8,8 +8,9 @@ import {
   TypographyTypeMap,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
+import { FC } from "react";
 
-const Modal: React.FC<{
+const Modal: FC<{
   classes: {
     readonly [key: string]: string;
   };

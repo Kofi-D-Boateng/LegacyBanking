@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { NotificationDetails } from "../../interfaces/Notification";
+import { NotificationDetails } from "../../types/Notification";
 
 function initialState(): NotificationDetails {
   return {

@@ -1,7 +1,7 @@
 import { Card, CardContent, Grid, Paper, Typography } from "@mui/material";
-import React from "react";
+import { FC } from "react";
 
-const AccountCoupons: React.FC<{
+const AccountCoupons: FC<{
   classes: {
     readonly [key: string]: string;
   };

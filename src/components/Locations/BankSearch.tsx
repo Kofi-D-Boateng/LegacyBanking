@@ -1,24 +1,10 @@
 import { Grid, Typography } from "@mui/material";
-import React from "react";
+import { FC } from "react";
+import { BankDetails } from "../../types/Bank";
 import GlobalMap from "../UI/WorldMap/GlobalMap";
 
-const BankSearch: React.FC<{
-  bank: {
-    name: string;
-    country: string;
-    area: string;
-    zipcode: string;
-    totalHoldings: number;
-    branches: {
-      name: string;
-      country: string;
-      state: string;
-      zipcode: string;
-      totalHoldings: number;
-      latitude: number;
-      longitude: number;
-    }[];
-  };
+const BankSearch: FC<{
+  bank: BankDetails;
   classes: {
     readonly [key: string]: string;
   };

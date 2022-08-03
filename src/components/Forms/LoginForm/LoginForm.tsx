@@ -1,11 +1,11 @@
-import React from "react";
+import { FC, FormEvent, MutableRefObject } from "react";
 import { Button, Grid, TextField } from "@mui/material";
 
-const LoginForm: React.FC<{
+const LoginForm: FC<{
   isMobile: boolean;
-  submit: (event: React.FormEvent) => void;
-  password: React.MutableRefObject<HTMLInputElement | undefined>;
-  email: React.MutableRefObject<HTMLInputElement | undefined>;
+  submit: (event: FormEvent) => void;
+  password: MutableRefObject<HTMLInputElement | undefined>;
+  email: MutableRefObject<HTMLInputElement | undefined>;
 }> = ({ submit, email, password, isMobile }) => {
   return (
     <form onSubmit={submit}>

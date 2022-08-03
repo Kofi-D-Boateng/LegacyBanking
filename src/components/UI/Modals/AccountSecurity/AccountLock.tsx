@@ -6,17 +6,18 @@ import {
   RadioProps,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
+import { FC, Dispatch, SetStateAction, ChangeEvent } from "react";
 import { LOCKEDACCOUNT } from "../../Constants/Constants";
 
-const AccountLock: React.FC<{
-  setView: React.Dispatch<React.SetStateAction<string>>;
+const AccountLock: FC<{
+  setView: Dispatch<SetStateAction<string>>;
   Grid: OverridableComponent<GridTypeMap<{}, "div">>;
   FormControl: OverridableComponent<FormControlTypeMap<{}, "div">>;
   RadioGroup: (props: RadioGroupProps) => JSX.Element;
   Radio: (props: RadioProps) => JSX.Element;
   FormControlLabel: (props: FormControlLabelProps) => JSX.Element;
-  setChoice: React.Dispatch<
-    React.SetStateAction<{
+  setChoice: Dispatch<
+    SetStateAction<{
       choice: boolean;
       item: string;
     }>
@@ -30,7 +31,7 @@ const AccountLock: React.FC<{
   RadioGroup,
   setChoice,
 }) => {
-  const changeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void = ({
+  const changeHandler: (e: ChangeEvent<HTMLInputElement>) => void = ({
     currentTarget,
   }) => {
     const { value } = currentTarget;

@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import classes from "../../../../styles/Modals/Modals.module.css";
-import { CustomerDetails } from "../../../../interfaces/CustomerDetails";
+import { CustomerDetails } from "../../../../types/CustomerDetails";
 import { customerActions } from "../../../../store/customer/customer-slice";
 import { API_VERSION } from "../../Constants/Constants";
 

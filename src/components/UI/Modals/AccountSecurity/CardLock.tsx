@@ -6,18 +6,18 @@ import {
   RadioProps,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import React from "react";
+import { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
 import { LOCKEDCARD } from "../../Constants/Constants";
 
-const CardLock: React.FC<{
-  setView: React.Dispatch<React.SetStateAction<string>>;
+const CardLock: FC<{
+  setView: Dispatch<SetStateAction<string>>;
   Grid: OverridableComponent<GridTypeMap<{}, "div">>;
   FormControl: OverridableComponent<FormControlTypeMap<{}, "div">>;
   RadioGroup: (props: RadioGroupProps) => JSX.Element;
   Radio: (props: RadioProps) => JSX.Element;
   FormControlLabel: (props: FormControlLabelProps) => JSX.Element;
-  setChoice: React.Dispatch<
-    React.SetStateAction<{
+  setChoice: Dispatch<
+    SetStateAction<{
       choice: boolean;
       item: string;
     }>
@@ -35,7 +35,7 @@ const CardLock: React.FC<{
   isCardLocked,
   LOCKEDCARDMSG,
 }) => {
-  const changeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void = ({
+  const changeHandler: (e: ChangeEvent<HTMLInputElement>) => void = ({
     currentTarget,
   }) => {
     const { value } = currentTarget;

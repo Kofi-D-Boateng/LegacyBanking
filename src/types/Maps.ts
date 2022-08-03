@@ -1,13 +1,13 @@
-export interface DateAmountHash {
+export type DateAmountHash = {
   [date: string]: number;
-}
+};
 
-export interface DateAmountType {
+export type DateAmountType = {
   date: string;
   amount: number;
   type: string;
-}
+};
 
-export interface MonthsMap {
+export type MonthsMap = {
   [date: number]: string;
-}
+};

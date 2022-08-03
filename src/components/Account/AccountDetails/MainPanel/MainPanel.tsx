@@ -1,12 +1,12 @@
 import { Card, CardContent, Grid, Typography } from "@mui/material";
+import { FC } from "react";
 
-const MainPanel: React.FC<{
+const MainPanel: FC<{
   classes: {
     readonly [key: string]: string;
   };
   withdrawals: number;
-  changeYear: (e: any) => void;
-}> = ({ classes, changeYear, withdrawals }) => {
+}> = ({ classes, withdrawals }) => {
   return (
     <Grid container>
       <Card className={classes.card}>

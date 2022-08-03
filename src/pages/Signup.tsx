@@ -5,7 +5,7 @@ import SignupForm from "../components/Forms/SignupForm/SignupForm";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import classes from "../styles/Signup/SignupStyles.module.css";
 import { LOGIN } from "../components/UI/Constants/Constants";
-import { UserSignUp } from "../interfaces/Signup";
+import { UserSignUp } from "../types/Signup";
 
 const Signup: FC<{
   API_VERSION: string | undefined;

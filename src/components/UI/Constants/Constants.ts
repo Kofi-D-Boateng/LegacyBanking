@@ -60,7 +60,14 @@ const LOCKEDACCOUNTMSG: string =
 const SECURITYERRORMSG: string =
   "We are sorry, there was an error processing your request on our end.";
 
+// MISC
+const ReactLeafLetTitleLayer: { att: string; url: string } = {
+  att: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+};
+
 export {
+  ReactLeafLetTitleLayer,
   DEBITTRASFER,
   ACHDEBIT,
   TRANSFER,

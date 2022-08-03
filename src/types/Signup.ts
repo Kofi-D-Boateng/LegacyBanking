@@ -1,4 +1,4 @@
-export interface UserSignUp {
+export type UserSignUp = {
   firstName: string | undefined;
   lastName: string | undefined;
   email: string | undefined;
@@ -9,4 +9,4 @@ export interface UserSignUp {
   socialSecurity: string | undefined;
   password: string | undefined;
   phoneNumber: string | undefined;
-}
+};

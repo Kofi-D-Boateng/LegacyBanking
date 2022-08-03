@@ -12,11 +12,18 @@ import {
   TypographyTypeMap,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import { Dispatch, Fragment, ReactElement, SetStateAction } from "react";
+import {
+  Dispatch,
+  FC,
+  Fragment,
+  ReactElement,
+  SetStateAction,
+  MouseEvent,
+} from "react";
 import AccountLock from "./AccountLock";
 import CardLock from "./CardLock";
 
-const Modal: React.FC<{
+const Modal: FC<{
   Card: OverridableComponent<CardTypeMap<{}, "div">>;
   CardContent: OverridableComponent<CardContentTypeMap<{}, "div">>;
   Grid: OverridableComponent<GridTypeMap<{}, "div">>;
@@ -53,7 +60,7 @@ const Modal: React.FC<{
       item: string;
     }>
   >;
-  setView: Dispatch<React.SetStateAction<string>>;
+  setView: Dispatch<SetStateAction<string>>;
   view: string;
   choice: {
     choice: boolean;
@@ -126,7 +133,7 @@ const Modal: React.FC<{
     },
   ];
 
-  const viewHandler: (e: React.MouseEvent<HTMLButtonElement>) => void = ({
+  const viewHandler: (e: MouseEvent<HTMLButtonElement>) => void = ({
     currentTarget,
   }) => {
     const { value } = currentTarget;

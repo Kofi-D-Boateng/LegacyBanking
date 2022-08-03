@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@mui/material";
-import React from "react";
+import { FC } from "react";
 
-const BankInfo: React.FC<{
+const BankInfo: FC<{
   photoOne: string;
   photoTwo: string;
   classes: {

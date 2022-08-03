@@ -4,7 +4,7 @@ import { Navbar } from "../Navbars/Navbar";
 import { Twitter, Facebook, Instagram, LinkedIn } from "@mui/icons-material";
 import { PathMatch } from "react-router-dom";
 import { AxiosStatic } from "axios";
-import { CustomerDetails } from "../../../interfaces/CustomerDetails";
+import { CustomerDetails } from "../../../types/CustomerDetails";
 
 const Layout: FC<{
   DATE: Date;

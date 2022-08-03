@@ -1,12 +1,12 @@
-interface Transaction {
+export type Transaction = {
   id: number;
   type: string;
   dateOfTransaction: string;
   amount: number;
   location: string;
-}
+};
 
-export interface CustomerDetails {
+export type CustomerDetails = {
   fName: string;
   lName: string;
   email: string;
@@ -22,4 +22,4 @@ export interface CustomerDetails {
   token: string | null;
   authenticated: boolean;
   expiresIn: number;
-}
+};
