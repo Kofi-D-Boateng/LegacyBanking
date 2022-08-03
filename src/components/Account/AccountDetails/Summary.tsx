@@ -3,29 +3,13 @@ import { Grid } from "@mui/material";
 import classes from "../../../styles/SVG/BarGraphSVGStyles.module.css";
 import BarChart from "../../UI/SVGs/BarChart";
 import MainPanel from "./MainPanel/MainPanel";
+import { CustomerDetails } from "../../../interfaces/Customer";
 import { DateAmountType } from "../../../interfaces/Maps";
 
 const Summary: FC<{
   year: number;
   withdrawals: number;
-  customer: {
-    fName: string;
-    lName: string;
-    email: string;
-    accountNum: string;
-    routingNum: string;
-    country: string | undefined;
-    area: string | undefined;
-    zipCode: string | undefined;
-    funds: number;
-    transactions: {
-      id: number;
-      type: string;
-      dateOfTransaction: string;
-      amount: number;
-      location: string;
-    }[];
-  };
+  customer: CustomerDetails;
   DateAmount: DateAmountType[];
   isMobile: boolean;
 }> = ({ customer, year, DateAmount, isMobile, withdrawals }) => {
