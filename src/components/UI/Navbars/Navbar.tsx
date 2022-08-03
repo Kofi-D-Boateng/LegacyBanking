@@ -18,13 +18,13 @@ import MainWeb from "./Web/MainWeb";
 
 import { AxiosStatic } from "axios";
 import { customerActions } from "../../../store/customer/customer-slice";
-import { Customer } from "../../../interfaces/Customer";
+import { CustomerDetails } from "../../../interfaces/Customer";
 
 const Navbar: React.FC<{
   API_VERSION: string | undefined;
   axios: AxiosStatic;
   isMobile: boolean;
-  customer: Customer;
+  customer: CustomerDetails;
   links: { key: number; title: string; link: string }[];
   authLinks: { key: number; title: string; link: string }[];
 }> = ({ customer, isMobile, links, authLinks, axios, API_VERSION }) => {

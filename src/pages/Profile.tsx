@@ -42,6 +42,7 @@ import { DateAmountType } from "../interfaces/Maps";
 import AccountSecurity from "../components/UI/Modals/AccountSecurity/AccountSecurity";
 import { backdropDiv, overlayDiv } from "../components/UI/Layouts/RootElement";
 import { notisActions } from "../store/notifications/notifications";
+import { CustomerDetails } from "../interfaces/Customer";
 
 const Profile: FC<{
   Location: Location;
@@ -49,33 +50,7 @@ const Profile: FC<{
   mobile: boolean;
   param: URLSearchParams;
   API_VERSION: string | undefined;
-  customer: {
-    fName: string;
-    lName: string;
-    email: string;
-    accountNum: string;
-    routingNum: string;
-    country: string | undefined;
-    area: string | undefined;
-    zipCode: string | undefined;
-    isLocked: boolean;
-    isEnabled: boolean;
-    funds: number;
-    transactions: {
-      id: number;
-      type: string;
-      dateOfTransaction: string;
-      amount: number;
-      location: string;
-    }[];
-    accountTransfer: {
-      email: string | undefined;
-      amount: number;
-      accountNumber: string;
-      type: string;
-      phoneNumber: string | undefined;
-    };
-  };
+  customer: CustomerDetails;
 }> = ({ token, mobile, customer, Location, API_VERSION, param }) => {
   const nav: NavigateFunction = useNavigate();
   const DateAmount: DateAmountType[] = [];
@@ -166,7 +141,6 @@ const Profile: FC<{
           OVERLAYDIV={overlayDiv}
           classes={MoneyTransferStyles}
           accountNum={customer.accountNum}
-          accountTransfer={customer.accountTransfer}
           DEBITTRANSFER={DEBITTRASFER}
           termsOfChoice={termsOfChoice}
           view={view}
@@ -175,7 +149,6 @@ const Profile: FC<{
           dispatch={dispatch}
           Exit={exitHandler}
           onChoice={choiceHandler}
-          CreateTransfer={customerActions.createTransfer}
           setView={modalActions.setView}
           nav={nav}
         />

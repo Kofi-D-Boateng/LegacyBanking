@@ -4,13 +4,13 @@ import { Navbar } from "../Navbars/Navbar";
 import { Twitter, Facebook, Instagram, LinkedIn } from "@mui/icons-material";
 import { PathMatch } from "react-router-dom";
 import { AxiosStatic } from "axios";
-import { Customer } from "../../../interfaces/Customer";
+import { CustomerDetails } from "../../../interfaces/Customer";
 
 const Layout: FC<{
   DATE: Date;
   Timer: FC<{
     isMobile: boolean;
-    customer: Customer;
+    customer: CustomerDetails;
     location: Location;
   }>;
   Location: Location;
@@ -24,7 +24,7 @@ const Layout: FC<{
   error: PathMatch<string> | null;
   verification: PathMatch<string> | null;
   children: ReactNode;
-  customer: Customer;
+  customer: CustomerDetails;
   YEAR: number;
   ABOUT: string;
   LOCATIONS: string;

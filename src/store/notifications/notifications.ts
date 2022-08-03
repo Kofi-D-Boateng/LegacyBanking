@@ -1,19 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { NotificationDetails } from "../../interfaces/Notification";
 
-function initialState(): {
-  notis: {
-    _id: string;
-    sender: string;
-    receiver: string;
-    amount: number;
-    date: string;
-    read: boolean;
-  }[];
-  unread: number;
-} {
+function initialState(): NotificationDetails {
   return {
-    notis: [],
-    unread: 0,
+    notifications: [],
+    numberOfUnreadNotifications: 0,
   };
 }
 
@@ -35,11 +26,13 @@ const notisSlice = createSlice({
       }>
     ) {
       const { notis } = action.payload;
-      state.notis = notis.length > 0 ? notis.reverse() : state.notis;
-      state.unread = 0;
+      state.notifications =
+        notis.length > 0 ? notis.reverse() : state.notifications;
+      state.numberOfUnreadNotifications = 0;
       for (const n of notis) {
         if (n.read === false) {
-          state.unread = state.unread + 1;
+          state.numberOfUnreadNotifications =
+            state.numberOfUnreadNotifications + 1;
         }
       }
     },

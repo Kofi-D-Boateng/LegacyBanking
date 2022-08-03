@@ -6,6 +6,7 @@ import Modal from "./Modal";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { AxiosStatic } from "axios";
 import { NavigateFunction } from "react-router-dom";
+import { TransferDetails } from "../../../../interfaces/Transfer";
 
 const MoneyTransfer: FC<{
   Location: Location;
@@ -23,16 +24,6 @@ const MoneyTransfer: FC<{
   accountNum: string;
   DEBITTRANSFER: string;
   dispatch: Dispatch<any>;
-  CreateTransfer: ActionCreatorWithPayload<
-    {
-      email: string | undefined;
-      amount: number;
-      accountNumber: string;
-      type: string;
-      phoneNumber: string | undefined;
-    },
-    string
-  >;
   Exit: () => void;
   onChoice: (event: SelectChangeEvent) => void;
   axios: AxiosStatic;
@@ -42,13 +33,6 @@ const MoneyTransfer: FC<{
     },
     string
   >;
-  accountTransfer: {
-    email: string | undefined;
-    amount: number;
-    accountNumber: string;
-    type: string;
-    phoneNumber: string | undefined;
-  };
 }> = ({
   view,
   termsOfChoice,
@@ -62,23 +46,22 @@ const MoneyTransfer: FC<{
   Exit,
   onChoice,
   dispatch,
-  accountTransfer,
-  CreateTransfer,
   axios,
   setView,
   API_VERSION,
   Location,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [transfer, setTransfer] = useState<TransferDetails>({
+    accountNumber: "",
+    amount: 0,
+    email: undefined,
+    phoneNumber: undefined,
+    type: "",
+  });
   useEffect(() => {
     const fetchTransfer = async (
-      accountTransfer: {
-        email: string | undefined;
-        amount: number;
-        accountNumber: string | undefined;
-        type: string;
-        phoneNumber: string | undefined;
-      },
+      accountTransfer: TransferDetails,
       token: string | null
     ) => {
       setLoading(true);
@@ -89,7 +72,7 @@ const MoneyTransfer: FC<{
         .then((response) => {
           if (response.status >= 200 && response.status <= 299) {
             dispatch(
-              CreateTransfer({
+              setTransfer({
                 accountNumber: "",
                 amount: 0,
                 email: undefined,
@@ -104,19 +87,10 @@ const MoneyTransfer: FC<{
           setLoading(false);
         });
     };
-    if (accountTransfer.email || accountTransfer.phoneNumber) {
-      fetchTransfer(accountTransfer, token);
+    if (transfer.email || transfer.phoneNumber) {
+      fetchTransfer(transfer, token);
     }
-  }, [
-    accountTransfer,
-    dispatch,
-    CreateTransfer,
-    API_VERSION,
-    Location,
-    axios,
-    setView,
-    token,
-  ]);
+  }, [transfer, dispatch, API_VERSION, Location, axios, setView, token]);
 
   const transferHandler = useCallback(
     (data: {
@@ -125,7 +99,7 @@ const MoneyTransfer: FC<{
       amount: number;
     }) => {
       dispatch(
-        CreateTransfer({
+        setTransfer({
           email: data.email,
           accountNumber: accountNum,
           amount: data.amount,
@@ -134,7 +108,7 @@ const MoneyTransfer: FC<{
         })
       );
     },
-    [accountNum, dispatch, CreateTransfer, DEBITTRANSFER]
+    [accountNum, dispatch, DEBITTRANSFER]
   );
 
   return (

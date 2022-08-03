@@ -39,7 +39,7 @@ import axios from "axios";
 import LoadingSpinner from "./components/UI/Modals/LoadingSpinner/LoadingSpinner";
 import Timer from "./components/UI/Modals/Timer/Timer";
 import VerifyAccount from "./pages/VerifyAccount";
-import { Customer } from "./interfaces/Customer";
+import { CustomerDetails } from "./interfaces/Customer";
 const Startups = lazy(() => import("./pages/Startups"));
 const Insight = lazy(() => import("./pages/Insight"));
 const About = lazy(() => import("./pages/About"));
@@ -53,7 +53,9 @@ const WaitingPage = lazy(() => import("./pages/WaitingPage"));
 const App: FC = () => {
   const DATE: Date = new Date();
   const YEAR: number = DATE.getFullYear();
-  const customer: Customer = useSelector((state: RootState) => state.cust);
+  const customer: CustomerDetails = useSelector(
+    (state: RootState) => state.cust
+  );
   const theme = useTheme<Theme>();
   const mobile: boolean = useMediaQuery<unknown>(theme.breakpoints.down("md"));
   const { pathname } = useLocation();
@@ -156,11 +158,7 @@ const App: FC = () => {
             <Route
               path={LOCATIONS}
               element={
-                <Locations
-                  API_VERSION={API_VERSION}
-                  param={searchParams}
-                  isMobile={mobile}
-                />
+                <Locations API_VERSION={API_VERSION} isMobile={mobile} />
               }
             />
             <Route

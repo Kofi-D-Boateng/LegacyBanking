@@ -27,27 +27,18 @@ import { notisActions } from "../../../store/notifications/notifications";
 import AccountMobile from "./Mobile/AccountMobile";
 import AccountWeb from "./Web/AccountWeb";
 import { customerActions } from "../../../store/customer/customer-slice";
+import { NotificationDetails } from "../../../interfaces/Notification";
 
 const AccountNavbar: FC<{
   mobile: boolean;
   options: { key: number; title: string; link: string }[];
-  noti: {
-    notis: {
-      _id: string;
-      sender: string;
-      receiver: string;
-      amount: number;
-      date: string;
-      read: boolean;
-    }[];
-    unread: number;
-  };
+  notificationDetails: NotificationDetails;
   token: string | null;
   axios: AxiosStatic;
 
   API_VERSION: string | undefined;
-}> = ({ mobile, options, noti, token, axios, API_VERSION }) => {
-  const { notis, unread } = noti;
+}> = ({ mobile, options, notificationDetails, token, axios, API_VERSION }) => {
+  const { notifications, numberOfUnreadNotifications } = notificationDetails;
   const nav: NavigateFunction = useNavigate();
   const dispatch = useDispatch<Dispatch<any>>();
   const [showLinks, setShowLinks] = useState<HTMLElement | null>(null);
@@ -148,11 +139,11 @@ const AccountNavbar: FC<{
               Button={Button}
               Badge={Badge}
               Menu={Menu}
-              unread={unread}
+              unread={numberOfUnreadNotifications}
               showNotis={showNotis}
               handleMenu={handleMenu}
               handleClose={handleClose}
-              notis={notis}
+              notis={notifications}
               Notis={Notis}
               markRead={markRead}
             />
@@ -167,8 +158,8 @@ const AccountNavbar: FC<{
               Button={Button}
               Badge={Badge}
               Notifications={Notifications}
-              notis={notis}
-              unread={unread}
+              notis={notifications}
+              unread={numberOfUnreadNotifications}
               showLinks={showLinks}
               showNotis={showNotis}
               handleMenu={handleMenu}
