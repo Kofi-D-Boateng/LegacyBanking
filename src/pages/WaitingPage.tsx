@@ -4,7 +4,7 @@ import { CSSProperties, Dispatch, FC, MouseEvent } from "react";
 import { useDispatch } from "react-redux";
 import { NavigateFunction, NavLink, useNavigate } from "react-router-dom";
 import { CONTACT, REDIRECT } from "../components/UI/Constants/Constants";
-import { Customer } from "../Interfaces/Customer";
+import { Customer } from "../interfaces/Customer";
 import { customerActions } from "../store/customer/customer-slice";
 
 const WaitingPage: FC<{

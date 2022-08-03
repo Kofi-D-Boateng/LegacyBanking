@@ -7,7 +7,13 @@ import {
   useState,
   memo,
 } from "react";
-import { NavigateFunction, Route, Routes, useParams } from "react-router-dom";
+import {
+  NavigateFunction,
+  Route,
+  Routes,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import MoneyTransfer from "../components/UI/Modals/MoneyTransfer/MoneyTransfer";
@@ -32,7 +38,7 @@ import {
 } from "../components/UI/Constants/Constants";
 import MainProfile from "../components/Account/MainProfile";
 import Summary from "../components/Account/AccountDetails/Summary";
-import { DateAmountType } from "../Interfaces/Maps";
+import { DateAmountType } from "../interfaces/Maps";
 import AccountSecurity from "../components/UI/Modals/AccountSecurity/AccountSecurity";
 import { backdropDiv, overlayDiv } from "../components/UI/Layouts/RootElement";
 import { notisActions } from "../store/notifications/notifications";
@@ -41,7 +47,6 @@ const Profile: FC<{
   Location: Location;
   token: string | null;
   mobile: boolean;
-  nav: NavigateFunction;
   param: URLSearchParams;
   API_VERSION: string | undefined;
   customer: {
@@ -71,7 +76,8 @@ const Profile: FC<{
       phoneNumber: string | undefined;
     };
   };
-}> = ({ token, mobile, customer, Location, API_VERSION, nav, param }) => {
+}> = ({ token, mobile, customer, Location, API_VERSION, param }) => {
+  const nav: NavigateFunction = useNavigate();
   const DateAmount: DateAmountType[] = [];
   const PARAMS = useParams<string>();
   const currentYear: number = new Date().getFullYear();

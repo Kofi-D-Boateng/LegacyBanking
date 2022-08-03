@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
-import { DateAmountType, MonthsMap } from "../../../Interfaces/Maps";
+import { DateAmountType, MonthsMap } from "../../../interfaces/Maps";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import {
   ACHDEBIT,

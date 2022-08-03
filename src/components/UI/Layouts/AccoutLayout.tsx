@@ -1,7 +1,7 @@
 import { AxiosStatic } from "axios";
 import { FC, ReactNode } from "react";
 import { useSelector } from "react-redux";
-import { Customer } from "../../../Interfaces/Customer";
+import { Customer } from "../../../interfaces/Customer";
 import { RootState } from "../../../store/store";
 import { PROFILE, REDIRECT } from "../Constants/Constants";
 import AccountFooter from "../Footers/AccountFooter";

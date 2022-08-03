@@ -1,11 +1,11 @@
 import { FC, useState, useRef, useEffect, Fragment } from "react";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import axios from "axios";
-import { NavigateFunction, NavLink } from "react-router-dom";
+import { NavigateFunction, NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { customerActions } from "../store/customer/customer-slice";
 import classes from "../styles/Login/LoginStyles.module.css";
-import { credentials } from "../Interfaces/Credentials";
+import { LoginCredentials } from "../interfaces/Credentials";
 import LoginMobile from "../components/Login/LoginMobile";
 import LoginWeb from "../components/Login/LoginWeb";
 import LoginForm from "../components/Forms/LoginForm/LoginForm";
@@ -13,13 +13,13 @@ import { PROFILE } from "../components/UI/Constants/Constants";
 
 const Login: FC<{
   isMobile: boolean;
-  nav: NavigateFunction;
   API_VERSION: string | undefined;
-}> = ({ isMobile, API_VERSION, nav }) => {
+}> = ({ isMobile, API_VERSION }) => {
   const dispatch = useDispatch();
+  const nav: NavigateFunction = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [invalid, setInvalid] = useState<boolean>(false);
-  const [user, setUser] = useState<credentials>({
+  const [user, setUser] = useState<LoginCredentials>({
     email: "",
     password: "",
   });
@@ -58,7 +58,7 @@ const Login: FC<{
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    const enteredValue: credentials = {
+    const enteredValue: LoginCredentials = {
       email: emailRef.current?.value,
       password: passwordRef.current?.value,
     };

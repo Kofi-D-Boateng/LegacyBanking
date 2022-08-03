@@ -1,17 +1,18 @@
-import { FC, SetStateAction, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import axios from "axios";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import SignupForm from "../components/Forms/SignupForm/SignupForm";
-import { NavigateFunction } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import classes from "../styles/Signup/SignupStyles.module.css";
 import { LOGIN } from "../components/UI/Constants/Constants";
+import { UserSignUp } from "../interfaces/Signup";
 
 const Signup: FC<{
   API_VERSION: string | undefined;
-  nav: NavigateFunction;
   isMobile: boolean;
-}> = ({ API_VERSION, isMobile, nav }) => {
-  const [user, setUser] = useState<{} | null>(null);
+}> = ({ API_VERSION, isMobile }) => {
+  const nav: NavigateFunction = useNavigate();
+  const [user, setUser] = useState<UserSignUp | null>(null);
   const [isValid, setIsValid] = useState<boolean>(true);
 
   useEffect(() => {
@@ -32,20 +33,7 @@ const Signup: FC<{
     fetchUserSignup(user);
   }, [user, nav, API_VERSION]);
 
-  const userInfo = (
-    data: SetStateAction<{
-      firstName: string | undefined;
-      lastName: string | undefined;
-      email: string | undefined;
-      dob: string | undefined;
-      country: string | undefined;
-      state: string | undefined;
-      zipcode: string | undefined;
-      socialSecurity: string | undefined;
-      password: string | undefined;
-      phoneNumber: string | undefined;
-    }>
-  ) => {
+  const userInfo: (data: UserSignUp) => void = (data) => {
     setUser(data);
     return;
   };

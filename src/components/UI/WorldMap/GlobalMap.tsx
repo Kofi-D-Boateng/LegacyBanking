@@ -1,13 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import { LatLngExpression } from "leaflet";
 import LocationMarker from "./LocationMarker";
-import { NavigateFunction } from "react-router-dom";
 
 const GlobalMap: React.FC<{
-  nav: NavigateFunction;
   branch: {
     name: string;
     country: string;
@@ -20,11 +18,10 @@ const GlobalMap: React.FC<{
   classes: {
     readonly [key: string]: string;
   };
-  param: URLSearchParams;
-}> = ({ branch, classes, nav, param }) => {
+}> = ({ branch, classes }) => {
   const zoom: number = 2.5;
   const CENTER: LatLngExpression | undefined = [31.563572, -31.971787];
-
+  const [pos, setPos] = useState<LatLngExpression | undefined>(undefined);
   return (
     <MapContainer
       center={CENTER}
@@ -41,9 +38,9 @@ const GlobalMap: React.FC<{
       {branch.map((branch, index) => {
         return (
           <LocationMarker
-            nav={nav}
+            pos={pos}
+            setPos={setPos}
             key={index}
-            param={param}
             branch={branch}
             Marker={Marker}
             markerIcon={markerIcon}

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Customer } from "../../Interfaces/Customer";
+import { Customer } from "../../interfaces/Customer";
 const DATE: Date = new Date();
 
 function initialState(): Customer {

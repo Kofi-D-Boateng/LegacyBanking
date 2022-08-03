@@ -9,14 +9,12 @@ import BankInfo from "../components/Locations/BankInfo";
 import BankSearch from "../components/Locations/BankSearch";
 import Banner from "../components/Locations/Banner";
 import classes from "../styles/Location/LocationsStyles.module.css";
-import { NavigateFunction } from "react-router-dom";
 
 const Locations: FC<{
   isMobile: boolean;
-  nav: NavigateFunction;
   param: URLSearchParams;
   API_VERSION: string | undefined;
-}> = ({ isMobile, API_VERSION, nav, param }) => {
+}> = ({ isMobile, API_VERSION }) => {
   const LEGACY: {
     name: string;
     country: string;
@@ -37,20 +35,22 @@ const Locations: FC<{
 
   useEffect(() => {
     const fetchBankData: () => void = async () => {
-      await axios.get(`${API_VERSION}/bank/info`).then((response) => {
-        const { name, country, state, zipcode, totalHoldings, branches } =
-          response.data;
-        dispatch(
-          bankActions.getBankInfo({
-            name,
-            country,
-            area: state,
-            zipcode: zipcode,
-            totalHoldings,
-            branches,
-          })
-        );
-      });
+      await axios
+        .get(`http://localhost:8080/${API_VERSION}/bank/info`)
+        .then((response) => {
+          const { name, country, state, zipcode, totalHoldings, branches } =
+            response.data;
+          dispatch(
+            bankActions.getBankInfo({
+              name,
+              country,
+              area: state,
+              zipcode: zipcode,
+              totalHoldings,
+              branches,
+            })
+          );
+        });
     };
     fetchBankData();
   }, [dispatch, API_VERSION, LEGACY.name]);
@@ -64,7 +64,7 @@ const Locations: FC<{
         classes={classes}
         isMobile={isMobile}
       />
-      <BankSearch classes={classes} bank={LEGACY} nav={nav} param={param} />
+      <BankSearch classes={classes} bank={LEGACY} />
     </>
   );
 };
