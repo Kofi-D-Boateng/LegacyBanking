@@ -1,4 +1,12 @@
-export interface Customer {
+interface Transaction {
+  id: number;
+  type: string;
+  dateOfTransaction: string;
+  amount: number;
+  location: string;
+}
+
+export interface CustomerDetails {
   fName: string;
   lName: string;
   email: string;
@@ -10,20 +18,7 @@ export interface Customer {
   funds: number;
   isLocked: boolean;
   isEnabled: boolean;
-  transactions: {
-    id: number;
-    type: string;
-    dateOfTransaction: string;
-    amount: number;
-    location: string;
-  }[];
-  accountTransfer: {
-    email: string | undefined;
-    amount: number;
-    accountNumber: string;
-    type: string;
-    phoneNumber: string | undefined;
-  };
+  transactions: Transaction[];
   token: string | null;
   authenticated: boolean;
   expiresIn: number;
