@@ -1,9 +1,9 @@
 import { Grid, Typography } from "@mui/material";
 import { AxiosStatic } from "axios";
-import React, { useRef, useState } from "react";
+import { FC, FormEvent, useRef, useState } from "react";
 import Form from "../Forms/MailLetterForm/MailLetterForm";
 
-const MailLetter: React.FC<{
+const MailLetter: FC<{
   classes: {
     readonly [key: string]: string;
   };
@@ -16,7 +16,7 @@ const MailLetter: React.FC<{
   const [ready, setReady] = useState<boolean>(false);
   const emailRef = useRef<HTMLInputElement>();
 
-  const submitHandler: (e: React.FormEvent) => void = async (e) => {
+  const submitHandler: (e: FormEvent) => void = async (e) => {
     e.preventDefault();
     if (emailRef.current?.value) {
       setReady(true);

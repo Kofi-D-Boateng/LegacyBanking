@@ -12,9 +12,9 @@ import {
   TypographyTypeMap,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import { ChangeEvent, Dispatch } from "react";
+import { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
 
-const Modal: React.FC<{
+const Modal: FC<{
   classes: {
     readonly [key: string]: string;
   };
@@ -32,7 +32,7 @@ const Modal: React.FC<{
   RadioGroup: (props: RadioGroupProps) => JSX.Element;
   Radio: (props: RadioProps) => JSX.Element;
   setChoice: Dispatch<
-    React.SetStateAction<{
+    SetStateAction<{
       isSelected: boolean;
       choice: string;
     }>

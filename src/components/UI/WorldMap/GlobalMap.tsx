@@ -1,30 +1,20 @@
-import React from "react";
+import { FC } from "react";
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import { LatLngExpression } from "leaflet";
 import LocationMarker from "./LocationMarker";
-import { NavigateFunction } from "react-router-dom";
+import { Branch } from "../../../types/Bank";
+import { ReactLeafLetTitleLayer } from "../Constants/Constants";
 
-const GlobalMap: React.FC<{
-  nav: NavigateFunction;
-  branch: {
-    name: string;
-    country: string;
-    state: string;
-    zipcode: string;
-    totalHoldings: number;
-    latitude: number;
-    longitude: number;
-  }[];
+const GlobalMap: FC<{
+  branch: Branch[];
   classes: {
     readonly [key: string]: string;
   };
-  param: URLSearchParams;
-}> = ({ branch, classes, nav, param }) => {
+}> = ({ branch, classes }) => {
   const zoom: number = 2.5;
   const CENTER: LatLngExpression | undefined = [31.563572, -31.971787];
-
   return (
     <MapContainer
       center={CENTER}
@@ -34,16 +24,14 @@ const GlobalMap: React.FC<{
       className={classes.map}
     >
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution={ReactLeafLetTitleLayer.att}
+        url={ReactLeafLetTitleLayer.url}
       />
 
       {branch.map((branch, index) => {
         return (
           <LocationMarker
-            nav={nav}
             key={index}
-            param={param}
             branch={branch}
             Marker={Marker}
             markerIcon={markerIcon}

@@ -14,13 +14,13 @@ import {
   Typography,
 } from "@mui/material";
 import classes from "../../../../styles/Modals/Modals.module.css";
-import { Customer } from "../../../../Interfaces/Customer";
+import { CustomerDetails } from "../../../../types/CustomerDetails";
 import { customerActions } from "../../../../store/customer/customer-slice";
 import { API_VERSION } from "../../Constants/Constants";
 
 const Timer: FC<{
   isMobile: boolean;
-  customer: Customer;
+  customer: CustomerDetails;
   location: Location;
 }> = ({ isMobile, location, customer }) => {
   const [loading, setLoading] = useState<boolean>(false);

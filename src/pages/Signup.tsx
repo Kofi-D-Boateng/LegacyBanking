@@ -1,18 +1,19 @@
-import { FC, SetStateAction, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import axios from "axios";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import SignupForm from "../components/Forms/SignupForm/SignupForm";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import classes from "../styles/Signup/SignupStyles.module.css";
 import { LOGIN } from "../components/UI/Constants/Constants";
+import { UserSignUp } from "../types/Signup";
 
 const Signup: FC<{
   API_VERSION: string | undefined;
   isMobile: boolean;
 }> = ({ API_VERSION, isMobile }) => {
-  const [user, setUser] = useState<{} | null>(null);
+  const nav: NavigateFunction = useNavigate();
+  const [user, setUser] = useState<UserSignUp | null>(null);
   const [isValid, setIsValid] = useState<boolean>(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (user === null) {
@@ -23,29 +24,16 @@ const Signup: FC<{
         .post(`${API_VERSION}/authentication/registration`, user)
         .then((response) => {
           if (response.data.isSaved === true) {
-            navigate(LOGIN, { replace: true });
+            nav(LOGIN, { replace: true });
           } else {
             setIsValid(false);
           }
         });
     };
     fetchUserSignup(user);
-  }, [user, navigate, API_VERSION]);
+  }, [user, nav, API_VERSION]);
 
-  const userInfo = (
-    data: SetStateAction<{
-      firstName: string | undefined;
-      lastName: string | undefined;
-      email: string | undefined;
-      dob: string | undefined;
-      country: string | undefined;
-      state: string | undefined;
-      zipcode: string | undefined;
-      socialSecurity: string | undefined;
-      password: string | undefined;
-      phoneNumber: string | undefined;
-    }>
-  ) => {
+  const userInfo: (data: UserSignUp) => void = (data) => {
     setUser(data);
     return;
   };

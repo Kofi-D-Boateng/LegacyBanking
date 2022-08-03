@@ -1,6 +1,6 @@
-import React from "react";
+import { FC } from "react";
 
-const CreditScore: React.FC<{
+const CreditScore: FC<{
   isMobile: boolean;
   customer: {
     fName: string;

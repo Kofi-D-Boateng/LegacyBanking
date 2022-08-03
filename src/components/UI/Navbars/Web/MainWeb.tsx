@@ -14,6 +14,7 @@ import {
   MouseEvent,
 } from "react";
 import { NavLinkProps } from "react-router-dom";
+import { Link } from "../../../../types/Link";
 
 const MainWeb: FC<{
   auth: boolean;
@@ -29,16 +30,8 @@ const MainWeb: FC<{
     NavLinkProps & RefAttributes<HTMLAnchorElement>
   >;
   Typography: OverridableComponent<TypographyTypeMap<{}, "span">>;
-  links: {
-    key: number;
-    title: string;
-    link: string;
-  }[];
-  authLinks: {
-    key: number;
-    title: string;
-    link: string;
-  }[];
+  links: Link[];
+  authLinks: Link[];
   classes: {
     readonly [key: string]: string;
   };

@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { FC, MouseEvent } from "react";
+import { Link } from "../../../../types/Link";
+import { Notification } from "../../../../types/Notification";
 
 const AccountMobile: FC<{
   Grid: OverridableComponent<GridTypeMap<{}, "div">>;
@@ -24,19 +26,8 @@ const AccountMobile: FC<{
     muiName: string;
   };
   Button: ExtendButtonBase<ButtonTypeMap<{}, "button">>;
-  options: {
-    key: number;
-    title: string;
-    link: string;
-  }[];
-  notis: {
-    _id: string;
-    sender: string;
-    receiver: string;
-    amount: number;
-    date: string;
-    read: boolean;
-  }[];
+  options: Link[];
+  notis: Notification[];
   unread: number;
   showLinks: HTMLElement | null;
   showNotis: HTMLElement | null;

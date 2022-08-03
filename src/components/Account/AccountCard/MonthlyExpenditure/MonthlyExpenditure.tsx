@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@mui/material";
-import React from "react";
+import { FC } from "react";
 
-const MonthlyExpenditure: React.FC<{
+const MonthlyExpenditure: FC<{
   details: { key: number; value: string; desc: string }[];
 }> = ({ details }) => {
   return (

@@ -7,9 +7,7 @@ import {
   Route,
   Routes,
   useLocation,
-  useNavigate,
   useSearchParams,
-  NavigateFunction,
 } from "react-router-dom";
 import { Theme, useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -52,7 +50,6 @@ const Profile = lazy(() => import("./pages/Profile"));
 const WaitingPage = lazy(() => import("./pages/WaitingPage"));
 
 const App: FC = () => {
-  const nav: NavigateFunction = useNavigate();
   const DATE: Date = new Date();
   const YEAR: number = DATE.getFullYear();
   const customer = useSelector((state: RootState) => state.cust);
@@ -103,7 +100,6 @@ const App: FC = () => {
                 element={
                   customer.isEnabled ? (
                     <Profile
-                      nav={nav}
                       Location={Location}
                       customer={customer}
                       API_VERSION={API_VERSION}
@@ -159,12 +155,7 @@ const App: FC = () => {
             <Route
               path={LOCATIONS}
               element={
-                <Locations
-                  API_VERSION={API_VERSION}
-                  param={searchParams}
-                  isMobile={mobile}
-                  nav={nav}
-                />
+                <Locations API_VERSION={API_VERSION} isMobile={mobile} />
               }
             />
             <Route

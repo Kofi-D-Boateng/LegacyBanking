@@ -1,14 +1,15 @@
 import { AxiosStatic } from "axios";
 import { FC, ReactNode } from "react";
 import { useSelector } from "react-redux";
-import { Customer } from "../../../Interfaces/Customer";
+import { CustomerDetails } from "../../../types/CustomerDetails";
+import { NotificationDetails } from "../../../types/Notification";
 import { RootState } from "../../../store/store";
 import { PROFILE, REDIRECT } from "../Constants/Constants";
 import AccountFooter from "../Footers/AccountFooter";
 import { AccountNavbar } from "../Navbars/AccountNavbar";
 
 const AccountLayout: FC<{
-  customer: Customer;
+  customer: CustomerDetails;
   DATE: Date;
   Location: Location;
   mobile: boolean;
@@ -19,7 +20,7 @@ const AccountLayout: FC<{
   BUFFER: number;
   Timer: FC<{
     isMobile: boolean;
-    customer: Customer;
+    customer: CustomerDetails;
     location: Location;
   }>;
 }> = ({
@@ -34,7 +35,9 @@ const AccountLayout: FC<{
   API_VERSION,
 }) => {
   const TIMER: number = customer.expiresIn - DATE.getTime();
-  const notis = useSelector((state: RootState) => state.notis);
+  const notis: NotificationDetails = useSelector(
+    (state: RootState) => state.notis
+  );
   const options: { key: number; title: string; link: string }[] = [
     { key: 1, title: "Accounts", link: PROFILE.substring(0, 8) },
     { key: 2, title: "Log out", link: REDIRECT },
@@ -48,7 +51,7 @@ const AccountLayout: FC<{
         token={customer.token}
         options={options}
         mobile={mobile}
-        noti={notis}
+        notificationDetails={notis}
       />
       {TIMER < BUFFER && customer.expiresIn !== 0 ? (
         <Timer isMobile={mobile} customer={customer} location={Location} />

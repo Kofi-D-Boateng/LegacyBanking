@@ -3,29 +3,13 @@ import { Grid } from "@mui/material";
 import classes from "../../../styles/SVG/BarGraphSVGStyles.module.css";
 import BarChart from "../../UI/SVGs/BarChart";
 import MainPanel from "./MainPanel/MainPanel";
-import { DateAmountType } from "../../../Interfaces/Maps";
+import { CustomerDetails } from "../../../types/CustomerDetails";
+import { DateAmountType } from "../../../types/Maps";
 
 const Summary: FC<{
   year: number;
   withdrawals: number;
-  customer: {
-    fName: string;
-    lName: string;
-    email: string;
-    accountNum: string;
-    routingNum: string;
-    country: string | undefined;
-    area: string | undefined;
-    zipCode: string | undefined;
-    funds: number;
-    transactions: {
-      id: number;
-      type: string;
-      dateOfTransaction: string;
-      amount: number;
-      location: string;
-    }[];
-  };
+  customer: CustomerDetails;
   DateAmount: DateAmountType[];
   isMobile: boolean;
 }> = ({ customer, year, DateAmount, isMobile, withdrawals }) => {
@@ -47,8 +31,6 @@ const Summary: FC<{
     },
   ];
 
-  const yearHandler: (e: any) => void = () => {};
-
   return (
     <>
       <Grid className={classes.svgHolder} container>
@@ -61,11 +43,7 @@ const Summary: FC<{
             </Grid>
           );
         })}
-        <MainPanel
-          changeYear={yearHandler}
-          classes={classes}
-          withdrawals={withdrawals}
-        />
+        <MainPanel classes={classes} withdrawals={withdrawals} />
       </Grid>
     </>
   );

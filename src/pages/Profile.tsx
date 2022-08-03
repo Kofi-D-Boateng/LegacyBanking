@@ -7,7 +7,13 @@ import {
   useState,
   memo,
 } from "react";
-import { NavigateFunction, Route, Routes, useParams } from "react-router-dom";
+import {
+  NavigateFunction,
+  Route,
+  Routes,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import MoneyTransfer from "../components/UI/Modals/MoneyTransfer/MoneyTransfer";
@@ -32,46 +38,21 @@ import {
 } from "../components/UI/Constants/Constants";
 import MainProfile from "../components/Account/MainProfile";
 import Summary from "../components/Account/AccountDetails/Summary";
-import { DateAmountType } from "../Interfaces/Maps";
+import { DateAmountType } from "../types/Maps";
 import AccountSecurity from "../components/UI/Modals/AccountSecurity/AccountSecurity";
 import { backdropDiv, overlayDiv } from "../components/UI/Layouts/RootElement";
 import { notisActions } from "../store/notifications/notifications";
+import { CustomerDetails } from "../types/CustomerDetails";
 
 const Profile: FC<{
   Location: Location;
   token: string | null;
   mobile: boolean;
-  nav: NavigateFunction;
   param: URLSearchParams;
   API_VERSION: string | undefined;
-  customer: {
-    fName: string;
-    lName: string;
-    email: string;
-    accountNum: string;
-    routingNum: string;
-    country: string | undefined;
-    area: string | undefined;
-    zipCode: string | undefined;
-    isLocked: boolean;
-    isEnabled: boolean;
-    funds: number;
-    transactions: {
-      id: number;
-      type: string;
-      dateOfTransaction: string;
-      amount: number;
-      location: string;
-    }[];
-    accountTransfer: {
-      email: string | undefined;
-      amount: number;
-      accountNumber: string;
-      type: string;
-      phoneNumber: string | undefined;
-    };
-  };
-}> = ({ token, mobile, customer, Location, API_VERSION, nav, param }) => {
+  customer: CustomerDetails;
+}> = ({ token, mobile, customer, Location, API_VERSION, param }) => {
+  const nav: NavigateFunction = useNavigate();
   const DateAmount: DateAmountType[] = [];
   const PARAMS = useParams<string>();
   const currentYear: number = new Date().getFullYear();
@@ -85,11 +66,14 @@ const Profile: FC<{
   useEffect(() => {
     const fetchAccount: (token: string | null) => void = async (token) => {
       await axios
-        .get(`${API_VERSION}/authentication/profile/info`, {
-          headers: {
-            authorization: token as string,
-          },
-        })
+        .get(
+          `http://localhost:8081/${API_VERSION}/authentication/profile/info`,
+          {
+            headers: {
+              authorization: token as string,
+            },
+          }
+        )
         .then((response) => {
           const {
             fName,
@@ -160,7 +144,6 @@ const Profile: FC<{
           OVERLAYDIV={overlayDiv}
           classes={MoneyTransferStyles}
           accountNum={customer.accountNum}
-          accountTransfer={customer.accountTransfer}
           DEBITTRANSFER={DEBITTRASFER}
           termsOfChoice={termsOfChoice}
           view={view}
@@ -169,7 +152,6 @@ const Profile: FC<{
           dispatch={dispatch}
           Exit={exitHandler}
           onChoice={choiceHandler}
-          CreateTransfer={customerActions.createTransfer}
           setView={modalActions.setView}
           nav={nav}
         />

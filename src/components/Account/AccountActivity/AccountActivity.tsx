@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { FC, memo, SetStateAction, useState } from "react";
 import {
   Typography,
   Card,
@@ -9,20 +9,15 @@ import {
 } from "@mui/material";
 import Inactive from "@mui/icons-material/ChevronRight";
 import Active from "@mui/icons-material/KeyboardArrowDown";
-import Transaction from "./Transaction";
+import Transactions from "./Transactions";
+import { Transaction } from "../../../types/CustomerDetails";
 
-const AccountActivity: React.FC<{
+const AccountActivity: FC<{
   classes: ClassNameMap<string>;
-  transactions: {
-    id: number;
-    type: string;
-    dateOfTransaction: string;
-    amount: number;
-    location: string;
-  }[];
+  transactions: Transaction[];
   YEAR: number;
 }> = ({ classes, transactions, YEAR }) => {
-  const [view, setView] = useState<React.SetStateAction<boolean>>(false);
+  const [view, setView] = useState<SetStateAction<boolean>>(false);
   const [count, setCount] = useState<number>(10);
 
   const categories: { key: number; title: string }[] = [
@@ -86,7 +81,7 @@ const AccountActivity: React.FC<{
             <div style={{ borderBottom: "0.5px solid black", width: "100%" }}>
               {" "}
             </div>
-            <Transaction
+            <Transactions
               transactions={transactions}
               classes={classes}
               categories={categories}
@@ -101,4 +96,4 @@ const AccountActivity: React.FC<{
   );
 };
 
-export default React.memo(AccountActivity);
+export default memo(AccountActivity);

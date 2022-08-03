@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Customer } from "../../Interfaces/Customer";
+import { CustomerDetails } from "../../types/CustomerDetails";
 const DATE: Date = new Date();
 
-function initialState(): Customer {
+function initialState(): CustomerDetails {
   const token: string | null = sessionStorage.getItem("lb-token");
   const exp: string | null = sessionStorage.getItem("exp");
   const isEnabled: string | null = sessionStorage.getItem("enabled");
@@ -26,13 +26,6 @@ function initialState(): Customer {
     transactions: [
       { id: 0, amount: 0, dateOfTransaction: "", location: "", type: "" },
     ],
-    accountTransfer: {
-      accountNumber: "",
-      amount: 0,
-      email: undefined,
-      type: "",
-      phoneNumber: undefined,
-    },
   };
 }
 
@@ -106,24 +99,6 @@ const customerSlice = createSlice({
         transactions.length > state.transactions.length
           ? transactions.reverse()
           : state.transactions;
-    },
-    createTransfer(
-      state,
-      action: PayloadAction<{
-        email: string | undefined;
-        amount: number;
-        accountNumber: string;
-        type: string;
-        phoneNumber: string | undefined;
-      }>
-    ) {
-      const { email, amount, accountNumber, type, phoneNumber } =
-        action.payload;
-      state.accountTransfer.accountNumber = accountNumber;
-      state.accountTransfer.amount = amount;
-      state.accountTransfer.email = email;
-      state.accountTransfer.type = type;
-      state.accountTransfer.phoneNumber = phoneNumber;
     },
     logout(state) {
       sessionStorage.removeItem("lb-token");

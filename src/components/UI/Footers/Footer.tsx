@@ -2,6 +2,7 @@ import { Grid, IconButton, Typography } from "@mui/material";
 import classes from "../../../styles/Footer/FooterStyles.module.css";
 import { FC, ReactElement } from "react";
 import { NavLink } from "react-router-dom";
+import { Link } from "../../../types/Link";
 
 const Footer: FC<{
   socials: {
@@ -9,11 +10,7 @@ const Footer: FC<{
     svg: ReactElement;
     link: string;
   }[];
-  links: {
-    key: number;
-    title: string;
-    link: string;
-  }[];
+  links: Link[];
   isMobile: boolean;
   YEAR: number;
   Location: Location;

@@ -1,11 +1,11 @@
 import Wallet from "@mui/icons-material/AccountBalanceWallet";
 import { Grid, Typography, Card, CardContent } from "@mui/material";
-import React, { ReactElement } from "react";
+import { FC, ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 import { ArrowForwardIos } from "@mui/icons-material";
 import { SUMMARY } from "../../UI/Constants/Constants";
 
-const AccountDetails: React.FC<{
+const AccountDetails: FC<{
   classes: {
     readonly [key: string]: string;
   };

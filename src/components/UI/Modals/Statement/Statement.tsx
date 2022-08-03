@@ -1,13 +1,13 @@
 import { Close } from "@mui/icons-material";
 import { Card, CardContent, Grid, IconButton, Typography } from "@mui/material";
-import React from "react";
+import React, { FC } from "react";
 import { createPortal } from "react-dom";
 import { NavigateFunction } from "react-router-dom";
 import { MockStatementsTitles } from "../../../../assets/data/MockData";
 import Backdrop from "../../Backdrops/Backdrop";
 import Modal from "./Modal";
 
-const Statement: React.FC<{
+const Statement: FC<{
   Exit: () => void;
   nav: NavigateFunction;
   isMobile: boolean;

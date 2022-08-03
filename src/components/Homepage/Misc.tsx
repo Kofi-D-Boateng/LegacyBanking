@@ -1,7 +1,8 @@
 import { Button, Grid, Typography } from "@mui/material";
+import { FC } from "react";
 import { NavigateFunction } from "react-router-dom";
 
-const Misc: React.FC<{
+const Misc: FC<{
   isMobile: boolean;
   info: {
     key: number;

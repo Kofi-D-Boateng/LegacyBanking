@@ -1,5 +1,6 @@
 import { Grid, Typography, Card, CardContent, Button } from "@mui/material";
-import React, { useEffect } from "react";
+import { Dispatch, FC, useEffect, SetStateAction } from "react";
+import { Transaction } from "../../../types/CustomerDetails";
 import {
   ACHDEBIT,
   DEBITTRASFER,
@@ -8,20 +9,14 @@ import {
 } from "../../UI/Constants/Constants";
 import MonthlyExpenditure from "./MonthlyExpenditure/MonthlyExpenditure";
 
-const AccountInfo: React.FC<{
+const AccountInfo: FC<{
   classes: {
     readonly [key: string]: string;
   };
   fName: string;
   lName: string;
   funds: number;
-  transactions: {
-    id: number;
-    type: string;
-    dateOfTransaction: string;
-    amount: number;
-    location: string;
-  }[];
+  transactions: Transaction[];
   mobile: boolean;
   YEAR: number;
   MONTH: number;
@@ -32,8 +27,8 @@ const AccountInfo: React.FC<{
   MONEYTRANSFER: string;
   PAPERLESS: string;
   ACCOUNTNUMBER: string;
-  setWithdrawals: React.Dispatch<React.SetStateAction<number>>;
-  setDeposits: React.Dispatch<React.SetStateAction<number>>;
+  setWithdrawals: Dispatch<SetStateAction<number>>;
+  setDeposits: Dispatch<SetStateAction<number>>;
   onSetView: (event: any) => void;
 }> = ({
   classes,
@@ -127,7 +122,7 @@ const AccountInfo: React.FC<{
     <Card className={classes.card}>
       <CardContent>
         <Typography sx={{ margin: "10px 0" }} variant="h6">
-          {fName} {lName}'s account |
+          {fName + " " + lName}'s account |
           <Button
             sx={{
               color: "purple",

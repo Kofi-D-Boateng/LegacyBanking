@@ -13,6 +13,7 @@ import {
   MouseEvent,
 } from "react";
 import { NavLinkProps } from "react-router-dom";
+import { Link } from "../../../../types/Link";
 
 const MainMobile: FC<{
   auth: boolean;
@@ -27,16 +28,8 @@ const MainMobile: FC<{
   NavLink: ForwardRefExoticComponent<
     NavLinkProps & RefAttributes<HTMLAnchorElement>
   >;
-  links: {
-    key: number;
-    title: string;
-    link: string;
-  }[];
-  authLinks: {
-    key: number;
-    title: string;
-    link: string;
-  }[];
+  links: Link[];
+  authLinks: Link[];
   classes: {
     readonly [key: string]: string;
   };

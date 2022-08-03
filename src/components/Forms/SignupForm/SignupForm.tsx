@@ -1,7 +1,7 @@
 import { Button, Grid, TextField } from "@mui/material";
-import React, { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, FC, useRef, useState, FormEvent } from "react";
 
-const SignupForm: React.FC<{
+const SignupForm: FC<{
   classes: any;
   isValid: boolean;
   onGetUserInfo: (data: {
@@ -29,7 +29,7 @@ const SignupForm: React.FC<{
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<boolean>(true);
 
-  const submitHandler = (event: React.FormEvent) => {
+  const submitHandler = (event: FormEvent) => {
     event.preventDefault();
 
     interface enteredValue {

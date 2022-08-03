@@ -1,21 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { BankDetails } from "../../types/Bank";
 
-function initialState(): {
-  name: string;
-  country: string;
-  area: string;
-  zipcode: string;
-  totalHoldings: number;
-  branches: {
-    name: string;
-    country: string;
-    state: string;
-    zipcode: string;
-    totalHoldings: number;
-    latitude: number;
-    longitude: number;
-  }[];
-} {
+function initialState(): BankDetails {
   return {
     name: "",
     branches: [],
