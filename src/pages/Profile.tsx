@@ -66,14 +66,11 @@ const Profile: FC<{
   useEffect(() => {
     const fetchAccount: (token: string | null) => void = async (token) => {
       await axios
-        .get(
-          `http://localhost:8081/${API_VERSION}/authentication/profile/info`,
-          {
-            headers: {
-              authorization: token as string,
-            },
-          }
-        )
+        .get(`${API_VERSION}/authentication/profile/info`, {
+          headers: {
+            authorization: token as string,
+          },
+        })
         .then((response) => {
           const {
             fName,

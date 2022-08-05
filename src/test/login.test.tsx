@@ -9,7 +9,6 @@ import { setupServer, SetupServerApi } from "msw/node";
 import { rest } from "msw";
 import { API_VERSION } from "../components/UI/Constants/Constants";
 import Login from "../pages/Login";
-import "@testing-library/jest-dom/extend-expect";
 import { Suspense } from "react";
 import LoadingSpinner from "../components/UI/Modals/LoadingSpinner/LoadingSpinner";
 import { LoginCredentials } from "../types/Credentials";

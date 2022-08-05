@@ -113,6 +113,7 @@ const SignupForm: FC<{
             className={classes.inputField}
             type="date"
             size="small"
+            placeholder="enter date"
             fullWidth
             inputRef={dobRef}
           />
