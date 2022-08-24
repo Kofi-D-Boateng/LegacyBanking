@@ -5,7 +5,7 @@ export type UserSignUp = {
   dob: string | undefined;
   country: string | undefined;
   state: string | undefined;
-  zipcode: string | undefined;
+  zipCode: string | undefined;
   socialSecurity: string | undefined;
   password: string | undefined;
   phoneNumber: string | undefined;

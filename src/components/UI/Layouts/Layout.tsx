@@ -5,6 +5,7 @@ import { Twitter, Facebook, Instagram, LinkedIn } from "@mui/icons-material";
 import { PathMatch } from "react-router-dom";
 import { AxiosStatic } from "axios";
 import { CustomerDetails } from "../../../types/CustomerDetails";
+import classes from "../../../styles/Main/LayoutStyles.module.css";
 
 const Layout: FC<{
   DATE: Date;
@@ -110,7 +111,7 @@ const Layout: FC<{
       {TIMER < BUFFER && customer.expiresIn !== 0 ? (
         <Timer isMobile={mobile} customer={customer} location={Location} />
       ) : null}
-      <div style={{ width: "100%" }}>{children}</div>
+      <div className={classes.main}>{children}</div>
       {signup?.pattern.end ||
       login?.pattern.end ||
       error?.pattern.end ||
