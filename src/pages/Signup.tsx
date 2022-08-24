@@ -23,7 +23,7 @@ const Signup: FC<{
       await axios
         .post(`${API_VERSION}/authentication/registration`, user)
         .then((response) => {
-          if (response.data.isSaved) {
+          if (response.data.isSaved === true) {
             nav(LOGIN, { replace: true });
           } else {
             setIsValid(false);

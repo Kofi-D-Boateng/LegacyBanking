@@ -1,12 +1,10 @@
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { store } from "../store/store";
-import { setupServer, SetupServerApi } from "msw/node";
-import { rest } from "msw";
 import { API_VERSION } from "../components/UI/Constants/Constants";
 import Signup from "../pages/Signup";
 import { Suspense } from "react";
@@ -36,36 +34,20 @@ const theme = createTheme({
   },
 });
 
-const server: SetupServerApi = setupServer(
-  rest.post(`${API_VERSION}/authentication/registration`, (req, res, ctx) => {
-    console.log(req.body);
-    // if (req.bodyUsed) {
-    //   return res(ctx.status(200), ctx.json({ isSaved: true }));
-    // } else {
-    //   return res(ctx.status(400), ctx.json({ isSaved: false }));
-    // }
-    return res(ctx.status(200), ctx.json({ isSaved: true }));
-  })
-);
-
 const SignupForm: UserSignUp = {
   firstName: "Kofi",
   lastName: "Boateng",
   email: "someEmail@gmail.com",
   country: "United States",
   state: "Texas",
-  zipcode: "76012",
-  dob: "09/11/1997",
+  zipCode: "76012",
+  dob: "09111997",
   phoneNumber: "8179940932",
   socialSecurity: "234125432",
   password: "Password1!",
 };
 
 describe("Signup test suite", () => {
-  beforeAll(() => server.listen());
-  afterAll(() => server.close());
-  afterAll(() => server.resetHandlers());
-
   test("Signup page renders", async () => {
     render(
       <Provider store={store}>
@@ -85,7 +67,7 @@ describe("Signup test suite", () => {
     expect(htmlElement).toBeInTheDocument();
   });
 
-  test("Succesfull signup", async () => {
+  test("Successful signup", async () => {
     render(
       <Provider store={store}>
         <ThemeProvider theme={theme}>
@@ -97,8 +79,30 @@ describe("Signup test suite", () => {
         </ThemeProvider>
       </Provider>
     );
-    const Date = screen.getByPlaceholderText(/enter date/i, { exact: false });
+    const Btn = screen.getByRole("button", {
+      name: /Submit/i,
+      exact: false,
+    });
 
+    userEvent.click(Btn);
+
+    const signupPage = screen.getByText(/Please Signup/i, { exact: true });
+
+    expect(signupPage).toBeInTheDocument();
+  });
+  test("Unsuccessful signup", async () => {
+    render(
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <Suspense fallback={<LoadingSpinner />}>
+              <Signup isMobile={false} API_VERSION={API_VERSION} />
+            </Suspense>
+          </BrowserRouter>
+        </ThemeProvider>
+      </Provider>
+    );
+    const Date = screen.getByPlaceholderText(/birthday/i, { exact: false });
     const [
       firstName,
       lastName,
@@ -108,7 +112,7 @@ describe("Signup test suite", () => {
       zipcode,
       socialSecurity,
       phoneNumber,
-      Password,
+      password,
       confirmPassword,
     ] = screen.getAllByRole("textbox");
     const Btn = screen.getByRole("button", {
@@ -135,7 +139,7 @@ describe("Signup test suite", () => {
     userEvent.type(state, SignupForm.state as string);
 
     userEvent.click(zipcode);
-    userEvent.type(zipcode, SignupForm.zipcode as string);
+    userEvent.type(zipcode, SignupForm.zipCode as string);
 
     userEvent.click(socialSecurity);
     userEvent.type(socialSecurity, SignupForm.socialSecurity as string);
@@ -143,8 +147,8 @@ describe("Signup test suite", () => {
     userEvent.click(phoneNumber);
     userEvent.type(phoneNumber, SignupForm.phoneNumber as string);
 
-    userEvent.click(Password);
-    userEvent.type(Password, SignupForm.password as string);
+    userEvent.click(password);
+    userEvent.type(password, SignupForm.password as string);
 
     userEvent.click(confirmPassword);
     userEvent.type(confirmPassword, SignupForm.password as string);

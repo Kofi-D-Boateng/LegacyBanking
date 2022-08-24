@@ -5,8 +5,6 @@ import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { store } from "../store/store";
-import { setupServer, SetupServerApi } from "msw/node";
-import { rest } from "msw";
 import { API_VERSION } from "../components/UI/Constants/Constants";
 import Login from "../pages/Login";
 import { Suspense } from "react";
@@ -36,30 +34,12 @@ const theme = createTheme({
   },
 });
 
-const server: SetupServerApi = setupServer(
-  rest.post(`/${API_VERSION}/authentication/login`, (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        token: "abdb23231232jdsaWEDwdxaCDA",
-        expiresIn: 100000,
-        isEnabled: true,
-        isLocked: false,
-      })
-    );
-  })
-);
-
 const Credentials: LoginCredentials = {
   email: "something@email.com",
   password: "pass123",
 };
 
 describe("Login test suite. Profile exclusive", () => {
-  beforeAll(() => server.listen());
-  afterAll(() => server.close());
-  afterAll(() => server.resetHandlers());
-
   test("login attempt that will land on suspense", async () => {
     render(
       <Provider store={store}>

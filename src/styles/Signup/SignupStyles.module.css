@@ -43,3 +43,14 @@
   color: red;
   border-color: red;
 }
+
+p {
+  font-size: 12px;
+  font-family: "Noto JP Sans";
+  color: red;
+  display: none;
+}
+
+.inputField:invalid ~ p {
+  display: block;
+}
