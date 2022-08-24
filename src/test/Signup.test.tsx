@@ -67,100 +67,77 @@ describe("Signup test suite", () => {
     expect(htmlElement).toBeInTheDocument();
   });
 
-  test("Successful signup", async () => {
-    render(
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <BrowserRouter>
-            <Suspense fallback={<LoadingSpinner />}>
-              <Signup isMobile={false} API_VERSION={API_VERSION} />
-            </Suspense>
-          </BrowserRouter>
-        </ThemeProvider>
-      </Provider>
-    );
-    const Btn = screen.getByRole("button", {
-      name: /Submit/i,
-      exact: false,
-    });
+  // test("Unsuccessful signup", async () => {
+  //   render(
+  //     <Provider store={store}>
+  //       <ThemeProvider theme={theme}>
+  //         <BrowserRouter>
+  //           <Suspense fallback={<LoadingSpinner />}>
+  //             <Signup isMobile={false} API_VERSION={API_VERSION} />
+  //           </Suspense>
+  //         </BrowserRouter>
+  //       </ThemeProvider>
+  //     </Provider>
+  //   );
+  //   const Date = screen.getByPlaceholderText(/birthday/i, { exact: false });
+  //   const [
+  //     firstName,
+  //     lastName,
+  //     email,
+  //     country,
+  //     state,
+  //     zipcode,
+  //     socialSecurity,
+  //     phoneNumber,
+  //     password,
+  //     confirmPassword,
+  //   ] = screen.getAllByRole("textbox");
+  //   const Btn = screen.getByRole("button", {
+  //     name: /Submit/i,
+  //     exact: false,
+  //   });
 
-    userEvent.click(Btn);
+  //   userEvent.click(firstName);
+  //   userEvent.type(firstName, SignupForm.firstName as string);
 
-    const signupPage = screen.getByText(/Please Signup/i, { exact: true });
+  //   userEvent.click(lastName);
+  //   userEvent.type(lastName, SignupForm.lastName as string);
 
-    expect(signupPage).toBeInTheDocument();
-  });
-  test("Unsuccessful signup", async () => {
-    render(
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <BrowserRouter>
-            <Suspense fallback={<LoadingSpinner />}>
-              <Signup isMobile={false} API_VERSION={API_VERSION} />
-            </Suspense>
-          </BrowserRouter>
-        </ThemeProvider>
-      </Provider>
-    );
-    const Date = screen.getByPlaceholderText(/birthday/i, { exact: false });
-    const [
-      firstName,
-      lastName,
-      email,
-      country,
-      state,
-      zipcode,
-      socialSecurity,
-      phoneNumber,
-      password,
-      confirmPassword,
-    ] = screen.getAllByRole("textbox");
-    const Btn = screen.getByRole("button", {
-      name: /Submit/i,
-      exact: false,
-    });
+  //   userEvent.click(Date);
+  //   userEvent.type(Date, SignupForm.dob as string);
 
-    userEvent.click(firstName);
-    userEvent.type(firstName, SignupForm.firstName as string);
+  //   userEvent.click(email);
+  //   userEvent.type(email, SignupForm.email as string);
 
-    userEvent.click(lastName);
-    userEvent.type(lastName, SignupForm.lastName as string);
+  //   userEvent.click(country);
+  //   userEvent.type(country, SignupForm.country as string);
 
-    userEvent.click(Date);
-    userEvent.type(Date, SignupForm.dob as string);
+  //   userEvent.click(state);
+  //   userEvent.type(state, SignupForm.state as string);
 
-    userEvent.click(email);
-    userEvent.type(email, SignupForm.email as string);
+  //   userEvent.click(zipcode);
+  //   userEvent.type(zipcode, SignupForm.zipCode as string);
 
-    userEvent.click(country);
-    userEvent.type(country, SignupForm.country as string);
+  //   userEvent.click(socialSecurity);
+  //   userEvent.type(socialSecurity, SignupForm.socialSecurity as string);
 
-    userEvent.click(state);
-    userEvent.type(state, SignupForm.state as string);
+  //   userEvent.click(phoneNumber);
+  //   userEvent.type(phoneNumber, SignupForm.phoneNumber as string);
 
-    userEvent.click(zipcode);
-    userEvent.type(zipcode, SignupForm.zipCode as string);
+  //   userEvent.click(password);
+  //   userEvent.type(password, SignupForm.password as string);
 
-    userEvent.click(socialSecurity);
-    userEvent.type(socialSecurity, SignupForm.socialSecurity as string);
+  //   userEvent.click(confirmPassword);
+  //   userEvent.type(confirmPassword, SignupForm.password as string);
 
-    userEvent.click(phoneNumber);
-    userEvent.type(phoneNumber, SignupForm.phoneNumber as string);
+  //   userEvent.click(Btn);
 
-    userEvent.click(password);
-    userEvent.type(password, SignupForm.password as string);
+  //   const loginPage = await screen.findByText(
+  //     /Please login/i,
+  //     { exact: false },
+  //     { timeout: 1500 }
+  //   );
 
-    userEvent.click(confirmPassword);
-    userEvent.type(confirmPassword, SignupForm.password as string);
-
-    userEvent.click(Btn);
-
-    // const loginPage = await screen.findByText(
-    //   /Please login/i,
-    //   { exact: false },
-    //   { timeout: 1500 }
-    // );
-
-    // await waitFor(() => expect(loginPage).toBeInTheDocument());
-  });
+  //   await waitFor(() => expect(loginPage).toBeInTheDocument());
+  // });
 });
