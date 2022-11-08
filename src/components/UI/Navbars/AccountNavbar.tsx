@@ -75,6 +75,8 @@ const AccountNavbar: FC<{
       } else {
         options.forEach((o) => {
           if (o.title === innerText) {
+            console.log(innerText);
+            console.log(o.link);
             nav(o.link, { replace: false });
           }
         });

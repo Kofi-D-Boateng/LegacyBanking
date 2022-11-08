@@ -11,12 +11,28 @@ import Inactive from "@mui/icons-material/ChevronRight";
 import Active from "@mui/icons-material/KeyboardArrowDown";
 import Transactions from "./Transactions";
 import { Transaction } from "../../../types/CustomerDetails";
+import Options from "./Options";
+import { NavigateFunction } from "react-router-dom";
 
 const AccountActivity: FC<{
+  accountParam: string | null;
   classes: ClassNameMap<string>;
   transactions: Transaction[];
-  YEAR: number;
-}> = ({ classes, transactions, YEAR }) => {
+  nav: NavigateFunction;
+  fName: string;
+  lName: string;
+  year: string | null;
+  month: string | null;
+}> = ({
+  classes,
+  transactions,
+  nav,
+  fName,
+  lName,
+  month,
+  year,
+  accountParam,
+}) => {
   const [view, setView] = useState<SetStateAction<boolean>>(false);
   const [count, setCount] = useState<number>(10);
 
@@ -39,7 +55,7 @@ const AccountActivity: FC<{
     <Card className={classes.card}>
       <CardContent>
         <Grid container>
-          <Grid sx={{ margin: "auto 0" }} xs={2} md={2} item>
+          <Grid sx={{ margin: "auto 0" }} xs={1} md={1} item>
             <IconButton
               sx={{
                 "&:hover": {
@@ -50,10 +66,22 @@ const AccountActivity: FC<{
               children={view ? <Active /> : <Inactive />}
             />
           </Grid>
-          <Grid sx={{ margin: "auto 0" }} xs={10} md={9} item>
+          <Grid sx={{ margin: "auto" }} xs={3} md={3} item>
             <Typography sx={{ float: "left" }} variant="h6">
               Account Activity
             </Typography>
+          </Grid>
+          <Grid sx={{ margin: "auto" }} sm={8} md={8} item>
+            <Grid container>
+              <Options
+                accountParam={accountParam}
+                nav={nav}
+                fName={fName}
+                lName={lName}
+                year={year}
+                month={month}
+              />
+            </Grid>
           </Grid>
         </Grid>
         <div
@@ -85,7 +113,6 @@ const AccountActivity: FC<{
               transactions={transactions}
               classes={classes}
               categories={categories}
-              YEAR={YEAR}
               count={count}
               setCount={setCount}
             />

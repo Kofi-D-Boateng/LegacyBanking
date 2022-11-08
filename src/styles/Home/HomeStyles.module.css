@@ -231,11 +231,16 @@
 .link {
   text-decoration: none;
   color: white;
-  transition-duration: 500ms;
-  transition-property: text;
+  transition-duration: 350ms;
+  transition-property: all;
+  margin: auto;
 }
 .link:hover {
-  text-decoration: underline;
+  background-color: white;
+  color: purple;
+  border-radius: 13px;
+  border: 1px solid black;
+  padding: 5px;
 }
 
 .btn2 {

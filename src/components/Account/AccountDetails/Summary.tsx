@@ -3,18 +3,17 @@ import { Grid } from "@mui/material";
 import classes from "../../../styles/SVG/BarGraphSVGStyles.module.css";
 import BarChart from "../../UI/SVGs/BarChart";
 import MainPanel from "./MainPanel/MainPanel";
-import { CustomerDetails } from "../../../types/CustomerDetails";
+import { Transaction } from "../../../types/CustomerDetails";
 import { DateAmountType } from "../../../types/Maps";
 
 const Summary: FC<{
   year: number;
   withdrawals: number;
-  customer: CustomerDetails;
+  transactions: Transaction[];
   DateAmount: DateAmountType[];
   isMobile: boolean;
-}> = ({ customer, year, DateAmount, isMobile, withdrawals }) => {
+}> = ({ transactions, year, DateAmount, isMobile, withdrawals }) => {
   const view: number = 1;
-  const { transactions } = customer;
   const SVGs: { key: number; title: string; svg: JSX.Element }[] = [
     {
       key: 1,

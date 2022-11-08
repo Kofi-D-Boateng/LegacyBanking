@@ -9,17 +9,15 @@ import {
 } from "react";
 import {
   NavigateFunction,
-  Route,
-  Routes,
+  useSearchParams,
   useNavigate,
-  useParams,
 } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import MoneyTransfer from "../components/UI/Modals/MoneyTransfer/MoneyTransfer";
 import { modalActions } from "../store/modals/modal-slice";
 import { MockStatements } from "../assets/data/MockData";
-import { SelectChangeEvent } from "@mui/material";
+import { Box, CircularProgress, SelectChangeEvent } from "@mui/material";
 import { customerActions } from "../store/customer/customer-slice";
 import classes from "../styles/Profile/ProfileStyles.module.css";
 import MoneyTransferStyles from "../styles/Modals/Modals.module.css";
@@ -28,9 +26,9 @@ import Paperless from "../components/UI/Modals/Paperless/Paperless";
 import AccountNumbers from "../components/UI/Modals/AccountNumber/AccountNumbers";
 import {
   ACCOUNTNUMBER,
-  DEBITTRASFER,
   MAINPROFILE,
   MONEYTRANSFER,
+  MonthMap,
   PAPERLESS,
   SECURITY,
   STATEMENT,
@@ -42,35 +40,51 @@ import { DateAmountType } from "../types/Maps";
 import AccountSecurity from "../components/UI/Modals/AccountSecurity/AccountSecurity";
 import { backdropDiv, overlayDiv } from "../components/UI/Layouts/RootElement";
 import { notisActions } from "../store/notifications/notifications";
-import { CustomerDetails } from "../types/CustomerDetails";
+import {
+  Account,
+  CustomerDetails,
+  Transaction,
+} from "../types/CustomerDetails";
 
 const Profile: FC<{
   Location: Location;
-  token: string | null;
   mobile: boolean;
-  param: URLSearchParams;
   API_VERSION: string | undefined;
   customer: CustomerDetails;
-}> = ({ token, mobile, customer, Location, API_VERSION, param }) => {
+}> = ({ mobile, customer, Location, API_VERSION }) => {
+  const urlParams = useSearchParams();
   const nav: NavigateFunction = useNavigate();
   const DateAmount: DateAmountType[] = [];
-  const PARAMS = useParams<string>();
-  const currentYear: number = new Date().getFullYear();
-  const currentMonth: number = new Date().getMonth() + 1;
+
   const [view, setView] = useState<boolean>(false);
   const [termsOfChoice, setTermsOfChoice] = useState<string>("");
   const [withdrawals, setWithdrawals] = useState<number>(0);
   const [deposits, setDeposits] = useState<number>(0);
+  const [period, setPeriod] = useState<{ year: number; month: number }>({
+    year: new Date().getFullYear(),
+    month: new Date().getMonth() + 1,
+  });
   const dispatch = useDispatch<Dispatch<any>>();
 
+  const urlParamDisplay = urlParams[0].get("display");
+  const urlParamActions = urlParams[0].get("action");
+  const urlParamAccount = urlParams[0].get("account");
+  const urlParamProfileView = urlParams[0].get("view");
+  const urlParamMonth = urlParams[0].get("month");
+  const urlParamYear = urlParams[0].get("year");
+
   useEffect(() => {
+    if (!customer.getInfo) return;
     const fetchAccount: (token: string | null) => void = async (token) => {
       await axios
-        .get(`${API_VERSION}/authentication/profile/info`, {
-          headers: {
-            authorization: token as string,
-          },
-        })
+        .get(
+          `http://localhost:8081/${API_VERSION}/authentication/profile/info`,
+          {
+            headers: {
+              authorization: token as string,
+            },
+          }
+        )
         .then((response) => {
           const {
             fName,
@@ -79,9 +93,8 @@ const Profile: FC<{
             country,
             zipCode,
             state,
-            funds,
-            accountNum,
-            routingNum,
+            accounts,
+            cards,
             transactions,
             notis,
           } = response.data;
@@ -93,40 +106,81 @@ const Profile: FC<{
               country: country,
               zipCode: zipCode,
               area: state,
-              funds: funds,
-              accountingNum: accountNum,
-              routingNum: routingNum,
               transactions: transactions,
+              accounts: accounts,
+              cards: cards,
             })
           );
-          dispatch(notisActions.getNotis({ notis: notis }));
+          dispatch(notisActions.getNotis({ notis: notis ? notis : [] }));
+          nav(
+            `${fName}${lName}?display=${MAINPROFILE}&account=${
+              accounts[0].id
+            }&year=${period.year}&month=${MonthMap[period.month]}`
+          );
         })
         .catch(() => {
           dispatch(customerActions.logout());
         });
     };
-    fetchAccount(token);
-  }, [token, dispatch, API_VERSION]);
+    fetchAccount(customer.token);
+  }, [
+    customer.token,
+    customer.getInfo,
+    period.year,
+    period.month,
+    nav,
+    dispatch,
+    API_VERSION,
+  ]);
+
+  const mainProfileURL = `${customer.fName}${customer.lName}?display=${MAINPROFILE}&account=${urlParamAccount}&year=${urlParamYear}&month=${urlParamMonth}`;
+  const summaryURL = `${mainProfileURL}&view=${SUMMARY}`;
 
   const viewHandler = useCallback(
     (event: ChangeEvent<HTMLElement>) => {
-      const VIEW = event.target.innerText;
-      nav(`?action=${VIEW}`, { replace: false });
+      const { innerText } = event.target;
+      nav(mainProfileURL + `&action=${innerText}`, {
+        replace: false,
+      });
     },
-    [nav]
+    [nav, mainProfileURL]
   );
 
   const exitHandler = useCallback(() => {
-    nav("/profile", { replace: false });
-    setTermsOfChoice("");
+    nav(mainProfileURL, {
+      replace: false,
+    });
+    if (termsOfChoice.trim().length > 0) {
+      setTermsOfChoice("");
+    }
     setView(false);
-  }, [nav]);
+  }, [nav, mainProfileURL, termsOfChoice]);
 
   const choiceHandler = useCallback((event: SelectChangeEvent) => {
     const { value } = event.target;
     setTermsOfChoice(value);
     setView(true);
   }, []);
+
+  const account: Account = customer.accounts.filter((acc) => {
+    const id: number = parseInt(urlParamAccount as string);
+    return acc.id === id;
+  })[0];
+
+  const nonVisibleAccounts: Account[] = customer.accounts.filter((acc) => {
+    const id: number = parseInt(urlParamAccount as string);
+    return acc.id !== id;
+  });
+
+  const transactions: Transaction[] = customer.transactions.filter((t) => {
+    const year = +t.dateOfTransaction.substring(0, 4);
+    const month = +t.dateOfTransaction.substring(5, 7);
+    return (
+      t.accountNumber === account.accountNumber &&
+      MonthMap[month] === urlParamMonth &&
+      year === period.year
+    );
+  });
 
   const modals: { key: number; modal: JSX.Element; type: string }[] = [
     {
@@ -136,12 +190,11 @@ const Profile: FC<{
         <MoneyTransfer
           Location={Location}
           API_VERSION={API_VERSION}
-          token={token}
+          token={customer.token}
           BACKDROPDIV={backdropDiv}
           OVERLAYDIV={overlayDiv}
           classes={MoneyTransferStyles}
-          accountNum={customer.accountNum}
-          DEBITTRANSFER={DEBITTRASFER}
+          account={account}
           termsOfChoice={termsOfChoice}
           view={view}
           isMobile={mobile}
@@ -151,6 +204,9 @@ const Profile: FC<{
           onChoice={choiceHandler}
           setView={modalActions.setView}
           nav={nav}
+          logout={customerActions.logout}
+          urlParamDisplay={urlParamDisplay}
+          urlParamAccount={urlParamAccount}
         />
       ),
     },
@@ -174,7 +230,7 @@ const Profile: FC<{
       type: PAPERLESS,
       modal: (
         <Paperless
-          token={token}
+          token={customer.token}
           API_VERSION={API_VERSION}
           axios={axios}
           BACKDROPDIV={backdropDiv}
@@ -191,14 +247,13 @@ const Profile: FC<{
       type: ACCOUNTNUMBER,
       modal: (
         <AccountNumbers
+          param={urlParamAccount}
+          accounts={customer.accounts}
           BACKDROPDIV={backdropDiv}
           OVERLAYDIV={overlayDiv}
           classes={MoneyTransferStyles}
-          accountNum={customer.accountNum}
-          routingNum={customer.routingNum}
           Exit={exitHandler}
           isMobile={mobile}
-          nav={nav}
         />
       ),
     },
@@ -208,11 +263,11 @@ const Profile: FC<{
       modal: (
         <AccountSecurity
           Location={Location}
-          isCardLocked={customer.isLocked}
-          accountNumber={customer.accountNum}
+          isCardLocked={false}
+          account={account}
           axios={axios}
           API_VERSION={API_VERSION}
-          token={token}
+          token={customer.token}
           Exit={exitHandler}
           classes={MoneyTransferStyles}
           isMobile={mobile}
@@ -224,58 +279,52 @@ const Profile: FC<{
     },
   ];
 
-  const ProfileView: { key: number; view: JSX.Element; link: string }[] = [
-    {
-      key: 1,
-      view: (
+  return (
+    <>
+      {(!urlParamDisplay || !urlParamAccount) && (
+        <Box
+          sx={{ position: "absolute", top: "50%", left: "50%", zIndex: "5" }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+      {urlParamDisplay?.includes(MAINPROFILE) && !urlParamProfileView && (
         <MainProfile
           STATEMENT={STATEMENT}
           SECURITY={SECURITY}
           MONEYTRANSFER={MONEYTRANSFER}
           PAPERLESS={PAPERLESS}
           ACCOUNTNUMBER={ACCOUNTNUMBER}
-          viewHandler={viewHandler}
-          customer={customer}
-          currentYear={currentYear}
-          currentMonth={currentMonth}
-          modals={modals}
+          account={account}
+          actionParam={urlParamActions}
+          accountParam={urlParamAccount}
           classes={classes}
-          mobile={mobile}
-          withdrawals={withdrawals}
-          setWithdrawals={setWithdrawals}
           deposits={deposits}
+          fName={customer.fName}
+          lName={customer.lName}
+          year={urlParamYear}
+          month={urlParamMonth}
+          modals={modals}
+          mobile={mobile}
+          nonVisibleAccounts={nonVisibleAccounts}
+          summaryURL={summaryURL}
+          transactions={transactions}
+          withdrawals={withdrawals}
+          viewHandler={viewHandler}
           setDeposits={setDeposits}
-          param={param}
+          setWithdrawals={setWithdrawals}
+          nav={nav}
         />
-      ),
-      link: MAINPROFILE,
-    },
-    {
-      key: 2,
-      view: (
+      )}
+      {urlParamDisplay?.includes(MAINPROFILE) && urlParamProfileView && (
         <Summary
           isMobile={mobile}
-          customer={customer}
-          year={currentYear}
+          transactions={transactions}
+          year={period.year}
           DateAmount={DateAmount}
           withdrawals={withdrawals}
         />
-      ),
-      link: SUMMARY,
-    },
-  ];
-
-  return (
-    <>
-      {ProfileView.filter((v) => {
-        return v.link.trim() === PARAMS["*"];
-      }).map((v) => {
-        return (
-          <Routes key={v.key}>
-            <Route path={v.link} element={v.view} />
-          </Routes>
-        );
-      })}
+      )}
     </>
   );
 };

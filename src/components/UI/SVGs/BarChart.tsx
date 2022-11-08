@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import { DateAmountType, MonthsMap } from "../../../types/Maps";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import {
-  ACHDEBIT,
+  DEPOSIT,
   DEBITTRASFER,
   TRANSFER,
   WITHDRAWAL,
@@ -72,7 +72,7 @@ const BarChart: FC<{
             }
           ],
           amount: t.amount,
-          type: t.type,
+          type: t.transactionType,
         };
         if (!DateAmount[0]) {
           DateAmount.push({
@@ -118,7 +118,7 @@ const BarChart: FC<{
               d.type.includes(DEBITTRASFER) ||
               d.type.includes(TRANSFER) ||
               d.type.includes(WITHDRAWAL) ||
-              d.type.includes(ACHDEBIT)
+              d.type.includes(DEPOSIT)
             );
           }).map((d) => d.amount)
         ),

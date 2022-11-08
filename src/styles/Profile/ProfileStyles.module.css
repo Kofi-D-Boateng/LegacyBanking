@@ -5,7 +5,7 @@
 }
 
 .card {
-  width: 90%;
+  width: 80%;
   margin: 20px auto;
   border: 1.5px solid black;
 }
@@ -45,4 +45,31 @@
   width: 70%;
   min-height: 150px;
   position: relative;
+}
+
+.accountCard {
+  width: 80%;
+  margin: 20px auto;
+  border: 1.5px solid black;
+  transition-duration: 300ms;
+  transition-property: border, opacity;
+}
+
+.accountCard:hover {
+  border-color: green;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.btn {
+  color: purple;
+  border-color: purple;
+  transition-duration: 500ms;
+  transition-property: color, border, background-color;
+}
+
+.btn:hover {
+  color: white;
+  border-color: purple;
+  background-color: purple;
 }

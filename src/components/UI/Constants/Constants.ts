@@ -1,18 +1,25 @@
+import { MonthsMap } from "../../../types/Maps";
+
 // BACKEND URL
 const API_VERSION: string | undefined =
-  process.env.REACT_APP_API_VERSION || "api/v1";
-
+  process.env.REACT_APP_API_VERSION || "api/v2";
 const BUFFERTIME: number =
   parseInt(process.env.REACT_APP_BUFFERTIME!) || 10000 * 6 * 5;
 
 // PROFILE STRING COMPARISON
 const DEBITTRASFER: string = "Debit transfer";
-const TRANSFER: string = "transfer";
-const ACHDEBIT: string = "ACH Debit";
-const WITHDRAWAL: string = "withdrawal";
+const TRANSFER: string = "TRANSFER";
+const DEPOSIT: string = "DEPOSIT";
+const WITHDRAWAL: string = "WITHDRAWL";
+const PURCHASE: string = "PURCHASE";
+const REFUND: string = "REFUND";
+
+// ACCOUNT TYPES
+const CREDIT: string = "CREDIT";
+const DEBIT: string = "DEBIT";
 
 // ROUTES
-const MAINPROFILE: string = "";
+const MAINPROFILE: string = "profile";
 const SUMMARY: string = "account-summary";
 const CREDITSCORE: string = "credit-score";
 const LOANS: string = "personal-loans";
@@ -66,10 +73,25 @@ const ReactLeafLetTitleLayer: { att: string; url: string } = {
   url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 };
 
+const MonthMap: MonthsMap = {
+  1: "January",
+  2: "February",
+  3: "March",
+  4: "April",
+  5: "May",
+  6: "June",
+  7: "July",
+  8: "August",
+  9: "September",
+  10: "October",
+  11: "November",
+  12: "December",
+};
+
 export {
   ReactLeafLetTitleLayer,
   DEBITTRASFER,
-  ACHDEBIT,
+  DEPOSIT,
   TRANSFER,
   WITHDRAWAL,
   SUMMARY,
@@ -110,4 +132,9 @@ export {
   BUFFERTIME,
   VERIFYACCOUNT,
   API_VERSION,
+  PURCHASE,
+  REFUND,
+  CREDIT,
+  DEBIT,
+  MonthMap,
 };

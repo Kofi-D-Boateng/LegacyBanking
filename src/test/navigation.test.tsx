@@ -1,34 +1,11 @@
 import { ThemeProvider } from "@emotion/react";
-import { createTheme } from "@mui/material";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import App from "../App";
+import { theme } from "../setupTests";
 import { store } from "../store/store";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#03a9f4",
-    },
-    secondary: {
-      main: "#FEFDFC",
-    },
-  },
-  typography: {
-    fontFamily: "Noto JP Sans",
-  },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 900,
-      lg: 1200,
-      xl: 1536,
-    },
-  },
-});
 
 describe("Navigation test suite. Profile exclusive", () => {
   beforeEach(() => {

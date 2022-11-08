@@ -9,7 +9,8 @@ const AccountDetails: FC<{
   classes: {
     readonly [key: string]: string;
   };
-}> = ({ classes }) => {
+  summaryURL: string;
+}> = ({ classes, summaryURL }) => {
   const clickableDetails: {
     key: number;
     title: string;
@@ -20,7 +21,7 @@ const AccountDetails: FC<{
     {
       key: 1,
       title: "Spending summary",
-      link: SUMMARY,
+      link: summaryURL,
       desc: "Get insight into your spending",
       icon: <Wallet fontSize="large" sx={{ color: "purple" }} />,
     },

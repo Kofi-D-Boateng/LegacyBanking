@@ -7,7 +7,6 @@ import {
   Route,
   Routes,
   useLocation,
-  useSearchParams,
 } from "react-router-dom";
 import { Theme, useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -57,7 +56,6 @@ const App: FC = () => {
   const mobile: boolean = useMediaQuery<unknown>(theme.breakpoints.down("md"));
   const { pathname } = useLocation();
   const Location: Location = window.location;
-  const [searchParams] = useSearchParams();
   const login: PathMatch<string> | null = matchPath<string, string>(
     LOGIN,
     pathname
@@ -98,14 +96,12 @@ const App: FC = () => {
               <Route
                 path={PROFILE}
                 element={
-                  customer.isEnabled ? (
+                  customer.isActivated ? (
                     <Profile
                       Location={Location}
                       customer={customer}
                       API_VERSION={API_VERSION}
-                      token={customer.token}
                       mobile={mobile}
-                      param={searchParams}
                     />
                   ) : (
                     <Navigate replace to={DISABLED} />
@@ -198,7 +194,6 @@ const App: FC = () => {
                 <VerifyAccount
                   isMobile={mobile}
                   axios={axios}
-                  searchParams={searchParams}
                   API_VERSION={API_VERSION}
                   LoadingSpinner={LoadingSpinner}
                 />

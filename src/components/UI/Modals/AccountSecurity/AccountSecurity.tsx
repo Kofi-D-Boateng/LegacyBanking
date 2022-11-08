@@ -14,6 +14,7 @@ import { AxiosStatic } from "axios";
 import { FC, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { NavigateFunction } from "react-router-dom";
+import { Account } from "../../../../types/CustomerDetails";
 import Backdrop from "../../Backdrops/Backdrop";
 import {
   LOCKACCOUNT,
@@ -38,7 +39,7 @@ const AccountSecurity: FC<{
 
   API_VERSION: string | undefined;
   token: string | null;
-  accountNumber: string;
+  account: Account;
   isCardLocked: boolean;
   Location: Location;
   axios: AxiosStatic;
@@ -50,11 +51,12 @@ const AccountSecurity: FC<{
   isMobile,
   API_VERSION,
   token,
-  accountNumber,
+  account,
   Location,
   axios,
   isCardLocked,
 }) => {
+  const AN: string = account ? account.accountNumber : "";
   const [view, setView] = useState<string>("");
   const [choice, setChoice] = useState<{ choice: boolean; item: string }>({
     choice: false,
@@ -79,7 +81,7 @@ const AccountSecurity: FC<{
           {
             card: item.includes(LOCKEDCARD) && choice.choice,
             account: item.includes(LOCKEDACCOUNT) && choice.choice,
-            accountNumber: accountNumber,
+            accountNumber: AN,
           },
           { headers: { authorization: token as string } }
         )
@@ -90,8 +92,8 @@ const AccountSecurity: FC<{
           setChoice({ choice: true, item: SECURITYERRORMSG });
         });
     };
-    fetchSettings(choice, accountNumber, token);
-  }, [API_VERSION, token, choice, axios, accountNumber, Location]);
+    fetchSettings(choice, AN, token);
+  }, [API_VERSION, token, choice, axios, AN, Location]);
 
   return (
     <>

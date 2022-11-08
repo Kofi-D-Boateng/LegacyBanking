@@ -1,83 +1,65 @@
 import { Grid, Typography, Card, CardContent, Button } from "@mui/material";
 import { Dispatch, FC, useEffect, SetStateAction } from "react";
 import { Transaction } from "../../../types/CustomerDetails";
-import {
-  ACHDEBIT,
-  DEBITTRASFER,
-  TRANSFER,
-  WITHDRAWAL,
-} from "../../UI/Constants/Constants";
+import { PURCHASE, TRANSFER, WITHDRAWAL } from "../../UI/Constants/Constants";
 import MonthlyExpenditure from "./MonthlyExpenditure/MonthlyExpenditure";
 
 const AccountInfo: FC<{
   classes: {
     readonly [key: string]: string;
   };
-  fName: string;
-  lName: string;
-  funds: number;
-  transactions: Transaction[];
+  myName: string;
   mobile: boolean;
-  YEAR: number;
-  MONTH: number;
+  transactions: Transaction[];
   withdrawals: number;
   deposits: number;
-  STATEMENT: string;
-  SECURITY: string;
-  MONEYTRANSFER: string;
-  PAPERLESS: string;
   ACCOUNTNUMBER: string;
+  links: {
+    key: number;
+    title: string;
+  }[];
   setWithdrawals: Dispatch<SetStateAction<number>>;
   setDeposits: Dispatch<SetStateAction<number>>;
   onSetView: (event: any) => void;
 }> = ({
   classes,
-  fName,
-  lName,
-  funds,
-  transactions,
   mobile,
-  MONTH,
-  YEAR,
+  myName,
+  links,
+  transactions,
   deposits,
   withdrawals,
   ACCOUNTNUMBER,
-  MONEYTRANSFER,
-  PAPERLESS,
-  SECURITY,
-  STATEMENT,
   setDeposits,
   setWithdrawals,
   onSetView,
 }) => {
+  console.log(transactions);
   useEffect(() => {
-    let withdrawal: number = 0;
+    let withdrawl: number = 0;
     let deposit: number = 0;
-    transactions
-      .filter((a) => {
-        return (
-          +a.dateOfTransaction.substring(0, 4) === YEAR &&
-          +a.dateOfTransaction.substring(6, 7) === MONTH
-        );
-      })
-      .map((a) => {
-        if (
-          a.type.includes(WITHDRAWAL) ||
-          a.type.includes(TRANSFER) ||
-          a.type.includes(ACHDEBIT) ||
-          a.type.includes(DEBITTRASFER)
-        ) {
-          withdrawal = withdrawal + a.amount;
-        } else {
-          deposit = deposit + a.amount;
-        }
-        return true;
-      });
-    const floatWithdrawal = parseFloat(withdrawal.toFixed(2));
+    transactions.forEach((a) => {
+      console.log(a);
+      if (
+        a.transactionType.includes(WITHDRAWAL) ||
+        (a.transactionType.includes(TRANSFER) &&
+          !a.recipient.includes("SELF")) ||
+        a.transactionType.includes(PURCHASE)
+      ) {
+        withdrawl += a.amount;
+      } else {
+        deposit += a.amount;
+      }
+    });
+    const floatWithdrawal = parseFloat(withdrawl.toFixed(2));
+    console.log(floatWithdrawal);
     const floatDeposit = parseFloat(deposit.toFixed(2));
+    console.log(floatDeposit);
     setDeposits(floatDeposit);
     setWithdrawals(floatWithdrawal);
-  }, [YEAR, MONTH, transactions, setDeposits, setWithdrawals]);
+  }, [transactions, setDeposits, setWithdrawals]);
+
+  const funds = deposits - withdrawals;
 
   const details: { key: number; value: string; desc: string }[] = [
     {
@@ -112,17 +94,11 @@ const AccountInfo: FC<{
     },
   ];
 
-  const links: { key: number; title: string }[] = [
-    { key: 1, title: STATEMENT },
-    { key: 2, title: PAPERLESS },
-    { key: 3, title: MONEYTRANSFER },
-    { key: 4, title: SECURITY },
-  ];
   return (
     <Card className={classes.card}>
       <CardContent>
         <Typography sx={{ margin: "10px 0" }} variant="h6">
-          {fName + " " + lName}'s account |
+          {myName}'s account |
           <Button
             sx={{
               color: "purple",

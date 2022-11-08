@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { Card, CardContent, Grid, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Backdrop from "../../Backdrops/Backdrop";
-import { NavigateFunction } from "react-router-dom";
+import { Account } from "../../../../types/CustomerDetails";
 
 const Modal: FC<{
   Exit: () => void;
@@ -76,9 +76,8 @@ const Modal: FC<{
 const AccountNumbers: FC<{
   Exit: () => void;
   isMobile: boolean;
-  nav: NavigateFunction;
-  accountNum: string;
-  routingNum: string;
+  param: string | null;
+  accounts: Account[];
   classes: {
     readonly [key: string]: string;
   };
@@ -87,19 +86,23 @@ const AccountNumbers: FC<{
 }> = ({
   Exit,
   isMobile,
-  accountNum,
-  routingNum,
+  accounts,
+  param,
   classes,
   BACKDROPDIV,
   OVERLAYDIV,
 }) => {
+  const account: Account | undefined = accounts.find((acc) => {
+    const id: number = parseInt(param as string);
+    return acc.id === id;
+  });
   return (
     <>
       {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV as Element)}
       {createPortal(
         <Modal
-          AN={accountNum}
-          RN={routingNum}
+          AN={account?.accountNumber as string}
+          RN={account?.routingNumber as string}
           isMobile={isMobile}
           Exit={Exit}
           classes={classes}

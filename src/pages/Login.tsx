@@ -36,16 +36,18 @@ const Login: FC<{
     const fetchUserLogin = async (userCredentials: LoginCredentials) => {
       setLoading(true);
       await axios
-        .post(`${API_VERSION}/authentication/login`, userCredentials)
+        .post(
+          `http://localhost:8081/${API_VERSION}/authentication/login`,
+          userCredentials
+        )
         .then((response) => {
           if (response.status === 200) {
-            const { token, isLocked, isEnabled, expiresIn } = response.data;
+            const { token, isActivated, expiresIn } = response.data;
             dispatch(
               customerActions.getCreds({
                 token: token,
                 expiresIn: +expiresIn,
-                isEnabled: isEnabled,
-                isLocked: isLocked,
+                isActivated: isActivated,
               })
             );
             nav(PROFILE.substring(0, 8), { replace: true });

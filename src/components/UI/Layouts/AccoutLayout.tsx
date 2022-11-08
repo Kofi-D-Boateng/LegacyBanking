@@ -4,9 +4,10 @@ import { useSelector } from "react-redux";
 import { CustomerDetails } from "../../../types/CustomerDetails";
 import { NotificationDetails } from "../../../types/Notification";
 import { RootState } from "../../../store/store";
-import { PROFILE, REDIRECT } from "../Constants/Constants";
+import { MAINPROFILE, PROFILE, REDIRECT } from "../Constants/Constants";
 import AccountFooter from "../Footers/AccountFooter";
 import { AccountNavbar } from "../Navbars/AccountNavbar";
+import { useSearchParams } from "react-router-dom";
 
 const AccountLayout: FC<{
   customer: CustomerDetails;
@@ -35,30 +36,43 @@ const AccountLayout: FC<{
   API_VERSION,
 }) => {
   const TIMER: number = customer.expiresIn - DATE.getTime();
+  const params = useSearchParams();
+  const urlParamAccount = params[0].get("account");
+  const urlParamDisplay = params[0].get("display");
+  const urlParamMonth = params[0].get("month");
+  const urlParamYear = params[0].get("year");
+  const substring = PROFILE.slice(0, PROFILE.length - 1);
+  const url = `${substring}${customer.fName}${customer.lName}?display=${MAINPROFILE}&account=${urlParamAccount}&year=${urlParamYear}&month=${urlParamMonth}`;
   const notis: NotificationDetails = useSelector(
     (state: RootState) => state.notis
   );
   const options: { key: number; title: string; link: string }[] = [
-    { key: 1, title: "Accounts", link: PROFILE.substring(0, 8) },
+    { key: 1, title: "Accounts", link: url },
     { key: 2, title: "Log out", link: REDIRECT },
   ];
 
   return (
-    <div>
-      <AccountNavbar
-        API_VERSION={API_VERSION}
-        axios={axios}
-        token={customer.token}
-        options={options}
-        mobile={mobile}
-        notificationDetails={notis}
-      />
-      {TIMER < BUFFER && customer.expiresIn !== 0 ? (
-        <Timer isMobile={mobile} customer={customer} location={Location} />
-      ) : null}
-      <div>{children}</div>
-      <AccountFooter />
-    </div>
+    <>
+      {!urlParamAccount || !urlParamDisplay ? (
+        <div>{children}</div>
+      ) : (
+        <>
+          <AccountNavbar
+            API_VERSION={API_VERSION}
+            axios={axios}
+            token={customer.token}
+            options={options}
+            mobile={mobile}
+            notificationDetails={notis}
+          />
+          {/* {TIMER < BUFFER && customer.expiresIn !== 0 ? (
+            <Timer isMobile={mobile} customer={customer} location={Location} />
+          ) : null} */}
+          <div>{children}</div>
+          <AccountFooter />
+        </>
+      )}
+    </>
   );
 };
 
