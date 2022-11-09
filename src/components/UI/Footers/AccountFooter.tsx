@@ -6,7 +6,7 @@ const AccountFooter: FC = () => {
   return (
     <Box
       style={{
-        backgroundColor: "purple",
+        backgroundColor: "#8a2be2",
         padding: "40px 0",
         marginTop: "auto",
       }}

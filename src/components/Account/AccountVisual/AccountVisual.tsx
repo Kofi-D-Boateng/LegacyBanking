@@ -2,7 +2,13 @@ import { Card, CardContent, Grid, Typography } from "@mui/material";
 import { FC } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { Account } from "../../../types/CustomerDetails";
-import { CREDIT, MAINPROFILE } from "../../UI/Constants/Constants";
+import {
+  BLACK_CREDIT_LINE,
+  CREDIT,
+  EMERALD_CREDIT_LINE,
+  MAINPROFILE,
+  PLATINUM_CREDIT_LINE,
+} from "../../UI/Constants/Constants";
 
 const AccountVisual: FC<{
   fName: string;
@@ -24,7 +30,20 @@ const AccountVisual: FC<{
         return (
           <Card
             key={acc.id}
-            className={classes.accountCard}
+            className={
+              acc.bankAccountType.includes(CREDIT) &&
+              acc.capital >= EMERALD_CREDIT_LINE &&
+              acc.capital < PLATINUM_CREDIT_LINE
+                ? classes.emeraldAccount
+                : acc.bankAccountType.includes(CREDIT) &&
+                  acc.capital >= PLATINUM_CREDIT_LINE &&
+                  acc.capital < BLACK_CREDIT_LINE
+                ? classes.platinumAccount
+                : acc.bankAccountType.includes(CREDIT) &&
+                  acc.capital >= BLACK_CREDIT_LINE
+                ? classes.blackAccount
+                : classes.checkingAccount
+            }
             onClick={() =>
               nav(url, {
                 replace: false,

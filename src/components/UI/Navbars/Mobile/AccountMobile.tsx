@@ -105,7 +105,7 @@ const AccountMobile: FC<{
                 fontSize: "1.1rem",
                 textTransform: "none",
                 margin: "auto 20px",
-                color: "purple",
+                color: "#8a2be2",
                 display: "block",
                 "&:hover": {
                   backgroundColor: "transparent",

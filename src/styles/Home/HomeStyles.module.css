@@ -237,7 +237,7 @@
 }
 .link:hover {
   background-color: white;
-  color: purple;
+  color: #8a2be2;
   border-radius: 13px;
   border: 1px solid black;
   padding: 5px;
@@ -255,7 +255,7 @@
 }
 
 .mail {
-  background-color: purple;
+  background-color: #8a2be2;
   text-align: center;
   padding: 100px 0;
   color: white;

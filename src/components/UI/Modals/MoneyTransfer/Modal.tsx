@@ -1,21 +1,24 @@
 import { Close } from "@mui/icons-material";
 import {
-  SelectChangeEvent,
   Card,
   Grid,
   Typography,
   IconButton,
   CardContent,
-  FormControl,
-  InputLabel,
-  Select,
   MenuItem,
   TextField,
   Button,
   Box,
   CircularProgress,
 } from "@mui/material";
-import { useState, useRef, FC, FormEvent, FocusEvent } from "react";
+import {
+  useState,
+  useRef,
+  FC,
+  FormEvent,
+  FocusEvent,
+  ChangeEvent,
+} from "react";
 import Form from "../../../Forms/MoneyTransferForm/Form";
 
 const Modal: FC<{
@@ -29,23 +32,26 @@ const Modal: FC<{
     phoneNumber: string | undefined;
     amount: number;
   }) => void;
-  choiceHandler: (event: SelectChangeEvent) => void;
-  view: boolean;
-  termsOfChoice: string;
+  choiceHandler: (event: ChangeEvent<HTMLInputElement>) => void;
   isMobile: boolean;
+  transferBy: string | null;
 }> = ({
   classes,
   Exit,
   Transfer,
   choiceHandler,
-  view,
-  termsOfChoice,
   isMobile,
   loading,
+  transferBy,
 }) => {
   const [amount, setAmount] = useState<number>(0);
   const emailRef = useRef<HTMLInputElement | undefined>();
   const phoneNumberRef = useRef<HTMLInputElement | undefined>();
+
+  const options: Array<{ value: string; option: string }> = [
+    { value: "email", option: "Email" },
+    { value: "phoneNumber", option: "Phone Number" },
+  ];
 
   const amountHandler = (event: FocusEvent<HTMLInputElement>) => {
     const regex = /[A-Za-z]/;
@@ -77,7 +83,7 @@ const Modal: FC<{
           {" "}
           <Grid
             sx={{
-              backgroundColor: "purple",
+              backgroundColor: "#8a2be2",
               padding: "20px 0",
             }}
             container
@@ -105,19 +111,22 @@ const Modal: FC<{
             </IconButton>
           </Grid>
           <CardContent sx={{ margin: "auto" }}>
-            {!view ? (
-              <FormControl sx={{ width: "100%" }}>
-                <InputLabel id="Choice">Send By....</InputLabel>
-                <Select
-                  labelId="Choice"
-                  value={termsOfChoice}
-                  label="Send By"
-                  onChange={choiceHandler}
-                >
-                  <MenuItem value={"email"}>Email</MenuItem>
-                  <MenuItem value={"number"}>Phone Number</MenuItem>
-                </Select>
-              </FormControl>
+            {!transferBy ? (
+              <TextField
+                select
+                size="small"
+                label={"Send By"}
+                onChange={choiceHandler}
+                fullWidth
+              >
+                {options.map((t, i) => {
+                  return (
+                    <MenuItem key={i} value={t.value}>
+                      {t.option}
+                    </MenuItem>
+                  );
+                })}
+              </TextField>
             ) : (
               <Form
                 Grid={Grid}
@@ -126,7 +135,7 @@ const Modal: FC<{
                 Typography={Typography}
                 submitHandler={submitHandler}
                 amountHandler={amountHandler}
-                termsOfChoice={termsOfChoice}
+                termsOfChoice={transferBy}
                 emailRef={emailRef}
                 phoneNumberRef={phoneNumberRef}
               />

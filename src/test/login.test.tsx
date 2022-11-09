@@ -38,7 +38,7 @@ describe("Login test suite. Profile exclusive", () => {
     userEvent.click(password);
     userEvent.type(password, Credentials.password as string);
     userEvent.dblClick(submit);
-    await waitFor(() => expect(link).not.toBeInTheDocument);
+    expect(link).not.toBeInTheDocument();
   });
 
   test("Faulty login", async () => {
@@ -56,19 +56,14 @@ describe("Login test suite. Profile exclusive", () => {
     const username = screen.getByPlaceholderText(/enter email/i);
     const password = screen.getByPlaceholderText(/password/i);
     const submit = await screen.findByRole("button", { name: /Login/i });
-    const link = await screen.findByRole("link", {
-      name: /Open an account/i,
-    });
     userEvent.click(username);
     userEvent.type(username, Credentials.email as string);
     userEvent.click(password);
     userEvent.type(password, "wrong password");
     userEvent.dblClick(submit);
-    const TextMatch = screen.findByText(
-      /Invalid username or password/i,
-      { exact: false },
-      { interval: 2000 }
-    );
-    await waitFor(() => expect(TextMatch).toBeInTheDocument);
+    const TextMatch = await screen.findByText(/Invalid email or password/i, {
+      exact: false,
+    });
+    expect(TextMatch).toBeInTheDocument();
   });
 });

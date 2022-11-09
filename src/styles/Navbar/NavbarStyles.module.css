@@ -4,7 +4,6 @@
 }
 
 .logoDiv {
-  color: #00bbff;
   flex-grow: 1;
 }
 
@@ -12,13 +11,15 @@
   text-decoration: none;
   text-transform: none;
   margin: 0 20px;
-  color: purple;
+  color: #8a2be2;
   transition-duration: 600ms;
   transition-property: text, color;
 }
 
 .navLink:hover {
-  text-decoration: underline;
+  color: black;
+}
+.navLink:active {
   color: black;
 }
 
@@ -26,12 +27,15 @@
   font-size: 1.2rem;
   text-transform: none;
   text-decoration: none;
-  color: purple;
+  color: #8a2be2;
   transition-duration: 600ms;
   transition-property: text, color;
 }
 
 .menuLink:hover {
-  text-decoration: underline;
+  color: black;
+}
+
+.menuLink:active {
   color: black;
 }

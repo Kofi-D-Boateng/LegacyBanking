@@ -12,47 +12,48 @@ import { CustomerDetails } from "../types/CustomerDetails";
 import { randomBytes } from "crypto";
 import { theme } from "../setupTests";
 
-// const customer: CustomerDetails = {
-//   accountNum: "",
-//   routingNum: "",
-//   fName: "",
-//   lName: "",
-//   email: "",
-//   funds: 0,
-//   country: "",
-//   area: "",
-//   zipCode: "",
-//   isEnabled: true,
-//   isLocked: false,
-//   token: randomBytes(16).toString("hex"),
-//   authenticated: false,
-//   expiresIn: 0,
-//   transactions: [],
-// };
+const token = randomBytes(16).toString("hex");
+const timestamp = new Date().getTime();
+const isActivated = true;
+
+const customer: CustomerDetails = {
+  token: token,
+  authenticated: token ? true : false,
+  expiresIn: timestamp,
+  fName: "",
+  lName: "",
+  email: "",
+  country: "",
+  area: "",
+  zipCode: "",
+  isActivated: isActivated,
+  transactions: [],
+  accounts: [],
+  cards: [],
+  getInfo: true,
+};
 
 describe("Profile Test Suite", () => {
   test("Profile Loads correctly", async () => {
-    // render(
-    //   <Provider store={store}>
-    //     <ThemeProvider theme={theme}>
-    //       <BrowserRouter>
-    //         <Suspense fallback={<LoadingSpinner />}>
-    //           <Profile
-    //             API_VERSION={API_VERSION}
-    //             Location={window.location}
-    //             customer={customer}
-    //             mobile={false}
-    //           />
-    //         </Suspense>
-    //       </BrowserRouter>
-    //     </ThemeProvider>
-    //   </Provider>
-    // );
-    const TextMatch = await screen.findByText(
-      /Summary/i,
-      { exact: false },
-      { interval: 5000 }
+    render(
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <Suspense fallback={<LoadingSpinner />}>
+              <Profile
+                API_VERSION={API_VERSION}
+                Location={window.location}
+                customer={customer}
+                mobile={false}
+              />
+            </Suspense>
+          </BrowserRouter>
+        </ThemeProvider>
+      </Provider>
     );
-    expect(TextMatch).toBeInTheDocument;
+    const TextMatch = await screen.findByText(/Full Account Number/i, {
+      exact: false,
+    });
+    expect(TextMatch).toBeInTheDocument();
   });
 });

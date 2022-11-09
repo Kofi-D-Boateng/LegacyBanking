@@ -2,7 +2,7 @@ import { Container, Grid } from "@mui/material";
 import { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { Account, Transaction } from "../../types/CustomerDetails";
-import { CREDIT } from "../UI/Constants/Constants";
+import { CREDIT, MonthMap } from "../UI/Constants/Constants";
 import AccountActivity from "./AccountActivity/AccountActivity";
 import AccountInfo from "./AccountCard/AccountInfo";
 import AccountCoupons from "./AccountCoupons/AccountCoupons";
@@ -39,6 +39,11 @@ const MainProfile: FC<{
   lName: string;
   year: string | null;
   month: string | null;
+  filterType: string | null;
+  filterYear: string | null;
+  filterMonth: string | null;
+  activityParam: string | null;
+  countParam: string | null;
 }> = ({
   modals,
   classes,
@@ -60,6 +65,11 @@ const MainProfile: FC<{
   lName,
   month,
   year,
+  filterMonth,
+  filterType,
+  filterYear,
+  activityParam,
+  countParam,
   nav,
   setDeposits,
   setWithdrawals,
@@ -83,6 +93,44 @@ const MainProfile: FC<{
     }
   });
 
+  const currentTransaction: Transaction[] = transactions.filter((t) => {
+    const tYear = t.dateOfTransaction.substring(0, 4);
+    const tMonth = +t.dateOfTransaction.substring(5, 7);
+    return (
+      t.accountNumber === account.accountNumber &&
+      MonthMap[tMonth] === month &&
+      tYear === year
+    );
+  });
+
+  const filteredTransaction: Transaction[] =
+    !filterMonth && !filterYear
+      ? currentTransaction
+      : transactions.filter((t) => {
+          const tYear = t.dateOfTransaction.substring(0, 4);
+          const tMonth = +t.dateOfTransaction.substring(5, 7);
+          if (filterType?.includes("Year")) {
+            return (
+              t.accountNumber === account.accountNumber &&
+              MonthMap[tMonth] === month &&
+              tYear === filterYear
+            );
+          } else if (filterType?.includes("Month")) {
+            return (
+              t.accountNumber === account.accountNumber &&
+              MonthMap[tMonth] === filterMonth &&
+              tYear === year
+            );
+          } else if (filterType?.includes("Both")) {
+            return (
+              t.accountNumber === account.accountNumber &&
+              MonthMap[tMonth] === filterMonth &&
+              tYear === filterYear
+            );
+          }
+          return t;
+        });
+
   return (
     <>
       {actionParam &&
@@ -97,7 +145,7 @@ const MainProfile: FC<{
               <AccountInfo
                 ACCOUNTNUMBER={ACCOUNTNUMBER}
                 myName={myName}
-                transactions={transactions}
+                transactions={currentTransaction}
                 mobile={mobile}
                 classes={classes}
                 links={filteredLinks}
@@ -118,12 +166,19 @@ const MainProfile: FC<{
               />
               <AccountActivity
                 accountParam={accountParam}
-                transactions={transactions}
+                transactions={filteredTransaction}
+                filterParam={filterType}
+                activityViewIsEnabled={activityParam}
+                countParam={countParam}
                 fName={fName}
                 lName={lName}
                 year={year}
                 month={month}
                 classes={classes}
+                isMobile={mobile}
+                filterType={filterType}
+                filterYear={filterYear}
+                filterMonth={filterMonth}
                 nav={nav}
               />
             </Grid>
@@ -145,7 +200,7 @@ const MainProfile: FC<{
               links={filteredLinks}
               onSetView={viewHandler}
               myName={myName}
-              transactions={transactions}
+              transactions={currentTransaction}
               withdrawals={withdrawals}
               setWithdrawals={setWithdrawals}
               deposits={deposits}
@@ -173,12 +228,19 @@ const MainProfile: FC<{
           <Grid container>
             <AccountActivity
               accountParam={accountParam}
-              transactions={transactions}
+              transactions={filteredTransaction}
+              filterParam={filterType}
+              activityViewIsEnabled={activityParam}
+              countParam={countParam}
               classes={classes}
               fName={fName}
               lName={lName}
               year={year}
               month={month}
+              isMobile={mobile}
+              filterType={filterType}
+              filterYear={filterYear}
+              filterMonth={filterMonth}
               nav={nav}
             />
           </Grid>

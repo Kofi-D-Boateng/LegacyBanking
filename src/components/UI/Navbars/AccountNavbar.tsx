@@ -75,8 +75,6 @@ const AccountNavbar: FC<{
       } else {
         options.forEach((o) => {
           if (o.title === innerText) {
-            console.log(innerText);
-            console.log(o.link);
             nav(o.link, { replace: false });
           }
         });
@@ -126,7 +124,7 @@ const AccountNavbar: FC<{
       <AppBar
         position="static"
         elevation={0}
-        style={{ backgroundColor: "purple" }}
+        style={{ backgroundColor: "#8a2be2" }}
       >
         <Toolbar>
           {!mobile ? (

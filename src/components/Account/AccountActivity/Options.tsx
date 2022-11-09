@@ -1,72 +1,103 @@
-import {
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
-import { FC, useRef, useState } from "react";
+import { ChangeEvent, FC, useRef } from "react";
+import { Grid, MenuItem, TextField } from "@mui/material";
 import { NavigateFunction } from "react-router-dom";
 import MonthAndYearForm from "../../Forms/OptionForm/MonthAndYearForm";
 import MonthForm from "../../Forms/OptionForm/MonthForm";
 import YearForm from "../../Forms/OptionForm/YearForm";
-import { MAINPROFILE } from "../../UI/Constants/Constants";
+import { MAINPROFILE, MonthMap } from "../../UI/Constants/Constants";
 
 const Options: FC<{
   accountParam: string | null;
+  filterParam: string | null;
   nav: NavigateFunction;
   fName: string;
   lName: string;
   year: string | null;
   month: string | null;
-}> = ({ nav, fName, lName, month, year, accountParam }) => {
-  const [view, setView] = useState<string>("");
-  const optionFilterHandler: (e: SelectChangeEvent<string>) => void = (e) => {
-    setView(e.target.value);
+  isMobile: boolean;
+}> = ({
+  nav,
+  fName,
+  lName,
+  month,
+  year,
+  accountParam,
+  isMobile,
+  filterParam,
+}) => {
+  const optionFilterHandler: (e: ChangeEvent<HTMLInputElement>) => void = (
+    e
+  ) => {
+    const { value } = e.target;
+    const url = `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${value}`;
+    nav(url, { replace: false });
   };
-  const monthRef = useRef<HTMLSelectElement>();
-  const yearRef = useRef<HTMLSelectElement>();
 
-  const yearChange: (e: SelectChangeEvent<string>) => void = (e) => {
+  const yearRef = useRef<string | undefined>(undefined);
+  const monthRef = useRef<string | undefined>(undefined);
+
+  const selection: Array<{ value: string; option: string }> = [
+    { value: "Year", option: "Year" },
+    { value: "Month", option: "Month" },
+    { value: "Both", option: "Month And Year" },
+    { value: "Remove", option: "Remove filter" },
+  ];
+
+  const yearChange: (e: ChangeEvent<HTMLInputElement>) => void = (e) => {
     const newYear = e.target.value;
-    const mainProfileURL = `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${newYear}&month=${month}`;
+    const mainProfileURL = `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${filterParam}&filterYear=${newYear}`;
+    nav(mainProfileURL, { replace: false });
   };
-  const monthChange: (e: SelectChangeEvent<string>) => void = (e) => {
-    const newMonth = e.target.value;
-    const mainProfileURL = `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${year}&month=${newMonth}`;
+  const monthChange: (e: ChangeEvent<HTMLInputElement>) => void = (e) => {
+    const newMonth: number = parseInt(e.target.value);
+    const mainProfileURL = `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${filterParam}&filterMonth=${MonthMap[newMonth]}`;
+    nav(mainProfileURL, { replace: false });
   };
-  const monthAndYearChange: (e: SelectChangeEvent<string>) => void = (e) => {
-    const mainProfileURL = `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${yearRef.current?.value}&month=${monthRef.current?.value}`;
+  const monthAndYearChange: (e: ChangeEvent<HTMLInputElement>) => void = (
+    e
+  ) => {
+    const { value, name } = e.target;
+    if (name.includes("month")) monthRef.current = value;
+    if (name.includes("year")) yearRef.current = value;
+    if (!monthRef.current || !yearRef.current) return;
+    const newMonth = parseInt(monthRef.current);
+    const mainProfileURL = `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${filterParam}&filterYear=${yearRef.current}&filterMonth=${MonthMap[newMonth]}`;
+    nav(mainProfileURL, { replace: false });
   };
+
   return (
     <>
-      <Grid sm={6} md={6} item>
-        <FormControl
-          sx={{ width: "50%", margin: "10px auto" }}
+      <Grid sm={3} md={4} item>
+        <TextField
+          select
           size="small"
-          fullWidth
+          sx={{
+            width: !isMobile ? 130 : 120,
+            margin: "10px auto",
+          }}
+          label={"Filter"}
+          onChange={optionFilterHandler}
+          defaultValue=""
         >
-          <InputLabel id="choice">Filter</InputLabel>
-          <Select
-            labelId="choice"
-            label="Filter"
-            value={view}
-            onChange={optionFilterHandler}
-          >
-            <MenuItem value={"Year"}>Year</MenuItem>
-            <MenuItem value={"Month"}>Month</MenuItem>
-            <MenuItem value={"MonthAndYear"}>Year and Month</MenuItem>
-          </Select>
-        </FormControl>
+          {selection.map((s, i) => {
+            return (
+              <MenuItem key={i} value={s.value}>
+                {s.option}
+              </MenuItem>
+            );
+          })}
+        </TextField>
       </Grid>
-      {view.includes("Year") && <YearForm yearHandler={yearChange} />}
-      {view.includes("Month") && <MonthForm monthHandler={monthChange} />}
-      {view.includes("Both") && (
+      {filterParam?.includes("Year") && (
+        <YearForm yearHandler={yearChange} isMobile={isMobile} />
+      )}
+      {filterParam?.includes("Month") && (
+        <MonthForm monthHandler={monthChange} isMobile={isMobile} />
+      )}
+      {filterParam?.includes("Both") && (
         <MonthAndYearForm
           monthAndYearHandler={monthAndYearChange}
-          yearRef={yearRef}
-          monthRef={monthRef}
+          isMobile={isMobile}
         />
       )}
     </>

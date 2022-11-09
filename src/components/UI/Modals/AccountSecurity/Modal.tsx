@@ -145,7 +145,7 @@ const Modal: FC<{
       <Card className={!isMobile ? classes.card : classes.mobileCard}>
         <Grid
           sx={{
-            backgroundColor: "purple",
+            backgroundColor: "#8a2be2",
             padding: "20px 0",
           }}
           container

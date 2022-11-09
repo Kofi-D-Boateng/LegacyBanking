@@ -56,14 +56,14 @@ const Misc: FC<{
                         variant="outlined"
                         sx={{
                           width: "30%",
-                          color: "purple",
-                          borderColor: "purple",
+                          color: "#8a2be2",
+                          borderColor: "#8a2be2",
                           transitionDuration: "500ms",
                           transitionProperty: "background, color",
                           "&:hover": {
-                            backgroundColor: "purple",
+                            backgroundColor: "#8a2be2",
                             color: "white",
-                            borderColor: "purple",
+                            borderColor: "#8a2be2",
                           },
                         }}
                         onClick={() => {
@@ -112,14 +112,14 @@ const Misc: FC<{
                         variant="outlined"
                         sx={{
                           width: "30%",
-                          color: "purple",
-                          borderColor: "purple",
+                          color: "#8a2be2",
+                          borderColor: "#8a2be2",
                           transitionDuration: "500ms",
                           transitionProperty: "background, color",
                           "&:hover": {
-                            backgroundColor: "purple",
+                            backgroundColor: "#8a2be2",
                             color: "white",
-                            borderColor: "purple",
+                            borderColor: "#8a2be2",
                           },
                         }}
                         onClick={() => {
@@ -173,12 +173,12 @@ const Misc: FC<{
                     <Button
                       variant="outlined"
                       sx={{
-                        color: "purple",
-                        borderColor: "purple",
+                        color: "#8a2be2",
+                        borderColor: "#8a2be2",
                         "&:hover": {
-                          backgroundColor: "purple",
+                          backgroundColor: "#8a2be2",
                           color: "white",
-                          borderColor: "purple",
+                          borderColor: "#8a2be2",
                         },
                       }}
                       fullWidth

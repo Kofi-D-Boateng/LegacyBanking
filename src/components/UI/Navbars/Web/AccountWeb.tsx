@@ -109,8 +109,8 @@ const AccountWeb: FC<{
                   margin: "0 10px 0 0",
                   "&:hover": {
                     backgroundColor: "white",
-                    color: "purple",
-                    borderColor: "purple",
+                    color: "#8a2be2",
+                    borderColor: "#8a2be2",
                   },
                 }}
                 onClick={handleClose}

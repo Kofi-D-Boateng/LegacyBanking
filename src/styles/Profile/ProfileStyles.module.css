@@ -7,22 +7,22 @@
 .card {
   width: 80%;
   margin: 20px auto;
-  border: 1.5px solid black;
+  border: 0.5px solid black;
 }
 
 .linksContainer {
-  border-right: 1px solid purple;
+  border-right: 1px solid #8a2be2;
   text-align: center;
   margin: auto;
 }
 
 .links {
-  color: purple;
+  color: #8a2be2;
   text-decoration: none;
 }
 
 .links:hover {
-  color: blue;
+  color: black;
 }
 
 .details {
@@ -47,7 +47,20 @@
   position: relative;
 }
 
-.accountCard {
+.checkingAccount {
+  color: black;
+  width: 80%;
+  margin: 20px auto;
+  border: 1.5px solid black;
+  transition-duration: 300ms;
+  transition-property: border, opacity;
+}
+.platinumAccount {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../../assets/photos/platinum_card_bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
   width: 80%;
   margin: 20px auto;
   border: 1.5px solid black;
@@ -55,21 +68,67 @@
   transition-property: border, opacity;
 }
 
-.accountCard:hover {
+.emeraldAccount {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../../assets/photos/emerald_green_bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+  width: 80%;
+  margin: 20px auto;
+  border: 1.5px solid black;
+  transition-duration: 300ms;
+  transition-property: border, opacity;
+}
+.blackAccount {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../../assets/photos/black_card_bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+  width: 80%;
+  margin: 20px auto;
+  border: 1.5px solid black;
+  transition-duration: 300ms;
+  transition-property: border, opacity;
+}
+
+.platinumAccount:hover {
   border-color: green;
+  color: white;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.emeraldAccount:hover {
+  border-color: green;
+  color: white;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.blackAccount:hover {
+  border-color: green;
+  color: white;
+  cursor: pointer;
+  opacity: 0.8;
+}
+.checkingAccount:hover {
+  border-color: green;
+  color: black;
   cursor: pointer;
   opacity: 0.8;
 }
 
 .btn {
-  color: purple;
-  border-color: purple;
+  color: #8a2be2;
+  border-color: #8a2be2;
   transition-duration: 500ms;
   transition-property: color, border, background-color;
 }
 
 .btn:hover {
   color: white;
-  border-color: purple;
-  background-color: purple;
+  border-color: #8a2be2;
+  background-color: #8a2be2;
 }

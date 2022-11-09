@@ -18,6 +18,11 @@ const REFUND: string = "REFUND";
 const CREDIT: string = "CREDIT";
 const DEBIT: string = "DEBIT";
 
+// CREDIT LINES
+const EMERALD_CREDIT_LINE: number = 5000.0;
+const BLACK_CREDIT_LINE: number = 100000.0;
+const PLATINUM_CREDIT_LINE: number = 10000.0;
+
 // ROUTES
 const MAINPROFILE: string = "profile";
 const SUMMARY: string = "account-summary";
@@ -137,4 +142,7 @@ export {
   CREDIT,
   DEBIT,
   MonthMap,
+  BLACK_CREDIT_LINE,
+  EMERALD_CREDIT_LINE,
+  PLATINUM_CREDIT_LINE,
 };

@@ -160,7 +160,7 @@ const BarChart: FC<{
           sx={{ width: "80%", margin: "auto", padding: "30px 0" }}
           container
         >
-          <Typography variant="h5" sx={{ color: "purple" }}>
+          <Typography variant="h5" sx={{ color: "#8a2be2" }}>
             Account Summary
           </Typography>
         </Grid>

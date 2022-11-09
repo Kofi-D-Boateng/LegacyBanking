@@ -3,7 +3,6 @@ import { Grid, Typography, Card, CardContent } from "@mui/material";
 import { FC, ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 import { ArrowForwardIos } from "@mui/icons-material";
-import { SUMMARY } from "../../UI/Constants/Constants";
 
 const AccountDetails: FC<{
   classes: {
@@ -23,7 +22,7 @@ const AccountDetails: FC<{
       title: "Spending summary",
       link: summaryURL,
       desc: "Get insight into your spending",
-      icon: <Wallet fontSize="large" sx={{ color: "purple" }} />,
+      icon: <Wallet fontSize="large" sx={{ color: "#8a2be2" }} />,
     },
   ];
   return (

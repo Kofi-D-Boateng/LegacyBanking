@@ -23,7 +23,7 @@ const WaitingPage: FC<{
     width: !isMobile ? "50%" : "90%",
     transform: "translate(-50%, -50%)",
     fontSize: "1.3rem",
-    color: "purple",
+    color: "#8a2be2",
   };
 
   const GenerateLink: (e: MouseEvent<HTMLButtonElement>) => void = async () => {
@@ -51,7 +51,7 @@ const WaitingPage: FC<{
           variant="text"
           sx={{
             textTransform: "none",
-            color: "purple",
+            color: "#8a2be2",
             fontSize: "1.3rem",
             "&:hover": {
               backgroundColor: "transparent",

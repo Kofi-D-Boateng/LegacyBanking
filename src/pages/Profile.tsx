@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux";
 import MoneyTransfer from "../components/UI/Modals/MoneyTransfer/MoneyTransfer";
 import { modalActions } from "../store/modals/modal-slice";
 import { MockStatements } from "../assets/data/MockData";
-import { Box, CircularProgress, SelectChangeEvent } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { customerActions } from "../store/customer/customer-slice";
 import classes from "../styles/Profile/ProfileStyles.module.css";
 import MoneyTransferStyles from "../styles/Modals/Modals.module.css";
@@ -40,11 +40,7 @@ import { DateAmountType } from "../types/Maps";
 import AccountSecurity from "../components/UI/Modals/AccountSecurity/AccountSecurity";
 import { backdropDiv, overlayDiv } from "../components/UI/Layouts/RootElement";
 import { notisActions } from "../store/notifications/notifications";
-import {
-  Account,
-  CustomerDetails,
-  Transaction,
-} from "../types/CustomerDetails";
+import { Account, CustomerDetails } from "../types/CustomerDetails";
 
 const Profile: FC<{
   Location: Location;
@@ -53,18 +49,15 @@ const Profile: FC<{
   customer: CustomerDetails;
 }> = ({ mobile, customer, Location, API_VERSION }) => {
   const urlParams = useSearchParams();
+  const date = new Date();
   const nav: NavigateFunction = useNavigate();
   const DateAmount: DateAmountType[] = [];
 
-  const [view, setView] = useState<boolean>(false);
-  const [termsOfChoice, setTermsOfChoice] = useState<string>("");
   const [withdrawals, setWithdrawals] = useState<number>(0);
   const [deposits, setDeposits] = useState<number>(0);
-  const [period, setPeriod] = useState<{ year: number; month: number }>({
-    year: new Date().getFullYear(),
-    month: new Date().getMonth() + 1,
-  });
   const dispatch = useDispatch<Dispatch<any>>();
+  const currentYear = date.getFullYear();
+  const currentMonth = date.getMonth() + 1;
 
   const urlParamDisplay = urlParams[0].get("display");
   const urlParamActions = urlParams[0].get("action");
@@ -72,6 +65,12 @@ const Profile: FC<{
   const urlParamProfileView = urlParams[0].get("view");
   const urlParamMonth = urlParams[0].get("month");
   const urlParamYear = urlParams[0].get("year");
+  const urlParamFilter = urlParams[0].get("filter");
+  const urlParamFilterYear = urlParams[0].get("filterYear");
+  const urlParamFilterMonth = urlParams[0].get("filterMonth");
+  const urlParamTransferBy = urlParams[0].get("transferBy");
+  const urlParamActivityView = urlParams[0].get("activityView");
+  const urlParamActivityViewCount = urlParams[0].get("count");
 
   useEffect(() => {
     if (!customer.getInfo) return;
@@ -113,9 +112,7 @@ const Profile: FC<{
           );
           dispatch(notisActions.getNotis({ notis: notis ? notis : [] }));
           nav(
-            `${fName}${lName}?display=${MAINPROFILE}&account=${
-              accounts[0].id
-            }&year=${period.year}&month=${MonthMap[period.month]}`
+            `${fName}${lName}?display=${MAINPROFILE}&account=${accounts[0].id}&year=${currentYear}&month=${MonthMap[currentMonth]}`
           );
         })
         .catch(() => {
@@ -126,11 +123,11 @@ const Profile: FC<{
   }, [
     customer.token,
     customer.getInfo,
-    period.year,
-    period.month,
     nav,
     dispatch,
     API_VERSION,
+    currentMonth,
+    currentYear,
   ]);
 
   const mainProfileURL = `${customer.fName}${customer.lName}?display=${MAINPROFILE}&account=${urlParamAccount}&year=${urlParamYear}&month=${urlParamMonth}`;
@@ -150,17 +147,17 @@ const Profile: FC<{
     nav(mainProfileURL, {
       replace: false,
     });
-    if (termsOfChoice.trim().length > 0) {
-      setTermsOfChoice("");
-    }
-    setView(false);
-  }, [nav, mainProfileURL, termsOfChoice]);
+  }, [nav, mainProfileURL]);
 
-  const choiceHandler = useCallback((event: SelectChangeEvent) => {
-    const { value } = event.target;
-    setTermsOfChoice(value);
-    setView(true);
-  }, []);
+  const choiceHandler = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      const url =
+        mainProfileURL + `&action=${urlParamActions}&transferBy=${value}`;
+      nav(url, { replace: false });
+    },
+    [mainProfileURL, nav, urlParamActions]
+  );
 
   const account: Account = customer.accounts.filter((acc) => {
     const id: number = parseInt(urlParamAccount as string);
@@ -170,16 +167,6 @@ const Profile: FC<{
   const nonVisibleAccounts: Account[] = customer.accounts.filter((acc) => {
     const id: number = parseInt(urlParamAccount as string);
     return acc.id !== id;
-  });
-
-  const transactions: Transaction[] = customer.transactions.filter((t) => {
-    const year = +t.dateOfTransaction.substring(0, 4);
-    const month = +t.dateOfTransaction.substring(5, 7);
-    return (
-      t.accountNumber === account.accountNumber &&
-      MonthMap[month] === urlParamMonth &&
-      year === period.year
-    );
   });
 
   const modals: { key: number; modal: JSX.Element; type: string }[] = [
@@ -195,18 +182,16 @@ const Profile: FC<{
           OVERLAYDIV={overlayDiv}
           classes={MoneyTransferStyles}
           account={account}
-          termsOfChoice={termsOfChoice}
-          view={view}
           isMobile={mobile}
           axios={axios}
           dispatch={dispatch}
           Exit={exitHandler}
           onChoice={choiceHandler}
           setView={modalActions.setView}
-          nav={nav}
           logout={customerActions.logout}
           urlParamDisplay={urlParamDisplay}
           urlParamAccount={urlParamAccount}
+          urlParamTransferBy={urlParamTransferBy}
         />
       ),
     },
@@ -298,17 +283,22 @@ const Profile: FC<{
           account={account}
           actionParam={urlParamActions}
           accountParam={urlParamAccount}
+          activityParam={urlParamActivityView}
+          countParam={urlParamActivityViewCount}
           classes={classes}
           deposits={deposits}
           fName={customer.fName}
           lName={customer.lName}
           year={urlParamYear}
           month={urlParamMonth}
+          filterType={urlParamFilter}
+          filterYear={urlParamFilterYear}
+          filterMonth={urlParamFilterMonth}
           modals={modals}
           mobile={mobile}
           nonVisibleAccounts={nonVisibleAccounts}
           summaryURL={summaryURL}
-          transactions={transactions}
+          transactions={customer.transactions}
           withdrawals={withdrawals}
           viewHandler={viewHandler}
           setDeposits={setDeposits}
@@ -319,8 +309,8 @@ const Profile: FC<{
       {urlParamDisplay?.includes(MAINPROFILE) && urlParamProfileView && (
         <Summary
           isMobile={mobile}
-          transactions={transactions}
-          year={period.year}
+          transactions={customer.transactions}
+          year={parseInt(urlParamYear as string)}
           DateAmount={DateAmount}
           withdrawals={withdrawals}
         />

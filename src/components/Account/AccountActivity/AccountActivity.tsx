@@ -1,4 +1,4 @@
-import { FC, memo, SetStateAction, useState } from "react";
+import { FC, memo, useCallback, useEffect, useState } from "react";
 import {
   Typography,
   Card,
@@ -13,9 +13,11 @@ import Transactions from "./Transactions";
 import { Transaction } from "../../../types/CustomerDetails";
 import Options from "./Options";
 import { NavigateFunction } from "react-router-dom";
+import { MAINPROFILE } from "../../UI/Constants/Constants";
 
 const AccountActivity: FC<{
   accountParam: string | null;
+  filterParam: string | null;
   classes: ClassNameMap<string>;
   transactions: Transaction[];
   nav: NavigateFunction;
@@ -23,6 +25,12 @@ const AccountActivity: FC<{
   lName: string;
   year: string | null;
   month: string | null;
+  activityViewIsEnabled: string | null;
+  countParam: string | null;
+  isMobile: boolean;
+  filterType: string | null;
+  filterYear: string | null;
+  filterMonth: string | null;
 }> = ({
   classes,
   transactions,
@@ -31,10 +39,45 @@ const AccountActivity: FC<{
   lName,
   month,
   year,
+  filterParam,
   accountParam,
+  activityViewIsEnabled,
+  countParam,
+  isMobile,
+  filterMonth,
+  filterType,
+  filterYear,
 }) => {
-  const [view, setView] = useState<SetStateAction<boolean>>(false);
-  const [count, setCount] = useState<number>(10);
+  const count = parseInt(countParam as string);
+  console.log(month);
+  const [url, setUrl] = useState<string>(
+    `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}`
+  );
+  useEffect(() => {
+    console.log("HIT");
+    if (filterMonth && filterYear) {
+      setUrl(
+        `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${filterType}&filterYear=${filterYear}&filterMonth=${filterMonth}`
+      );
+    } else if (filterType && !filterMonth) {
+      setUrl(
+        `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${filterType}&filterYear=${filterYear}`
+      );
+    } else if (filterType && !filterYear) {
+      setUrl(
+        `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${filterType}&filterMonth=${filterMonth}`
+      );
+    }
+  }, [
+    accountParam,
+    fName,
+    lName,
+    filterMonth,
+    filterYear,
+    month,
+    year,
+    filterType,
+  ]);
 
   const categories: { key: number; title: string }[] = [
     { key: 1, title: "Date" },
@@ -44,12 +87,25 @@ const AccountActivity: FC<{
   ];
 
   const viewHandler = () => {
-    if (view) {
-      setView(false);
+    if (activityViewIsEnabled?.includes("active")) {
+      nav(url, { replace: false });
     } else {
-      setView(true);
+      nav(url + `&activityView=active&count=10`, { replace: false });
     }
   };
+
+  const renderHandler = useCallback(() => {
+    if (count > transactions.length) {
+      const newUri = url + `&activityView=active&count=10`;
+      nav(newUri, { replace: false });
+    } else {
+      const newUri = url + `&activityView=active&count=${count + 5}`;
+      nav(newUri, { replace: false });
+    }
+  }, [count, transactions.length, nav, url]);
+  const filter = transactions.filter((a, index) => {
+    return index <= count;
+  });
 
   return (
     <Card className={classes.card}>
@@ -63,7 +119,7 @@ const AccountActivity: FC<{
                 },
               }}
               onClick={viewHandler}
-              children={view ? <Active /> : <Inactive />}
+              children={activityViewIsEnabled ? <Active /> : <Inactive />}
             />
           </Grid>
           <Grid sx={{ margin: "auto" }} xs={3} md={3} item>
@@ -75,6 +131,8 @@ const AccountActivity: FC<{
             <Grid container>
               <Options
                 accountParam={accountParam}
+                filterParam={filterParam}
+                isMobile={isMobile}
                 nav={nav}
                 fName={fName}
                 lName={lName}
@@ -90,7 +148,7 @@ const AccountActivity: FC<{
             width: "100%",
           }}
         ></div>
-        {view && (
+        {activityViewIsEnabled && (
           <>
             <Grid className={classes.activityTitles} container>
               {categories.map((cat) => {
@@ -110,11 +168,10 @@ const AccountActivity: FC<{
               {" "}
             </div>
             <Transactions
-              transactions={transactions}
+              transactions={filter}
               classes={classes}
               categories={categories}
-              count={count}
-              setCount={setCount}
+              increaseCount={renderHandler}
             />
           </>
         )}

@@ -1,14 +1,19 @@
-import { FC, Dispatch, useCallback, useEffect, useState } from "react";
+import {
+  FC,
+  Dispatch,
+  useCallback,
+  useEffect,
+  useState,
+  ChangeEvent,
+} from "react";
 import { createPortal } from "react-dom";
 import Backdrop from "../../Backdrops/Backdrop";
-import { SelectChangeEvent } from "@mui/material";
 import Modal from "./Modal";
 import {
   ActionCreatorWithoutPayload,
   ActionCreatorWithPayload,
 } from "@reduxjs/toolkit";
 import { AxiosStatic } from "axios";
-import { NavigateFunction } from "react-router-dom";
 import { TransferDetails } from "../../../../types/Transfer";
 import { Account } from "../../../../types/CustomerDetails";
 import { MAINPROFILE, TRANSFER } from "../../Constants/Constants";
@@ -17,8 +22,6 @@ const MoneyTransfer: FC<{
   Location: Location;
   API_VERSION: string | undefined;
   token: string | null;
-  view: boolean;
-  termsOfChoice: string;
   isMobile: boolean;
   classes: {
     readonly [key: string]: string;
@@ -36,13 +39,11 @@ const MoneyTransfer: FC<{
   logout: ActionCreatorWithoutPayload<string>;
   urlParamDisplay: string | null;
   urlParamAccount: string | null;
-  nav: NavigateFunction;
+  urlParamTransferBy: string | null;
   dispatch: Dispatch<any>;
   Exit: () => void;
-  onChoice: (event: SelectChangeEvent) => void;
+  onChoice: (event: ChangeEvent<HTMLInputElement>) => void;
 }> = ({
-  view,
-  termsOfChoice,
   isMobile,
   classes,
   BACKDROPDIV,
@@ -59,6 +60,7 @@ const MoneyTransfer: FC<{
   logout,
   urlParamAccount,
   urlParamDisplay,
+  urlParamTransferBy,
 }) => {
   const AN: string = account ? account.accountNumber : "";
   const [loading, setLoading] = useState<boolean>(false);
@@ -79,7 +81,10 @@ const MoneyTransfer: FC<{
       await axios
         .put(
           `http://localhost:8081/${API_VERSION}/authentication/transaction`,
-          { accountTransfer: accountTransfer },
+          {
+            accountTransfer: accountTransfer,
+            typeOfTransaction: "ACCOUNT TRANSFER",
+          },
           {
             headers: { authorization: token as string },
           }
@@ -157,8 +162,7 @@ const MoneyTransfer: FC<{
           Exit={Exit}
           Transfer={transferHandler}
           choiceHandler={onChoice}
-          view={view}
-          termsOfChoice={termsOfChoice}
+          transferBy={urlParamTransferBy}
           classes={classes}
           isMobile={isMobile}
           loading={loading}

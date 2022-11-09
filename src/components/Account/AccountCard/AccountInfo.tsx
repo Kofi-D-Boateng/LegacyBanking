@@ -34,12 +34,10 @@ const AccountInfo: FC<{
   setWithdrawals,
   onSetView,
 }) => {
-  console.log(transactions);
   useEffect(() => {
     let withdrawl: number = 0;
     let deposit: number = 0;
     transactions.forEach((a) => {
-      console.log(a);
       if (
         a.transactionType.includes(WITHDRAWAL) ||
         (a.transactionType.includes(TRANSFER) &&
@@ -52,9 +50,7 @@ const AccountInfo: FC<{
       }
     });
     const floatWithdrawal = parseFloat(withdrawl.toFixed(2));
-    console.log(floatWithdrawal);
     const floatDeposit = parseFloat(deposit.toFixed(2));
-    console.log(floatDeposit);
     setDeposits(floatDeposit);
     setWithdrawals(floatWithdrawal);
   }, [transactions, setDeposits, setWithdrawals]);
@@ -101,7 +97,7 @@ const AccountInfo: FC<{
           {myName}'s account |
           <Button
             sx={{
-              color: "purple",
+              color: "#8a2be2",
               fontSize: "1.2rem",
               textTransform: "none",
               "&:hover": {
@@ -136,7 +132,7 @@ const AccountInfo: FC<{
                   sx={{
                     fontSize: "1rem",
                     textTransform: "none",
-                    color: "purple",
+                    color: "#8a2be2",
                     "&:hover": {
                       backgroundColor: "transparent",
                       color: "green",

@@ -1,5 +1,5 @@
 import { Button, Grid, Typography } from "@mui/material";
-import { Dispatch, FC, SetStateAction, useCallback } from "react";
+import { FC } from "react";
 import { Transaction } from "../../../types/CustomerDetails";
 import {
   DEBITTRASFER,
@@ -16,22 +16,11 @@ const Transactions: FC<{
     key: number;
     title: string;
   }[];
-  count: number;
-  setCount: Dispatch<SetStateAction<number>>;
-}> = ({ classes, categories, transactions, count, setCount }) => {
-  const renderHandler = useCallback(() => {
-    if (count > transactions.length) {
-      setCount(10);
-    } else {
-      setCount((prevState) => prevState + 5);
-    }
-  }, [count, setCount, transactions.length]);
-  const filter = transactions.filter((a, index) => {
-    return index <= count;
-  });
+  increaseCount: () => void;
+}> = ({ classes, categories, transactions, increaseCount }) => {
   return (
     <Grid sx={{ margin: "auto" }} container>
-      {filter.map((a) => {
+      {transactions.map((a) => {
         return (
           <Grid key={a.id} className={classes.activities} container>
             <Grid
@@ -97,15 +86,14 @@ const Transactions: FC<{
         <Button
           sx={{
             margin: "auto",
-            color: "purple",
+            color: "#8a2be2",
             "&:hover": {
               backgroundColor: "transparent",
             },
           }}
           type="button"
           variant="text"
-          // THIS DOES NOT WORK AS INTENDED!!! MUST DECREMENT CURRENT TO SHOW PREVIOUS MONTHS.
-          onClick={renderHandler}
+          onClick={increaseCount}
         >
           See more activity
         </Button>
