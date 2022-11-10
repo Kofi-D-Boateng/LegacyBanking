@@ -71,6 +71,7 @@ const Profile: FC<{
   const urlParamTransferBy = urlParams[0].get("transferBy");
   const urlParamActivityView = urlParams[0].get("activityView");
   const urlParamActivityViewCount = urlParams[0].get("count");
+  const urlParamATransferStatus = urlParams[0].get("status");
 
   useEffect(() => {
     if (!customer.getInfo) return;
@@ -159,6 +160,21 @@ const Profile: FC<{
     [mainProfileURL, nav, urlParamActions]
   );
 
+  const resetInfo = useCallback(() => {
+    nav(mainProfileURL, { replace: true });
+  }, [nav, mainProfileURL]);
+
+  const setTransferStatus = useCallback(
+    (param: string) => {
+      nav(
+        mainProfileURL +
+          `&action=${urlParamActions}&transferBy=${urlParamTransferBy}&status=${param}`,
+        { replace: true }
+      );
+    },
+    [nav, mainProfileURL, urlParamActions, urlParamTransferBy]
+  );
+
   const account: Account = customer.accounts.filter((acc) => {
     const id: number = parseInt(urlParamAccount as string);
     return acc.id === id;
@@ -177,6 +193,7 @@ const Profile: FC<{
         <MoneyTransfer
           Location={Location}
           API_VERSION={API_VERSION}
+          myEmail={customer.email}
           token={customer.token}
           BACKDROPDIV={backdropDiv}
           OVERLAYDIV={overlayDiv}
@@ -192,6 +209,9 @@ const Profile: FC<{
           urlParamDisplay={urlParamDisplay}
           urlParamAccount={urlParamAccount}
           urlParamTransferBy={urlParamTransferBy}
+          resetInfo={resetInfo}
+          setTransferStatus={setTransferStatus}
+          status={urlParamATransferStatus}
         />
       ),
     },

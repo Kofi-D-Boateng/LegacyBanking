@@ -6,6 +6,8 @@ const API_VERSION: string | undefined =
 const BUFFERTIME: number =
   parseInt(process.env.REACT_APP_BUFFERTIME!) || 10000 * 6 * 5;
 
+// HASH
+const HASHTYPE = process.env.REACT_APP_HASH || "sha256";
 // PROFILE STRING COMPARISON
 const DEBITTRASFER: string = "Debit transfer";
 const TRANSFER: string = "TRANSFER";
@@ -57,6 +59,11 @@ const FORWARD: string = "forward";
 const BACKWARD: string = "backward";
 const LOCKEDCARD: string = "Locked Card";
 const LOCKEDACCOUNT: string = "Locked Account";
+
+// TRANSFER STATUSES
+const UNSUCCESSFUL_TRANSFER: string = "failed";
+const SUCCESSFUL_TRANSFER: string = "successful";
+const INPROGRESS: string = "in progress";
 
 // SOCIAL LINKS
 const TWITTER: string = "www.twitter.com";
@@ -145,4 +152,8 @@ export {
   BLACK_CREDIT_LINE,
   EMERALD_CREDIT_LINE,
   PLATINUM_CREDIT_LINE,
+  HASHTYPE,
+  INPROGRESS,
+  SUCCESSFUL_TRANSFER,
+  UNSUCCESSFUL_TRANSFER,
 };

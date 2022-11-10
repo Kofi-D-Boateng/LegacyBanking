@@ -16,7 +16,14 @@ import {
 import { AxiosStatic } from "axios";
 import { TransferDetails } from "../../../../types/Transfer";
 import { Account } from "../../../../types/CustomerDetails";
-import { MAINPROFILE, TRANSFER } from "../../Constants/Constants";
+import {
+  INPROGRESS,
+  MAINPROFILE,
+  SUCCESSFUL_TRANSFER,
+  TRANSFER,
+  UNSUCCESSFUL_TRANSFER,
+} from "../../Constants/Constants";
+import { customerActions } from "../../../../store/customer/customer-slice";
 
 const MoneyTransfer: FC<{
   Location: Location;
@@ -28,6 +35,7 @@ const MoneyTransfer: FC<{
   };
   BACKDROPDIV: HTMLElement | null;
   OVERLAYDIV: HTMLElement | null;
+  myEmail: string;
   account: Account;
   axios: AxiosStatic;
   setView: ActionCreatorWithPayload<
@@ -40,6 +48,9 @@ const MoneyTransfer: FC<{
   urlParamDisplay: string | null;
   urlParamAccount: string | null;
   urlParamTransferBy: string | null;
+  status: string | null;
+  setTransferStatus: (param: string) => void;
+  resetInfo: () => void;
   dispatch: Dispatch<any>;
   Exit: () => void;
   onChoice: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -61,12 +72,16 @@ const MoneyTransfer: FC<{
   urlParamAccount,
   urlParamDisplay,
   urlParamTransferBy,
+  myEmail,
+  status,
+  resetInfo,
+  setTransferStatus,
 }) => {
   const AN: string = account ? account.accountNumber : "";
-  const [loading, setLoading] = useState<boolean>(false);
   const [transfer, setTransfer] = useState<TransferDetails>({
     accountNumber: AN,
     amount: 0,
+    email: myEmail,
     emailOfTransferee: undefined,
     phoneNumberOfTransferee: undefined,
     bankAccountType: account?.bankAccountType,
@@ -77,35 +92,29 @@ const MoneyTransfer: FC<{
       accountTransfer: TransferDetails,
       token: string | null
     ) => {
-      setLoading(true);
       await axios
         .put(
-          `http://localhost:8081/${API_VERSION}/authentication/transaction`,
+          `${API_VERSION}/authentication/transaction`,
           {
             accountTransfer: accountTransfer,
-            typeOfTransaction: "ACCOUNT TRANSFER",
+            typeOfTransaction: "ACCOUNT_TRANSACTION",
           },
           {
             headers: { authorization: token as string },
           }
         )
-        .then((response) => {
-          if (response.status >= 200 && response.status <= 299) {
-            dispatch(
-              setTransfer({
-                accountNumber: transfer.accountNumber,
-                amount: 0,
-                emailOfTransferee: "",
-                phoneNumberOfTransferee: undefined,
-                bankAccountType: account.bankAccountType,
-                transactionType: TRANSFER,
-              })
-            );
-          }
-          Location.reload();
+        .then(() => {
+          dispatch(customerActions.resetInfo());
+          setTransferStatus(SUCCESSFUL_TRANSFER);
+          setTimeout(() => {
+            resetInfo();
+          }, 4000);
         })
         .catch(() => {
-          setLoading(false);
+          setTransferStatus(UNSUCCESSFUL_TRANSFER);
+          setTimeout(() => {
+            resetInfo();
+          }, 4000);
         });
     };
     if (
@@ -122,6 +131,8 @@ const MoneyTransfer: FC<{
   }, [
     transfer,
     dispatch,
+    setTransferStatus,
+    resetInfo,
     API_VERSION,
     Location,
     axios,
@@ -140,18 +151,18 @@ const MoneyTransfer: FC<{
       phoneNumber: string | undefined;
       amount: number;
     }) => {
-      dispatch(
-        setTransfer({
-          emailOfTransferee: data.email,
-          accountNumber: AN,
-          amount: data.amount,
-          bankAccountType: account.bankAccountType,
-          phoneNumberOfTransferee: data.phoneNumber,
-          transactionType: TRANSFER,
-        })
-      );
+      setTransfer({
+        emailOfTransferee: data.email,
+        accountNumber: AN,
+        amount: data.amount,
+        email: myEmail,
+        bankAccountType: account.bankAccountType,
+        phoneNumberOfTransferee: data.phoneNumber,
+        transactionType: TRANSFER,
+      });
+      setTransferStatus(INPROGRESS);
     },
-    [AN, dispatch, account.bankAccountType]
+    [AN, account.bankAccountType, myEmail, setTransferStatus]
   );
 
   return (
@@ -165,7 +176,7 @@ const MoneyTransfer: FC<{
           transferBy={urlParamTransferBy}
           classes={classes}
           isMobile={isMobile}
-          loading={loading}
+          status={status}
         />,
         OVERLAYDIV as Element
       )}

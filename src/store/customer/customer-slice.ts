@@ -106,6 +106,9 @@ const customerSlice = createSlice({
       sessionStorage.setItem("lb-token", state.token);
       sessionStorage.setItem("exp", state.expiresIn.toString());
     },
+    resetInfo(state) {
+      state.getInfo = true;
+    },
   },
 });
 
