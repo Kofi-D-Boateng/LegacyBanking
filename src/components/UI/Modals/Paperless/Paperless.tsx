@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useCallback } from "react";
 import ReactDOM from "react-dom";
 import Backdrop from "../../Backdrops/Backdrop";
 import {
@@ -15,12 +15,10 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import Modal from "./Modal";
 import { AxiosStatic } from "axios";
-import { NavigateFunction } from "react-router-dom";
 
 const Paperless: FC<{
   Exit: () => void;
   isMobile: boolean;
-  nav: NavigateFunction;
   classes: {
     readonly [key: string]: string;
   };
@@ -40,33 +38,24 @@ const Paperless: FC<{
   token,
   axios,
 }) => {
-  const [choice, setChoice] = useState<{
-    isSelected: boolean;
-    choice: string;
-  }>({ isSelected: false, choice: "" });
-
-  useEffect(() => {
-    const fetchPaperless: (
-      choice: string,
-      token: string | null
-    ) => void = async (choice, token) => {
+  const setBillingType = useCallback(
+    async (e: ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.currentTarget;
       await axios
         .put(
           `${API_VERSION}/authentication/billing`,
-          { choice: choice },
+          { choice: value },
           {
             headers: { authorization: token as string },
           }
         )
         .then(() => {
           Exit();
-        });
-    };
-
-    if (choice.isSelected) {
-      fetchPaperless(choice.choice, token);
-    }
-  }, [choice, Exit, API_VERSION, token, axios]);
+        })
+        .catch(() => Exit());
+    },
+    [API_VERSION, Exit, axios, token]
+  );
 
   return (
     <>
@@ -85,7 +74,7 @@ const Paperless: FC<{
           Radio={Radio}
           classes={classes}
           Exit={Exit}
-          setChoice={setChoice}
+          setBillingType={setBillingType}
           isMobile={isMobile}
         />,
         OVERLAYDIV as Element

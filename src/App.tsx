@@ -83,6 +83,7 @@ const App: FC = () => {
       {profile?.pattern.end ? (
         <AccountLayout
           BUFFER={BUFFERTIME}
+          url={pathname}
           DATE={DATE}
           Location={Location}
           Timer={Timer}

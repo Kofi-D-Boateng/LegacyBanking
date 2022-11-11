@@ -44,7 +44,21 @@ const customer: CustomerDetails = {
   area: "Texas",
   zipCode: "76762",
   isActivated: isActivated,
-  transactions: [],
+  transactions: [
+    {
+      id: 1,
+      transactionType: "DEPOSIT",
+      amount: 1500.16,
+      dateOfTransaction: timestamp.toISOString(),
+      dateTransactionPosted: timestamp.toISOString(),
+      location: "ONLINE",
+      accountNumber: "",
+      cardType: "",
+      merchantDescription: "",
+      merchantName: "",
+      recipient: "",
+    },
+  ],
   accounts: [
     {
       id: 1,

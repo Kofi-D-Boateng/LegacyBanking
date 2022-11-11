@@ -1,5 +1,5 @@
 import { Container, Grid } from "@mui/material";
-import { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
+import { ChangeEvent, Dispatch, FC, SetStateAction, useCallback } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { Account, Transaction } from "../../types/CustomerDetails";
 import { CREDIT, MonthMap } from "../UI/Constants/Constants";
@@ -28,6 +28,7 @@ const MainProfile: FC<{
   MONEYTRANSFER: string;
   PAPERLESS: string;
   ACCOUNTNUMBER: string;
+  setAccountActivityView: () => void;
   setWithdrawals: Dispatch<SetStateAction<number>>;
   setDeposits: Dispatch<SetStateAction<number>>;
   viewHandler: (event: ChangeEvent<HTMLElement>) => void;
@@ -44,6 +45,7 @@ const MainProfile: FC<{
   filterMonth: string | null;
   activityParam: string | null;
   countParam: string | null;
+  mainUrl: string;
 }> = ({
   modals,
   classes,
@@ -70,6 +72,8 @@ const MainProfile: FC<{
   filterYear,
   activityParam,
   countParam,
+  mainUrl,
+  setAccountActivityView,
   nav,
   setDeposits,
   setWithdrawals,
@@ -92,6 +96,17 @@ const MainProfile: FC<{
       return l;
     }
   });
+
+  const setTransactionViewCount = useCallback(() => {
+    const count: number = parseInt(countParam as string);
+    if (count > transactions.length) {
+      const newUri = mainUrl + `&activityView=active&count=10`;
+      nav(newUri, { replace: false });
+    } else {
+      const newUri = mainUrl + `&activityView=active&count=${count + 5}`;
+      nav(newUri, { replace: false });
+    }
+  }, [transactions.length, countParam, mainUrl, nav]);
 
   const currentTransaction: Transaction[] = transactions.filter((t) => {
     const tYear = t.dateOfTransaction.substring(0, 4);
@@ -179,6 +194,8 @@ const MainProfile: FC<{
                 filterType={filterType}
                 filterYear={filterYear}
                 filterMonth={filterMonth}
+                setAccountActivityView={setAccountActivityView}
+                setTransactionViewCount={setTransactionViewCount}
                 nav={nav}
               />
             </Grid>
@@ -241,6 +258,8 @@ const MainProfile: FC<{
               filterType={filterType}
               filterYear={filterYear}
               filterMonth={filterMonth}
+              setAccountActivityView={setAccountActivityView}
+              setTransactionViewCount={setTransactionViewCount}
               nav={nav}
             />
           </Grid>

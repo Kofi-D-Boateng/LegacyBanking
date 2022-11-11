@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useEffect, useState } from "react";
+import { FC, memo } from "react";
 import {
   Typography,
   Card,
@@ -13,13 +13,14 @@ import Transactions from "./Transactions";
 import { Transaction } from "../../../types/CustomerDetails";
 import Options from "./Options";
 import { NavigateFunction } from "react-router-dom";
-import { MAINPROFILE } from "../../UI/Constants/Constants";
 
 const AccountActivity: FC<{
   accountParam: string | null;
   filterParam: string | null;
   classes: ClassNameMap<string>;
   transactions: Transaction[];
+  setAccountActivityView: () => void;
+  setTransactionViewCount: () => void;
   nav: NavigateFunction;
   fName: string;
   lName: string;
@@ -44,40 +45,10 @@ const AccountActivity: FC<{
   activityViewIsEnabled,
   countParam,
   isMobile,
-  filterMonth,
-  filterType,
-  filterYear,
+  setAccountActivityView,
+  setTransactionViewCount,
 }) => {
   const count = parseInt(countParam as string);
-  console.log(month);
-  const [url, setUrl] = useState<string>(
-    `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}`
-  );
-  useEffect(() => {
-    console.log("HIT");
-    if (filterMonth && filterYear) {
-      setUrl(
-        `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${filterType}&filterYear=${filterYear}&filterMonth=${filterMonth}`
-      );
-    } else if (filterType && !filterMonth) {
-      setUrl(
-        `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${filterType}&filterYear=${filterYear}`
-      );
-    } else if (filterType && !filterYear) {
-      setUrl(
-        `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${filterType}&filterMonth=${filterMonth}`
-      );
-    }
-  }, [
-    accountParam,
-    fName,
-    lName,
-    filterMonth,
-    filterYear,
-    month,
-    year,
-    filterType,
-  ]);
 
   const categories: { key: number; title: string }[] = [
     { key: 1, title: "Date" },
@@ -86,23 +57,6 @@ const AccountActivity: FC<{
     { key: 4, title: "Amount" },
   ];
 
-  const viewHandler = () => {
-    if (activityViewIsEnabled?.includes("active")) {
-      nav(url, { replace: false });
-    } else {
-      nav(url + `&activityView=active&count=10`, { replace: false });
-    }
-  };
-
-  const renderHandler = useCallback(() => {
-    if (count > transactions.length) {
-      const newUri = url + `&activityView=active&count=10`;
-      nav(newUri, { replace: false });
-    } else {
-      const newUri = url + `&activityView=active&count=${count + 5}`;
-      nav(newUri, { replace: false });
-    }
-  }, [count, transactions.length, nav, url]);
   const filter = transactions.filter((a, index) => {
     return index <= count;
   });
@@ -118,7 +72,7 @@ const AccountActivity: FC<{
                   backgroundColor: "transparent",
                 },
               }}
-              onClick={viewHandler}
+              onClick={setAccountActivityView}
               children={activityViewIsEnabled ? <Active /> : <Inactive />}
             />
           </Grid>
@@ -171,7 +125,7 @@ const AccountActivity: FC<{
               transactions={filter}
               classes={classes}
               categories={categories}
-              increaseCount={renderHandler}
+              increaseCount={setTransactionViewCount}
             />
           </>
         )}

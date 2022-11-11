@@ -11,9 +11,8 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import { AxiosStatic } from "axios";
-import { FC, useEffect, useState } from "react";
+import { FC, MouseEvent, useCallback, ChangeEvent } from "react";
 import { createPortal } from "react-dom";
-import { NavigateFunction } from "react-router-dom";
 import { Account } from "../../../../types/CustomerDetails";
 import Backdrop from "../../Backdrops/Backdrop";
 import {
@@ -23,13 +22,12 @@ import {
   LOCKEDACCOUNTMSG,
   LOCKEDCARD,
   LOCKEDCARDMSG,
-  SECURITYERRORMSG,
 } from "../../Constants/Constants";
 import Modal from "./Modal";
 
 const AccountSecurity: FC<{
   Exit: () => void;
-  nav: NavigateFunction;
+  setAccountSecurityView: (e: MouseEvent<HTMLButtonElement>) => void;
   BACKDROPDIV: HTMLElement | null;
   OVERLAYDIV: HTMLElement | null;
   isMobile: boolean;
@@ -43,6 +41,7 @@ const AccountSecurity: FC<{
   isCardLocked: boolean;
   Location: Location;
   axios: AxiosStatic;
+  securityView: string | null;
 }> = ({
   Exit,
   BACKDROPDIV,
@@ -55,55 +54,37 @@ const AccountSecurity: FC<{
   Location,
   axios,
   isCardLocked,
+  securityView,
+  setAccountSecurityView,
 }) => {
   const AN: string = account ? account.accountNumber : "";
-  const [view, setView] = useState<string>("");
-  const [choice, setChoice] = useState<{ choice: boolean; item: string }>({
-    choice: false,
-    item: "",
-  });
 
-  useEffect(() => {
-    if (!choice.choice) {
-      return;
-    }
-    const fetchSettings: (
-      choice: {
-        choice: boolean;
-        item: string;
-      },
-      accountNumber: string,
-      token: string | null
-    ) => void = async ({ item }) => {
+  const setLockedItem = useCallback(
+    async (e: ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.currentTarget;
       await axios
         .post(
           `${API_VERSION}/authentication/profile/security`,
           {
-            card: item.includes(LOCKEDCARD) && choice.choice,
-            account: item.includes(LOCKEDACCOUNT) && choice.choice,
+            card: securityView?.includes(LOCKCARD) && value,
+            account: securityView?.includes(LOCKACCOUNT) && value,
             accountNumber: AN,
           },
           { headers: { authorization: token as string } }
         )
         .then(() => {
           Location.reload();
-        })
-        .catch(() => {
-          setChoice({ choice: true, item: SECURITYERRORMSG });
         });
-    };
-    fetchSettings(choice, AN, token);
-  }, [API_VERSION, token, choice, axios, AN, Location]);
+    },
+    [AN, API_VERSION, Location, axios, securityView, token]
+  );
 
   return (
     <>
       {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV as Element)}
       {createPortal(
         <Modal
-          setChoice={setChoice}
-          setView={setView}
-          view={view}
-          choice={choice}
+          securityView={securityView}
           LOCKCARD={LOCKCARD}
           LOCKEDCARDMSG={LOCKEDCARDMSG}
           LOCKEDCARD={LOCKEDCARD}
@@ -126,6 +107,8 @@ const AccountSecurity: FC<{
           Exit={Exit}
           classes={classes}
           isMobile={isMobile}
+          setLockedItem={setLockedItem}
+          setAccountSecurityView={setAccountSecurityView}
         />,
         OVERLAYDIV as Element
       )}

@@ -56,4 +56,31 @@ describe("Profile Test Suite", () => {
     });
     expect(TextMatch).toBeInTheDocument();
   });
+
+  test("Modals open correctly", async () => {
+    render(
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <Suspense fallback={<LoadingSpinner />}>
+              <Profile
+                API_VERSION={API_VERSION}
+                Location={window.location}
+                customer={customer}
+                mobile={false}
+              />
+            </Suspense>
+          </BrowserRouter>
+        </ThemeProvider>
+      </Provider>
+    );
+    const SecurityBtn = await waitFor(() =>
+      screen.findByRole("button", { name: "Account Security", exact: true })
+    );
+    userEvent.click(SecurityBtn);
+    const TextMatch = await waitFor(() =>
+      screen.findByText(/Account Security/, { exact: true })
+    );
+    expect(TextMatch).toBeInTheDocument();
+  });
 });

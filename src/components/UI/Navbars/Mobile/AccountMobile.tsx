@@ -9,7 +9,8 @@ import {
   TypographyTypeMap,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import { FC, MouseEvent } from "react";
+import { FC, Fragment, MouseEvent } from "react";
+import { NavLink } from "react-router-dom";
 import { Link } from "../../../../types/Link";
 import { Notification } from "../../../../types/Notification";
 
@@ -98,23 +99,20 @@ const AccountMobile: FC<{
       >
         {options.map((o) => {
           return (
-            <Button
+            <NavLink
               key={o.key}
-              variant="text"
-              sx={{
+              to={o.link}
+              style={{
                 fontSize: "1.1rem",
-                textTransform: "none",
-                margin: "auto 20px",
-                color: "#8a2be2",
+                textDecoration: "none",
+                margin: "10px 20px",
                 display: "block",
-                "&:hover": {
-                  backgroundColor: "transparent",
-                },
+                color: "#8a2be2",
               }}
               onClick={handleClose}
             >
-              {o.title}
-            </Button>
+              <Typography variant="h6">{o.title}</Typography>
+            </NavLink>
           );
         })}
       </Menu>

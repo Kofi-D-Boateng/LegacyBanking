@@ -57,8 +57,8 @@ const LOCKCARD: string = "Lock your card";
 // BUTTON VALUES
 const FORWARD: string = "forward";
 const BACKWARD: string = "backward";
-const LOCKEDCARD: string = "Locked Card";
-const LOCKEDACCOUNT: string = "Locked Account";
+const LOCKEDCARD: string = "Lock Card";
+const LOCKEDACCOUNT: string = "Lock Account";
 
 // TRANSFER STATUSES
 const UNSUCCESSFUL_TRANSFER: string = "failed";

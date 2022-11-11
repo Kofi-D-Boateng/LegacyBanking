@@ -6,45 +6,27 @@ import {
   RadioProps,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
-import { LOCKEDCARD } from "../../Constants/Constants";
+import { ChangeEvent, FC } from "react";
 
 const CardLock: FC<{
-  setView: Dispatch<SetStateAction<string>>;
+  setLockedItem: (e: ChangeEvent<HTMLInputElement>) => void;
   Grid: OverridableComponent<GridTypeMap<{}, "div">>;
   FormControl: OverridableComponent<FormControlTypeMap<{}, "div">>;
   RadioGroup: (props: RadioGroupProps) => JSX.Element;
   Radio: (props: RadioProps) => JSX.Element;
   FormControlLabel: (props: FormControlLabelProps) => JSX.Element;
-  setChoice: Dispatch<
-    SetStateAction<{
-      choice: boolean;
-      item: string;
-    }>
-  >;
   isCardLocked: boolean;
   LOCKEDCARDMSG: string;
 }> = ({
   Grid,
-  setView,
   FormControl,
   RadioGroup,
   Radio,
   FormControlLabel,
-  setChoice,
+  setLockedItem,
   isCardLocked,
   LOCKEDCARDMSG,
 }) => {
-  const changeHandler: (e: ChangeEvent<HTMLInputElement>) => void = ({
-    currentTarget,
-  }) => {
-    const { value } = currentTarget;
-    if (value.includes("true")) {
-      setChoice({ choice: true, item: LOCKEDCARD });
-      setView("");
-    }
-  };
-
   return (
     <>
       <Grid container>
@@ -62,7 +44,7 @@ const CardLock: FC<{
             </Grid>
             <Grid sx={{ textAlign: "center" }} xs={6} md={6} item>
               <FormControl>
-                <RadioGroup onChange={changeHandler} defaultValue="none">
+                <RadioGroup onChange={setLockedItem} defaultValue="none">
                   <FormControlLabel
                     value={true}
                     control={

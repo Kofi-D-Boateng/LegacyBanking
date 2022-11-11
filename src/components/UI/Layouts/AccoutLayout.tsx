@@ -16,7 +16,7 @@ const AccountLayout: FC<{
   mobile: boolean;
   children: ReactNode;
   axios: AxiosStatic;
-
+  url: string;
   API_VERSION: string | undefined;
   BUFFER: number;
   Timer: FC<{
@@ -29,9 +29,9 @@ const AccountLayout: FC<{
   mobile,
   axios,
   Timer,
-  Location,
   DATE,
   BUFFER,
+  url,
   customer,
   API_VERSION,
 }) => {
@@ -42,12 +42,12 @@ const AccountLayout: FC<{
   const urlParamMonth = params[0].get("month");
   const urlParamYear = params[0].get("year");
   const substring = PROFILE.slice(0, PROFILE.length - 1);
-  const url = `${substring}${customer.fName}${customer.lName}?display=${MAINPROFILE}&account=${urlParamAccount}&year=${urlParamYear}&month=${urlParamMonth}`;
+  const mainUrl = `${substring}${customer.fName}${customer.lName}?display=${MAINPROFILE}&account=${urlParamAccount}&year=${urlParamYear}&month=${urlParamMonth}`;
   const notis: NotificationDetails = useSelector(
     (state: RootState) => state.notis
   );
   const options: { key: number; title: string; link: string }[] = [
-    { key: 1, title: "Accounts", link: url },
+    { key: 1, title: "Accounts", link: mainUrl },
     { key: 2, title: "Log out", link: REDIRECT },
   ];
 
@@ -64,10 +64,11 @@ const AccountLayout: FC<{
             options={options}
             mobile={mobile}
             notificationDetails={notis}
+            url={url}
           />
-          {/* {TIMER < BUFFER && customer.expiresIn !== 0 ? (
-            <Timer isMobile={mobile} customer={customer} location={Location} />
-          ) : null} */}
+          {TIMER < BUFFER && customer.expiresIn !== 0 ? (
+            <Timer isMobile={mobile} customer={customer} location={location} />
+          ) : null}
           <div>{children}</div>
           <AccountFooter />
         </>

@@ -12,7 +12,7 @@ import {
   TypographyTypeMap,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
+import { ChangeEvent, FC } from "react";
 
 const Modal: FC<{
   classes: {
@@ -31,18 +31,13 @@ const Modal: FC<{
   FormControlLabel: (props: FormControlLabelProps) => JSX.Element;
   RadioGroup: (props: RadioGroupProps) => JSX.Element;
   Radio: (props: RadioProps) => JSX.Element;
-  setChoice: Dispatch<
-    SetStateAction<{
-      isSelected: boolean;
-      choice: string;
-    }>
-  >;
+  setBillingType: (e: ChangeEvent<HTMLInputElement>) => Promise<void>;
   Exit: () => void;
 }> = ({
   classes,
   isMobile,
   Exit,
-  setChoice,
+  setBillingType,
   Card,
   CloseIcon,
   FormControl,
@@ -92,15 +87,7 @@ const Modal: FC<{
           </Grid>
           <Grid sx={{ textAlign: "center" }} xs={6} md={6} item>
             <FormControl>
-              <RadioGroup
-                onChange={(e: ChangeEvent<any>) => {
-                  setChoice({
-                    isSelected: true,
-                    choice: e.currentTarget.value,
-                  });
-                }}
-                defaultValue="none"
-              >
+              <RadioGroup onChange={setBillingType} defaultValue="none">
                 <FormControlLabel
                   value="Yes"
                   control={

@@ -20,22 +20,20 @@ const Locations: FC<{
 
   useEffect(() => {
     const fetchBankData: () => void = async () => {
-      await axios
-        .get(`http://localhost:8081/${API_VERSION}/bank/info`)
-        .then((response) => {
-          const { name, country, state, zipcode, totalHoldings, branches } =
-            response.data;
-          dispatch(
-            bankActions.getBankInfo({
-              name,
-              country,
-              area: state,
-              zipcode: zipcode,
-              totalHoldings,
-              branches,
-            })
-          );
-        });
+      await axios.get(`${API_VERSION}/bank/info`).then((response) => {
+        const { name, country, state, zipcode, totalHoldings, branches } =
+          response.data;
+        dispatch(
+          bankActions.getBankInfo({
+            name,
+            country,
+            area: state,
+            zipcode: zipcode,
+            totalHoldings,
+            branches,
+          })
+        );
+      });
     };
     fetchBankData();
   }, [dispatch, API_VERSION, LEGACY.name]);

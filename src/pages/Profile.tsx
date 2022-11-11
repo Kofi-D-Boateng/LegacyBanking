@@ -6,6 +6,7 @@ import {
   useEffect,
   useState,
   memo,
+  MouseEvent,
 } from "react";
 import {
   NavigateFunction,
@@ -72,19 +73,17 @@ const Profile: FC<{
   const urlParamActivityView = urlParams[0].get("activityView");
   const urlParamActivityViewCount = urlParams[0].get("count");
   const urlParamATransferStatus = urlParams[0].get("status");
+  const urlParamItemToLock = urlParams[0].get("itemToLock");
 
   useEffect(() => {
     if (!customer.getInfo) return;
     const fetchAccount: (token: string | null) => void = async (token) => {
       await axios
-        .get(
-          `http://localhost:8081/${API_VERSION}/authentication/profile/info`,
-          {
-            headers: {
-              authorization: token as string,
-            },
-          }
-        )
+        .get(`${API_VERSION}/authentication/profile/info`, {
+          headers: {
+            authorization: token as string,
+          },
+        })
         .then((response) => {
           const {
             fName,
@@ -166,14 +165,32 @@ const Profile: FC<{
 
   const setTransferStatus = useCallback(
     (param: string) => {
-      nav(
-        mainProfileURL +
-          `&action=${urlParamActions}&transferBy=${urlParamTransferBy}&status=${param}`,
-        { replace: true }
+      const newUrl = mainProfileURL.concat(
+        `&action=${urlParamActions}&transferBy=${urlParamTransferBy}&status=${param}`
       );
+      nav(newUrl, { replace: true });
     },
     [nav, mainProfileURL, urlParamActions, urlParamTransferBy]
   );
+
+  const setAccountSecrutiyType = useCallback(
+    (e: MouseEvent<HTMLButtonElement>) => {
+      const param = e.currentTarget.value;
+      const newUrl = mainProfileURL.concat(
+        `&action=${urlParamActions}&itemToLock=${param}`
+      );
+      nav(newUrl, { replace: false });
+    },
+    [nav, urlParamActions, mainProfileURL]
+  );
+
+  const setAccountActivityView = () => {
+    if (urlParamActivityView?.includes("active")) {
+      nav(mainProfileURL, { replace: false });
+    } else {
+      nav(mainProfileURL + `&activityView=active&count=10`, { replace: false });
+    }
+  };
 
   const account: Account = customer.accounts.filter((acc) => {
     const id: number = parseInt(urlParamAccount as string);
@@ -226,7 +243,6 @@ const Profile: FC<{
           Exit={exitHandler}
           isMobile={mobile}
           MockStatements={MockStatements}
-          nav={nav}
         />
       ),
     },
@@ -243,7 +259,6 @@ const Profile: FC<{
           classes={MoneyTransferStyles}
           Exit={exitHandler}
           isMobile={mobile}
-          nav={nav}
         />
       ),
     },
@@ -278,7 +293,8 @@ const Profile: FC<{
           isMobile={mobile}
           BACKDROPDIV={backdropDiv}
           OVERLAYDIV={overlayDiv}
-          nav={nav}
+          setAccountSecurityView={setAccountSecrutiyType}
+          securityView={urlParamItemToLock}
         />
       ),
     },
@@ -314,12 +330,14 @@ const Profile: FC<{
           filterType={urlParamFilter}
           filterYear={urlParamFilterYear}
           filterMonth={urlParamFilterMonth}
+          mainUrl={mainProfileURL}
           modals={modals}
           mobile={mobile}
           nonVisibleAccounts={nonVisibleAccounts}
           summaryURL={summaryURL}
           transactions={customer.transactions}
           withdrawals={withdrawals}
+          setAccountActivityView={setAccountActivityView}
           viewHandler={viewHandler}
           setDeposits={setDeposits}
           setWithdrawals={setWithdrawals}
