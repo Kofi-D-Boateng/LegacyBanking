@@ -141,36 +141,36 @@ describe("Profile Test Suite", () => {
     expect(TextMatch).toBeInTheDocument();
   });
 
-  test("Sending a transfer", async () => {
-    render(
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <BrowserRouter>
-            <Suspense fallback={<LoadingSpinner />}>
-              <Profile
-                API_VERSION={API_VERSION}
-                customer={customer}
-                mobile={false}
-              />
-            </Suspense>
-          </BrowserRouter>
-        </ThemeProvider>
-      </Provider>
-    );
-    userEvent.click(
-      screen.getByRole("button", {
-        name: "Money Transfer",
-      })
-    );
-    expect(
-      screen.getByRole("button", {
-        name: "Money Transfer",
-      })
-    ).toBeInTheDocument();
-    const TextField = await waitFor(() =>
-      screen.findByLabelText("Send By", {}, { interval: 3000 })
-    );
-    console.log(TextField);
-    userEvent.click(TextField);
-  });
+  // test("Sending a transfer", async () => {
+  //   render(
+  //     <Provider store={store}>
+  //       <ThemeProvider theme={theme}>
+  //         <BrowserRouter>
+  //           <Suspense fallback={<LoadingSpinner />}>
+  //             <Profile
+  //               API_VERSION={API_VERSION}
+  //               customer={customer}
+  //               mobile={false}
+  //             />
+  //           </Suspense>
+  //         </BrowserRouter>
+  //       </ThemeProvider>
+  //     </Provider>
+  //   );
+  //   userEvent.click(
+  //     screen.getByRole("button", {
+  //       name: "Money Transfer",
+  //     })
+  //   );
+  //   expect(
+  //     screen.getByRole("button", {
+  //       name: "Money Transfer",
+  //     })
+  //   ).toBeInTheDocument();
+  //   const TextField = await waitFor(() =>
+  //     screen.findByLabelText("Send By", {}, { interval: 3000 })
+  //   );
+  //   console.log(TextField);
+  //   userEvent.click(TextField);
+  // });
 });
