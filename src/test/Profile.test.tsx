@@ -11,6 +11,7 @@ import Profile from "../pages/Profile";
 import { CustomerDetails } from "../types/CustomerDetails";
 import { randomBytes } from "crypto";
 import { theme } from "../setupTests";
+import React from "react";
 
 const token = randomBytes(16).toString("hex");
 const timestamp = new Date().getTime();
