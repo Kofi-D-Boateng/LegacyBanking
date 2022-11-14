@@ -19,7 +19,7 @@ export type Card = {
   expirationDate: string;
   isLocked: boolean;
   type: string;
-  creditCardType: string;
+  creditType: string;
 };
 
 export type Account = {
@@ -28,6 +28,7 @@ export type Account = {
   routingNumber: string;
   bankAccountType: string;
   capital: number;
+  creditType: string;
   isEnable: boolean;
   minimumBalance: number;
   minimumPayment: number;

@@ -1,13 +1,14 @@
 import { Container, Grid } from "@mui/material";
 import { ChangeEvent, Dispatch, FC, SetStateAction, useCallback } from "react";
 import { NavigateFunction } from "react-router-dom";
-import { Account, Transaction } from "../../types/CustomerDetails";
+import { Account, Card, Transaction } from "../../types/CustomerDetails";
 import { CREDIT, MonthMap } from "../UI/Constants/Constants";
 import AccountActivity from "./AccountActivity/AccountActivity";
 import AccountInfo from "./AccountCard/AccountInfo";
 import AccountCoupons from "./AccountCoupons/AccountCoupons";
 import AccountDetails from "./AccountDetails/AccountDetails";
 import AccountVisual from "./AccountVisual/AccountVisual";
+
 const MainProfile: FC<{
   modals: {
     key: number;
@@ -19,6 +20,7 @@ const MainProfile: FC<{
   };
   mobile: boolean;
   transactions: Transaction[];
+  card: Card;
   account: Account;
   nonVisibleAccounts: Account[];
   withdrawals: number;
@@ -73,6 +75,7 @@ const MainProfile: FC<{
   activityParam,
   countParam,
   mainUrl,
+  card,
   setAccountActivityView,
   nav,
   setDeposits,
@@ -96,17 +99,6 @@ const MainProfile: FC<{
       return l;
     }
   });
-
-  const setTransactionViewCount = useCallback(() => {
-    const count: number = parseInt(countParam as string);
-    if (count > transactions.length) {
-      const newUri = mainUrl + `&activityView=active&count=10`;
-      nav(newUri, { replace: false });
-    } else {
-      const newUri = mainUrl + `&activityView=active&count=${count + 5}`;
-      nav(newUri, { replace: false });
-    }
-  }, [transactions.length, countParam, mainUrl, nav]);
 
   const currentTransaction: Transaction[] = transactions.filter((t) => {
     const tYear = t.dateOfTransaction.substring(0, 4);
@@ -145,6 +137,17 @@ const MainProfile: FC<{
           }
           return t;
         });
+
+  const setTransactionViewCount = useCallback(() => {
+    const count: number = parseInt(countParam as string);
+    if (count > transactions.length) {
+      const newUri = mainUrl + `&activityView=active&count=10`;
+      nav(newUri, { replace: false });
+    } else {
+      const newUri = mainUrl + `&activityView=active&count=${count + 5}`;
+      nav(newUri, { replace: false });
+    }
+  }, [transactions.length, countParam, mainUrl, nav]);
 
   return (
     <>

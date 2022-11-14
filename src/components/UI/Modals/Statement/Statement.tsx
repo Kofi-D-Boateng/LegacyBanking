@@ -2,28 +2,22 @@ import { Close } from "@mui/icons-material";
 import { Card, CardContent, Grid, IconButton, Typography } from "@mui/material";
 import { FC } from "react";
 import { createPortal } from "react-dom";
-import { MockStatementsTitles } from "../../../../assets/data/MockData";
+import classes from "../../../../styles/Modals/Modals.module.css";
+import {
+  MockStatements,
+  MockStatementsTitles,
+} from "../../../../assets/data/MockData";
 import Backdrop from "../../Backdrops/Backdrop";
+import { backdropDiv, overlayDiv } from "../../Layouts/RootElement";
 import Modal from "./Modal";
 
 const Statement: FC<{
   Exit: () => void;
   isMobile: boolean;
-  classes: {
-    readonly [key: string]: string;
-  };
-  MockStatements: {
-    key: number;
-    date: string;
-    amount: number;
-    amountPaid: number;
-  }[];
-  BACKDROPDIV: HTMLElement | null;
-  OVERLAYDIV: HTMLElement | null;
-}> = ({ Exit, isMobile, classes, MockStatements, BACKDROPDIV, OVERLAYDIV }) => {
+}> = ({ Exit, isMobile }) => {
   return (
     <>
-      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV as Element)}
+      {createPortal(<Backdrop Exit={Exit} />, backdropDiv as Element)}
       {createPortal(
         <Modal
           classes={classes}
@@ -38,7 +32,7 @@ const Statement: FC<{
           Close={Close}
           MockStatementsTitles={MockStatementsTitles}
         />,
-        OVERLAYDIV as Element
+        overlayDiv as Element
       )}
     </>
   );

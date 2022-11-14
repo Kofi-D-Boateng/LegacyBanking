@@ -99,7 +99,6 @@ const App: FC = () => {
                 element={
                   customer.isActivated ? (
                     <Profile
-                      Location={Location}
                       customer={customer}
                       API_VERSION={API_VERSION}
                       mobile={mobile}
@@ -170,10 +169,7 @@ const App: FC = () => {
               path={INSIGHT}
               element={<Insight isMobile={mobile} YEAR={YEAR} />}
             />
-            <Route
-              path={LOGIN}
-              element={<Login API_VERSION={API_VERSION} isMobile={mobile} />}
-            />
+            <Route path={LOGIN} element={<Login isMobile={mobile} />} />
             <Route
               path={SIGNUP}
               element={<Signup API_VERSION={API_VERSION} isMobile={mobile} />}

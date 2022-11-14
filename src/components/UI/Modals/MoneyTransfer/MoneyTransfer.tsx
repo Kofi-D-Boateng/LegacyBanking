@@ -1,22 +1,12 @@
-import {
-  FC,
-  Dispatch,
-  useCallback,
-  useEffect,
-  useState,
-  ChangeEvent,
-} from "react";
+import { FC, useCallback, useEffect, useState, ChangeEvent } from "react";
 import { createPortal } from "react-dom";
 import Backdrop from "../../Backdrops/Backdrop";
 import Modal from "./Modal";
-import {
-  ActionCreatorWithoutPayload,
-  ActionCreatorWithPayload,
-} from "@reduxjs/toolkit";
-import { AxiosStatic } from "axios";
+import axios from "axios";
 import { TransferDetails } from "../../../../types/Transfer";
 import { Account } from "../../../../types/CustomerDetails";
 import {
+  API_VERSION,
   INPROGRESS,
   MAINPROFILE,
   SUCCESSFUL_TRANSFER,
@@ -24,51 +14,29 @@ import {
   UNSUCCESSFUL_TRANSFER,
 } from "../../Constants/Constants";
 import { customerActions } from "../../../../store/customer/customer-slice";
+import { backdropDiv, overlayDiv } from "../../Layouts/RootElement";
+import classes from "../../../../styles/Modals/Modals.module.css";
+import { useDispatch } from "react-redux";
 
 const MoneyTransfer: FC<{
-  Location: Location;
-  API_VERSION: string | undefined;
   token: string | null;
   isMobile: boolean;
-  classes: {
-    readonly [key: string]: string;
-  };
-  BACKDROPDIV: HTMLElement | null;
-  OVERLAYDIV: HTMLElement | null;
   myEmail: string;
   account: Account;
-  axios: AxiosStatic;
-  setView: ActionCreatorWithPayload<
-    {
-      view: string;
-    },
-    string
-  >;
-  logout: ActionCreatorWithoutPayload<string>;
   urlParamDisplay: string | null;
   urlParamAccount: string | null;
   urlParamTransferBy: string | null;
   status: string | null;
   setTransferStatus: (param: string) => void;
   resetInfo: () => void;
-  dispatch: Dispatch<any>;
   Exit: () => void;
   onChoice: (event: ChangeEvent<HTMLInputElement>) => void;
 }> = ({
   isMobile,
-  classes,
-  BACKDROPDIV,
-  OVERLAYDIV,
   account,
   token,
   Exit,
   onChoice,
-  dispatch,
-  axios,
-  setView,
-  API_VERSION,
-  Location,
-  logout,
   urlParamAccount,
   urlParamDisplay,
   urlParamTransferBy,
@@ -87,6 +55,8 @@ const MoneyTransfer: FC<{
     bankAccountType: account?.bankAccountType,
     transactionType: TRANSFER,
   });
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const fetchTransfer = async (
       accountTransfer: TransferDetails,
@@ -123,7 +93,7 @@ const MoneyTransfer: FC<{
       !urlParamDisplay?.includes(MAINPROFILE) ||
       (urlParamAccount as string) !== account.id.toString()
     ) {
-      logout();
+      // dispatch(customerActions.logout());
     }
     if (transfer.emailOfTransferee || transfer.phoneNumberOfTransferee) {
       fetchTransfer(transfer, token);
@@ -133,15 +103,10 @@ const MoneyTransfer: FC<{
     dispatch,
     setTransferStatus,
     resetInfo,
-    API_VERSION,
-    Location,
-    axios,
-    setView,
     token,
     account.id,
     urlParamAccount,
     urlParamDisplay,
-    logout,
     account.bankAccountType,
   ]);
 
@@ -167,7 +132,7 @@ const MoneyTransfer: FC<{
 
   return (
     <>
-      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV as Element)}
+      {createPortal(<Backdrop Exit={Exit} />, backdropDiv as Element)}
       {createPortal(
         <Modal
           Exit={Exit}
@@ -178,7 +143,7 @@ const MoneyTransfer: FC<{
           isMobile={isMobile}
           status={status}
         />,
-        OVERLAYDIV as Element
+        overlayDiv as Element
       )}
     </>
   );

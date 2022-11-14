@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@emotion/react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -28,12 +28,16 @@ describe("Navigation test suite. Profile exclusive", () => {
         </ThemeProvider>
       </Provider>
     );
-    const links: HTMLElement[] = await screen.findAllByRole("link");
+    const links: HTMLElement[] = await waitFor(() =>
+      screen.findAllByRole("link")
+    );
     const aboutPageBtn = links[1];
     userEvent.click(aboutPageBtn);
-    const aboutPage = await screen.findByText(/Purpose and values/i, {
-      exact: false,
-    });
+    const aboutPage = await waitFor(() =>
+      screen.findByText(/Purpose and values/i, {
+        exact: false,
+      })
+    );
     expect(aboutPage).toBeInTheDocument();
   });
 });

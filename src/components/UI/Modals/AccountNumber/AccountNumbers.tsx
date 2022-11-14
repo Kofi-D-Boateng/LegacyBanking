@@ -4,6 +4,8 @@ import { Card, CardContent, Grid, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Backdrop from "../../Backdrops/Backdrop";
 import { Account } from "../../../../types/CustomerDetails";
+import { backdropDiv } from "../../Layouts/RootElement";
+import classes from "../../../../styles/Modals/Modals.module.css";
 
 const Modal: FC<{
   Exit: () => void;
@@ -78,27 +80,14 @@ const AccountNumbers: FC<{
   isMobile: boolean;
   param: string | null;
   accounts: Account[];
-  classes: {
-    readonly [key: string]: string;
-  };
-  BACKDROPDIV: HTMLElement | null;
-  OVERLAYDIV: HTMLElement | null;
-}> = ({
-  Exit,
-  isMobile,
-  accounts,
-  param,
-  classes,
-  BACKDROPDIV,
-  OVERLAYDIV,
-}) => {
+}> = ({ Exit, isMobile, accounts, param }) => {
   const account: Account | undefined = accounts.find((acc) => {
     const id: number = parseInt(param as string);
     return acc.id === id;
   });
   return (
     <>
-      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV as Element)}
+      {createPortal(<Backdrop Exit={Exit} />, backdropDiv as Element)}
       {createPortal(
         <Modal
           AN={account?.accountNumber as string}
@@ -107,7 +96,7 @@ const AccountNumbers: FC<{
           Exit={Exit}
           classes={classes}
         />,
-        OVERLAYDIV as Element
+        backdropDiv as Element
       )}
     </>
   );

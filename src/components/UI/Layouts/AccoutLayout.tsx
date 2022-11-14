@@ -34,6 +34,7 @@ const AccountLayout: FC<{
   url,
   customer,
   API_VERSION,
+  Location,
 }) => {
   const TIMER: number = customer.expiresIn - DATE.getTime();
   const params = useSearchParams();
@@ -67,7 +68,7 @@ const AccountLayout: FC<{
             url={url}
           />
           {TIMER < BUFFER && customer.expiresIn !== 0 ? (
-            <Timer isMobile={mobile} customer={customer} location={location} />
+            <Timer isMobile={mobile} customer={customer} location={Location} />
           ) : null}
           <div>{children}</div>
           <AccountFooter />

@@ -17,9 +17,9 @@ import { NavLinkProps } from "react-router-dom";
 const LoginMobile: FC<{
   Box: OverridableComponent<BoxTypeMap<{}, "div">>;
   Loader: (props: CircularProgressProps) => JSX.Element;
-  loading: boolean;
+  actionParam: string | null;
+  statusParam: string | null;
   isMobile: boolean;
-  invalid: boolean;
   Grid: OverridableComponent<GridTypeMap<{}, "div">>;
   classes: {
     readonly [key: string]: string;
@@ -39,25 +39,25 @@ const LoginMobile: FC<{
   }>;
 }> = ({
   EMAIL,
-  Grid,
   NavLink,
   PASSWORD,
-  Typography,
-  classes,
-  submitHandler,
   LoginForm,
-  invalid,
   isMobile,
+  classes,
+  actionParam,
+  statusParam,
+  Grid,
+  Typography,
+  submitHandler,
   Box,
   Loader,
-  loading,
 }) => {
   return (
     <Grid
       sx={{ width: "100%", height: "100vh", textAlign: "center" }}
       container
     >
-      {!loading ? (
+      {!actionParam ? (
         <Grid sx={{ margin: "auto" }} item>
           <Typography
             sx={{
@@ -70,7 +70,7 @@ const LoginMobile: FC<{
           >
             Please Login
           </Typography>
-          {invalid && (
+          {statusParam?.includes("invalid") && (
             <Grid className={classes.invalid}>
               <Typography variant="h6">Invalid email or password</Typography>
             </Grid>

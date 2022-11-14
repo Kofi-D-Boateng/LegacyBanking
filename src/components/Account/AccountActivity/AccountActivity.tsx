@@ -72,6 +72,7 @@ const AccountActivity: FC<{
                   backgroundColor: "transparent",
                 },
               }}
+              id="account-btn"
               onClick={setAccountActivityView}
               children={activityViewIsEnabled ? <Active /> : <Inactive />}
             />

@@ -10,12 +10,17 @@ import {
   Radio,
   FormControlLabel,
 } from "@mui/material";
-import { AxiosStatic } from "axios";
-import { FC, MouseEvent, useCallback, ChangeEvent } from "react";
+import axios from "axios";
+import { FC, MouseEvent, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { Account } from "../../../../types/CustomerDetails";
-import Backdrop from "../../Backdrops/Backdrop";
 import {
+  Account,
+  Card as AccountCard,
+} from "../../../../types/CustomerDetails";
+import Backdrop from "../../Backdrops/Backdrop";
+import classes from "../../../../styles/Modals/Modals.module.css";
+import {
+  API_VERSION,
   LOCKACCOUNT,
   LOCKCARD,
   LOCKEDACCOUNT,
@@ -23,65 +28,61 @@ import {
   LOCKEDCARD,
   LOCKEDCARDMSG,
 } from "../../Constants/Constants";
+import { backdropDiv } from "../../Layouts/RootElement";
 import Modal from "./Modal";
 
 const AccountSecurity: FC<{
   Exit: () => void;
   setAccountSecurityView: (e: MouseEvent<HTMLButtonElement>) => void;
-  BACKDROPDIV: HTMLElement | null;
-  OVERLAYDIV: HTMLElement | null;
   isMobile: boolean;
-  classes: {
-    readonly [key: string]: string;
-  };
-
-  API_VERSION: string | undefined;
   token: string | null;
   account: Account;
-  isCardLocked: boolean;
-  Location: Location;
-  axios: AxiosStatic;
+  card: AccountCard;
   securityView: string | null;
 }> = ({
   Exit,
-  BACKDROPDIV,
-  OVERLAYDIV,
-  classes,
   isMobile,
-  API_VERSION,
   token,
   account,
-  Location,
-  axios,
-  isCardLocked,
+  card,
   securityView,
   setAccountSecurityView,
 }) => {
   const AN: string = account ? account.accountNumber : "";
-
-  const setLockedItem = useCallback(
-    async (e: ChangeEvent<HTMLInputElement>) => {
-      const { value } = e.currentTarget;
+  console.log(card);
+  const setLockedItem = useCallback(async () => {
+    if (securityView?.includes(LOCKCARD)) {
       await axios
-        .post(
+        .put(
+          `http://localhost:8081/${API_VERSION}/authentication/profile/security`,
+          {
+            requestType: "LOCK CARD",
+            cardNumber: card.cardNumber,
+          },
+          { headers: { authorization: token as string } }
+        )
+        .then(() => {
+          window.location.reload();
+        });
+    } else if (securityView?.includes(LOCKACCOUNT)) {
+      await axios
+        .put(
           `${API_VERSION}/authentication/profile/security`,
           {
-            card: securityView?.includes(LOCKCARD) && value,
-            account: securityView?.includes(LOCKACCOUNT) && value,
+            requestType: "LOCK ACCOUNT",
             accountNumber: AN,
           },
           { headers: { authorization: token as string } }
         )
         .then(() => {
-          Location.reload();
+          window.location.reload();
         });
-    },
-    [AN, API_VERSION, Location, axios, securityView, token]
-  );
+    }
+  }, [AN, securityView, token, card.cardNumber]);
 
   return (
     <>
-      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV as Element)}
+      {createPortal(<Backdrop Exit={Exit} />, backdropDiv as Element)}
       {createPortal(
         <Modal
           securityView={securityView}
@@ -91,7 +92,7 @@ const AccountSecurity: FC<{
           LOCKACCOUNT={LOCKACCOUNT}
           LOCKEDACCOUNTMSG={LOCKEDACCOUNTMSG}
           LOCKEDACCOUNT={LOCKEDACCOUNT}
-          isCardLocked={isCardLocked}
+          isCardLocked={card.isLocked}
           Card={Card}
           CardContent={CardContent}
           Grid={Grid}
@@ -110,7 +111,7 @@ const AccountSecurity: FC<{
           setLockedItem={setLockedItem}
           setAccountSecurityView={setAccountSecurityView}
         />,
-        OVERLAYDIV as Element
+        backdropDiv as Element
       )}
     </>
   );

@@ -23,7 +23,7 @@ describe("Login test suite. Profile exclusive", () => {
         <ThemeProvider theme={theme}>
           <BrowserRouter>
             <Suspense fallback={<LoadingSpinner />}>
-              <Login API_VERSION={API_VERSION} isMobile={false} />
+              <Login isMobile={false} />
             </Suspense>
           </BrowserRouter>
         </ThemeProvider>
@@ -31,8 +31,12 @@ describe("Login test suite. Profile exclusive", () => {
     );
     const username = screen.getByPlaceholderText(/enter email/i);
     const password = screen.getByPlaceholderText(/password/i);
-    const submit = await screen.findByRole("button", { name: /Login/i });
-    const link = await screen.findByRole("link", { name: /Open an account/i });
+    const submit = await waitFor(() =>
+      screen.findByRole("button", { name: /Login/i })
+    );
+    const link = await waitFor(() =>
+      screen.findByRole("link", { name: /Open an account/i })
+    );
     userEvent.click(username);
     userEvent.type(username, Credentials.email as string);
     userEvent.click(password);
@@ -47,7 +51,7 @@ describe("Login test suite. Profile exclusive", () => {
         <ThemeProvider theme={theme}>
           <BrowserRouter>
             <Suspense fallback={<LoadingSpinner />}>
-              <Login API_VERSION={API_VERSION} isMobile={false} />
+              <Login isMobile={false} />
             </Suspense>
           </BrowserRouter>
         </ThemeProvider>
@@ -55,15 +59,19 @@ describe("Login test suite. Profile exclusive", () => {
     );
     const username = screen.getByPlaceholderText(/enter email/i);
     const password = screen.getByPlaceholderText(/password/i);
-    const submit = await screen.findByRole("button", { name: /Login/i });
+    const submit = await waitFor(() =>
+      screen.findByRole("button", { name: /Login/i })
+    );
     userEvent.click(username);
     userEvent.type(username, Credentials.email as string);
     userEvent.click(password);
     userEvent.type(password, "wrong password");
     userEvent.dblClick(submit);
-    const TextMatch = await screen.findByText(/Invalid email or password/i, {
-      exact: false,
-    });
+    const TextMatch = await waitFor(() =>
+      screen.findByText(/Invalid email or password/i, {
+        exact: false,
+      })
+    );
     expect(TextMatch).toBeInTheDocument();
   });
 });

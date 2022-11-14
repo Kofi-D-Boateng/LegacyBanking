@@ -13,31 +13,17 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import classes from "../../../../styles/Modals/Modals.module.css";
 import Modal from "./Modal";
-import { AxiosStatic } from "axios";
+import axios from "axios";
+import { API_VERSION } from "../../Constants/Constants";
+import { backdropDiv, overlayDiv } from "../../Layouts/RootElement";
 
 const Paperless: FC<{
   Exit: () => void;
   isMobile: boolean;
-  classes: {
-    readonly [key: string]: string;
-  };
-  BACKDROPDIV: HTMLElement | null;
-  OVERLAYDIV: HTMLElement | null;
-
-  API_VERSION: string | undefined;
   token: string | null;
-  axios: AxiosStatic;
-}> = ({
-  Exit,
-  isMobile,
-  classes,
-  BACKDROPDIV,
-  OVERLAYDIV,
-  API_VERSION,
-  token,
-  axios,
-}) => {
+}> = ({ Exit, isMobile, token }) => {
   const setBillingType = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {
       const { value } = e.currentTarget;
@@ -54,12 +40,12 @@ const Paperless: FC<{
         })
         .catch(() => Exit());
     },
-    [API_VERSION, Exit, axios, token]
+    [Exit, token]
   );
 
   return (
     <>
-      {ReactDOM.createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV as Element)}
+      {ReactDOM.createPortal(<Backdrop Exit={Exit} />, backdropDiv as Element)}
       {ReactDOM.createPortal(
         <Modal
           Card={Card}
@@ -77,7 +63,7 @@ const Paperless: FC<{
           setBillingType={setBillingType}
           isMobile={isMobile}
         />,
-        OVERLAYDIV as Element
+        overlayDiv as Element
       )}
     </>
   );

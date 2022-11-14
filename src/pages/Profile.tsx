@@ -16,17 +16,15 @@ import {
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import MoneyTransfer from "../components/UI/Modals/MoneyTransfer/MoneyTransfer";
-import { modalActions } from "../store/modals/modal-slice";
-import { MockStatements } from "../assets/data/MockData";
 import { Box, CircularProgress } from "@mui/material";
 import { customerActions } from "../store/customer/customer-slice";
 import classes from "../styles/Profile/ProfileStyles.module.css";
-import MoneyTransferStyles from "../styles/Modals/Modals.module.css";
 import Statement from "../components/UI/Modals/Statement/Statement";
 import Paperless from "../components/UI/Modals/Paperless/Paperless";
 import AccountNumbers from "../components/UI/Modals/AccountNumber/AccountNumbers";
 import {
   ACCOUNTNUMBER,
+  CREDIT,
   MAINPROFILE,
   MONEYTRANSFER,
   MonthMap,
@@ -39,16 +37,14 @@ import MainProfile from "../components/Account/MainProfile";
 import Summary from "../components/Account/AccountDetails/Summary";
 import { DateAmountType } from "../types/Maps";
 import AccountSecurity from "../components/UI/Modals/AccountSecurity/AccountSecurity";
-import { backdropDiv, overlayDiv } from "../components/UI/Layouts/RootElement";
 import { notisActions } from "../store/notifications/notifications";
-import { Account, CustomerDetails } from "../types/CustomerDetails";
+import { Account, Card, CustomerDetails } from "../types/CustomerDetails";
 
 const Profile: FC<{
-  Location: Location;
   mobile: boolean;
   API_VERSION: string | undefined;
   customer: CustomerDetails;
-}> = ({ mobile, customer, Location, API_VERSION }) => {
+}> = ({ mobile, customer, API_VERSION }) => {
   const urlParams = useSearchParams();
   const date = new Date();
   const nav: NavigateFunction = useNavigate();
@@ -75,8 +71,28 @@ const Profile: FC<{
   const urlParamATransferStatus = urlParams[0].get("status");
   const urlParamItemToLock = urlParams[0].get("itemToLock");
 
+  const account: Account = customer.accounts.filter((acc) => {
+    const id: number = parseInt(urlParamAccount as string);
+    return acc.id === id;
+  })[0];
+
+  const nonVisibleAccounts: Account[] = customer.accounts.filter((acc) => {
+    const id: number = parseInt(urlParamAccount as string);
+    return acc.id !== id;
+  });
+
+  const cards: Card | undefined = customer.cards.find((card) => {
+    if (account.bankAccountType.includes(CREDIT)) {
+      return card.creditType === account.creditType;
+    } else {
+      return card;
+    }
+  });
+
   useEffect(() => {
-    if (!customer.getInfo) return;
+    if (!customer.getInfo) {
+      return;
+    }
     const fetchAccount: (token: string | null) => void = async (token) => {
       await axios
         .get(`${API_VERSION}/authentication/profile/info`, {
@@ -192,37 +208,18 @@ const Profile: FC<{
     }
   };
 
-  const account: Account = customer.accounts.filter((acc) => {
-    const id: number = parseInt(urlParamAccount as string);
-    return acc.id === id;
-  })[0];
-
-  const nonVisibleAccounts: Account[] = customer.accounts.filter((acc) => {
-    const id: number = parseInt(urlParamAccount as string);
-    return acc.id !== id;
-  });
-
   const modals: { key: number; modal: JSX.Element; type: string }[] = [
     {
       key: 1,
       type: MONEYTRANSFER,
       modal: (
         <MoneyTransfer
-          Location={Location}
-          API_VERSION={API_VERSION}
           myEmail={customer.email}
           token={customer.token}
-          BACKDROPDIV={backdropDiv}
-          OVERLAYDIV={overlayDiv}
-          classes={MoneyTransferStyles}
           account={account}
           isMobile={mobile}
-          axios={axios}
-          dispatch={dispatch}
           Exit={exitHandler}
           onChoice={choiceHandler}
-          setView={modalActions.setView}
-          logout={customerActions.logout}
           urlParamDisplay={urlParamDisplay}
           urlParamAccount={urlParamAccount}
           urlParamTransferBy={urlParamTransferBy}
@@ -235,16 +232,7 @@ const Profile: FC<{
     {
       key: 2,
       type: STATEMENT,
-      modal: (
-        <Statement
-          BACKDROPDIV={backdropDiv}
-          OVERLAYDIV={overlayDiv}
-          classes={MoneyTransferStyles}
-          Exit={exitHandler}
-          isMobile={mobile}
-          MockStatements={MockStatements}
-        />
-      ),
+      modal: <Statement Exit={exitHandler} isMobile={mobile} />,
     },
     {
       key: 3,
@@ -252,11 +240,6 @@ const Profile: FC<{
       modal: (
         <Paperless
           token={customer.token}
-          API_VERSION={API_VERSION}
-          axios={axios}
-          BACKDROPDIV={backdropDiv}
-          OVERLAYDIV={overlayDiv}
-          classes={MoneyTransferStyles}
           Exit={exitHandler}
           isMobile={mobile}
         />
@@ -269,9 +252,6 @@ const Profile: FC<{
         <AccountNumbers
           param={urlParamAccount}
           accounts={customer.accounts}
-          BACKDROPDIV={backdropDiv}
-          OVERLAYDIV={overlayDiv}
-          classes={MoneyTransferStyles}
           Exit={exitHandler}
           isMobile={mobile}
         />
@@ -282,17 +262,11 @@ const Profile: FC<{
       type: SECURITY,
       modal: (
         <AccountSecurity
-          Location={Location}
-          isCardLocked={false}
+          card={cards as Card}
           account={account}
-          axios={axios}
-          API_VERSION={API_VERSION}
           token={customer.token}
           Exit={exitHandler}
-          classes={MoneyTransferStyles}
           isMobile={mobile}
-          BACKDROPDIV={backdropDiv}
-          OVERLAYDIV={overlayDiv}
           setAccountSecurityView={setAccountSecrutiyType}
           securityView={urlParamItemToLock}
         />
@@ -320,6 +294,7 @@ const Profile: FC<{
           actionParam={urlParamActions}
           accountParam={urlParamAccount}
           activityParam={urlParamActivityView}
+          card={cards as Card}
           countParam={urlParamActivityViewCount}
           classes={classes}
           deposits={deposits}

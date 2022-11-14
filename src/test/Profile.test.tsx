@@ -42,7 +42,6 @@ describe("Profile Test Suite", () => {
             <Suspense fallback={<LoadingSpinner />}>
               <Profile
                 API_VERSION={API_VERSION}
-                Location={window.location}
                 customer={customer}
                 mobile={false}
               />
@@ -51,9 +50,11 @@ describe("Profile Test Suite", () => {
         </ThemeProvider>
       </Provider>
     );
-    const TextMatch = await screen.findByText(/Full Account Number/i, {
-      exact: false,
-    });
+    const TextMatch = await waitFor(() =>
+      screen.findByText(/Full Account Number/i, {
+        exact: false,
+      })
+    );
     expect(TextMatch).toBeInTheDocument();
   });
 
@@ -65,7 +66,6 @@ describe("Profile Test Suite", () => {
             <Suspense fallback={<LoadingSpinner />}>
               <Profile
                 API_VERSION={API_VERSION}
-                Location={window.location}
                 customer={customer}
                 mobile={false}
               />
@@ -82,5 +82,95 @@ describe("Profile Test Suite", () => {
       screen.findByText(/Account Security/, { exact: true })
     );
     expect(TextMatch).toBeInTheDocument();
+  });
+
+  test("Open account activity to display transactions", async () => {
+    render(
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <Suspense fallback={<LoadingSpinner />}>
+              <Profile
+                API_VERSION={API_VERSION}
+                customer={customer}
+                mobile={false}
+              />
+            </Suspense>
+          </BrowserRouter>
+        </ThemeProvider>
+      </Provider>
+    );
+    const activityBtns = await waitFor(() => screen.findAllByRole("button"));
+    const chevron = activityBtns.find((btn) => {
+      return btn.id === "account-btn";
+    });
+    if (chevron) {
+      userEvent.click(chevron);
+    }
+    const increaseBtn = await waitFor(() =>
+      screen.findByRole("button", {
+        name: "See more activity",
+      })
+    );
+    expect(increaseBtn).toBeInTheDocument();
+  });
+
+  test("Page change to Summary", async () => {
+    render(
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <Suspense fallback={<LoadingSpinner />}>
+              <Profile
+                API_VERSION={API_VERSION}
+                customer={customer}
+                mobile={false}
+              />
+            </Suspense>
+          </BrowserRouter>
+        </ThemeProvider>
+      </Provider>
+    );
+    const summaryLink = screen.getByRole("link");
+    userEvent.click(summaryLink);
+    expect(summaryLink).not.toBeInTheDocument();
+
+    const TextMatch = screen.getByText("You have spent $0.00 this month", {
+      exact: true,
+    });
+    expect(TextMatch).toBeInTheDocument();
+  });
+
+  test("Sending a transfer", async () => {
+    render(
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <Suspense fallback={<LoadingSpinner />}>
+              <Profile
+                API_VERSION={API_VERSION}
+                customer={customer}
+                mobile={false}
+              />
+            </Suspense>
+          </BrowserRouter>
+        </ThemeProvider>
+      </Provider>
+    );
+    userEvent.click(
+      screen.getByRole("button", {
+        name: "Money Transfer",
+      })
+    );
+    expect(
+      screen.getByRole("button", {
+        name: "Money Transfer",
+      })
+    ).toBeInTheDocument();
+    const TextField = await waitFor(() =>
+      screen.findByLabelText("Send By", {}, { interval: 3000 })
+    );
+    console.log(TextField);
+    userEvent.click(TextField);
   });
 });

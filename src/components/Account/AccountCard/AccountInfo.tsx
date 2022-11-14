@@ -107,6 +107,7 @@ const AccountInfo: FC<{
             }}
             onClick={onSetView}
             variant="text"
+            id="account-numbers-btn"
           >
             {ACCOUNTNUMBER}
           </Button>
