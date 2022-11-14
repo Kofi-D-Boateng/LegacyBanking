@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { NotificationDetails } from "../../types/Notification";
+import { Notification, NotificationDetails } from "../../types/Notification";
 
 function initialState(): NotificationDetails {
   return {
@@ -15,14 +15,7 @@ const notisSlice = createSlice({
     getNotis(
       state,
       action: PayloadAction<{
-        notis: {
-          _id: string;
-          sender: string;
-          receiver: string;
-          amount: number;
-          date: string;
-          read: boolean;
-        }[];
+        notis: Notification[];
       }>
     ) {
       const { notis } = action.payload;

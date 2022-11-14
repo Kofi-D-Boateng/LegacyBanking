@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import {
   Icon,
   LatLngExpression,
@@ -41,15 +41,16 @@ const LocationMarker: FC<{
       />
       {pos && (
         <Popup position={pos}>
-          <Grid container>
-            <Typography variant="h6"> {branch.name}</Typography>
-            <Typography variant="body1">
-              {"Country: " + branch.country}
-            </Typography>
-          </Grid>
-          <Grid container>
-            <Typography variant="body1">{"Area: " + branch.state}</Typography>
-          </Grid>
+          <Typography variant="h6"> {branch.name}</Typography>
+          <Typography variant="body1">
+            {`Country: ${branch.country}`}
+          </Typography>
+          <Typography variant="body1">
+            {`State/Province: ${branch.state}`}
+          </Typography>
+          <Typography variant="body1">
+            {`Area Code: ${branch.zipcode}`}
+          </Typography>
         </Popup>
       )}
     </>

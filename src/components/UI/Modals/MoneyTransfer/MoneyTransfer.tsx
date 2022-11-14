@@ -1,96 +1,114 @@
-import { FC, Dispatch, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState, ChangeEvent } from "react";
 import { createPortal } from "react-dom";
 import Backdrop from "../../Backdrops/Backdrop";
-import { SelectChangeEvent } from "@mui/material";
 import Modal from "./Modal";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
-import { AxiosStatic } from "axios";
-import { NavigateFunction } from "react-router-dom";
+import axios from "axios";
 import { TransferDetails } from "../../../../types/Transfer";
+import { Account } from "../../../../types/CustomerDetails";
+import {
+  API_VERSION,
+  INPROGRESS,
+  MAINPROFILE,
+  SUCCESSFUL_TRANSFER,
+  TRANSFER,
+  UNSUCCESSFUL_TRANSFER,
+} from "../../Constants/Constants";
+import { customerActions } from "../../../../store/customer/customer-slice";
+import { backdropDiv, overlayDiv } from "../../Layouts/RootElement";
+import classes from "../../../../styles/Modals/Modals.module.css";
+import { useDispatch } from "react-redux";
 
 const MoneyTransfer: FC<{
-  Location: Location;
-  nav: NavigateFunction;
-  API_VERSION: string | undefined;
   token: string | null;
-  view: boolean;
-  termsOfChoice: string;
   isMobile: boolean;
-  classes: {
-    readonly [key: string]: string;
-  };
-  BACKDROPDIV: HTMLElement | null;
-  OVERLAYDIV: HTMLElement | null;
-  accountNum: string;
-  DEBITTRANSFER: string;
-  dispatch: Dispatch<any>;
+  myEmail: string;
+  account: Account;
+  urlParamDisplay: string | null;
+  urlParamAccount: string | null;
+  urlParamTransferBy: string | null;
+  status: string | null;
+  setTransferStatus: (param: string) => void;
+  resetInfo: () => void;
   Exit: () => void;
-  onChoice: (event: SelectChangeEvent) => void;
-  axios: AxiosStatic;
-  setView: ActionCreatorWithPayload<
-    {
-      view: string;
-    },
-    string
-  >;
+  onChoice: (event: ChangeEvent<HTMLInputElement>) => void;
 }> = ({
-  view,
-  termsOfChoice,
   isMobile,
-  classes,
-  BACKDROPDIV,
-  OVERLAYDIV,
-  DEBITTRANSFER,
-  accountNum,
+  account,
   token,
   Exit,
   onChoice,
-  dispatch,
-  axios,
-  setView,
-  API_VERSION,
-  Location,
+  urlParamAccount,
+  urlParamDisplay,
+  urlParamTransferBy,
+  myEmail,
+  status,
+  resetInfo,
+  setTransferStatus,
 }) => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const AN: string = account ? account.accountNumber : "";
   const [transfer, setTransfer] = useState<TransferDetails>({
-    accountNumber: "",
+    accountNumber: AN,
     amount: 0,
-    email: undefined,
-    phoneNumber: undefined,
-    type: "",
+    email: myEmail,
+    emailOfTransferee: undefined,
+    phoneNumberOfTransferee: undefined,
+    bankAccountType: account?.bankAccountType,
+    transactionType: TRANSFER,
   });
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const fetchTransfer = async (
       accountTransfer: TransferDetails,
       token: string | null
     ) => {
-      setLoading(true);
       await axios
-        .put(`${API_VERSION}/authentication/transaction`, accountTransfer, {
-          headers: { authorization: token as string },
-        })
-        .then((response) => {
-          if (response.status >= 200 && response.status <= 299) {
-            dispatch(
-              setTransfer({
-                accountNumber: "",
-                amount: 0,
-                email: undefined,
-                phoneNumber: undefined,
-                type: "",
-              })
-            );
+        .put(
+          `${API_VERSION}/authentication/transaction`,
+          {
+            accountTransfer: accountTransfer,
+            typeOfTransaction: "ACCOUNT_TRANSACTION",
+          },
+          {
+            headers: { authorization: token as string },
           }
-          Location.reload();
+        )
+        .then(() => {
+          dispatch(customerActions.resetInfo());
+          setTransferStatus(SUCCESSFUL_TRANSFER);
+          setTimeout(() => {
+            resetInfo();
+          }, 4000);
         })
         .catch(() => {
-          setLoading(false);
+          setTransferStatus(UNSUCCESSFUL_TRANSFER);
+          setTimeout(() => {
+            resetInfo();
+          }, 4000);
         });
     };
-    if (transfer.email || transfer.phoneNumber) {
+    if (
+      !urlParamAccount ||
+      !urlParamDisplay ||
+      !urlParamDisplay?.includes(MAINPROFILE) ||
+      (urlParamAccount as string) !== account.id.toString()
+    ) {
+      // dispatch(customerActions.logout());
+    }
+    if (transfer.emailOfTransferee || transfer.phoneNumberOfTransferee) {
       fetchTransfer(transfer, token);
     }
-  }, [transfer, dispatch, API_VERSION, Location, axios, setView, token]);
+  }, [
+    transfer,
+    dispatch,
+    setTransferStatus,
+    resetInfo,
+    token,
+    account.id,
+    urlParamAccount,
+    urlParamDisplay,
+    account.bankAccountType,
+  ]);
 
   const transferHandler = useCallback(
     (data: {
@@ -98,34 +116,34 @@ const MoneyTransfer: FC<{
       phoneNumber: string | undefined;
       amount: number;
     }) => {
-      dispatch(
-        setTransfer({
-          email: data.email,
-          accountNumber: accountNum,
-          amount: data.amount,
-          type: DEBITTRANSFER,
-          phoneNumber: data.phoneNumber,
-        })
-      );
+      setTransfer({
+        emailOfTransferee: data.email,
+        accountNumber: AN,
+        amount: data.amount,
+        email: myEmail,
+        bankAccountType: account.bankAccountType,
+        phoneNumberOfTransferee: data.phoneNumber,
+        transactionType: TRANSFER,
+      });
+      setTransferStatus(INPROGRESS);
     },
-    [accountNum, dispatch, DEBITTRANSFER]
+    [AN, account.bankAccountType, myEmail, setTransferStatus]
   );
 
   return (
     <>
-      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV as Element)}
+      {createPortal(<Backdrop Exit={Exit} />, backdropDiv as Element)}
       {createPortal(
         <Modal
           Exit={Exit}
           Transfer={transferHandler}
           choiceHandler={onChoice}
-          view={view}
-          termsOfChoice={termsOfChoice}
+          transferBy={urlParamTransferBy}
           classes={classes}
           isMobile={isMobile}
-          loading={loading}
+          status={status}
         />,
-        OVERLAYDIV as Element
+        overlayDiv as Element
       )}
     </>
   );

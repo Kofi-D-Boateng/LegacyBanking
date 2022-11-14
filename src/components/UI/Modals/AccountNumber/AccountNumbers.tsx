@@ -3,7 +3,9 @@ import { createPortal } from "react-dom";
 import { Card, CardContent, Grid, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Backdrop from "../../Backdrops/Backdrop";
-import { NavigateFunction } from "react-router-dom";
+import { Account } from "../../../../types/CustomerDetails";
+import { backdropDiv } from "../../Layouts/RootElement";
+import classes from "../../../../styles/Modals/Modals.module.css";
 
 const Modal: FC<{
   Exit: () => void;
@@ -22,7 +24,7 @@ const Modal: FC<{
     <Card className={!isMobile ? classes.card : classes.mobileCard}>
       <Grid
         sx={{
-          backgroundColor: "purple",
+          backgroundColor: "#8a2be2",
           padding: "20px 0",
         }}
         container
@@ -76,35 +78,25 @@ const Modal: FC<{
 const AccountNumbers: FC<{
   Exit: () => void;
   isMobile: boolean;
-  nav: NavigateFunction;
-  accountNum: string;
-  routingNum: string;
-  classes: {
-    readonly [key: string]: string;
-  };
-  BACKDROPDIV: HTMLElement | null;
-  OVERLAYDIV: HTMLElement | null;
-}> = ({
-  Exit,
-  isMobile,
-  accountNum,
-  routingNum,
-  classes,
-  BACKDROPDIV,
-  OVERLAYDIV,
-}) => {
+  param: string | null;
+  accounts: Account[];
+}> = ({ Exit, isMobile, accounts, param }) => {
+  const account: Account | undefined = accounts.find((acc) => {
+    const id: number = parseInt(param as string);
+    return acc.id === id;
+  });
   return (
     <>
-      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV as Element)}
+      {createPortal(<Backdrop Exit={Exit} />, backdropDiv as Element)}
       {createPortal(
         <Modal
-          AN={accountNum}
-          RN={routingNum}
+          AN={account?.accountNumber as string}
+          RN={account?.routingNumber as string}
           isMobile={isMobile}
           Exit={Exit}
           classes={classes}
         />,
-        OVERLAYDIV as Element
+        backdropDiv as Element
       )}
     </>
   );

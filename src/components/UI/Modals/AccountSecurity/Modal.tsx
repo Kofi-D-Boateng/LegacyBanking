@@ -12,14 +12,7 @@ import {
   TypographyTypeMap,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import {
-  Dispatch,
-  FC,
-  Fragment,
-  ReactElement,
-  SetStateAction,
-  MouseEvent,
-} from "react";
+import { FC, ReactElement, MouseEvent, ChangeEvent } from "react";
 import AccountLock from "./AccountLock";
 import CardLock from "./CardLock";
 
@@ -54,18 +47,9 @@ const Modal: FC<{
   LOCKEDACCOUNT: string;
   LOCKEDACCOUNTMSG: string;
   isCardLocked: boolean;
-  setChoice: Dispatch<
-    SetStateAction<{
-      choice: boolean;
-      item: string;
-    }>
-  >;
-  setView: Dispatch<SetStateAction<string>>;
-  view: string;
-  choice: {
-    choice: boolean;
-    item: string;
-  };
+  setAccountSecurityView: (e: MouseEvent<HTMLButtonElement>) => void;
+  setLockedItem: (e: ChangeEvent<HTMLInputElement>) => void;
+  securityView: string | null;
 }> = ({
   Card,
   CardContent,
@@ -77,75 +61,30 @@ const Modal: FC<{
   Radio,
   RadioGroup,
   Close,
-  LOCKEDACCOUNTMSG,
   LOCKEDCARDMSG,
   classes,
   isMobile,
   Exit,
-  LOCKEDACCOUNT,
-  LOCKEDCARD,
   LOCKACCOUNT,
   LOCKCARD,
   CreditCard,
   Lock,
-  choice,
-  setChoice,
-  setView,
-  view,
+  setAccountSecurityView,
+  securityView,
   isCardLocked,
+  setLockedItem,
 }) => {
   const SECURITYOPTIONS: { key: number; title: string; svg: ReactElement }[] = [
     { key: 1, title: LOCKACCOUNT, svg: <Lock /> },
     { key: 2, title: LOCKCARD, svg: <CreditCard /> },
   ];
-  const SECURITYVIEW: { key: number; title: string; view: JSX.Element }[] = [
-    {
-      key: 3,
-      title: LOCKACCOUNT,
-      view: (
-        <AccountLock
-          Grid={Grid}
-          FormControl={FormControl}
-          RadioGroup={RadioGroup}
-          Radio={Radio}
-          FormControlLabel={FormControlLabel}
-          setChoice={setChoice}
-          setView={setView}
-        />
-      ),
-    },
-    {
-      key: 4,
-      title: LOCKCARD,
-      view: (
-        <CardLock
-          isCardLocked={isCardLocked}
-          LOCKEDCARDMSG={LOCKEDCARDMSG}
-          setView={setView}
-          Grid={Grid}
-          FormControl={FormControl}
-          RadioGroup={RadioGroup}
-          Radio={Radio}
-          FormControlLabel={FormControlLabel}
-          setChoice={setChoice}
-        />
-      ),
-    },
-  ];
-
-  const viewHandler: (e: MouseEvent<HTMLButtonElement>) => void = ({
-    currentTarget,
-  }) => {
-    const { value } = currentTarget;
-    setView(value);
-  };
 
   return (
     <>
       <Card className={!isMobile ? classes.card : classes.mobileCard}>
         <Grid
           sx={{
-            backgroundColor: "purple",
+            backgroundColor: "#8a2be2",
             padding: "20px 0",
           }}
           container
@@ -173,43 +112,44 @@ const Modal: FC<{
           </IconButton>
         </Grid>
         <CardContent>
-          <Grid sx={{ textAlign: "center" }} container>
-            {choice.choice
-              ? choice.item.includes(LOCKEDCARD)
-                ? LOCKEDCARDMSG
-                : choice.item.includes(LOCKEDACCOUNT)
-                ? LOCKEDACCOUNTMSG
-                : choice.item
-              : undefined}
-            {view.trim() ? (
-              <>
-                {SECURITYVIEW.filter((S) => {
-                  return S.title.includes(view);
-                }).map((S) => {
-                  return <Fragment key={S.key}>{S.view}</Fragment>;
-                })}
-              </>
-            ) : (
-              <>
-                {SECURITYOPTIONS.map((S) => {
-                  return (
-                    <>
-                      {!choice.choice && (
-                        <Grid key={S.key} xs={6} md={6} item>
-                          <Typography variant="body1">{S.title}</Typography>
-                          <IconButton
-                            value={S.title}
-                            children={S.svg}
-                            onClick={viewHandler}
-                          />
-                        </Grid>
-                      )}
-                    </>
-                  );
-                })}
-              </>
-            )}
-          </Grid>
+          {!securityView && (
+            <Grid sx={{ textAlign: "center" }} container>
+              {SECURITYOPTIONS.map((S) => {
+                return (
+                  <Grid key={S.key} xs={6} md={6} item>
+                    <Typography variant="body1">{S.title}</Typography>
+                    <IconButton
+                      value={S.title}
+                      children={S.svg}
+                      onClick={setAccountSecurityView}
+                    />
+                  </Grid>
+                );
+              })}
+            </Grid>
+          )}
+          {securityView?.includes(LOCKACCOUNT) && (
+            <AccountLock
+              Grid={Grid}
+              FormControl={FormControl}
+              RadioGroup={RadioGroup}
+              Radio={Radio}
+              FormControlLabel={FormControlLabel}
+              setLockedItem={setLockedItem}
+            />
+          )}
+          {securityView?.includes(LOCKCARD) && (
+            <CardLock
+              isCardLocked={isCardLocked}
+              LOCKEDCARDMSG={LOCKEDCARDMSG}
+              setLockedItem={setLockedItem}
+              Grid={Grid}
+              FormControl={FormControl}
+              RadioGroup={RadioGroup}
+              Radio={Radio}
+              FormControlLabel={FormControlLabel}
+            />
+          )}
         </CardContent>
       </Card>
     </>

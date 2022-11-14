@@ -4,6 +4,7 @@ import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import App from "../App";
+import { theme } from "../setupTests";
 import { store } from "../store/store";
 
 beforeEach(() => {
@@ -17,28 +18,6 @@ beforeEach(() => {
   window.IntersectionObserver = mockIntersectionObserver;
 });
 test("app renders", () => {
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: "#03a9f4",
-      },
-      secondary: {
-        main: "#FEFDFC",
-      },
-    },
-    typography: {
-      fontFamily: "Noto JP Sans",
-    },
-    breakpoints: {
-      values: {
-        xs: 0,
-        sm: 600,
-        md: 900,
-        lg: 1200,
-        xl: 1536,
-      },
-    },
-  });
   render(
     <Provider store={store}>
       <ThemeProvider theme={theme}>

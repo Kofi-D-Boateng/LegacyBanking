@@ -3,28 +3,29 @@ import { FC, useEffect, useState } from "react";
 import False from "../components/VerifyAccount/False";
 import True from "../components/VerifyAccount/True";
 import { Box, Grid } from "@mui/material";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import {
+  NavigateFunction,
+  useSearchParams,
+  useNavigate,
+} from "react-router-dom";
 import { LOGIN } from "../components/UI/Constants/Constants";
 import { Cancel, Check } from "@mui/icons-material";
 
 const VerifyAccount: FC<{
   isMobile: boolean;
   axios: AxiosStatic;
-  searchParams: URLSearchParams;
-
   API_VERSION: string | undefined;
   LoadingSpinner: FC<{}>;
-}> = ({ searchParams, axios, API_VERSION, LoadingSpinner, isMobile }) => {
+}> = ({ axios, API_VERSION, LoadingSpinner, isMobile }) => {
   const navigate: NavigateFunction = useNavigate();
   const [loading, setLoading] = useState<boolean>(true);
   const [verified, setVerified] = useState<boolean | null>(null);
+  const searchParams = useSearchParams()[0];
   useEffect(() => {
-    const fetchVerification: (searchParams: URLSearchParams) => void = async (
-      SP
-    ) => {
+    const fetchVerification: (token: string | null) => void = async (token) => {
       await axios
         .get(`${API_VERSION}/authentication/confirm-account`, {
-          params: { token: SP.get("token") },
+          params: { token: token },
         })
         .then((repsonse) => {
           setLoading(false);
@@ -41,7 +42,7 @@ const VerifyAccount: FC<{
           }, 5000);
         });
     };
-    fetchVerification(searchParams);
+    fetchVerification(searchParams.get("token"));
   });
   return (
     <>

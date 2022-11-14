@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useCallback } from "react";
 import ReactDOM from "react-dom";
 import Backdrop from "../../Backdrops/Backdrop";
 import {
@@ -13,64 +13,39 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import classes from "../../../../styles/Modals/Modals.module.css";
 import Modal from "./Modal";
-import { AxiosStatic } from "axios";
-import { NavigateFunction } from "react-router-dom";
+import axios from "axios";
+import { API_VERSION } from "../../Constants/Constants";
+import { backdropDiv, overlayDiv } from "../../Layouts/RootElement";
 
 const Paperless: FC<{
   Exit: () => void;
   isMobile: boolean;
-  nav: NavigateFunction;
-  classes: {
-    readonly [key: string]: string;
-  };
-  BACKDROPDIV: HTMLElement | null;
-  OVERLAYDIV: HTMLElement | null;
-
-  API_VERSION: string | undefined;
   token: string | null;
-  axios: AxiosStatic;
-}> = ({
-  Exit,
-  isMobile,
-  classes,
-  BACKDROPDIV,
-  OVERLAYDIV,
-  API_VERSION,
-  token,
-  axios,
-}) => {
-  const [choice, setChoice] = useState<{
-    isSelected: boolean;
-    choice: string;
-  }>({ isSelected: false, choice: "" });
-
-  useEffect(() => {
-    const fetchPaperless: (
-      choice: string,
-      token: string | null
-    ) => void = async (choice, token) => {
+}> = ({ Exit, isMobile, token }) => {
+  const setBillingType = useCallback(
+    async (e: ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.currentTarget;
       await axios
         .put(
           `${API_VERSION}/authentication/billing`,
-          { choice: choice },
+          { choice: value },
           {
             headers: { authorization: token as string },
           }
         )
         .then(() => {
           Exit();
-        });
-    };
-
-    if (choice.isSelected) {
-      fetchPaperless(choice.choice, token);
-    }
-  }, [choice, Exit, API_VERSION, token, axios]);
+        })
+        .catch(() => Exit());
+    },
+    [Exit, token]
+  );
 
   return (
     <>
-      {ReactDOM.createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV as Element)}
+      {ReactDOM.createPortal(<Backdrop Exit={Exit} />, backdropDiv as Element)}
       {ReactDOM.createPortal(
         <Modal
           Card={Card}
@@ -85,10 +60,10 @@ const Paperless: FC<{
           Radio={Radio}
           classes={classes}
           Exit={Exit}
-          setChoice={setChoice}
+          setBillingType={setBillingType}
           isMobile={isMobile}
         />,
-        OVERLAYDIV as Element
+        overlayDiv as Element
       )}
     </>
   );

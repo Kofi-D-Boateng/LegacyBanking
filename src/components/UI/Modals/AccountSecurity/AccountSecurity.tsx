@@ -10,105 +10,89 @@ import {
   Radio,
   FormControlLabel,
 } from "@mui/material";
-import { AxiosStatic } from "axios";
-import { FC, useEffect, useState } from "react";
+import axios from "axios";
+import { FC, MouseEvent, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { NavigateFunction } from "react-router-dom";
-import Backdrop from "../../Backdrops/Backdrop";
 import {
+  Account,
+  Card as AccountCard,
+} from "../../../../types/CustomerDetails";
+import Backdrop from "../../Backdrops/Backdrop";
+import classes from "../../../../styles/Modals/Modals.module.css";
+import {
+  API_VERSION,
   LOCKACCOUNT,
   LOCKCARD,
   LOCKEDACCOUNT,
   LOCKEDACCOUNTMSG,
   LOCKEDCARD,
   LOCKEDCARDMSG,
-  SECURITYERRORMSG,
 } from "../../Constants/Constants";
+import { backdropDiv } from "../../Layouts/RootElement";
 import Modal from "./Modal";
 
 const AccountSecurity: FC<{
   Exit: () => void;
-  nav: NavigateFunction;
-  BACKDROPDIV: HTMLElement | null;
-  OVERLAYDIV: HTMLElement | null;
+  setAccountSecurityView: (e: MouseEvent<HTMLButtonElement>) => void;
   isMobile: boolean;
-  classes: {
-    readonly [key: string]: string;
-  };
-
-  API_VERSION: string | undefined;
   token: string | null;
-  accountNumber: string;
-  isCardLocked: boolean;
-  Location: Location;
-  axios: AxiosStatic;
+  account: Account;
+  card: AccountCard;
+  securityView: string | null;
 }> = ({
   Exit,
-  BACKDROPDIV,
-  OVERLAYDIV,
-  classes,
   isMobile,
-  API_VERSION,
   token,
-  accountNumber,
-  Location,
-  axios,
-  isCardLocked,
+  account,
+  card,
+  securityView,
+  setAccountSecurityView,
 }) => {
-  const [view, setView] = useState<string>("");
-  const [choice, setChoice] = useState<{ choice: boolean; item: string }>({
-    choice: false,
-    item: "",
-  });
-
-  useEffect(() => {
-    if (!choice.choice) {
-      return;
-    }
-    const fetchSettings: (
-      choice: {
-        choice: boolean;
-        item: string;
-      },
-      accountNumber: string,
-      token: string | null
-    ) => void = async ({ item }) => {
+  const AN: string = account ? account.accountNumber : "";
+  console.log(card);
+  const setLockedItem = useCallback(async () => {
+    if (securityView?.includes(LOCKCARD)) {
       await axios
-        .post(
-          `${API_VERSION}/authentication/profile/security`,
+        .put(
+          `http://localhost:8081/${API_VERSION}/authentication/profile/security`,
           {
-            card: item.includes(LOCKEDCARD) && choice.choice,
-            account: item.includes(LOCKEDACCOUNT) && choice.choice,
-            accountNumber: accountNumber,
+            requestType: "LOCK CARD",
+            cardNumber: card.cardNumber,
           },
           { headers: { authorization: token as string } }
         )
         .then(() => {
-          Location.reload();
-        })
-        .catch(() => {
-          setChoice({ choice: true, item: SECURITYERRORMSG });
+          window.location.reload();
         });
-    };
-    fetchSettings(choice, accountNumber, token);
-  }, [API_VERSION, token, choice, axios, accountNumber, Location]);
+    } else if (securityView?.includes(LOCKACCOUNT)) {
+      await axios
+        .put(
+          `${API_VERSION}/authentication/profile/security`,
+          {
+            requestType: "LOCK ACCOUNT",
+            accountNumber: AN,
+          },
+          { headers: { authorization: token as string } }
+        )
+        .then(() => {
+          window.location.reload();
+        });
+    }
+  }, [AN, securityView, token, card.cardNumber]);
 
   return (
     <>
-      {createPortal(<Backdrop Exit={Exit} />, BACKDROPDIV as Element)}
+      {createPortal(<Backdrop Exit={Exit} />, backdropDiv as Element)}
       {createPortal(
         <Modal
-          setChoice={setChoice}
-          setView={setView}
-          view={view}
-          choice={choice}
+          securityView={securityView}
           LOCKCARD={LOCKCARD}
           LOCKEDCARDMSG={LOCKEDCARDMSG}
           LOCKEDCARD={LOCKEDCARD}
           LOCKACCOUNT={LOCKACCOUNT}
           LOCKEDACCOUNTMSG={LOCKEDACCOUNTMSG}
           LOCKEDACCOUNT={LOCKEDACCOUNT}
-          isCardLocked={isCardLocked}
+          isCardLocked={card.isLocked}
           Card={Card}
           CardContent={CardContent}
           Grid={Grid}
@@ -124,8 +108,10 @@ const AccountSecurity: FC<{
           Exit={Exit}
           classes={classes}
           isMobile={isMobile}
+          setLockedItem={setLockedItem}
+          setAccountSecurityView={setAccountSecurityView}
         />,
-        OVERLAYDIV as Element
+        backdropDiv as Element
       )}
     </>
   );

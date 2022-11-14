@@ -1,5 +1,5 @@
 .card {
-  border: 0.5px solid purple;
+  border: 0.5px solid #8a2be2;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -9,7 +9,7 @@
 }
 
 .mobileCard {
-  border: 0.5px solid purple;
+  border: 0.5px solid #8a2be2;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -20,12 +20,12 @@
 
 .titleContainer {
   margin: 20px 0;
-  color: purple;
+  color: #8a2be2;
 }
 
 .bodyContainer {
   margin: 20px 0;
-  color: purple;
+  color: #8a2be2;
 }
 
 .buttonContainer {

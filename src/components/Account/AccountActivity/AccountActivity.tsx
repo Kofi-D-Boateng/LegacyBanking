@@ -1,4 +1,4 @@
-import { FC, memo, SetStateAction, useState } from "react";
+import { FC, memo } from "react";
 import {
   Typography,
   Card,
@@ -11,14 +11,44 @@ import Inactive from "@mui/icons-material/ChevronRight";
 import Active from "@mui/icons-material/KeyboardArrowDown";
 import Transactions from "./Transactions";
 import { Transaction } from "../../../types/CustomerDetails";
+import Options from "./Options";
+import { NavigateFunction } from "react-router-dom";
 
 const AccountActivity: FC<{
+  accountParam: string | null;
+  filterParam: string | null;
   classes: ClassNameMap<string>;
   transactions: Transaction[];
-  YEAR: number;
-}> = ({ classes, transactions, YEAR }) => {
-  const [view, setView] = useState<SetStateAction<boolean>>(false);
-  const [count, setCount] = useState<number>(10);
+  setAccountActivityView: () => void;
+  setTransactionViewCount: () => void;
+  nav: NavigateFunction;
+  fName: string;
+  lName: string;
+  year: string | null;
+  month: string | null;
+  activityViewIsEnabled: string | null;
+  countParam: string | null;
+  isMobile: boolean;
+  filterType: string | null;
+  filterYear: string | null;
+  filterMonth: string | null;
+}> = ({
+  classes,
+  transactions,
+  nav,
+  fName,
+  lName,
+  month,
+  year,
+  filterParam,
+  accountParam,
+  activityViewIsEnabled,
+  countParam,
+  isMobile,
+  setAccountActivityView,
+  setTransactionViewCount,
+}) => {
+  const count = parseInt(countParam as string);
 
   const categories: { key: number; title: string }[] = [
     { key: 1, title: "Date" },
@@ -27,33 +57,44 @@ const AccountActivity: FC<{
     { key: 4, title: "Amount" },
   ];
 
-  const viewHandler = () => {
-    if (view) {
-      setView(false);
-    } else {
-      setView(true);
-    }
-  };
+  const filter = transactions.filter((a, index) => {
+    return index <= count;
+  });
 
   return (
     <Card className={classes.card}>
       <CardContent>
         <Grid container>
-          <Grid sx={{ margin: "auto 0" }} xs={2} md={2} item>
+          <Grid sx={{ margin: "auto 0" }} xs={1} md={1} item>
             <IconButton
               sx={{
                 "&:hover": {
                   backgroundColor: "transparent",
                 },
               }}
-              onClick={viewHandler}
-              children={view ? <Active /> : <Inactive />}
+              id="account-btn"
+              onClick={setAccountActivityView}
+              children={activityViewIsEnabled ? <Active /> : <Inactive />}
             />
           </Grid>
-          <Grid sx={{ margin: "auto 0" }} xs={10} md={9} item>
+          <Grid sx={{ margin: "auto" }} xs={3} md={3} item>
             <Typography sx={{ float: "left" }} variant="h6">
               Account Activity
             </Typography>
+          </Grid>
+          <Grid sx={{ margin: "auto" }} sm={8} md={8} item>
+            <Grid container>
+              <Options
+                accountParam={accountParam}
+                filterParam={filterParam}
+                isMobile={isMobile}
+                nav={nav}
+                fName={fName}
+                lName={lName}
+                year={year}
+                month={month}
+              />
+            </Grid>
           </Grid>
         </Grid>
         <div
@@ -62,7 +103,7 @@ const AccountActivity: FC<{
             width: "100%",
           }}
         ></div>
-        {view && (
+        {activityViewIsEnabled && (
           <>
             <Grid className={classes.activityTitles} container>
               {categories.map((cat) => {
@@ -82,12 +123,10 @@ const AccountActivity: FC<{
               {" "}
             </div>
             <Transactions
-              transactions={transactions}
+              transactions={filter}
               classes={classes}
               categories={categories}
-              YEAR={YEAR}
-              count={count}
-              setCount={setCount}
+              increaseCount={setTransactionViewCount}
             />
           </>
         )}

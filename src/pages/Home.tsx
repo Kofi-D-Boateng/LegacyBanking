@@ -120,11 +120,11 @@ const Home: FC<{
         isMobile={mobile}
         navigate={NAVIGATE}
       />
-      <Grid sx={{ backgroundColor: "purple", padding: "80px 0" }} container>
+      <Grid sx={{ backgroundColor: "#8a2be2", padding: "80px 0" }} container>
         <Grid className={classes.aboutContainer} xs={12} md={12} item>
           <Typography variant="h4">Learn more about us</Typography>
           <Typography
-            sx={{ width: "60%", margin: "10px auto", fontSize: "1.1rem" }}
+            sx={{ width: "60%", margin: "30px auto", fontSize: "1.1rem" }}
             variant="body1"
           >
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis

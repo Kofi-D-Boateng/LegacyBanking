@@ -63,7 +63,7 @@ const Form: FC<{
               borderColor: "white",
               "&:hover": {
                 backgroundColor: "white",
-                color: "purple",
+                color: "#8a2be2",
                 borderColor: "white",
               },
             }}

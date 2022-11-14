@@ -1,18 +1,32 @@
+import { MonthsMap } from "../../../types/Maps";
+
 // BACKEND URL
 const API_VERSION: string | undefined =
-  process.env.REACT_APP_API_VERSION || "api/v1";
-
+  process.env.REACT_APP_API_VERSION || "api/v2";
 const BUFFERTIME: number =
   parseInt(process.env.REACT_APP_BUFFERTIME!) || 10000 * 6 * 5;
 
+// HASH
+const HASHTYPE = process.env.REACT_APP_HASH || "sha256";
 // PROFILE STRING COMPARISON
 const DEBITTRASFER: string = "Debit transfer";
-const TRANSFER: string = "transfer";
-const ACHDEBIT: string = "ACH Debit";
-const WITHDRAWAL: string = "withdrawal";
+const TRANSFER: string = "TRANSFER";
+const DEPOSIT: string = "DEPOSIT";
+const WITHDRAWAL: string = "WITHDRAWL";
+const PURCHASE: string = "PURCHASE";
+const REFUND: string = "REFUND";
+
+// ACCOUNT TYPES
+const CREDIT: string = "CREDIT";
+const DEBIT: string = "DEBIT";
+
+// CREDIT LINES
+const EMERALD_CREDIT_LINE: number = 5000.0;
+const BLACK_CREDIT_LINE: number = 100000.0;
+const PLATINUM_CREDIT_LINE: number = 10000.0;
 
 // ROUTES
-const MAINPROFILE: string = "";
+const MAINPROFILE: string = "profile";
 const SUMMARY: string = "account-summary";
 const CREDITSCORE: string = "credit-score";
 const LOANS: string = "personal-loans";
@@ -43,8 +57,13 @@ const LOCKCARD: string = "Lock your card";
 // BUTTON VALUES
 const FORWARD: string = "forward";
 const BACKWARD: string = "backward";
-const LOCKEDCARD: string = "Locked Card";
-const LOCKEDACCOUNT: string = "Locked Account";
+const LOCKEDCARD: string = "Lock Card";
+const LOCKEDACCOUNT: string = "Lock Account";
+
+// TRANSFER STATUSES
+const UNSUCCESSFUL_TRANSFER: string = "failed";
+const SUCCESSFUL_TRANSFER: string = "successful";
+const INPROGRESS: string = "in progress";
 
 // SOCIAL LINKS
 const TWITTER: string = "www.twitter.com";
@@ -66,10 +85,25 @@ const ReactLeafLetTitleLayer: { att: string; url: string } = {
   url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 };
 
+const MonthMap: MonthsMap = {
+  1: "January",
+  2: "February",
+  3: "March",
+  4: "April",
+  5: "May",
+  6: "June",
+  7: "July",
+  8: "August",
+  9: "September",
+  10: "October",
+  11: "November",
+  12: "December",
+};
+
 export {
   ReactLeafLetTitleLayer,
   DEBITTRASFER,
-  ACHDEBIT,
+  DEPOSIT,
   TRANSFER,
   WITHDRAWAL,
   SUMMARY,
@@ -110,4 +144,16 @@ export {
   BUFFERTIME,
   VERIFYACCOUNT,
   API_VERSION,
+  PURCHASE,
+  REFUND,
+  CREDIT,
+  DEBIT,
+  MonthMap,
+  BLACK_CREDIT_LINE,
+  EMERALD_CREDIT_LINE,
+  PLATINUM_CREDIT_LINE,
+  HASHTYPE,
+  INPROGRESS,
+  SUCCESSFUL_TRANSFER,
+  UNSUCCESSFUL_TRANSFER,
 };
