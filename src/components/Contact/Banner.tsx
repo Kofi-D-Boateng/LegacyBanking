@@ -1,15 +1,32 @@
+import { Grid, Typography } from "@mui/material";
 import { FC } from "react";
 
-const Banner: FC = () => {
+const Banner: FC<{
+  classes: {
+    readonly [key: string]: string;
+  };
+  isMobile: boolean;
+}> = ({ classes, isMobile }) => {
   return (
-    <div style={{ textAlign: "center", color: "black", padding: "100px 0" }}>
-      <h1 style={{ fontSize: "3.2rem", fontWeight: "normal" }}>
-        Contact Legacy
-      </h1>
-      <p style={{ fontSize: "1.3rem" }}>
-        Need help or struggling? Send us a message and will get with you!
-      </p>
-    </div>
+    <Grid
+      className={!isMobile ? classes.banner : classes.mobileBanner}
+      container
+    >
+      <Grid
+        className={classes.bannerTitle}
+        sx={{ margin: "auto", padding: "10px", width: "60%" }}
+        item
+      >
+        <Typography
+          variant="h3"
+          sx={{
+            textAlign: "center",
+          }}
+        >
+          Contact Legacy
+        </Typography>
+      </Grid>
+    </Grid>
   );
 };
 

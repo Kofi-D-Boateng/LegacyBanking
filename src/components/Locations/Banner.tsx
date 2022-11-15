@@ -8,27 +8,25 @@ const Banner: FC<{
   isMobile: boolean;
 }> = ({ classes, isMobile }) => {
   return (
-    <>
+    <Grid
+      className={!isMobile ? classes.banner : classes.mobileBanner}
+      container
+    >
       <Grid
-        className={!isMobile ? classes.banner : classes.mobileBanner}
-        container
+        className={classes.bannerTitle}
+        sx={{ margin: "auto", padding: "10px", width: "60%" }}
+        item
       >
-        <Grid
-          className={classes.bannerTitle}
-          sx={{ margin: "auto", padding: "10px", width: "60%" }}
-          item
+        <Typography
+          variant="h3"
+          sx={{
+            textAlign: "center",
+          }}
         >
-          <Typography
-            variant="h3"
-            sx={{
-              textAlign: "center",
-            }}
-          >
-            Our Locations
-          </Typography>
-        </Grid>
+          Our Locations
+        </Typography>
       </Grid>
-    </>
+    </Grid>
   );
 };
 
