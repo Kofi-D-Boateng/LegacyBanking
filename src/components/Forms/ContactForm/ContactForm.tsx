@@ -1,11 +1,4 @@
-import {
-  ButtonTypeMap,
-  CardTypeMap,
-  ExtendButtonBase,
-  GridTypeMap,
-  TextFieldProps,
-} from "@mui/material";
-import { OverridableComponent } from "@mui/material/OverridableComponent";
+import { Button, CardContent, Grid, TextField } from "@mui/material";
 import {
   useState,
   Dispatch,
@@ -21,40 +14,15 @@ const ContactForm: FC<{
   classes: {
     readonly [key: string]: string;
   };
-  isMobile: boolean;
-  invalid: boolean;
   setLimit: Dispatch<React.SetStateAction<number>>;
-  setView: Dispatch<React.SetStateAction<boolean>>;
-  setInvalid: Dispatch<React.SetStateAction<boolean>>;
   Submit: (e: FormEvent<HTMLFormElement>) => void;
-  TextField: (props: TextFieldProps) => JSX.Element;
-  Card: OverridableComponent<CardTypeMap<{}, "div">>;
-  CardContent: OverridableComponent<CardTypeMap<{}, "div">>;
-  Button: ExtendButtonBase<ButtonTypeMap<{}, "button">>;
-  Grid: OverridableComponent<GridTypeMap<{}, "div">>;
   email: MutableRefObject<HTMLElement | undefined>;
   text: MutableRefObject<HTMLElement | undefined>;
   topic: MutableRefObject<HTMLElement | undefined>;
   limit: number;
-}> = ({
-  Card,
-  CardContent,
-  TextField,
-  Button,
-  Grid,
-  email,
-  text,
-  classes,
-  isMobile,
-  Submit,
-  setView,
-  setInvalid,
-  invalid,
-  limit,
-  setLimit,
-  topic,
-}) => {
+}> = ({ email, text, classes, Submit, limit, setLimit, topic }) => {
   const [label, setLabel] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState<boolean>(true);
 
   const sx: { margin: string } = {
     margin: "30px 0",
@@ -72,12 +40,12 @@ const ContactForm: FC<{
         !value.includes(".com") ||
         !value.includes(".net")
       ) {
-        setInvalid(true);
+        setIsValid(true);
         return;
       }
-      setInvalid(false);
+      setIsValid(false);
     },
-    [setInvalid]
+    [setIsValid]
   );
 
   const labelHandler = useCallback(
@@ -107,7 +75,7 @@ const ContactForm: FC<{
       setLimit(limit + 1);
       return;
     }
-    if (regTest || spaceTest) {
+    if ((regTest || spaceTest) && key !== "Backspace") {
       if (limit <= 500) {
         setLimit(limit - 1);
       }
@@ -116,106 +84,78 @@ const ContactForm: FC<{
   };
 
   return (
-    <>
-      <Card className={!isMobile ? classes.card : classes.mobileCard}>
-        <form onSubmit={Submit}>
-          <CardContent>
-            <Grid sx={sx} container>
-              <TextField
-                sx={!invalid ? invalidSx : null}
-                inputProps={{
-                  maxLength: 50,
-                }}
-                inputRef={email}
-                variant="outlined"
-                type="email"
-                fullWidth
-                size="small"
-                placeholder="Enter your email"
-                onBlur={emailCheck}
-              />
-            </Grid>
-            <Grid sx={sx} container>
-              <TextField
-                inputProps={{
-                  maxLength: 40,
-                }}
-                inputRef={topic}
-                variant="outlined"
-                type="text"
-                fullWidth
-                size="small"
-                placeholder="Enter Topic"
-                onBlur={emailCheck}
-              />
-            </Grid>
-            <Grid sx={sx} container>
-              <TextField
-                inputRef={text}
-                inputProps={{
-                  maxLength: 500,
-                }}
-                variant="outlined"
-                label={label && `${limit}/500`}
-                type="text"
-                multiline
-                minRows={5}
-                fullWidth
-                placeholder="Enter your message"
-                onKeyDown={limitHandler}
-                onFocus={labelHandler}
-                onBlur={labelHandler}
-              />
-            </Grid>
-            <Grid sx={{ textAlign: "center" }} container>
-              <Grid xs={6} md={6} item>
-                <Button
-                  type="submit"
-                  sx={{
-                    textTransform: "none",
-                    fontSize: "1.1rem",
-                    width: "90%",
-                    color: "green",
-                    borderColor: "green",
-                    "&:hover": {
-                      color: "white",
-                      borderColor: "green",
-                      backgroundColor: "green",
-                    },
-                  }}
-                  variant="outlined"
-                  fullWidth
-                >
-                  Submit
-                </Button>
-              </Grid>
-              <Grid xs={6} md={6} item>
-                <Button
-                  type="button"
-                  sx={{
-                    textTransform: "none",
-                    fontSize: "1.1rem",
-                    width: "90%",
-                    color: "red",
-                    borderColor: "red",
-                    "&:hover": {
-                      color: "white",
-                      borderColor: "red",
-                      backgroundColor: "red",
-                    },
-                  }}
-                  variant="outlined"
-                  onClick={() => setView(false)}
-                  fullWidth
-                >
-                  Close
-                </Button>
-              </Grid>
-            </Grid>
-          </CardContent>
-        </form>
-      </Card>
-    </>
+    <form onSubmit={Submit}>
+      <CardContent>
+        <Grid sx={sx} container>
+          <TextField
+            sx={!isValid ? invalidSx : null}
+            inputProps={{
+              maxLength: 50,
+            }}
+            inputRef={email}
+            variant="outlined"
+            type="email"
+            fullWidth
+            size="small"
+            placeholder="Enter your email"
+            onBlur={emailCheck}
+          />
+        </Grid>
+        <Grid sx={sx} container>
+          <TextField
+            inputProps={{
+              maxLength: 40,
+            }}
+            inputRef={topic}
+            variant="outlined"
+            type="text"
+            fullWidth
+            size="small"
+            placeholder="Enter Topic"
+            onBlur={emailCheck}
+          />
+        </Grid>
+        <Grid sx={sx} container>
+          <TextField
+            inputRef={text}
+            inputProps={{
+              maxLength: 500,
+            }}
+            variant="outlined"
+            label={label && `${limit}/500`}
+            type="text"
+            multiline
+            minRows={5}
+            fullWidth
+            placeholder="Enter your message"
+            onKeyDown={limitHandler}
+            onFocus={labelHandler}
+            onBlur={labelHandler}
+          />
+        </Grid>
+        <Grid sx={{ textAlign: "center" }} container>
+          <Button
+            type="submit"
+            sx={{
+              textTransform: "none",
+              fontSize: "1.1rem",
+              width: "100%",
+              color: "green",
+              borderColor: "green",
+              "&:hover": {
+                color: "white",
+                borderColor: "green",
+                backgroundColor: "green",
+              },
+            }}
+            variant="outlined"
+            fullWidth
+          >
+            Submit
+          </Button>
+        </Grid>
+      </CardContent>
+    </form>
   );
 };
 

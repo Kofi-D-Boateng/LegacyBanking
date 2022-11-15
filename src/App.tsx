@@ -154,16 +154,7 @@ const App: FC = () => {
                 <Locations API_VERSION={API_VERSION} isMobile={mobile} />
               }
             />
-            <Route
-              path={CONTACT}
-              element={
-                <Contact
-                  isMobile={mobile}
-                  axios={axios}
-                  API_VERSION={API_VERSION}
-                />
-              }
-            />
+            <Route path={CONTACT} element={<Contact isMobile={mobile} />} />
             <Route path={STARTUPS} element={<Startups isMobile={mobile} />} />
             <Route
               path={INSIGHT}
