@@ -4,7 +4,6 @@ import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { store } from "../store/store";
-import { API_VERSION } from "../components/UI/Constants/Constants";
 import Login from "../pages/Login";
 import { Suspense } from "react";
 import LoadingSpinner from "../components/UI/Modals/LoadingSpinner/LoadingSpinner";

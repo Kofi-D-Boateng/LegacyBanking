@@ -14,7 +14,8 @@ import { LoginCredentials } from "../types/Credentials";
 import LoginMobile from "../components/Login/LoginMobile";
 import LoginWeb from "../components/Login/LoginWeb";
 import LoginForm from "../components/Forms/LoginForm/LoginForm";
-import { API_VERSION, PROFILE } from "../components/UI/Constants/Constants";
+import { API_VERSION } from "../components/UI/Constants/Constants";
+import AppRoute from "../enums/Route";
 
 const Login: FC<{
   isMobile: boolean;
@@ -35,7 +36,10 @@ const Login: FC<{
     if (!urlParamAction) return;
     const fetchUserLogin = async (userCredentials: LoginCredentials) => {
       await axios
-        .post(`${API_VERSION}/authentication/login`, userCredentials)
+        .post(
+          `http://localhost:8081/${API_VERSION}/authentication/login`,
+          userCredentials
+        )
         .then((response) => {
           const { token, isActivated, expiresIn } = response.data;
           dispatch(
@@ -45,7 +49,7 @@ const Login: FC<{
               isActivated: isActivated,
             })
           );
-          nav(PROFILE.substring(0, 8), { replace: true });
+          nav(AppRoute.PROFILE.substring(0, 8), { replace: true });
         })
         .catch(() => {
           nav("?status=invalid", { replace: true });

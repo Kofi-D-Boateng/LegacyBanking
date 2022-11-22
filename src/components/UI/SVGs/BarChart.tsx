@@ -2,13 +2,8 @@ import { FC, LegacyRef, useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { DateAmountType, MonthsMap } from "../../../types/Maps";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
-import {
-  DEPOSIT,
-  DEBITTRASFER,
-  TRANSFER,
-  WITHDRAWAL,
-} from "../Constants/Constants";
 import { Transaction } from "../../../types/CustomerDetails";
+import { TransactionType } from "../../../enums/ProfileEnums";
 const BarChart: FC<{
   transactions: Transaction[];
   DateAmount: DateAmountType[];
@@ -115,10 +110,9 @@ const BarChart: FC<{
         d3.max(
           DateAmount.filter((d) => {
             return (
-              d.type.includes(DEBITTRASFER) ||
-              d.type.includes(TRANSFER) ||
-              d.type.includes(WITHDRAWAL) ||
-              d.type.includes(DEPOSIT)
+              d.type.includes(TransactionType.TRANSFER) ||
+              d.type.includes(TransactionType.WITHDRAWL) ||
+              d.type.includes(TransactionType.DEPOSIT)
             );
           }).map((d) => d.amount)
         ),

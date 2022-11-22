@@ -14,30 +14,13 @@ import AccountLayout from "./components/UI/Layouts/AccoutLayout";
 import { RootState } from "./store/store";
 import Layout from "./components/UI/Layouts/Layout";
 import Home from "./pages/Home";
-import {
-  ABOUT,
-  CONTACT,
-  HOME,
-  INSIGHT,
-  LOCATIONS,
-  LOGIN,
-  PROFILE,
-  REDIRECT,
-  SIGNUP,
-  STARTUPS,
-  DISABLED,
-  TWITTER,
-  FACEBOOK,
-  INSTAGRAM,
-  LINKEDIN,
-  BUFFERTIME,
-  VERIFYACCOUNT,
-  API_VERSION,
-} from "./components/UI/Constants/Constants";
+import { BUFFERTIME, API_VERSION } from "./components/UI/Constants/Constants";
 import axios from "axios";
 import LoadingSpinner from "./components/UI/Modals/LoadingSpinner/LoadingSpinner";
 import Timer from "./components/UI/Modals/Timer/Timer";
 import VerifyAccount from "./pages/VerifyAccount";
+import AppRoute from "./enums/Route";
+import { SocialMediaLink } from "./enums/SocialLink";
 const Startups = lazy(() => import("./pages/Startups"));
 const Insight = lazy(() => import("./pages/Insight"));
 const About = lazy(() => import("./pages/About"));
@@ -57,24 +40,24 @@ const App: FC = () => {
   const { pathname } = useLocation();
   const Location: Location = window.location;
   const login: PathMatch<string> | null = matchPath<string, string>(
-    LOGIN,
+    AppRoute.LOGIN,
     pathname
   );
   const signup: PathMatch<string> | null = matchPath<string, string>(
-    SIGNUP,
+    AppRoute.SIGNUP,
     pathname
   );
   const profile: PathMatch<string> | null = matchPath<string, string>(
-    PROFILE,
+    AppRoute.PROFILE,
     pathname
   );
   const error: PathMatch<string> | null = matchPath<string, string>(
-    DISABLED,
+    AppRoute.DISABLED,
     pathname
   );
 
   const verification: PathMatch<string> | null = matchPath<string, string>(
-    VERIFYACCOUNT,
+    AppRoute.VERIFYACCOUNT,
     pathname
   );
 
@@ -95,7 +78,7 @@ const App: FC = () => {
           <Routes>
             {customer.authenticated && (
               <Route
-                path={PROFILE}
+                path={AppRoute.PROFILE}
                 element={
                   customer.isActivated ? (
                     <Profile
@@ -104,12 +87,15 @@ const App: FC = () => {
                       mobile={mobile}
                     />
                   ) : (
-                    <Navigate replace to={DISABLED} />
+                    <Navigate replace to={AppRoute.DISABLED} />
                   )
                 }
               />
             )}
-            <Route path={REDIRECT} element={<Navigate replace to={HOME} />} />
+            <Route
+              path={AppRoute.REDIRECT}
+              element={<Navigate replace to={AppRoute.HOME} />}
+            />
           </Routes>
         </AccountLayout>
       ) : (
@@ -127,46 +113,58 @@ const App: FC = () => {
           signup={signup}
           error={error}
           YEAR={YEAR}
-          ABOUT={ABOUT}
-          LOCATIONS={LOCATIONS}
-          CONTACT={CONTACT}
-          INSIGHT={INSIGHT}
-          STARTUPS={STARTUPS}
-          PROFILE={PROFILE}
-          REDIRECT={REDIRECT}
-          LOGIN={LOGIN}
-          TWITTER={TWITTER}
-          FACEBOOK={FACEBOOK}
-          INSTAGRAM={INSTAGRAM}
-          LINKEDIN={LINKEDIN}
+          ABOUT={AppRoute.ABOUT}
+          LOCATIONS={AppRoute.LOCATIONS}
+          CONTACT={AppRoute.CONTACT}
+          INSIGHT={AppRoute.INSIGHT}
+          STARTUPS={AppRoute.STARTUPS}
+          PROFILE={AppRoute.PROFILE}
+          REDIRECT={AppRoute.REDIRECT}
+          LOGIN={AppRoute.LOGIN}
+          TWITTER={SocialMediaLink.TWITTER}
+          FACEBOOK={SocialMediaLink.FACEBOOK}
+          INSTAGRAM={SocialMediaLink.INSTAGRAM}
+          LINKEDIN={SocialMediaLink.LINKEDIN}
         >
           <Routes>
             <Route
-              path={HOME}
+              path={AppRoute.HOME}
               element={
                 <Home mobile={mobile} axios={axios} API_VERSION={API_VERSION} />
               }
             />
-            <Route path={ABOUT} element={<About isMobile={mobile} />} />
             <Route
-              path={LOCATIONS}
+              path={AppRoute.ABOUT}
+              element={<About isMobile={mobile} />}
+            />
+            <Route
+              path={AppRoute.LOCATIONS}
               element={
                 <Locations API_VERSION={API_VERSION} isMobile={mobile} />
               }
             />
-            <Route path={CONTACT} element={<Contact isMobile={mobile} />} />
-            <Route path={STARTUPS} element={<Startups isMobile={mobile} />} />
             <Route
-              path={INSIGHT}
+              path={AppRoute.CONTACT}
+              element={<Contact isMobile={mobile} />}
+            />
+            <Route
+              path={AppRoute.STARTUPS}
+              element={<Startups isMobile={mobile} />}
+            />
+            <Route
+              path={AppRoute.INSIGHT}
               element={<Insight isMobile={mobile} YEAR={YEAR} />}
             />
-            <Route path={LOGIN} element={<Login isMobile={mobile} />} />
             <Route
-              path={SIGNUP}
+              path={AppRoute.LOGIN}
+              element={<Login isMobile={mobile} />}
+            />
+            <Route
+              path={AppRoute.SIGNUP}
               element={<Signup API_VERSION={API_VERSION} isMobile={mobile} />}
             />
             <Route
-              path={DISABLED}
+              path={AppRoute.DISABLED}
               element={
                 <WaitingPage
                   customer={customer}
@@ -177,7 +175,7 @@ const App: FC = () => {
               }
             />
             <Route
-              path={VERIFYACCOUNT}
+              path={AppRoute.VERIFYACCOUNT}
               element={
                 <VerifyAccount
                   isMobile={mobile}
@@ -187,7 +185,10 @@ const App: FC = () => {
                 />
               }
             />
-            <Route path={REDIRECT} element={<Navigate replace to={HOME} />} />
+            <Route
+              path={AppRoute.REDIRECT}
+              element={<Navigate replace to={AppRoute.HOME} />}
+            />
           </Routes>
         </Layout>
       )}

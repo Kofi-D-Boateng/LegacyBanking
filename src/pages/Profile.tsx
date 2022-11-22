@@ -22,23 +22,15 @@ import classes from "../styles/Profile/ProfileStyles.module.css";
 import Statement from "../components/UI/Modals/Statement/Statement";
 import Paperless from "../components/UI/Modals/Paperless/Paperless";
 import AccountNumbers from "../components/UI/Modals/AccountNumber/AccountNumbers";
-import {
-  ACCOUNTNUMBER,
-  CREDIT,
-  MAINPROFILE,
-  MONEYTRANSFER,
-  MonthMap,
-  PAPERLESS,
-  SECURITY,
-  STATEMENT,
-  SUMMARY,
-} from "../components/UI/Constants/Constants";
+import { MonthMap } from "../components/UI/Constants/Constants";
 import MainProfile from "../components/Account/MainProfile";
 import Summary from "../components/Account/AccountDetails/Summary";
 import { DateAmountType } from "../types/Maps";
 import AccountSecurity from "../components/UI/Modals/AccountSecurity/AccountSecurity";
 import { notisActions } from "../store/notifications/notifications";
 import { Account, Card, CustomerDetails } from "../types/CustomerDetails";
+import { AccountType, ProfileModal } from "../enums/ProfileEnums";
+import AppRoute from "../enums/Route";
 
 const Profile: FC<{
   mobile: boolean;
@@ -82,12 +74,14 @@ const Profile: FC<{
   });
 
   const cards: Card | undefined = customer.cards.find((card) => {
-    if (account.bankAccountType.includes(CREDIT)) {
+    if (account.bankAccountType.includes(AccountType.CREDIT)) {
       return card.creditType === account.creditType;
     } else {
       return card;
     }
   });
+
+  console.log(account);
 
   useEffect(() => {
     if (!customer.getInfo) {
@@ -95,11 +89,14 @@ const Profile: FC<{
     }
     const fetchAccount: (token: string | null) => void = async (token) => {
       await axios
-        .get(`${API_VERSION}/authentication/profile/info`, {
-          headers: {
-            authorization: token as string,
-          },
-        })
+        .get(
+          `http://localhost:8081/${API_VERSION}/authentication/profile/info`,
+          {
+            headers: {
+              authorization: token as string,
+            },
+          }
+        )
         .then((response) => {
           const {
             fName,
@@ -128,7 +125,7 @@ const Profile: FC<{
           );
           dispatch(notisActions.getNotis({ notis: notis ? notis : [] }));
           nav(
-            `${fName}${lName}?display=${MAINPROFILE}&account=${accounts[0].id}&year=${currentYear}&month=${MonthMap[currentMonth]}`
+            `${fName}${lName}?display=${AppRoute.MAINPROFILE}&account=${accounts[0].id}&year=${currentYear}&month=${MonthMap[currentMonth]}`
           );
         })
         .catch(() => {
@@ -146,8 +143,8 @@ const Profile: FC<{
     currentYear,
   ]);
 
-  const mainProfileURL = `${customer.fName}${customer.lName}?display=${MAINPROFILE}&account=${urlParamAccount}&year=${urlParamYear}&month=${urlParamMonth}`;
-  const summaryURL = `${mainProfileURL}&view=${SUMMARY}`;
+  const mainProfileURL = `${customer.fName}${customer.lName}?display=${AppRoute.MAINPROFILE}&account=${urlParamAccount}&year=${urlParamYear}&month=${urlParamMonth}`;
+  const summaryURL = `${mainProfileURL}&view=${AppRoute.SUMMARY}`;
 
   const viewHandler = useCallback(
     (event: ChangeEvent<HTMLElement>) => {
@@ -211,7 +208,7 @@ const Profile: FC<{
   const modals: { key: number; modal: JSX.Element; type: string }[] = [
     {
       key: 1,
-      type: MONEYTRANSFER,
+      type: ProfileModal.MONEYTRANSFER,
       modal: (
         <MoneyTransfer
           myEmail={customer.email}
@@ -231,12 +228,12 @@ const Profile: FC<{
     },
     {
       key: 2,
-      type: STATEMENT,
+      type: ProfileModal.STATEMENT,
       modal: <Statement Exit={exitHandler} isMobile={mobile} />,
     },
     {
       key: 3,
-      type: PAPERLESS,
+      type: ProfileModal.PAPERLESS,
       modal: (
         <Paperless
           token={customer.token}
@@ -247,7 +244,7 @@ const Profile: FC<{
     },
     {
       key: 4,
-      type: ACCOUNTNUMBER,
+      type: ProfileModal.ACCOUNTNUMBER,
       modal: (
         <AccountNumbers
           param={urlParamAccount}
@@ -259,7 +256,7 @@ const Profile: FC<{
     },
     {
       key: 5,
-      type: SECURITY,
+      type: ProfileModal.SECURITY,
       modal: (
         <AccountSecurity
           card={cards as Card}
@@ -283,51 +280,53 @@ const Profile: FC<{
           <CircularProgress />
         </Box>
       )}
-      {urlParamDisplay?.includes(MAINPROFILE) && !urlParamProfileView && (
-        <MainProfile
-          STATEMENT={STATEMENT}
-          SECURITY={SECURITY}
-          MONEYTRANSFER={MONEYTRANSFER}
-          PAPERLESS={PAPERLESS}
-          ACCOUNTNUMBER={ACCOUNTNUMBER}
-          account={account}
-          actionParam={urlParamActions}
-          accountParam={urlParamAccount}
-          activityParam={urlParamActivityView}
-          card={cards as Card}
-          countParam={urlParamActivityViewCount}
-          classes={classes}
-          deposits={deposits}
-          fName={customer.fName}
-          lName={customer.lName}
-          year={urlParamYear}
-          month={urlParamMonth}
-          filterType={urlParamFilter}
-          filterYear={urlParamFilterYear}
-          filterMonth={urlParamFilterMonth}
-          mainUrl={mainProfileURL}
-          modals={modals}
-          mobile={mobile}
-          nonVisibleAccounts={nonVisibleAccounts}
-          summaryURL={summaryURL}
-          transactions={customer.transactions}
-          withdrawals={withdrawals}
-          setAccountActivityView={setAccountActivityView}
-          viewHandler={viewHandler}
-          setDeposits={setDeposits}
-          setWithdrawals={setWithdrawals}
-          nav={nav}
-        />
-      )}
-      {urlParamDisplay?.includes(MAINPROFILE) && urlParamProfileView && (
-        <Summary
-          isMobile={mobile}
-          transactions={customer.transactions}
-          year={parseInt(urlParamYear as string)}
-          DateAmount={DateAmount}
-          withdrawals={withdrawals}
-        />
-      )}
+      {urlParamDisplay?.includes(AppRoute.MAINPROFILE) &&
+        !urlParamProfileView && (
+          <MainProfile
+            STATEMENT={ProfileModal.STATEMENT}
+            SECURITY={ProfileModal.SECURITY}
+            MONEYTRANSFER={ProfileModal.MONEYTRANSFER}
+            PAPERLESS={ProfileModal.PAPERLESS}
+            ACCOUNTNUMBER={ProfileModal.ACCOUNTNUMBER}
+            account={account}
+            actionParam={urlParamActions}
+            accountParam={urlParamAccount}
+            activityParam={urlParamActivityView}
+            card={cards as Card}
+            countParam={urlParamActivityViewCount}
+            classes={classes}
+            deposits={deposits}
+            fName={customer.fName}
+            lName={customer.lName}
+            year={urlParamYear}
+            month={urlParamMonth}
+            filterType={urlParamFilter}
+            filterYear={urlParamFilterYear}
+            filterMonth={urlParamFilterMonth}
+            mainUrl={mainProfileURL}
+            modals={modals}
+            mobile={mobile}
+            nonVisibleAccounts={nonVisibleAccounts}
+            summaryURL={summaryURL}
+            transactions={customer.transactions}
+            withdrawals={withdrawals}
+            setAccountActivityView={setAccountActivityView}
+            viewHandler={viewHandler}
+            setDeposits={setDeposits}
+            setWithdrawals={setWithdrawals}
+            nav={nav}
+          />
+        )}
+      {urlParamDisplay?.includes(AppRoute.MAINPROFILE) &&
+        urlParamProfileView && (
+          <Summary
+            isMobile={mobile}
+            transactions={customer.transactions}
+            year={parseInt(urlParamYear as string)}
+            DateAmount={DateAmount}
+            withdrawals={withdrawals}
+          />
+        )}
     </>
   );
 };

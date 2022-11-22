@@ -1,14 +1,9 @@
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import { FC } from "react";
 import { NavigateFunction } from "react-router-dom";
+import { AccountType } from "../../../enums/ProfileEnums";
+import AppRoute from "../../../enums/Route";
 import { Account } from "../../../types/CustomerDetails";
-import {
-  BLACK_CREDIT_LINE,
-  CREDIT,
-  EMERALD_CREDIT_LINE,
-  MAINPROFILE,
-  PLATINUM_CREDIT_LINE,
-} from "../../UI/Constants/Constants";
 
 const AccountVisual: FC<{
   fName: string;
@@ -26,21 +21,19 @@ const AccountVisual: FC<{
       {nonVisibleAccounts.map((acc) => {
         const lengthOfAN = acc.accountNumber.length;
         const ANSubstring = acc.accountNumber.slice(lengthOfAN - 4, lengthOfAN);
-        const url: string = `${fName}${lName}?display=${MAINPROFILE}&account=${acc.id}&year=${year}&month=${month}`;
+        const url: string = `${fName}${lName}?display=${AppRoute.MAINPROFILE}&account=${acc.id}&year=${year}&month=${month}`;
         return (
           <Card
             key={acc.id}
             className={
-              acc.bankAccountType.includes(CREDIT) &&
-              acc.capital >= EMERALD_CREDIT_LINE &&
-              acc.capital < PLATINUM_CREDIT_LINE
+              acc.bankAccountType.includes(AccountType.CREDIT) &&
+              acc.creditType.includes("EMERALD")
                 ? classes.emeraldAccount
-                : acc.bankAccountType.includes(CREDIT) &&
-                  acc.capital >= PLATINUM_CREDIT_LINE &&
-                  acc.capital < BLACK_CREDIT_LINE
+                : acc.bankAccountType.includes(AccountType.CREDIT) &&
+                  acc.creditType.includes("PLATINUM")
                 ? classes.platinumAccount
-                : acc.bankAccountType.includes(CREDIT) &&
-                  acc.capital >= BLACK_CREDIT_LINE
+                : acc.bankAccountType.includes(AccountType.CREDIT) &&
+                  acc.creditType.includes("BLACK")
                 ? classes.blackAccount
                 : classes.checkingAccount
             }
@@ -60,7 +53,7 @@ const AccountVisual: FC<{
                   </Grid>
                   <Grid container>
                     <Typography variant="h5">
-                      {acc.bankAccountType.includes(CREDIT)
+                      {acc.bankAccountType.includes(AccountType.CREDIT)
                         ? acc.usedCredit.toLocaleString("en-us", {
                             style: "currency",
                             currency: "USD",

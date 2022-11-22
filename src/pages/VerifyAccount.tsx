@@ -8,8 +8,8 @@ import {
   useSearchParams,
   useNavigate,
 } from "react-router-dom";
-import { LOGIN } from "../components/UI/Constants/Constants";
 import { Cancel, Check } from "@mui/icons-material";
+import AppRoute from "../enums/Route";
 
 const VerifyAccount: FC<{
   isMobile: boolean;
@@ -31,14 +31,14 @@ const VerifyAccount: FC<{
           setLoading(false);
           setVerified(repsonse.data);
           setTimeout(() => {
-            navigate(LOGIN, { replace: true });
+            navigate(AppRoute.LOGIN, { replace: true });
           }, 5000);
         })
         .catch(() => {
           setLoading(false);
           setVerified(false);
           setTimeout(() => {
-            navigate(LOGIN, { replace: true });
+            navigate(AppRoute.LOGIN, { replace: true });
           }, 5000);
         });
     };

@@ -3,9 +3,9 @@ import { AxiosStatic } from "axios";
 import { CSSProperties, Dispatch, FC, MouseEvent } from "react";
 import { useDispatch } from "react-redux";
 import { NavigateFunction, NavLink, useNavigate } from "react-router-dom";
-import { CONTACT, REDIRECT } from "../components/UI/Constants/Constants";
 import { CustomerDetails } from "../types/CustomerDetails";
 import { customerActions } from "../store/customer/customer-slice";
+import AppRoute from "../enums/Route";
 
 const WaitingPage: FC<{
   isMobile: boolean;
@@ -33,7 +33,7 @@ const WaitingPage: FC<{
       })
       .catch(() => {
         dispatch(customerActions.logout());
-        navigate(REDIRECT, { replace: true });
+        navigate(AppRoute.REDIRECT, { replace: true });
       });
   };
 
@@ -43,7 +43,7 @@ const WaitingPage: FC<{
       <p>
         Your account is either disabled or locked. Please check your email for a
         link to activate your account. If you do not see a link, please give us
-        a <NavLink to={CONTACT}>call or email.</NavLink>
+        a <NavLink to={AppRoute.CONTACT}>call or email.</NavLink>
       </p>
       <p>
         To request a new link for verification please click
