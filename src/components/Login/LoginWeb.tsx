@@ -79,21 +79,6 @@ const LoginWeb: FC<{
               password={PASSWORD}
               email={EMAIL}
             />
-            <NavLink
-              style={{
-                textDecoration: "none",
-                margin: "0 30px",
-                width: "50%",
-              }}
-              to={"/signup"}
-            >
-              <Typography
-                sx={{ margin: "0 30px", fontSize: "1.2rem", color: "green" }}
-                variant="body1"
-              >
-                Open an account
-              </Typography>
-            </NavLink>
           </>
         ) : (
           <Box sx={{ textAlign: "center" }}>

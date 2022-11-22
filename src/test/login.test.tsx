@@ -34,15 +34,12 @@ describe("Login test suite. Profile exclusive", () => {
     const submit = await waitFor(() =>
       screen.findByRole("button", { name: /Login/i })
     );
-    const link = await waitFor(() =>
-      screen.findByRole("link", { name: /Open an account/i })
-    );
     userEvent.click(username);
     userEvent.type(username, Credentials.email as string);
     userEvent.click(password);
     userEvent.type(password, Credentials.password as string);
     userEvent.dblClick(submit);
-    expect(link).not.toBeInTheDocument();
+    expect(submit).not.toBeInTheDocument();
   });
 
   test("Faulty login", async () => {
