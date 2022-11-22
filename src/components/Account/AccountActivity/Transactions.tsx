@@ -1,12 +1,7 @@
 import { Button, Grid, Typography } from "@mui/material";
 import { FC } from "react";
+import { TransactionType } from "../../../enums/ProfileEnums";
 import { Transaction } from "../../../types/CustomerDetails";
-import {
-  DEBITTRASFER,
-  TRANSFER,
-  WITHDRAWAL,
-} from "../../UI/Constants/Constants";
-
 const Transactions: FC<{
   classes: {
     readonly [key: string]: string;
@@ -54,9 +49,8 @@ const Transactions: FC<{
               item
             >
               <Typography sx={{ fontWeight: "bold" }} variant="body1">
-                {a.transactionType.includes(DEBITTRASFER) ||
-                a.transactionType.includes(TRANSFER) ||
-                a.transactionType.includes(WITHDRAWAL)
+                {a.transactionType.includes(TransactionType.TRANSFER) ||
+                a.transactionType.includes(TransactionType.WITHDRAWL)
                   ? `-${a.amount.toLocaleString("en-us", {
                       style: "currency",
                       currency: "USD",

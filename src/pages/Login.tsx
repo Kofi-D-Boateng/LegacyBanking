@@ -14,7 +14,8 @@ import { LoginCredentials } from "../types/Credentials";
 import LoginMobile from "../components/Login/LoginMobile";
 import LoginWeb from "../components/Login/LoginWeb";
 import LoginForm from "../components/Forms/LoginForm/LoginForm";
-import { API_VERSION, PROFILE } from "../components/UI/Constants/Constants";
+import { API_VERSION } from "../components/UI/Constants/Constants";
+import AppRoute from "../enums/Route";
 
 const Login: FC<{
   isMobile: boolean;
@@ -45,7 +46,7 @@ const Login: FC<{
               isActivated: isActivated,
             })
           );
-          nav(PROFILE.substring(0, 8), { replace: true });
+          nav(AppRoute.PROFILE.substring(0, 8), { replace: true });
         })
         .catch(() => {
           nav("?status=invalid", { replace: true });

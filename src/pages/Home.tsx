@@ -16,14 +16,9 @@ import classes from "../styles/Home/HomeStyles.module.css";
 import Banner from "../components/Homepage/Banner";
 import Misc from "../components/Homepage/Misc";
 import MailLetter from "../components/Homepage/MailLetter";
-import {
-  BACKWARD,
-  FORWARD,
-  STARTUPS,
-  INSIGHT,
-  LOCATIONS,
-} from "../components/UI/Constants/Constants";
+import { BACKWARD, FORWARD } from "../components/UI/Constants/Constants";
 import { AxiosStatic } from "axios";
+import AppRoute from "../enums/Route";
 
 const Home: FC<{
   mobile: boolean;
@@ -64,7 +59,7 @@ const Home: FC<{
       desc: " We work with startups and small business around the world to allow their continued growth to be substainable.",
       css: classes.img,
       src: startUp ? startUp : undefined,
-      link: STARTUPS,
+      link: AppRoute.STARTUPS,
     },
     {
       key: 2,
@@ -84,7 +79,7 @@ const Home: FC<{
         "A deep dive into our foreign strategies and relations with around the world.",
       css: !mobile ? classes.international : classes.mobInternational,
       css2: classes.cardDescription,
-      link: LOCATIONS + "#map",
+      link: AppRoute.LOCATIONS + "#map",
     },
     {
       key: 2,
@@ -92,7 +87,7 @@ const Home: FC<{
       description: `A look at our ${year} organizational plans.`,
       css: !mobile ? classes.insight : classes.mobInsight,
       css2: classes.cardDescription,
-      link: INSIGHT,
+      link: AppRoute.INSIGHT,
     },
   ];
 

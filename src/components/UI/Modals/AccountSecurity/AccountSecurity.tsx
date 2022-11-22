@@ -21,15 +21,13 @@ import Backdrop from "../../Backdrops/Backdrop";
 import classes from "../../../../styles/Modals/Modals.module.css";
 import {
   API_VERSION,
-  LOCKACCOUNT,
-  LOCKCARD,
   LOCKEDACCOUNT,
-  LOCKEDACCOUNTMSG,
   LOCKEDCARD,
-  LOCKEDCARDMSG,
 } from "../../Constants/Constants";
 import { backdropDiv } from "../../Layouts/RootElement";
 import Modal from "./Modal";
+import { ProfileModal } from "../../../../enums/ProfileEnums";
+import { SecurityMessage } from "../../../../enums/SecurityMessage";
 
 const AccountSecurity: FC<{
   Exit: () => void;
@@ -51,7 +49,7 @@ const AccountSecurity: FC<{
   const AN: string = account ? account.accountNumber : "";
   console.log(card);
   const setLockedItem = useCallback(async () => {
-    if (securityView?.includes(LOCKCARD)) {
+    if (securityView?.includes(ProfileModal.LOCKCARD)) {
       await axios
         .put(
           `http://localhost:8081/${API_VERSION}/authentication/profile/security`,
@@ -64,7 +62,7 @@ const AccountSecurity: FC<{
         .then(() => {
           window.location.reload();
         });
-    } else if (securityView?.includes(LOCKACCOUNT)) {
+    } else if (securityView?.includes(ProfileModal.LOCKACCOUNT)) {
       await axios
         .put(
           `${API_VERSION}/authentication/profile/security`,
@@ -86,11 +84,11 @@ const AccountSecurity: FC<{
       {createPortal(
         <Modal
           securityView={securityView}
-          LOCKCARD={LOCKCARD}
-          LOCKEDCARDMSG={LOCKEDCARDMSG}
+          LOCKCARD={ProfileModal.LOCKCARD}
+          LOCKEDCARDMSG={SecurityMessage.LOCKEDCARDMSG}
           LOCKEDCARD={LOCKEDCARD}
-          LOCKACCOUNT={LOCKACCOUNT}
-          LOCKEDACCOUNTMSG={LOCKEDACCOUNTMSG}
+          LOCKACCOUNT={ProfileModal.LOCKACCOUNT}
+          LOCKEDACCOUNTMSG={SecurityMessage.LOCKEDACCOUNTMSG}
           LOCKEDACCOUNT={LOCKEDACCOUNT}
           isCardLocked={card.isLocked}
           Card={Card}

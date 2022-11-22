@@ -69,7 +69,7 @@
 }
 
 .emeraldAccount {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+  background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
     url("../../assets/photos/emerald_green_bg.jpg");
   background-repeat: no-repeat;
   background-size: cover;

@@ -1,8 +1,9 @@
 import { Container, Grid } from "@mui/material";
 import { ChangeEvent, Dispatch, FC, SetStateAction, useCallback } from "react";
 import { NavigateFunction } from "react-router-dom";
+import { AccountType } from "../../enums/ProfileEnums";
 import { Account, Card, Transaction } from "../../types/CustomerDetails";
-import { CREDIT, MonthMap } from "../UI/Constants/Constants";
+import { MonthMap } from "../UI/Constants/Constants";
 import AccountActivity from "./AccountActivity/AccountActivity";
 import AccountInfo from "./AccountCard/AccountInfo";
 import AccountCoupons from "./AccountCoupons/AccountCoupons";
@@ -93,7 +94,7 @@ const MainProfile: FC<{
     { key: 4, title: SECURITY },
   ];
   const filteredLinks = links.filter((l) => {
-    if (account && account.bankAccountType.includes(CREDIT)) {
+    if (account && account.bankAccountType.includes(AccountType.CREDIT)) {
       return l.title !== MONEYTRANSFER;
     } else {
       return l;

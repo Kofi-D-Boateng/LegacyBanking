@@ -4,7 +4,8 @@ import { NavigateFunction } from "react-router-dom";
 import MonthAndYearForm from "../../Forms/OptionForm/MonthAndYearForm";
 import MonthForm from "../../Forms/OptionForm/MonthForm";
 import YearForm from "../../Forms/OptionForm/YearForm";
-import { MAINPROFILE, MonthMap } from "../../UI/Constants/Constants";
+import { MonthMap } from "../../UI/Constants/Constants";
+import AppRoute from "../../../enums/Route";
 
 const Options: FC<{
   accountParam: string | null;
@@ -29,7 +30,7 @@ const Options: FC<{
     e
   ) => {
     const { value } = e.target;
-    const url = `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${value}`;
+    const url = `${fName}${lName}?display=${AppRoute.MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${value}`;
     nav(url, { replace: false });
   };
 
@@ -45,12 +46,12 @@ const Options: FC<{
 
   const yearChange: (e: ChangeEvent<HTMLInputElement>) => void = (e) => {
     const newYear = e.target.value;
-    const mainProfileURL = `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${filterParam}&filterYear=${newYear}`;
+    const mainProfileURL = `${fName}${lName}?display=${AppRoute.MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${filterParam}&filterYear=${newYear}`;
     nav(mainProfileURL, { replace: false });
   };
   const monthChange: (e: ChangeEvent<HTMLInputElement>) => void = (e) => {
     const newMonth: number = parseInt(e.target.value);
-    const mainProfileURL = `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${filterParam}&filterMonth=${MonthMap[newMonth]}`;
+    const mainProfileURL = `${fName}${lName}?display=${AppRoute.MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${filterParam}&filterMonth=${MonthMap[newMonth]}`;
     nav(mainProfileURL, { replace: false });
   };
   const monthAndYearChange: (e: ChangeEvent<HTMLInputElement>) => void = (
@@ -61,7 +62,7 @@ const Options: FC<{
     if (name.includes("year")) yearRef.current = value;
     if (!monthRef.current || !yearRef.current) return;
     const newMonth = parseInt(monthRef.current);
-    const mainProfileURL = `${fName}${lName}?display=${MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${filterParam}&filterYear=${yearRef.current}&filterMonth=${MonthMap[newMonth]}`;
+    const mainProfileURL = `${fName}${lName}?display=${AppRoute.MAINPROFILE}&account=${accountParam}&year=${year}&month=${month}&filter=${filterParam}&filterYear=${yearRef.current}&filterMonth=${MonthMap[newMonth]}`;
     nav(mainProfileURL, { replace: false });
   };
 

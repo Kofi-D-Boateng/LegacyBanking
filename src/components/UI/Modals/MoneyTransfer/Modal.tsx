@@ -19,12 +19,8 @@ import {
   FocusEvent,
   ChangeEvent,
 } from "react";
+import { TransferStatus } from "../../../../enums/TransferStatus";
 import Form from "../../../Forms/MoneyTransferForm/Form";
-import {
-  INPROGRESS,
-  SUCCESSFUL_TRANSFER,
-  UNSUCCESSFUL_TRANSFER,
-} from "../../Constants/Constants";
 
 const Modal: FC<{
   status: string | null;
@@ -83,9 +79,9 @@ const Modal: FC<{
 
   return (
     <Card className={!isMobile ? classes.card : classes.mobileCard}>
-      {!status?.includes(INPROGRESS) &&
-        !status?.includes(UNSUCCESSFUL_TRANSFER) &&
-        !status?.includes(SUCCESSFUL_TRANSFER) && (
+      {!status?.includes(TransferStatus.INPROGRESS) &&
+        !status?.includes(TransferStatus.UNSUCCESSFUL_TRANSFER) &&
+        !status?.includes(TransferStatus.SUCCESSFUL_TRANSFER) && (
           <>
             <Grid
               sx={{
@@ -149,21 +145,21 @@ const Modal: FC<{
             </CardContent>
           </>
         )}
-      {status?.includes(INPROGRESS) && (
+      {status?.includes(TransferStatus.INPROGRESS) && (
         <div style={{ margin: "40px 0" }}>
           <Box sx={{ textAlign: "center" }}>
             <CircularProgress />
           </Box>
         </div>
       )}
-      {status?.includes(UNSUCCESSFUL_TRANSFER) && (
+      {status?.includes(TransferStatus.UNSUCCESSFUL_TRANSFER) && (
         <div style={{ margin: "40px 0" }}>
           <Box sx={{ textAlign: "center" }}>
             <Dangerous fontSize="large" sx={{ color: "red" }} />
           </Box>
         </div>
       )}
-      {status?.includes(SUCCESSFUL_TRANSFER) && (
+      {status?.includes(TransferStatus.SUCCESSFUL_TRANSFER) && (
         <div style={{ margin: "40px 0" }}>
           <Box sx={{ textAlign: "center" }}>
             <CheckCircle fontSize="large" sx={{ color: "green" }} />

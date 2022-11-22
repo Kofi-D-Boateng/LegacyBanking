@@ -1,7 +1,7 @@
 import { Grid, Typography, Card, CardContent, Button } from "@mui/material";
 import { Dispatch, FC, useEffect, SetStateAction } from "react";
+import { TransactionType } from "../../../enums/ProfileEnums";
 import { Transaction } from "../../../types/CustomerDetails";
-import { PURCHASE, TRANSFER, WITHDRAWAL } from "../../UI/Constants/Constants";
 import MonthlyExpenditure from "./MonthlyExpenditure/MonthlyExpenditure";
 
 const AccountInfo: FC<{
@@ -39,10 +39,10 @@ const AccountInfo: FC<{
     let deposit: number = 0;
     transactions.forEach((a) => {
       if (
-        a.transactionType.includes(WITHDRAWAL) ||
-        (a.transactionType.includes(TRANSFER) &&
+        a.transactionType.includes(TransactionType.WITHDRAWL) ||
+        (a.transactionType.includes(TransactionType.TRANSFER) &&
           !a.recipient.includes("SELF")) ||
-        a.transactionType.includes(PURCHASE)
+        a.transactionType.includes(TransactionType.PURCHASE)
       ) {
         withdrawl += a.amount;
       } else {

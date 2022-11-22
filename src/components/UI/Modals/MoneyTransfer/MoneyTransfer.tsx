@@ -5,18 +5,14 @@ import Modal from "./Modal";
 import axios from "axios";
 import { TransferDetails } from "../../../../types/Transfer";
 import { Account } from "../../../../types/CustomerDetails";
-import {
-  API_VERSION,
-  INPROGRESS,
-  MAINPROFILE,
-  SUCCESSFUL_TRANSFER,
-  TRANSFER,
-  UNSUCCESSFUL_TRANSFER,
-} from "../../Constants/Constants";
+import { API_VERSION } from "../../Constants/Constants";
 import { customerActions } from "../../../../store/customer/customer-slice";
 import { backdropDiv, overlayDiv } from "../../Layouts/RootElement";
 import classes from "../../../../styles/Modals/Modals.module.css";
 import { useDispatch } from "react-redux";
+import { TransactionType } from "../../../../enums/ProfileEnums";
+import AppRoute from "../../../../enums/Route";
+import { TransferStatus } from "../../../../enums/TransferStatus";
 
 const MoneyTransfer: FC<{
   token: string | null;
@@ -53,7 +49,7 @@ const MoneyTransfer: FC<{
     emailOfTransferee: undefined,
     phoneNumberOfTransferee: undefined,
     bankAccountType: account?.bankAccountType,
-    transactionType: TRANSFER,
+    transactionType: TransactionType.TRANSFER,
   });
   const dispatch = useDispatch();
 
@@ -75,13 +71,13 @@ const MoneyTransfer: FC<{
         )
         .then(() => {
           dispatch(customerActions.resetInfo());
-          setTransferStatus(SUCCESSFUL_TRANSFER);
+          setTransferStatus(TransferStatus.SUCCESSFUL_TRANSFER);
           setTimeout(() => {
             resetInfo();
           }, 4000);
         })
         .catch(() => {
-          setTransferStatus(UNSUCCESSFUL_TRANSFER);
+          setTransferStatus(TransferStatus.UNSUCCESSFUL_TRANSFER);
           setTimeout(() => {
             resetInfo();
           }, 4000);
@@ -90,7 +86,7 @@ const MoneyTransfer: FC<{
     if (
       !urlParamAccount ||
       !urlParamDisplay ||
-      !urlParamDisplay?.includes(MAINPROFILE) ||
+      !urlParamDisplay?.includes(AppRoute.MAINPROFILE) ||
       (urlParamAccount as string) !== account.id.toString()
     ) {
       // dispatch(customerActions.logout());
@@ -123,9 +119,9 @@ const MoneyTransfer: FC<{
         email: myEmail,
         bankAccountType: account.bankAccountType,
         phoneNumberOfTransferee: data.phoneNumber,
-        transactionType: TRANSFER,
+        transactionType: TransactionType.TRANSFER,
       });
-      setTransferStatus(INPROGRESS);
+      setTransferStatus(TransferStatus.INPROGRESS);
     },
     [AN, account.bankAccountType, myEmail, setTransferStatus]
   );
