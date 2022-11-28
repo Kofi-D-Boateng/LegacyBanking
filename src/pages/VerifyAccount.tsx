@@ -1,5 +1,5 @@
 import { AxiosStatic } from "axios";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import False from "../components/VerifyAccount/False";
 import True from "../components/VerifyAccount/True";
 import { Box, Grid } from "@mui/material";
@@ -45,10 +45,10 @@ const VerifyAccount: FC<{
   return (
     <>
       {!accountVerifiedParam && <LoadingSpinner />}
-      {accountVerifiedParam && accountVerifiedParam == "successful" && (
+      {accountVerifiedParam && accountVerifiedParam === "successful" && (
         <True isMobile={isMobile} Grid={Grid} Box={Box} PASSED={Check} />
       )}
-      {accountVerifiedParam && accountVerifiedParam == "unsuccessful" && (
+      {accountVerifiedParam && accountVerifiedParam === "unsuccessful" && (
         <False isMobile={isMobile} Grid={Grid} Box={Box} FAILED={Cancel} />
       )}
     </>
