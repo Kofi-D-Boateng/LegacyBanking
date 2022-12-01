@@ -1,19 +1,20 @@
 import { Button } from "@mui/material";
-import { AxiosStatic } from "axios";
+import axios from "axios";
 import { CSSProperties, Dispatch, FC, MouseEvent } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavigateFunction, NavLink, useNavigate } from "react-router-dom";
 import { CustomerDetails } from "../types/CustomerDetails";
 import { customerActions } from "../store/customer/customer-slice";
 import AppRoute from "../enums/Route";
+import { API_VERSION } from "../components/UI/Constants/Constants";
+import { RootState } from "../store/store";
 
 const WaitingPage: FC<{
   isMobile: boolean;
-  axios: AxiosStatic;
-
-  API_VERSION: string | undefined;
-  customer: CustomerDetails;
-}> = ({ axios, API_VERSION, isMobile, customer }) => {
+}> = ({ isMobile }) => {
+  const customer: CustomerDetails = useSelector(
+    (state: RootState) => state.cust
+  );
   const dispatch: Dispatch<any> = useDispatch();
   const navigate: NavigateFunction = useNavigate();
   const STYLE: CSSProperties = {

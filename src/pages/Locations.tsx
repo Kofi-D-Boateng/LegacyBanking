@@ -10,11 +10,11 @@ import BankSearch from "../components/Locations/BankSearch";
 import Banner from "../components/Locations/Banner";
 import classes from "../styles/Location/LocationsStyles.module.css";
 import { BankDetails } from "../types/Bank";
+import { API_VERSION } from "../components/UI/Constants/Constants";
 
 const Locations: FC<{
   isMobile: boolean;
-  API_VERSION: string | undefined;
-}> = ({ isMobile, API_VERSION }) => {
+}> = ({ isMobile }) => {
   const LEGACY: BankDetails = useSelector((state: RootState) => state.bank);
   const dispatch: Dispatch<any> = useDispatch();
 
@@ -36,7 +36,7 @@ const Locations: FC<{
       });
     };
     fetchBankData();
-  }, [dispatch, API_VERSION, LEGACY.name]);
+  }, [dispatch, LEGACY.name]);
 
   return (
     <>
