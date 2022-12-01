@@ -27,7 +27,6 @@ const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Locations = lazy(() => import("./pages/Locations"));
 const Login = lazy(() => import("./pages/Login"));
-const Signup = lazy(() => import("./pages/Signup"));
 const Profile = lazy(() => import("./pages/Profile"));
 const WaitingPage = lazy(() => import("./pages/WaitingPage"));
 
@@ -81,11 +80,7 @@ const App: FC = () => {
                 path={AppRoute.PROFILE}
                 element={
                   customer.isActivated ? (
-                    <Profile
-                      customer={customer}
-                      API_VERSION={API_VERSION}
-                      mobile={mobile}
-                    />
+                    <Profile mobile={mobile} />
                   ) : (
                     <Navigate replace to={AppRoute.DISABLED} />
                   )
@@ -127,21 +122,14 @@ const App: FC = () => {
           LINKEDIN={SocialMediaLink.LINKEDIN}
         >
           <Routes>
-            <Route
-              path={AppRoute.HOME}
-              element={
-                <Home mobile={mobile} axios={axios} API_VERSION={API_VERSION} />
-              }
-            />
+            <Route path={AppRoute.HOME} element={<Home mobile={mobile} />} />
             <Route
               path={AppRoute.ABOUT}
               element={<About isMobile={mobile} />}
             />
             <Route
               path={AppRoute.LOCATIONS}
-              element={
-                <Locations API_VERSION={API_VERSION} isMobile={mobile} />
-              }
+              element={<Locations isMobile={mobile} />}
             />
             <Route
               path={AppRoute.CONTACT}
@@ -160,30 +148,12 @@ const App: FC = () => {
               element={<Login isMobile={mobile} />}
             />
             <Route
-              path={AppRoute.SIGNUP}
-              element={<Signup API_VERSION={API_VERSION} isMobile={mobile} />}
-            />
-            <Route
               path={AppRoute.DISABLED}
-              element={
-                <WaitingPage
-                  customer={customer}
-                  isMobile={mobile}
-                  axios={axios}
-                  API_VERSION={API_VERSION}
-                />
-              }
+              element={<WaitingPage isMobile={mobile} />}
             />
             <Route
               path={AppRoute.VERIFYACCOUNT}
-              element={
-                <VerifyAccount
-                  isMobile={mobile}
-                  axios={axios}
-                  API_VERSION={API_VERSION}
-                  LoadingSpinner={LoadingSpinner}
-                />
-              }
+              element={<VerifyAccount isMobile={mobile} />}
             />
             <Route
               path={AppRoute.REDIRECT}

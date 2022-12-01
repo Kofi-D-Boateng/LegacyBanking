@@ -1,4 +1,4 @@
-import { AxiosStatic } from "axios";
+import axios from "axios";
 import { FC, useEffect } from "react";
 import False from "../components/VerifyAccount/False";
 import True from "../components/VerifyAccount/True";
@@ -10,13 +10,12 @@ import {
 } from "react-router-dom";
 import { Cancel, Check } from "@mui/icons-material";
 import AppRoute from "../enums/Route";
+import { API_VERSION } from "../components/UI/Constants/Constants";
+import LoadingSpinner from "../components/UI/Modals/LoadingSpinner/LoadingSpinner";
 
 const VerifyAccount: FC<{
   isMobile: boolean;
-  axios: AxiosStatic;
-  API_VERSION: string | undefined;
-  LoadingSpinner: FC<{}>;
-}> = ({ axios, API_VERSION, LoadingSpinner, isMobile }) => {
+}> = ({ isMobile }) => {
   const navigate: NavigateFunction = useNavigate();
   const params = useSearchParams()[0];
   const tokenParam = params.get("token");

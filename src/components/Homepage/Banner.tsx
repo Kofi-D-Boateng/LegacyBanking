@@ -41,7 +41,7 @@ const Banner: FC<{
       </Grid>
       <Grid className={classes.videoContainer} container>
         <Grid className={classes.vidOverlay} container />
-        {!isMobile ? (
+        {!isMobile && (
           <video autoPlay muted loop>
             <source
               style={{ width: "100%", height: "auto" }}
@@ -49,7 +49,7 @@ const Banner: FC<{
               type="video/mp4"
             />
           </video>
-        ) : null}
+        )}
       </Grid>
     </Grid>
   );
