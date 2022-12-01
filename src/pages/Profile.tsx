@@ -14,7 +14,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MoneyTransfer from "../components/UI/Modals/MoneyTransfer/MoneyTransfer";
 import { Box, CircularProgress } from "@mui/material";
 import { customerActions } from "../store/customer/customer-slice";
@@ -22,7 +22,7 @@ import classes from "../styles/Profile/ProfileStyles.module.css";
 import Statement from "../components/UI/Modals/Statement/Statement";
 import Paperless from "../components/UI/Modals/Paperless/Paperless";
 import AccountNumbers from "../components/UI/Modals/AccountNumber/AccountNumbers";
-import { MonthMap } from "../components/UI/Constants/Constants";
+import { API_VERSION, MonthMap } from "../components/UI/Constants/Constants";
 import MainProfile from "../components/Account/MainProfile";
 import Summary from "../components/Account/AccountDetails/Summary";
 import { DateAmountType } from "../types/Maps";
@@ -31,12 +31,14 @@ import { notisActions } from "../store/notifications/notifications";
 import { Account, Card, CustomerDetails } from "../types/CustomerDetails";
 import { AccountType, ProfileModal } from "../enums/ProfileEnums";
 import AppRoute from "../enums/Route";
+import { RootState } from "../store/store";
 
 const Profile: FC<{
   mobile: boolean;
-  API_VERSION: string | undefined;
-  customer: CustomerDetails;
-}> = ({ mobile, customer, API_VERSION }) => {
+}> = ({ mobile }) => {
+  const customer: CustomerDetails = useSelector(
+    (state: RootState) => state.cust
+  );
   const urlParams = useSearchParams();
   const date = new Date();
   const nav: NavigateFunction = useNavigate();
@@ -80,8 +82,6 @@ const Profile: FC<{
       return card;
     }
   });
-
-  console.log(account);
 
   useEffect(() => {
     if (!customer.getInfo) {
@@ -135,7 +135,6 @@ const Profile: FC<{
     customer.getInfo,
     nav,
     dispatch,
-    API_VERSION,
     currentMonth,
     currentYear,
   ]);

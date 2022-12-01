@@ -93,9 +93,6 @@ const AccountNavbar: FC<{
       .then((response) => {
         const { notis } = response.data;
         dispatch(notisActions.getNotis({ notis: notis }));
-      })
-      .catch(() => {
-        dispatch(customerActions.logout());
       });
   };
 

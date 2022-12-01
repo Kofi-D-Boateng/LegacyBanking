@@ -16,16 +16,17 @@ import classes from "../styles/Home/HomeStyles.module.css";
 import Banner from "../components/Homepage/Banner";
 import Misc from "../components/Homepage/Misc";
 import MailLetter from "../components/Homepage/MailLetter";
-import { BACKWARD, FORWARD } from "../components/UI/Constants/Constants";
-import { AxiosStatic } from "axios";
+import {
+  API_VERSION,
+  BACKWARD,
+  FORWARD,
+} from "../components/UI/Constants/Constants";
 import AppRoute from "../enums/Route";
+import axios from "axios";
 
 const Home: FC<{
   mobile: boolean;
-  axios: AxiosStatic;
-
-  API_VERSION: string | undefined;
-}> = ({ mobile, API_VERSION, axios }) => {
+}> = ({ mobile }) => {
   const NAVIGATE: NavigateFunction = useNavigate();
   const year = new Date().getFullYear();
   const [view, setView] = useState<number>(0);

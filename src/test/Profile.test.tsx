@@ -40,11 +40,7 @@ describe("Profile Test Suite", () => {
         <ThemeProvider theme={theme}>
           <BrowserRouter>
             <Suspense fallback={<LoadingSpinner />}>
-              <Profile
-                API_VERSION={API_VERSION}
-                customer={customer}
-                mobile={false}
-              />
+              <Profile mobile={false} />
             </Suspense>
           </BrowserRouter>
         </ThemeProvider>
@@ -64,11 +60,7 @@ describe("Profile Test Suite", () => {
         <ThemeProvider theme={theme}>
           <BrowserRouter>
             <Suspense fallback={<LoadingSpinner />}>
-              <Profile
-                API_VERSION={API_VERSION}
-                customer={customer}
-                mobile={false}
-              />
+              <Profile mobile={false} />
             </Suspense>
           </BrowserRouter>
         </ThemeProvider>
@@ -90,11 +82,7 @@ describe("Profile Test Suite", () => {
         <ThemeProvider theme={theme}>
           <BrowserRouter>
             <Suspense fallback={<LoadingSpinner />}>
-              <Profile
-                API_VERSION={API_VERSION}
-                customer={customer}
-                mobile={false}
-              />
+              <Profile mobile={false} />
             </Suspense>
           </BrowserRouter>
         </ThemeProvider>
@@ -121,11 +109,7 @@ describe("Profile Test Suite", () => {
         <ThemeProvider theme={theme}>
           <BrowserRouter>
             <Suspense fallback={<LoadingSpinner />}>
-              <Profile
-                API_VERSION={API_VERSION}
-                customer={customer}
-                mobile={false}
-              />
+              <Profile mobile={false} />
             </Suspense>
           </BrowserRouter>
         </ThemeProvider>
@@ -148,8 +132,8 @@ describe("Profile Test Suite", () => {
   //         <BrowserRouter>
   //           <Suspense fallback={<LoadingSpinner />}>
   //             <Profile
-  //               API_VERSION={API_VERSION}
-  //               customer={customer}
+  //
+  //
   //               mobile={false}
   //             />
   //           </Suspense>
