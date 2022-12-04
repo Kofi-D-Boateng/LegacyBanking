@@ -8,9 +8,9 @@ import {
 const DATE: Date = new Date();
 
 function initialState(): CustomerDetails {
-  const token: string | null = sessionStorage.getItem("lb-token");
-  const exp: string | null = sessionStorage.getItem("exp");
-  const isActivated: string | null = sessionStorage.getItem("enabled");
+  const token: string | null = localStorage.getItem("lb-token");
+  const exp: string | null = localStorage.getItem("exp");
+  const isActivated: string | null = localStorage.getItem("enabled");
   const RemainingTime: number = +exp! || 0;
   return {
     token: token,
@@ -47,9 +47,9 @@ const customerSlice = createSlice({
       state.authenticated = true;
       state.isActivated = isActivated;
       state.expiresIn = expiresIn + DATE.getTime();
-      sessionStorage.setItem("lb-token", state.token);
-      sessionStorage.setItem("exp", state.expiresIn.toString());
-      sessionStorage.setItem("enabled", state.isActivated as unknown as string);
+      localStorage.setItem("lb-token", state.token);
+      localStorage.setItem("exp", state.expiresIn.toString());
+      localStorage.setItem("enabled", "true");
     },
     createCustomer(
       state,
@@ -91,9 +91,9 @@ const customerSlice = createSlice({
       state.getInfo = false;
     },
     logout(state) {
-      sessionStorage.removeItem("lb-token");
-      sessionStorage.removeItem("exp");
-      sessionStorage.removeItem("enabled");
+      localStorage.removeItem("lb-token");
+      localStorage.removeItem("exp");
+      localStorage.removeItem("enabled");
       state.authenticated = false;
     },
     refreshToken(
@@ -103,8 +103,8 @@ const customerSlice = createSlice({
       const { token, expiresIn } = action.payload;
       state.token = token;
       state.expiresIn = expiresIn + DATE.getTime();
-      sessionStorage.setItem("lb-token", state.token);
-      sessionStorage.setItem("exp", state.expiresIn.toString());
+      localStorage.setItem("lb-token", state.token);
+      localStorage.setItem("exp", state.expiresIn.toString());
     },
     resetInfo(state) {
       state.getInfo = true;
