@@ -63,17 +63,7 @@ const App: FC = () => {
   return (
     <Suspense fallback={<LoadingSpinner />}>
       {profile?.pattern.end ? (
-        <AccountLayout
-          BUFFER={BUFFERTIME}
-          url={pathname}
-          DATE={DATE}
-          Location={Location}
-          Timer={Timer}
-          customer={customer}
-          mobile={mobile}
-          axios={axios}
-          API_VERSION={API_VERSION}
-        >
+        <AccountLayout url={pathname} customer={customer} mobile={mobile}>
           <Routes>
             {customer.authenticated && (
               <Route

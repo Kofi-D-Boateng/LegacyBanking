@@ -1,4 +1,4 @@
-import { AxiosStatic } from "axios";
+import axios from "axios";
 import { FC, ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { CustomerDetails } from "../../../types/CustomerDetails";
@@ -8,35 +8,14 @@ import AccountFooter from "../Footers/AccountFooter";
 import { AccountNavbar } from "../Navbars/AccountNavbar";
 import { useSearchParams } from "react-router-dom";
 import AppRoute from "../../../enums/Route";
+import { API_VERSION } from "../Constants/Constants";
 
 const AccountLayout: FC<{
   customer: CustomerDetails;
-  DATE: Date;
-  Location: Location;
   mobile: boolean;
   children: ReactNode;
-  axios: AxiosStatic;
   url: string;
-  API_VERSION: string | undefined;
-  BUFFER: number;
-  Timer: FC<{
-    isMobile: boolean;
-    customer: CustomerDetails;
-    location: Location;
-  }>;
-}> = ({
-  children,
-  mobile,
-  axios,
-  Timer,
-  DATE,
-  BUFFER,
-  url,
-  customer,
-  API_VERSION,
-  Location,
-}) => {
-  const TIMER: number = customer.expiresIn - DATE.getTime();
+}> = ({ children, mobile, url, customer }) => {
   const params = useSearchParams();
   const urlParamAccount = params[0].get("account");
   const urlParamDisplay = params[0].get("display");
@@ -67,9 +46,6 @@ const AccountLayout: FC<{
             notificationDetails={notis}
             url={url}
           />
-          {TIMER < BUFFER && customer.expiresIn !== 0 ? (
-            <Timer isMobile={mobile} customer={customer} location={Location} />
-          ) : null}
           <div>{children}</div>
           <AccountFooter />
         </>

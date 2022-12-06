@@ -40,9 +40,6 @@ const AccountNavbar: FC<{
 
   const handleMenu = useCallback((event: MouseEvent<HTMLButtonElement>) => {
     const { ariaLabel } = event.currentTarget;
-    const { href } = window.location;
-    const newUrl = href.concat(`&menuDisplay=${ariaLabel}`);
-    console.log(newUrl);
 
     if (ariaLabel?.includes("notifications")) {
       setShowNotis(event.currentTarget);
