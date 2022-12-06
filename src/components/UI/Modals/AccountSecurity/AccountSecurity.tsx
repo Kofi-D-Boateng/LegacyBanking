@@ -47,12 +47,12 @@ const AccountSecurity: FC<{
   setAccountSecurityView,
 }) => {
   const AN: string = account ? account.accountNumber : "";
-  console.log(card);
+
   const setLockedItem = useCallback(async () => {
     if (securityView?.includes(ProfileModal.LOCKCARD)) {
       await axios
         .put(
-          `http://localhost:8081/${API_VERSION}/authentication/profile/security`,
+          `${API_VERSION}/authentication/profile/security`,
           {
             requestType: "LOCK CARD",
             cardNumber: card.cardNumber,
