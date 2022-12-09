@@ -2,7 +2,7 @@ import { Container, Grid } from "@mui/material";
 import { ChangeEvent, Dispatch, FC, SetStateAction, useCallback } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { AccountType } from "../../enums/ProfileEnums";
-import { Account, Card, Transaction } from "../../types/CustomerDetails";
+import { Account, Transaction } from "../../types/CustomerDetails";
 import { MonthMap } from "../UI/Constants/Constants";
 import AccountActivity from "./AccountActivity/AccountActivity";
 import AccountInfo from "./AccountCard/AccountInfo";
@@ -21,18 +21,17 @@ const MainProfile: FC<{
   };
   mobile: boolean;
   transactions: Transaction[];
-  card: Card;
   account: Account;
   nonVisibleAccounts: Account[];
   withdrawals: number;
   deposits: number;
-  STATEMENT: string;
-  SECURITY: string;
-  MONEYTRANSFER: string;
-  PAPERLESS: string;
-  ACCOUNTNUMBER: string;
+  statementTag: string;
+  securityTag: string;
+  moneyTransferTag: string;
+  paperlessTag: string;
+  accountNumberTag: string;
   setAccountActivityView: () => void;
-  setWithdrawals: Dispatch<SetStateAction<number>>;
+  setWithdrawls: Dispatch<SetStateAction<number>>;
   setDeposits: Dispatch<SetStateAction<number>>;
   viewHandler: (event: ChangeEvent<HTMLElement>) => void;
   nav: NavigateFunction;
@@ -55,11 +54,11 @@ const MainProfile: FC<{
   mobile,
   deposits,
   withdrawals,
-  ACCOUNTNUMBER,
-  MONEYTRANSFER,
-  PAPERLESS,
-  SECURITY,
-  STATEMENT,
+  accountNumberTag,
+  moneyTransferTag,
+  paperlessTag,
+  securityTag,
+  statementTag,
   summaryURL,
   actionParam,
   accountParam,
@@ -76,11 +75,10 @@ const MainProfile: FC<{
   activityParam,
   countParam,
   mainUrl,
-  card,
   setAccountActivityView,
   nav,
   setDeposits,
-  setWithdrawals,
+  setWithdrawls,
   viewHandler,
 }) => {
   const myName = fName + " " + lName;
@@ -88,14 +86,14 @@ const MainProfile: FC<{
     return m.type.includes(actionParam as string);
   });
   const links: { key: number; title: string }[] = [
-    { key: 1, title: STATEMENT },
-    { key: 2, title: PAPERLESS },
-    { key: 3, title: MONEYTRANSFER },
-    { key: 4, title: SECURITY },
+    { key: 1, title: statementTag },
+    { key: 2, title: paperlessTag },
+    { key: 3, title: moneyTransferTag },
+    { key: 4, title: securityTag },
   ];
   const filteredLinks = links.filter((l) => {
     if (account && account.bankAccountType.includes(AccountType.CREDIT)) {
-      return l.title !== MONEYTRANSFER;
+      return l.title !== moneyTransferTag;
     } else {
       return l;
     }
@@ -162,23 +160,23 @@ const MainProfile: FC<{
           <Grid xs={12} md={7} item>
             <Grid container>
               <AccountInfo
-                ACCOUNTNUMBER={ACCOUNTNUMBER}
+                accountNumberTag={accountNumberTag}
+                account={account}
                 myName={myName}
                 transactions={currentTransaction}
-                mobile={mobile}
                 classes={classes}
                 links={filteredLinks}
                 withdrawals={withdrawals}
-                setWithdrawals={setWithdrawals}
+                setWithdrawals={setWithdrawls}
                 deposits={deposits}
                 setDeposits={setDeposits}
                 onSetView={viewHandler}
               />
               <AccountVisual
+                classes={classes}
                 fName={fName}
                 lName={lName}
                 nonVisibleAccounts={nonVisibleAccounts}
-                classes={classes}
                 year={year}
                 month={month}
                 nav={nav}
@@ -215,25 +213,25 @@ const MainProfile: FC<{
         <Grid className={classes.profile} container>
           <Grid container>
             <AccountInfo
-              ACCOUNTNUMBER={ACCOUNTNUMBER}
-              mobile={mobile}
+              accountNumberTag={accountNumberTag}
+              account={account}
               classes={classes}
               links={filteredLinks}
               onSetView={viewHandler}
               myName={myName}
               transactions={currentTransaction}
               withdrawals={withdrawals}
-              setWithdrawals={setWithdrawals}
+              setWithdrawals={setWithdrawls}
               deposits={deposits}
               setDeposits={setDeposits}
             />
           </Grid>
           <Grid container>
             <AccountVisual
+              classes={classes}
               fName={fName}
               lName={lName}
               nonVisibleAccounts={nonVisibleAccounts}
-              classes={classes}
               year={year}
               month={month}
               nav={nav}

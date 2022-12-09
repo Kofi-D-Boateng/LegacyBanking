@@ -1,4 +1,18 @@
-.svgHolder {
+.chart {
+  display: inline-block;
+  margin: 0 auto;
+  width: 70%;
+  height: 500px;
+}
+
+.chartMobile {
+  display: inline-block;
+  margin: 0 auto;
+  width: 90%;
+  height: 400px;
+}
+
+.chartContainer {
   background-color: lightgray;
   width: 100%;
   padding: 40px 0;

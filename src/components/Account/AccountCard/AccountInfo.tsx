@@ -1,39 +1,40 @@
 import { Grid, Typography, Card, CardContent, Button } from "@mui/material";
 import { Dispatch, FC, useEffect, SetStateAction } from "react";
-import { TransactionType } from "../../../enums/ProfileEnums";
-import { Transaction } from "../../../types/CustomerDetails";
+import { AccountType, TransactionType } from "../../../enums/ProfileEnums";
+import { Account, Transaction } from "../../../types/CustomerDetails";
 import MonthlyExpenditure from "./MonthlyExpenditure/MonthlyExpenditure";
 
 const AccountInfo: FC<{
+  account: Account;
+  accountNumberTag: string;
   classes: {
     readonly [key: string]: string;
   };
-  myName: string;
-  mobile: boolean;
-  transactions: Transaction[];
-  withdrawals: number;
   deposits: number;
-  ACCOUNTNUMBER: string;
   links: {
     key: number;
     title: string;
   }[];
+  myName: string;
+  transactions: Transaction[];
+  withdrawals: number;
   setWithdrawals: Dispatch<SetStateAction<number>>;
   setDeposits: Dispatch<SetStateAction<number>>;
   onSetView: (event: any) => void;
 }> = ({
   classes,
-  mobile,
   myName,
   links,
   transactions,
   deposits,
   withdrawals,
-  ACCOUNTNUMBER,
+  accountNumberTag,
+  account,
   setDeposits,
   setWithdrawals,
   onSetView,
 }) => {
+  console.log(account);
   useEffect(() => {
     let withdrawl: number = 0;
     let deposit: number = 0;
@@ -55,12 +56,10 @@ const AccountInfo: FC<{
     setWithdrawals(floatWithdrawal);
   }, [transactions, setDeposits, setWithdrawals]);
 
-  const funds = deposits - withdrawals;
-
   const details: { key: number; value: string; desc: string }[] = [
     {
       key: 1,
-      value: `${funds.toLocaleString("en-us", {
+      value: `${account.capital.toLocaleString("en-us", {
         style: "currency",
         currency: "USD",
         minimumFractionDigits: 2,
@@ -86,7 +85,9 @@ const AccountInfo: FC<{
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`,
-      desc: "Withdrawls this month",
+      desc: account.bankAccountType.includes(AccountType.CHECKING)
+        ? "Withdrawls this month"
+        : "Used credit",
     },
   ];
 
@@ -109,11 +110,14 @@ const AccountInfo: FC<{
             variant="text"
             id="account-numbers-btn"
           >
-            {ACCOUNTNUMBER}
+            {accountNumberTag}
           </Button>
         </Typography>
         <Grid sx={{ margin: "10px 0" }} container>
-          <MonthlyExpenditure details={details} />
+          <MonthlyExpenditure
+            details={details}
+            accountType={account.bankAccountType}
+          />
         </Grid>
         <hr style={{ backgroundColor: "black", padding: "0.5px 0" }} />
         <Grid container>

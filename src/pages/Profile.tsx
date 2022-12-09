@@ -25,7 +25,6 @@ import AccountNumbers from "../components/UI/Modals/AccountNumber/AccountNumbers
 import { API_VERSION, MonthMap } from "../components/UI/Constants/Constants";
 import MainProfile from "../components/Account/MainProfile";
 import Summary from "../components/Account/AccountDetails/Summary";
-import { DateAmountType } from "../types/Maps";
 import AccountSecurity from "../components/UI/Modals/AccountSecurity/AccountSecurity";
 import { notisActions } from "../store/notifications/notifications";
 import { Account, Card, CustomerDetails } from "../types/CustomerDetails";
@@ -42,28 +41,28 @@ const Profile: FC<{
   const urlParams = useSearchParams();
   const date = new Date();
   const nav: NavigateFunction = useNavigate();
-  const DateAmount: DateAmountType[] = [];
 
-  const [withdrawals, setWithdrawals] = useState<number>(0);
+  const [withdrawls, setWithdrawls] = useState<number>(0);
   const [deposits, setDeposits] = useState<number>(0);
   const dispatch = useDispatch<Dispatch<any>>();
   const currentYear = date.getFullYear();
   const currentMonth = date.getMonth() + 1;
 
-  const urlParamDisplay = urlParams[0].get("display");
-  const urlParamActions = urlParams[0].get("action");
-  const urlParamAccount = urlParams[0].get("account");
-  const urlParamProfileView = urlParams[0].get("view");
-  const urlParamMonth = urlParams[0].get("month");
-  const urlParamYear = urlParams[0].get("year");
-  const urlParamFilter = urlParams[0].get("filter");
-  const urlParamFilterYear = urlParams[0].get("filterYear");
-  const urlParamFilterMonth = urlParams[0].get("filterMonth");
-  const urlParamTransferBy = urlParams[0].get("transferBy");
   const urlParamActivityView = urlParams[0].get("activityView");
   const urlParamActivityViewCount = urlParams[0].get("count");
   const urlParamATransferStatus = urlParams[0].get("status");
+  const urlParamActions = urlParams[0].get("action");
+  const urlParamAccount = urlParams[0].get("account");
+  const urlParamChartType = urlParams[0].get("chartType");
+  const urlParamDisplay = urlParams[0].get("display");
+  const urlParamFilter = urlParams[0].get("filter");
+  const urlParamFilterYear = urlParams[0].get("filterYear");
+  const urlParamFilterMonth = urlParams[0].get("filterMonth");
   const urlParamItemToLock = urlParams[0].get("itemToLock");
+  const urlParamMonth = urlParams[0].get("month");
+  const urlParamProfileView = urlParams[0].get("view");
+  const urlParamTransferBy = urlParams[0].get("transferBy");
+  const urlParamYear = urlParams[0].get("year");
 
   const account: Account = customer.accounts.filter((acc) => {
     const id: number = parseInt(urlParamAccount as string);
@@ -89,11 +88,14 @@ const Profile: FC<{
     }
     const fetchAccount: (token: string | null) => void = async (token) => {
       await axios
-        .get(`${API_VERSION}/authentication/profile/info`, {
-          headers: {
-            authorization: token as string,
-          },
-        })
+        .get(
+          `http://localhost:8081/${API_VERSION}/authentication/profile/info`,
+          {
+            headers: {
+              authorization: token as string,
+            },
+          }
+        )
         .then((response) => {
           const {
             fName,
@@ -279,16 +281,15 @@ const Profile: FC<{
       {urlParamDisplay?.includes(AppRoute.MAINPROFILE) &&
         !urlParamProfileView && (
           <MainProfile
-            STATEMENT={ProfileModal.STATEMENT}
-            SECURITY={ProfileModal.SECURITY}
-            MONEYTRANSFER={ProfileModal.MONEYTRANSFER}
-            PAPERLESS={ProfileModal.PAPERLESS}
-            ACCOUNTNUMBER={ProfileModal.ACCOUNTNUMBER}
+            statementTag={ProfileModal.STATEMENT}
+            securityTag={ProfileModal.SECURITY}
+            moneyTransferTag={ProfileModal.MONEYTRANSFER}
+            paperlessTag={ProfileModal.PAPERLESS}
+            accountNumberTag={ProfileModal.ACCOUNTNUMBER}
             account={account}
             actionParam={urlParamActions}
             accountParam={urlParamAccount}
             activityParam={urlParamActivityView}
-            card={cards as Card}
             countParam={urlParamActivityViewCount}
             classes={classes}
             deposits={deposits}
@@ -305,22 +306,23 @@ const Profile: FC<{
             nonVisibleAccounts={nonVisibleAccounts}
             summaryURL={summaryURL}
             transactions={customer.transactions}
-            withdrawals={withdrawals}
+            withdrawals={withdrawls}
             setAccountActivityView={setAccountActivityView}
             viewHandler={viewHandler}
             setDeposits={setDeposits}
-            setWithdrawals={setWithdrawals}
+            setWithdrawls={setWithdrawls}
             nav={nav}
           />
         )}
       {urlParamDisplay?.includes(AppRoute.MAINPROFILE) &&
         urlParamProfileView && (
           <Summary
+            chartTypeParam={urlParamChartType}
             isMobile={mobile}
+            summaryUrl={summaryURL}
             transactions={customer.transactions}
+            withdrawlAmount={withdrawls}
             year={parseInt(urlParamYear as string)}
-            DateAmount={DateAmount}
-            withdrawals={withdrawals}
           />
         )}
     </>

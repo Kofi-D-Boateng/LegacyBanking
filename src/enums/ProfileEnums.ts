@@ -1,5 +1,5 @@
 export enum AccountType {
-  DEBIT = "DEBIT",
+  CHECKING = "CHECKING",
   CREDIT = "CREDIT",
   SAVINGS = "SAVINGS",
 }
@@ -26,8 +26,8 @@ export enum TransactionType {
 
 export enum ProfileModal {
   SECURITY = "Account Security",
-  STATEMENT = "statement",
-  PAPERLESS = "paperless",
+  STATEMENT = "Statement",
+  PAPERLESS = "Paperless",
   MONEYTRANSFER = "Money Transfer",
   ACCOUNTNUMBER = "Full account numbers",
   LOCKACCOUNT = "Lock your account",

@@ -36,7 +36,10 @@ const Login: FC<{
     if (!urlParamAction) return;
     const fetchUserLogin = async (userCredentials: LoginCredentials) => {
       await axios
-        .post(`${API_VERSION}/authentication/login`, userCredentials)
+        .post(
+          `http://localhost:8081/${API_VERSION}/authentication/login`,
+          userCredentials
+        )
         .then((response) => {
           const { token, isActivated, expiresIn } = response.data;
           dispatch(

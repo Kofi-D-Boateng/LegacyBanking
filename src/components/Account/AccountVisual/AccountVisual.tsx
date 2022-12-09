@@ -6,14 +6,14 @@ import AppRoute from "../../../enums/Route";
 import { Account } from "../../../types/CustomerDetails";
 
 const AccountVisual: FC<{
-  fName: string;
-  lName: string;
-  nonVisibleAccounts: Account[];
   classes: {
     readonly [key: string]: string;
   };
-  year: string | null;
+  fName: string;
+  lName: string;
   month: string | null;
+  nonVisibleAccounts: Account[];
+  year: string | null;
   nav: NavigateFunction;
 }> = ({ nonVisibleAccounts, classes, fName, lName, nav, month, year }) => {
   return (
@@ -69,7 +69,11 @@ const AccountVisual: FC<{
                     </Typography>
                   </Grid>
                   <Grid container>
-                    <Typography variant="h5">Current Balance</Typography>
+                    <Typography variant="h5">
+                      {acc.bankAccountType.includes(AccountType.CREDIT)
+                        ? "Used Credit"
+                        : "Current Balance"}
+                    </Typography>
                   </Grid>
                 </Grid>
               </Grid>

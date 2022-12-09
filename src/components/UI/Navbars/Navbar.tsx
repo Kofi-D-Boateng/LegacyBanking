@@ -15,20 +15,18 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import classes from "../../../styles/Navbar/NavbarStyles.module.css";
 import MainMobile from "./Mobile/MainMobile";
 import MainWeb from "./Web/MainWeb";
-
-import { AxiosStatic } from "axios";
 import { customerActions } from "../../../store/customer/customer-slice";
 import { CustomerDetails } from "../../../types/CustomerDetails";
 import { Link } from "../../../types/Link";
+import axios from "axios";
+import { API_VERSION } from "../Constants/Constants";
 
 const Navbar: FC<{
-  API_VERSION: string | undefined;
-  axios: AxiosStatic;
   isMobile: boolean;
   customer: CustomerDetails;
   links: Link[];
   authLinks: Link[];
-}> = ({ customer, isMobile, links, authLinks, axios, API_VERSION }) => {
+}> = ({ customer, isMobile, links, authLinks }) => {
   const [anchorEl, setAnchorEl] = useState<any>(null);
   const dispatch = useDispatch<Dispatch<any>>();
 
@@ -49,7 +47,7 @@ const Navbar: FC<{
       }
       setAnchorEl(null);
     },
-    [dispatch, axios, customer.token, API_VERSION]
+    [dispatch, customer.token]
   );
 
   return (

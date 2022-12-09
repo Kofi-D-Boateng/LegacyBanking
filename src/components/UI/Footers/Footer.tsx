@@ -13,8 +13,7 @@ const Footer: FC<{
   links: Link[];
   isMobile: boolean;
   YEAR: number;
-  Location: Location;
-}> = ({ socials, isMobile, links, YEAR, Location }) => {
+}> = ({ socials, isMobile, links, YEAR }) => {
   return (
     <footer className={classes.footer}>
       <Grid sx={{ margin: isMobile ? "30px 0" : "70px 0" }} container>
@@ -66,7 +65,7 @@ const Footer: FC<{
                     textAlign: "center",
                   }}
                   onClick={() => {
-                    Location.replace(s.link);
+                    window.location.replace(s.link);
                   }}
                 />
               </a>
