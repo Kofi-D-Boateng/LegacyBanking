@@ -1,10 +1,11 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { Chart } from "react-google-charts";
 import { Transaction } from "../../../types/CustomerDetails";
 import { TransactionType } from "../../../enums/ProfileEnums";
 import { MonthMap } from "../Constants/Constants";
 import { BarColor, ChartType } from "../../../enums/Chart";
-import { Box, CircularProgress } from "@mui/material";
+import ChartLoader from "../Loaders/ChartLoader";
+import Placeholder from "../Loaders/Placeholder";
 const BarChart: FC<{
   transactions: Transaction[];
   year: number;
@@ -13,7 +14,6 @@ const BarChart: FC<{
   };
   isMobile: boolean;
 }> = ({ transactions, year, classes, isMobile }) => {
-  const [isReady, setIsReady] = useState<boolean>(false);
   const filteredTransactions = transactions.filter(
     (t) => year === +t.dateOfTransaction.substring(0, 4)
   );
@@ -154,28 +154,16 @@ const BarChart: FC<{
           dataArr.push([date, value])
         )
       );
-      setIsReady(true);
     }
   }, [filteredTransactions]);
   return (
     <>
-      {dataArr.length <= 0 && null}
-      {dataArr.length >= 1 && (
+      {dataArr.length >= 0 && (
+        <Placeholder classes={classes} isMobile={isMobile} />
+      )}
+      {dataArr.length <= 1 && (
         <Chart
-          loader={
-            !isReady ? (
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  zIndex: "5",
-                }}
-              >
-                <CircularProgress />
-              </Box>
-            ) : undefined
-          }
+          loader={<ChartLoader classes={classes} />}
           chartType={ChartType.Bar}
           className={!isMobile ? classes.chart : classes.chartMobile}
           options={options}

@@ -42,14 +42,14 @@ const Summary: FC<{
   );
 
   return (
-    <>
-      <Grid className={classes.chartContainer} container>
-        <Grid xs={12} md={12} item>
-          {filteredView?.chart}
-        </Grid>
+    <Grid className={classes.chartContainer} container>
+      <Grid xs={12} md={12} item>
+        {filteredView?.chart}
+      </Grid>
+      <Grid xs={12} md={12} item>
         <MainPanel classes={classes} withdrawlAmount={withdrawlAmount} />
       </Grid>
-    </>
+    </Grid>
   );
 };
 
