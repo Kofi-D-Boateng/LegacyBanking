@@ -22,22 +22,19 @@ const AccountActivity: FC<{
   setAccountActivityView: () => void;
   setTransactionViewCount: () => void;
   nav: NavigateFunction;
-  fName: string;
-  lName: string;
+  myName:string
   year: string | null;
   month: string | null;
   activityViewIsEnabled: string | null;
   countParam: string | null;
   isMobile: boolean;
-  filterType: string | null;
   filterYear: string | null;
   filterMonth: string | null;
 }> = ({
   classes,
   transactions,
   nav,
-  fName,
-  lName,
+  myName,
   month,
   year,
   filterParam,
@@ -89,8 +86,7 @@ const AccountActivity: FC<{
                 filterParam={filterParam}
                 isMobile={isMobile}
                 nav={nav}
-                fName={fName}
-                lName={lName}
+                myName={myName}
                 year={year}
                 month={month}
               />

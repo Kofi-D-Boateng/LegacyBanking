@@ -3,19 +3,18 @@ import { createPortal } from "react-dom";
 import Backdrop from "../../Backdrops/Backdrop";
 import Modal from "./Modal";
 import axios from "axios";
-import { TransferDetails } from "../../../../types/Transfer";
+import { TransferRequest } from "../../../../types/Transfer";
 import { Account } from "../../../../types/CustomerDetails";
 import { API_VERSION } from "../../Constants/Constants";
 import { customerActions } from "../../../../store/customer/customer-slice";
 import { backdropDiv, overlayDiv } from "../../Layouts/RootElement";
 import classes from "../../../../styles/Modals/Modals.module.css";
 import { useDispatch } from "react-redux";
-import { TransactionType } from "../../../../enums/ProfileEnums";
+import { TransactionEnv, TransactionType } from "../../../../enums/ProfileEnums";
 import AppRoute from "../../../../enums/Route";
 import { TransferStatus } from "../../../../enums/TransferStatus";
 
 const MoneyTransfer: FC<{
-  token: string | null;
   isMobile: boolean;
   myEmail: string;
   account: Account;
@@ -30,7 +29,6 @@ const MoneyTransfer: FC<{
 }> = ({
   isMobile,
   account,
-  token,
   Exit,
   onChoice,
   urlParamAccount,
@@ -42,7 +40,7 @@ const MoneyTransfer: FC<{
   setTransferStatus,
 }) => {
   const AN: string = account ? account.accountNumber : "";
-  const [transfer, setTransfer] = useState<TransferDetails>({
+  const [transfer, setTransfer] = useState<TransferRequest>({
     accountNumber: AN,
     amount: 0,
     email: myEmail,
@@ -50,23 +48,27 @@ const MoneyTransfer: FC<{
     phoneNumberOfTransferee: undefined,
     bankAccountType: account?.bankAccountType,
     transactionType: TransactionType.TRANSFER,
+    apiKey:localStorage.getItem("apiKey") as string,
+    transactionEnv:TransactionEnv.ONLINE
   });
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchTransfer = async (
-      accountTransfer: TransferDetails,
-      token: string | null
-    ) => {
-      await axios
+    if (
+      !urlParamAccount ||
+      !urlParamDisplay ||
+      !urlParamDisplay?.includes(AppRoute.MAINPROFILE) ||
+      (urlParamAccount as string) !== account.id.toString()
+    ) {
+      // dispatch(customerActions.logout());
+    }
+    if (transfer.emailOfTransferee || transfer.phoneNumberOfTransferee) {
+      axios
         .put(
-          `${API_VERSION}/authentication/transaction`,
+          `http://localhost:8081/${API_VERSION}/transactions/process-transaction`,
+          transfer,
           {
-            accountTransfer: accountTransfer,
-            typeOfTransaction: "ACCOUNT_TRANSACTION",
-          },
-          {
-            headers: { authorization: token as string },
+            headers: { authorization: localStorage.getItem("token") as string },
           }
         )
         .then(() => {
@@ -82,24 +84,12 @@ const MoneyTransfer: FC<{
             resetInfo();
           }, 4000);
         });
-    };
-    if (
-      !urlParamAccount ||
-      !urlParamDisplay ||
-      !urlParamDisplay?.includes(AppRoute.MAINPROFILE) ||
-      (urlParamAccount as string) !== account.id.toString()
-    ) {
-      // dispatch(customerActions.logout());
-    }
-    if (transfer.emailOfTransferee || transfer.phoneNumberOfTransferee) {
-      fetchTransfer(transfer, token);
     }
   }, [
     transfer,
     dispatch,
     setTransferStatus,
     resetInfo,
-    token,
     account.id,
     urlParamAccount,
     urlParamDisplay,
@@ -112,6 +102,9 @@ const MoneyTransfer: FC<{
       phoneNumber: string | undefined;
       amount: number;
     }) => {
+      if(data.email === myEmail){
+        return;
+      }
       setTransfer({
         emailOfTransferee: data.email,
         accountNumber: AN,
@@ -120,10 +113,12 @@ const MoneyTransfer: FC<{
         bankAccountType: account.bankAccountType,
         phoneNumberOfTransferee: data.phoneNumber,
         transactionType: TransactionType.TRANSFER,
+        apiKey:transfer.apiKey,
+        transactionEnv:transfer.transactionEnv
       });
       setTransferStatus(TransferStatus.INPROGRESS);
     },
-    [AN, account.bankAccountType, myEmail, setTransferStatus]
+    [AN, account.bankAccountType,transfer.apiKey,transfer.transactionEnv, myEmail, setTransferStatus]
   );
 
   return (

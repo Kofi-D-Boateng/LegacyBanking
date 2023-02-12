@@ -34,7 +34,6 @@ const AccountInfo: FC<{
   setWithdrawals,
   onSetView,
 }) => {
-  console.log(account);
   useEffect(() => {
     let withdrawl: number = 0;
     let deposit: number = 0;

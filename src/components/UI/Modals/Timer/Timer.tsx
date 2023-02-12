@@ -14,15 +14,13 @@ import {
   Typography,
 } from "@mui/material";
 import classes from "../../../../styles/Modals/Modals.module.css";
-import { CustomerDetails } from "../../../../types/CustomerDetails";
 import { customerActions } from "../../../../store/customer/customer-slice";
 import { API_VERSION } from "../../Constants/Constants";
 
 const Timer: FC<{
   isMobile: boolean;
-  customer: CustomerDetails;
   location: Location;
-}> = ({ isMobile, location, customer }) => {
+}> = ({ isMobile, location}) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const dispatch: Dispatch<any> = useDispatch();
@@ -34,12 +32,12 @@ const Timer: FC<{
       setLoading(true);
       await axios
         .get(`${API_VERSION}/authentication/get-refresh-token`, {
-          params: { token: customer.token },
+          params: { token: localStorage.getItem("token") as string },
         })
         .then((response) => {
-          const { token, expiresIn } = response.data;
+          const returnedValue:{AuthToken:string, TokenExpiration:number} = response.data
           dispatch(
-            customerActions.refreshToken({ token: token, expiresIn: expiresIn })
+            customerActions.refreshToken({ authToken: returnedValue.AuthToken, expiresIn: returnedValue.TokenExpiration })
           );
         })
         .catch(() => dispatch(customerActions.logout()));

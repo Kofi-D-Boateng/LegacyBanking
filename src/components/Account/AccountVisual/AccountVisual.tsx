@@ -9,19 +9,18 @@ const AccountVisual: FC<{
   classes: {
     readonly [key: string]: string;
   };
-  fName: string;
-  lName: string;
+  myName:string;
   month: string | null;
   nonVisibleAccounts: Account[];
   year: string | null;
   nav: NavigateFunction;
-}> = ({ nonVisibleAccounts, classes, fName, lName, nav, month, year }) => {
+}> = ({ nonVisibleAccounts, classes, nav,myName, month, year }) => {
   return (
     <>
       {nonVisibleAccounts.map((acc) => {
         const lengthOfAN = acc.accountNumber.length;
         const ANSubstring = acc.accountNumber.slice(lengthOfAN - 4, lengthOfAN);
-        const url: string = `${fName}${lName}?display=${AppRoute.MAINPROFILE}&account=${acc.id}&year=${year}&month=${month}`;
+        const url: string = `${myName}?display=${AppRoute.MAINPROFILE}&account=${acc.id}&year=${year}&month=${month}`;
         return (
           <Card
             key={acc.id}

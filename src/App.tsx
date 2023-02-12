@@ -17,6 +17,7 @@ import Home from "./pages/Home";
 import LoadingSpinner from "./components/UI/Modals/LoadingSpinner/LoadingSpinner";
 import VerifyAccount from "./pages/VerifyAccount";
 import AppRoute from "./enums/Route";
+
 const Startups = lazy(() => import("./pages/Startups"));
 const Insight = lazy(() => import("./pages/Insight"));
 const About = lazy(() => import("./pages/About"));

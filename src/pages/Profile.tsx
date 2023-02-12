@@ -49,20 +49,75 @@ const Profile: FC<{
   const currentMonth = date.getMonth() + 1;
 
   const urlParamActivityView = urlParams[0].get("activityView");
-  const urlParamActivityViewCount = urlParams[0].get("count");
   const urlParamATransferStatus = urlParams[0].get("status");
   const urlParamActions = urlParams[0].get("action");
   const urlParamAccount = urlParams[0].get("account");
   const urlParamChartType = urlParams[0].get("chartType");
   const urlParamDisplay = urlParams[0].get("display");
-  const urlParamFilter = urlParams[0].get("filter");
-  const urlParamFilterYear = urlParams[0].get("filterYear");
-  const urlParamFilterMonth = urlParams[0].get("filterMonth");
   const urlParamItemToLock = urlParams[0].get("itemToLock");
   const urlParamMonth = urlParams[0].get("month");
   const urlParamProfileView = urlParams[0].get("view");
   const urlParamTransferBy = urlParams[0].get("transferBy");
   const urlParamYear = urlParams[0].get("year");
+
+  useEffect(() => {
+    if (!customer.getInfo) {
+      return;
+    }
+    const fetchAccount: (token: string | null) => void = async (token) => {
+      await axios
+        .get(
+          `http://localhost:8081/${API_VERSION}/customer/profile`,
+          {
+            headers: {
+              authorization: localStorage.getItem("token") as string,
+            },
+            params:{"apiKey":localStorage.getItem("apiKey") as string}
+          }
+        )
+        .then((response) => {
+          const {
+            firstName,
+            lastName,
+            email,
+            country,
+            zipcode,
+            state,
+            accounts,
+            cards,
+            transactions,
+            notifications,
+          } = response.data;
+          dispatch(
+            customerActions.createCustomer({
+              fName: firstName,
+              lName: lastName,
+              email: email,
+              country: country,
+              zipCode: zipcode,
+              area: state,
+              transactions: transactions,
+              accounts: accounts,
+              cards: cards,
+            })
+          );
+          dispatch(notisActions.getNotis({ notis: notifications ? notifications : [] }));
+          nav(
+            `${firstName}${lastName}?display=${AppRoute.MAINPROFILE}&account=${accounts[0].id}&year=${currentYear}&month=${MonthMap[currentMonth]}`,{replace:true}
+          );
+        })
+        .catch(() => {
+          dispatch(customerActions.logout());
+        });
+    };
+    fetchAccount(localStorage.getItem("token"));
+  }, [
+    customer.getInfo,
+    nav,
+    dispatch,
+    currentMonth,
+    currentYear,
+  ]);
 
   const account: Account = customer.accounts.filter((acc) => {
     const id: number = parseInt(urlParamAccount as string);
@@ -75,71 +130,13 @@ const Profile: FC<{
   });
 
   const cards: Card | undefined = customer.cards.find((card) => {
+    console.log(account.bankAccountType)
     if (account.bankAccountType.includes(AccountType.CREDIT)) {
       return card.creditType === account.creditType;
     } else {
       return card;
     }
   });
-
-  useEffect(() => {
-    if (!customer.getInfo) {
-      return;
-    }
-    const fetchAccount: (token: string | null) => void = async (token) => {
-      await axios
-        .get(
-          `http://localhost:8081/${API_VERSION}/authentication/profile/info`,
-          {
-            headers: {
-              authorization: token as string,
-            },
-          }
-        )
-        .then((response) => {
-          const {
-            fName,
-            lName,
-            email,
-            country,
-            zipCode,
-            state,
-            accounts,
-            cards,
-            transactions,
-            notis,
-          } = response.data;
-          dispatch(
-            customerActions.createCustomer({
-              fName: fName,
-              lName: lName,
-              email: email,
-              country: country,
-              zipCode: zipCode,
-              area: state,
-              transactions: transactions,
-              accounts: accounts,
-              cards: cards,
-            })
-          );
-          dispatch(notisActions.getNotis({ notis: notis ? notis : [] }));
-          nav(
-            `${fName}${lName}?display=${AppRoute.MAINPROFILE}&account=${accounts[0].id}&year=${currentYear}&month=${MonthMap[currentMonth]}`
-          );
-        })
-        .catch(() => {
-          dispatch(customerActions.logout());
-        });
-    };
-    fetchAccount(customer.token);
-  }, [
-    customer.token,
-    customer.getInfo,
-    nav,
-    dispatch,
-    currentMonth,
-    currentYear,
-  ]);
 
   const mainProfileURL = `${customer.fName}${customer.lName}?display=${AppRoute.MAINPROFILE}&account=${urlParamAccount}&year=${urlParamYear}&month=${urlParamMonth}`;
   const summaryURL = `${mainProfileURL}&view=${AppRoute.SUMMARY}`;
@@ -210,7 +207,6 @@ const Profile: FC<{
       modal: (
         <MoneyTransfer
           myEmail={customer.email}
-          token={customer.token}
           account={account}
           isMobile={mobile}
           Exit={exitHandler}
@@ -234,7 +230,6 @@ const Profile: FC<{
       type: ProfileModal.PAPERLESS,
       modal: (
         <Paperless
-          token={customer.token}
           Exit={exitHandler}
           isMobile={mobile}
         />
@@ -259,7 +254,6 @@ const Profile: FC<{
         <AccountSecurity
           card={cards as Card}
           account={account}
-          token={customer.token}
           Exit={exitHandler}
           isMobile={mobile}
           setAccountSecurityView={setAccountSecrutiyType}
@@ -287,25 +281,15 @@ const Profile: FC<{
             paperlessTag={ProfileModal.PAPERLESS}
             accountNumberTag={ProfileModal.ACCOUNTNUMBER}
             account={account}
-            actionParam={urlParamActions}
-            accountParam={urlParamAccount}
-            activityParam={urlParamActivityView}
-            countParam={urlParamActivityViewCount}
+            otherAccounts={nonVisibleAccounts}
+            transactions={customer.transactions}
             classes={classes}
             deposits={deposits}
-            fName={customer.fName}
-            lName={customer.lName}
-            year={urlParamYear}
-            month={urlParamMonth}
-            filterType={urlParamFilter}
-            filterYear={urlParamFilterYear}
-            filterMonth={urlParamFilterMonth}
             mainUrl={mainProfileURL}
             modals={modals}
             mobile={mobile}
-            nonVisibleAccounts={nonVisibleAccounts}
+            myName={`${customer.fName} ${customer.lName}`}
             summaryURL={summaryURL}
-            transactions={customer.transactions}
             withdrawals={withdrawls}
             setAccountActivityView={setAccountActivityView}
             viewHandler={viewHandler}

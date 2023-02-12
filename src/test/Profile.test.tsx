@@ -17,7 +17,6 @@ const timestamp = new Date().getTime();
 const isActivated = true;
 
 const customer: CustomerDetails = {
-  token: token,
   authenticated: token ? true : false,
   expiresIn: timestamp,
   fName: "",

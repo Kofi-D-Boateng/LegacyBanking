@@ -1,8 +1,8 @@
-import { Container, Grid } from "@mui/material";
+import {  Container, Grid } from "@mui/material";
 import { ChangeEvent, Dispatch, FC, SetStateAction, useCallback } from "react";
-import { NavigateFunction } from "react-router-dom";
+import { NavigateFunction, useSearchParams } from "react-router-dom";
 import { AccountType } from "../../enums/ProfileEnums";
-import { Account, Transaction } from "../../types/CustomerDetails";
+import { Account,Transaction } from "../../types/CustomerDetails";
 import { MonthMap } from "../UI/Constants/Constants";
 import AccountActivity from "./AccountActivity/AccountActivity";
 import AccountInfo from "./AccountCard/AccountInfo";
@@ -20,9 +20,6 @@ const MainProfile: FC<{
     readonly [key: string]: string;
   };
   mobile: boolean;
-  transactions: Transaction[];
-  account: Account;
-  nonVisibleAccounts: Account[];
   withdrawals: number;
   deposits: number;
   statementTag: string;
@@ -35,18 +32,11 @@ const MainProfile: FC<{
   setDeposits: Dispatch<SetStateAction<number>>;
   viewHandler: (event: ChangeEvent<HTMLElement>) => void;
   nav: NavigateFunction;
-  actionParam: string | null;
-  accountParam: string | null;
+  myName: string
+  account: Account
+  otherAccounts: Account[]
+  transactions: Transaction[]
   summaryURL: string;
-  fName: string;
-  lName: string;
-  year: string | null;
-  month: string | null;
-  filterType: string | null;
-  filterYear: string | null;
-  filterMonth: string | null;
-  activityParam: string | null;
-  countParam: string | null;
   mainUrl: string;
 }> = ({
   modals,
@@ -60,20 +50,10 @@ const MainProfile: FC<{
   securityTag,
   statementTag,
   summaryURL,
-  actionParam,
-  accountParam,
   account,
+  myName,
+  otherAccounts,
   transactions,
-  nonVisibleAccounts,
-  fName,
-  lName,
-  month,
-  year,
-  filterMonth,
-  filterType,
-  filterYear,
-  activityParam,
-  countParam,
   mainUrl,
   setAccountActivityView,
   nav,
@@ -81,9 +61,20 @@ const MainProfile: FC<{
   setWithdrawls,
   viewHandler,
 }) => {
-  const myName = fName + " " + lName;
+  const urlParams = useSearchParams();
+  const urlParamActivityView = urlParams[0].get("activityView");
+  const urlParamAccount = urlParams[0].get("account");
+  const urlParamActions = urlParams[0].get("action");
+  const urlParamActivityViewCount = urlParams[0].get("count");
+  const urlParamFilter = urlParams[0].get("filter");
+  const urlParamMonth = urlParams[0].get("month");
+  const urlParamYear = urlParams[0].get("year");
+  const urlParamFilterYear = urlParams[0].get("filterYear");
+  const urlParamFilterMonth = urlParams[0].get("filterMonth");
+
+
   const view = modals.filter((m) => {
-    return m.type.includes(actionParam as string);
+    return m.type.includes(urlParamActions as string);
   });
   const links: { key: number; title: string }[] = [
     { key: 1, title: statementTag },
@@ -104,41 +95,41 @@ const MainProfile: FC<{
     const tMonth = +t.dateOfTransaction.substring(5, 7);
     return (
       t.accountNumber === account.accountNumber &&
-      MonthMap[tMonth] === month &&
-      tYear === year
+      MonthMap[tMonth] === urlParamMonth as string &&
+      tYear === urlParamYear as string
     );
   });
 
   const filteredTransaction: Transaction[] =
-    !filterMonth && !filterYear
+    !urlParamFilterMonth && !urlParamFilterYear
       ? currentTransaction
       : transactions.filter((t) => {
           const tYear = t.dateOfTransaction.substring(0, 4);
           const tMonth = +t.dateOfTransaction.substring(5, 7);
-          if (filterType?.includes("Year")) {
+          if (urlParamFilter?.includes("Year")) {
             return (
               t.accountNumber === account.accountNumber &&
-              MonthMap[tMonth] === month &&
-              tYear === filterYear
+              MonthMap[tMonth] === urlParamMonth as string &&
+              tYear === urlParamFilterYear as string
             );
-          } else if (filterType?.includes("Month")) {
+          } else if (urlParamFilter?.includes("Month")) {
             return (
               t.accountNumber === account.accountNumber &&
-              MonthMap[tMonth] === filterMonth &&
-              tYear === year
+              MonthMap[tMonth] === urlParamFilterMonth &&
+              tYear === urlParamYear
             );
-          } else if (filterType?.includes("Both")) {
+          } else if (urlParamFilter?.includes("Both")) {
             return (
               t.accountNumber === account.accountNumber &&
-              MonthMap[tMonth] === filterMonth &&
-              tYear === filterYear
+              MonthMap[tMonth] === urlParamFilterMonth &&
+              tYear === urlParamFilterYear
             );
           }
           return t;
         });
 
   const setTransactionViewCount = useCallback(() => {
-    const count: number = parseInt(countParam as string);
+    const count: number = parseInt(urlParamActivityViewCount as string);
     if (count > transactions.length) {
       const newUri = mainUrl + `&activityView=active&count=10`;
       nav(newUri, { replace: false });
@@ -146,11 +137,11 @@ const MainProfile: FC<{
       const newUri = mainUrl + `&activityView=active&count=${count + 5}`;
       nav(newUri, { replace: false });
     }
-  }, [transactions.length, countParam, mainUrl, nav]);
+  }, [transactions.length, urlParamActivityViewCount, mainUrl, nav]);
 
   return (
     <>
-      {actionParam &&
+      {urlParamActions &&
         view.map((a) => {
           return <Container key={a.key}>{a.modal}</Container>;
         })}
@@ -174,28 +165,25 @@ const MainProfile: FC<{
               />
               <AccountVisual
                 classes={classes}
-                fName={fName}
-                lName={lName}
-                nonVisibleAccounts={nonVisibleAccounts}
-                year={year}
-                month={month}
+                myName={myName}
+                nonVisibleAccounts={otherAccounts}
+                year={urlParamYear}
+                month={urlParamMonth}
                 nav={nav}
               />
               <AccountActivity
-                accountParam={accountParam}
+                accountParam={urlParamAccount}
                 transactions={filteredTransaction}
-                filterParam={filterType}
-                activityViewIsEnabled={activityParam}
-                countParam={countParam}
-                fName={fName}
-                lName={lName}
-                year={year}
-                month={month}
+                filterParam={urlParamFilter}
+                activityViewIsEnabled={urlParamActivityView}
+                countParam={urlParamActivityViewCount}
+                myName={myName}
+                year={urlParamYear}
+                month={urlParamMonth}
                 classes={classes}
                 isMobile={mobile}
-                filterType={filterType}
-                filterYear={filterYear}
-                filterMonth={filterMonth}
+                filterYear={urlParamFilterYear}
+                filterMonth={urlParamFilterMonth}
                 setAccountActivityView={setAccountActivityView}
                 setTransactionViewCount={setTransactionViewCount}
                 nav={nav}
@@ -229,11 +217,10 @@ const MainProfile: FC<{
           <Grid container>
             <AccountVisual
               classes={classes}
-              fName={fName}
-              lName={lName}
-              nonVisibleAccounts={nonVisibleAccounts}
-              year={year}
-              month={month}
+              myName={myName}
+              nonVisibleAccounts={otherAccounts}
+              year={urlParamYear}
+              month={urlParamMonth}
               nav={nav}
             />
           </Grid>
@@ -246,20 +233,18 @@ const MainProfile: FC<{
           <Grid container></Grid>
           <Grid container>
             <AccountActivity
-              accountParam={accountParam}
+              accountParam={urlParamAccount}
               transactions={filteredTransaction}
-              filterParam={filterType}
-              activityViewIsEnabled={activityParam}
-              countParam={countParam}
+              filterParam={urlParamFilter}
+              activityViewIsEnabled={urlParamActivityView}
+              countParam={urlParamActivityViewCount}
               classes={classes}
-              fName={fName}
-              lName={lName}
-              year={year}
-              month={month}
+              myName={myName}
+              year={urlParamYear}
+              month={urlParamMonth}
               isMobile={mobile}
-              filterType={filterType}
-              filterYear={filterYear}
-              filterMonth={filterMonth}
+              filterYear={urlParamFilterYear}
+              filterMonth={urlParamFilterMonth}
               setAccountActivityView={setAccountActivityView}
               setTransactionViewCount={setTransactionViewCount}
               nav={nav}

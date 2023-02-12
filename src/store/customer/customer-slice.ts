@@ -8,13 +8,13 @@ import {
 const DATE: Date = new Date();
 
 function initialState(): CustomerDetails {
-  const token: string | null = localStorage.getItem("lb-token");
+  const authToken: string | null = localStorage.getItem("token");
+  const apiKey: string | null = localStorage.getItem("apiKey");
   const exp: string | null = localStorage.getItem("exp");
   const isActivated: string | null = localStorage.getItem("enabled");
   const RemainingTime: number = +exp! || 0;
   return {
-    token: token,
-    authenticated: token ? true : false,
+    authenticated: authToken && apiKey ? true : false,
     expiresIn: RemainingTime,
     fName: "",
     lName: "",
@@ -37,19 +37,20 @@ const customerSlice = createSlice({
     getCreds(
       state,
       action: PayloadAction<{
-        token: string;
+        authToken: string;
+        apiKey:string;
         expiresIn: number;
         isActivated: boolean;
       }>
     ) {
-      const { token, expiresIn, isActivated } = action.payload;
-      state.token = token;
+      const {apiKey ,authToken, expiresIn, isActivated } = action.payload;
       state.authenticated = true;
       state.isActivated = isActivated;
       state.expiresIn = expiresIn + DATE.getTime();
-      localStorage.setItem("lb-token", state.token);
+      localStorage.setItem("token", authToken);
+      localStorage.setItem("apiKey",apiKey)
       localStorage.setItem("exp", state.expiresIn.toString());
-      localStorage.setItem("enabled", "true");
+      localStorage.setItem("enabled", isActivated ? "true":"false");
     },
     createCustomer(
       state,
@@ -91,19 +92,20 @@ const customerSlice = createSlice({
       state.getInfo = false;
     },
     logout(state) {
-      localStorage.removeItem("lb-token");
+      localStorage.removeItem("token");
       localStorage.removeItem("exp");
       localStorage.removeItem("enabled");
+      localStorage.removeItem("apiKey");
       state.authenticated = false;
+      state.getInfo = true;
     },
     refreshToken(
       state,
-      action: PayloadAction<{ token: string; expiresIn: number }>
+      action: PayloadAction<{ authToken: string; expiresIn: number }>
     ) {
-      const { token, expiresIn } = action.payload;
-      state.token = token;
+      const { authToken, expiresIn } = action.payload;
       state.expiresIn = expiresIn + DATE.getTime();
-      localStorage.setItem("lb-token", state.token);
+      localStorage.setItem("token", authToken);
       localStorage.setItem("exp", state.expiresIn.toString());
     },
     resetInfo(state) {

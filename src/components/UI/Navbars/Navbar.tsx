@@ -40,14 +40,15 @@ const Navbar: FC<{
       if (innerText === "Log out") {
         await axios
           .get(`${API_VERSION}/logout`, {
-            headers: { authorization: customer.token as string },
+            headers: { authorization: localStorage.getItem("token") as string },
+            params:{apiKey: localStorage.getItem("apiKey") as string}
           })
           .catch(() => dispatch(customerActions.logout()));
         dispatch(customerActions.logout());
       }
       setAnchorEl(null);
     },
-    [dispatch, customer.token]
+    [dispatch]
   );
 
   return (

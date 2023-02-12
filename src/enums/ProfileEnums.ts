@@ -4,6 +4,11 @@ export enum AccountType {
   SAVINGS = "SAVINGS",
 }
 
+export enum CardType{
+  CREDIT = "CREDIT",
+  DEBIT = "DEBIT"
+}
+
 export enum CreditType {
   PLATINUM = "PLATINUM",
   BLACK = "BLACK",
@@ -22,6 +27,13 @@ export enum TransactionType {
   WITHDRAWL = "WITHDRAWL",
   PURCHASE = "PURCHASE",
   REFUND = "REFUND",
+}
+
+export enum TransactionEnv{
+  ONLINE = "ONLINE-TRANSACTION",
+  ATM = "ATM-TRANSACTION",
+  MOBILE = "MOBILE-TRANSACTION",
+  VENDOR = "VENDOR-TRANSACTION"
 }
 
 export enum ProfileModal {

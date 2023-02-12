@@ -1,3 +1,5 @@
+import { AccountType, CardType } from "../enums/ProfileEnums";
+
 export type Transaction = {
   id: number;
   amount: number;
@@ -19,14 +21,14 @@ export type Card = {
   expirationDate: string;
   isLocked: boolean;
   type: string;
-  creditType: string;
+  creditType: CardType;
 };
 
 export type Account = {
   id: number;
   accountNumber: string;
   routingNumber: string;
-  bankAccountType: string;
+  bankAccountType: AccountType;
   capital: number;
   creditType: string;
   isEnable: boolean;
@@ -48,7 +50,6 @@ export type CustomerDetails = {
   transactions: Transaction[];
   accounts: Account[];
   cards: Card[];
-  token: string | null;
   authenticated: boolean;
   expiresIn: number;
 };

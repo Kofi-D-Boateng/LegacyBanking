@@ -37,16 +37,17 @@ const Login: FC<{
     const fetchUserLogin = async (userCredentials: LoginCredentials) => {
       await axios
         .post(
-          `http://localhost:8081/${API_VERSION}/authentication/login`,
+          `http://localhost:8081/${API_VERSION}/auth/login-customer`,
           userCredentials
         )
         .then((response) => {
-          const { token, isActivated, expiresIn } = response.data;
+          const returnedValue:{AuthToken:string,ApiKey:string,TokenExpiration:number,IsActivated:boolean} = response.data
           dispatch(
             customerActions.getCreds({
-              token: token,
-              expiresIn: +expiresIn,
-              isActivated: isActivated,
+              authToken: returnedValue.AuthToken,
+              expiresIn: returnedValue.TokenExpiration,
+              isActivated: returnedValue.IsActivated,
+              apiKey:returnedValue.ApiKey
             })
           );
           nav(AppRoute.PROFILE.substring(0, 8), { replace: true });

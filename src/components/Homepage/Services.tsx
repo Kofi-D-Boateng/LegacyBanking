@@ -4,9 +4,6 @@ import { FC, MouseEvent } from "react";
 import { NavLink } from "react-router-dom";
 
 const Services: FC<{
-  classes: {
-    readonly [key: string]: string;
-  };
   isMobile: boolean;
   view: number;
   cards: {
@@ -20,7 +17,7 @@ const Services: FC<{
   FORWARD: string;
   BACKWARD: string;
   setView: (e: MouseEvent<HTMLButtonElement>) => void;
-}> = ({ classes, isMobile, view, cards, setView, BACKWARD, FORWARD }) => {
+}> = ({  isMobile, view, cards, setView, BACKWARD, FORWARD }) => {
   return (
     <Grid container>
       {!isMobile ? (
@@ -31,13 +28,13 @@ const Services: FC<{
                 <NavLink to={c.link} style={{ textDecoration: "none" }}>
                   <Card className={c.css || undefined}>
                     <Grid className={c.css2} container>
-                      <Typography variant="h5">{c?.title}</Typography>
-                      <Typography
+                      <Grid container><Typography variant="h5">{c?.title}</Typography></Grid>
+                      <Grid container><Typography
                         variant="body1"
                         sx={{ fontSize: "1.3rem", color: "white" }}
                       >
                         {c?.description}
-                      </Typography>
+                      </Typography></Grid>
                     </Grid>
                   </Card>
                 </NavLink>
