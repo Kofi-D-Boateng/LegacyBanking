@@ -3,34 +3,34 @@ import { createPortal } from "react-dom";
 import Backdrop from "../../Backdrops/Backdrop";
 import Modal from "./Modal";
 import axios from "axios";
-import { TransferDetails } from "../../../../types/Transfer";
+import { TransferRequest } from "../../../../types/Transfer";
 import { Account } from "../../../../types/CustomerDetails";
 import { API_VERSION } from "../../Constants/Constants";
 import { customerActions } from "../../../../store/customer/customer-slice";
 import { backdropDiv, overlayDiv } from "../../Layouts/RootElement";
 import classes from "../../../../styles/Modals/Modals.module.css";
 import { useDispatch } from "react-redux";
-import { TransactionType } from "../../../../enums/ProfileEnums";
+import { TransactionEnv, TransactionType } from "../../../../enums/ProfileEnums";
 import AppRoute from "../../../../enums/Route";
 import { TransferStatus } from "../../../../enums/TransferStatus";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 const MoneyTransfer: FC<{
-  token: string | null;
   isMobile: boolean;
   myEmail: string;
   account: Account;
+  mainUrl:string
   urlParamDisplay: string | null;
   urlParamAccount: string | null;
   urlParamTransferBy: string | null;
   status: string | null;
   setTransferStatus: (param: string) => void;
-  resetInfo: () => void;
   Exit: () => void;
   onChoice: (event: ChangeEvent<HTMLInputElement>) => void;
 }> = ({
   isMobile,
   account,
-  token,
+  mainUrl,
   Exit,
   onChoice,
   urlParamAccount,
@@ -38,11 +38,10 @@ const MoneyTransfer: FC<{
   urlParamTransferBy,
   myEmail,
   status,
-  resetInfo,
   setTransferStatus,
 }) => {
   const AN: string = account ? account.accountNumber : "";
-  const [transfer, setTransfer] = useState<TransferDetails>({
+  const [transfer, setTransfer] = useState<TransferRequest>({
     accountNumber: AN,
     amount: 0,
     email: myEmail,
@@ -50,39 +49,13 @@ const MoneyTransfer: FC<{
     phoneNumberOfTransferee: undefined,
     bankAccountType: account?.bankAccountType,
     transactionType: TransactionType.TRANSFER,
+    apiKey:localStorage.getItem("apiKey") as string,
+    transactionEnv:TransactionEnv.ONLINE
   });
   const dispatch = useDispatch();
+  const nav:NavigateFunction = useNavigate();
 
   useEffect(() => {
-    const fetchTransfer = async (
-      accountTransfer: TransferDetails,
-      token: string | null
-    ) => {
-      await axios
-        .put(
-          `${API_VERSION}/authentication/transaction`,
-          {
-            accountTransfer: accountTransfer,
-            typeOfTransaction: "ACCOUNT_TRANSACTION",
-          },
-          {
-            headers: { authorization: token as string },
-          }
-        )
-        .then(() => {
-          dispatch(customerActions.resetInfo());
-          setTransferStatus(TransferStatus.SUCCESSFUL_TRANSFER);
-          setTimeout(() => {
-            resetInfo();
-          }, 4000);
-        })
-        .catch(() => {
-          setTransferStatus(TransferStatus.UNSUCCESSFUL_TRANSFER);
-          setTimeout(() => {
-            resetInfo();
-          }, 4000);
-        });
-    };
     if (
       !urlParamAccount ||
       !urlParamDisplay ||
@@ -92,18 +65,39 @@ const MoneyTransfer: FC<{
       // dispatch(customerActions.logout());
     }
     if (transfer.emailOfTransferee || transfer.phoneNumberOfTransferee) {
-      fetchTransfer(transfer, token);
+      axios
+        .put(
+          `${API_VERSION}/transactions/process-transaction`,
+          transfer,
+          {
+            headers: { authorization: localStorage.getItem("token") as string },
+          }
+        )
+        .then(() => {
+          setTransferStatus(TransferStatus.SUCCESSFUL_TRANSFER);
+          dispatch(customerActions.resetInfo());
+          setTimeout(() => {
+            nav(mainUrl,{replace:true})
+          }, 4000);
+        })
+        .catch(() => {
+          setTransferStatus(TransferStatus.UNSUCCESSFUL_TRANSFER);
+          dispatch(customerActions.resetInfo());
+          setTimeout(() => {
+            nav(mainUrl,{replace:true})
+          }, 4000);
+        });
     }
   }, [
     transfer,
     dispatch,
     setTransferStatus,
-    resetInfo,
-    token,
     account.id,
     urlParamAccount,
     urlParamDisplay,
     account.bankAccountType,
+    mainUrl,
+    nav
   ]);
 
   const transferHandler = useCallback(
@@ -112,6 +106,9 @@ const MoneyTransfer: FC<{
       phoneNumber: string | undefined;
       amount: number;
     }) => {
+      if(data.email === myEmail){
+        return;
+      }
       setTransfer({
         emailOfTransferee: data.email,
         accountNumber: AN,
@@ -120,10 +117,12 @@ const MoneyTransfer: FC<{
         bankAccountType: account.bankAccountType,
         phoneNumberOfTransferee: data.phoneNumber,
         transactionType: TransactionType.TRANSFER,
+        apiKey:transfer.apiKey,
+        transactionEnv:transfer.transactionEnv
       });
       setTransferStatus(TransferStatus.INPROGRESS);
     },
-    [AN, account.bankAccountType, myEmail, setTransferStatus]
+    [AN, account.bankAccountType,transfer.apiKey,transfer.transactionEnv, myEmail, setTransferStatus]
   );
 
   return (

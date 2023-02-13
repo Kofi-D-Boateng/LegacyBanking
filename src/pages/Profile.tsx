@@ -24,8 +24,6 @@ import Paperless from "../components/UI/Modals/Paperless/Paperless";
 import AccountNumbers from "../components/UI/Modals/AccountNumber/AccountNumbers";
 import { API_VERSION, MonthMap } from "../components/UI/Constants/Constants";
 import MainProfile from "../components/Account/MainProfile";
-import Summary from "../components/Account/AccountDetails/Summary";
-import { DateAmountType } from "../types/Maps";
 import AccountSecurity from "../components/UI/Modals/AccountSecurity/AccountSecurity";
 import { notisActions } from "../store/notifications/notifications";
 import { Account, Card, CustomerDetails } from "../types/CustomerDetails";
@@ -42,28 +40,82 @@ const Profile: FC<{
   const urlParams = useSearchParams();
   const date = new Date();
   const nav: NavigateFunction = useNavigate();
-  const DateAmount: DateAmountType[] = [];
-
-  const [withdrawals, setWithdrawals] = useState<number>(0);
+  const [withdrawls, setWithdrawls] = useState<number>(0);
   const [deposits, setDeposits] = useState<number>(0);
   const dispatch = useDispatch<Dispatch<any>>();
   const currentYear = date.getFullYear();
   const currentMonth = date.getMonth() + 1;
 
-  const urlParamDisplay = urlParams[0].get("display");
+  const urlParamActivityView = urlParams[0].get("activityView");
+  const urlParamATransferStatus = urlParams[0].get("status");
   const urlParamActions = urlParams[0].get("action");
   const urlParamAccount = urlParams[0].get("account");
-  const urlParamProfileView = urlParams[0].get("view");
-  const urlParamMonth = urlParams[0].get("month");
-  const urlParamYear = urlParams[0].get("year");
-  const urlParamFilter = urlParams[0].get("filter");
-  const urlParamFilterYear = urlParams[0].get("filterYear");
-  const urlParamFilterMonth = urlParams[0].get("filterMonth");
-  const urlParamTransferBy = urlParams[0].get("transferBy");
-  const urlParamActivityView = urlParams[0].get("activityView");
-  const urlParamActivityViewCount = urlParams[0].get("count");
-  const urlParamATransferStatus = urlParams[0].get("status");
+  const urlParamDisplay = urlParams[0].get("display");
   const urlParamItemToLock = urlParams[0].get("itemToLock");
+  const urlParamMonth = urlParams[0].get("month");
+  const urlParamProfileView = urlParams[0].get("view");
+  const urlParamTransferBy = urlParams[0].get("transferBy");
+  const urlParamYear = urlParams[0].get("year");
+
+  useEffect(() => {
+    const fetchAccount: () => void = async () => {
+      await axios
+        .get(
+          `${API_VERSION}/customer/profile`,
+          {
+            headers: {
+              authorization: localStorage.getItem("token") as string,
+            },
+            params:{"apiKey":localStorage.getItem("apiKey") as string}
+          }
+        )
+        .then((response) => {
+          const {
+            firstName,
+            lastName,
+            email,
+            country,
+            zipcode,
+            state,
+            accounts,
+            cards,
+            transactions,
+            notifications,
+          } = response.data;
+          dispatch(
+            customerActions.createCustomer({
+              fName: firstName,
+              lName: lastName,
+              email: email,
+              country: country,
+              zipCode: zipcode,
+              area: state,
+              transactions: transactions,
+              accounts: accounts,
+              cards: cards,
+            })
+          );
+          dispatch(notisActions.getNotis({ notis: notifications ? notifications : [] }));
+          nav(
+            `${firstName}${lastName}?display=${AppRoute.MAINPROFILE}&account=${accounts[0].id}&year=${currentYear}&month=${MonthMap[currentMonth]}`,{replace:true}
+          );
+        })
+        .catch(() => {
+          dispatch(customerActions.logout());
+        });
+    };
+    if (!customer.getInfo) {
+      return;
+    }else{
+      fetchAccount();
+    }
+  }, [
+    customer.getInfo,
+    nav,
+    dispatch,
+    currentMonth,
+    currentYear,
+  ]);
 
   const account: Account = customer.accounts.filter((acc) => {
     const id: number = parseInt(urlParamAccount as string);
@@ -83,64 +135,7 @@ const Profile: FC<{
     }
   });
 
-  useEffect(() => {
-    if (!customer.getInfo) {
-      return;
-    }
-    const fetchAccount: (token: string | null) => void = async (token) => {
-      await axios
-        .get(`${API_VERSION}/authentication/profile/info`, {
-          headers: {
-            authorization: token as string,
-          },
-        })
-        .then((response) => {
-          const {
-            fName,
-            lName,
-            email,
-            country,
-            zipCode,
-            state,
-            accounts,
-            cards,
-            transactions,
-            notis,
-          } = response.data;
-          dispatch(
-            customerActions.createCustomer({
-              fName: fName,
-              lName: lName,
-              email: email,
-              country: country,
-              zipCode: zipCode,
-              area: state,
-              transactions: transactions,
-              accounts: accounts,
-              cards: cards,
-            })
-          );
-          dispatch(notisActions.getNotis({ notis: notis ? notis : [] }));
-          nav(
-            `${fName}${lName}?display=${AppRoute.MAINPROFILE}&account=${accounts[0].id}&year=${currentYear}&month=${MonthMap[currentMonth]}`
-          );
-        })
-        .catch(() => {
-          dispatch(customerActions.logout());
-        });
-    };
-    fetchAccount(customer.token);
-  }, [
-    customer.token,
-    customer.getInfo,
-    nav,
-    dispatch,
-    currentMonth,
-    currentYear,
-  ]);
-
   const mainProfileURL = `${customer.fName}${customer.lName}?display=${AppRoute.MAINPROFILE}&account=${urlParamAccount}&year=${urlParamYear}&month=${urlParamMonth}`;
-  const summaryURL = `${mainProfileURL}&view=${AppRoute.SUMMARY}`;
 
   const viewHandler = useCallback(
     (event: ChangeEvent<HTMLElement>) => {
@@ -167,10 +162,6 @@ const Profile: FC<{
     },
     [mainProfileURL, nav, urlParamActions]
   );
-
-  const resetInfo = useCallback(() => {
-    nav(mainProfileURL, { replace: true });
-  }, [nav, mainProfileURL]);
 
   const setTransferStatus = useCallback(
     (param: string) => {
@@ -208,15 +199,14 @@ const Profile: FC<{
       modal: (
         <MoneyTransfer
           myEmail={customer.email}
-          token={customer.token}
           account={account}
           isMobile={mobile}
+          mainUrl={mainProfileURL}
           Exit={exitHandler}
           onChoice={choiceHandler}
           urlParamDisplay={urlParamDisplay}
           urlParamAccount={urlParamAccount}
           urlParamTransferBy={urlParamTransferBy}
-          resetInfo={resetInfo}
           setTransferStatus={setTransferStatus}
           status={urlParamATransferStatus}
         />
@@ -232,7 +222,6 @@ const Profile: FC<{
       type: ProfileModal.PAPERLESS,
       modal: (
         <Paperless
-          token={customer.token}
           Exit={exitHandler}
           isMobile={mobile}
         />
@@ -257,7 +246,6 @@ const Profile: FC<{
         <AccountSecurity
           card={cards as Card}
           account={account}
-          token={customer.token}
           Exit={exitHandler}
           isMobile={mobile}
           setAccountSecurityView={setAccountSecrutiyType}
@@ -269,7 +257,7 @@ const Profile: FC<{
 
   return (
     <>
-      {(!urlParamDisplay || !urlParamAccount) && (
+      {(!urlParamDisplay || !urlParamAccount || customer.accounts.length <= 0) && (
         <Box
           sx={{ position: "absolute", top: "50%", left: "50%", zIndex: "5" }}
         >
@@ -277,50 +265,28 @@ const Profile: FC<{
         </Box>
       )}
       {urlParamDisplay?.includes(AppRoute.MAINPROFILE) &&
-        !urlParamProfileView && (
+        (!urlParamProfileView && customer.accounts.length >0 ) &&(
           <MainProfile
-            STATEMENT={ProfileModal.STATEMENT}
-            SECURITY={ProfileModal.SECURITY}
-            MONEYTRANSFER={ProfileModal.MONEYTRANSFER}
-            PAPERLESS={ProfileModal.PAPERLESS}
-            ACCOUNTNUMBER={ProfileModal.ACCOUNTNUMBER}
+            statementTag={ProfileModal.STATEMENT}
+            securityTag={ProfileModal.SECURITY}
+            moneyTransferTag={ProfileModal.MONEYTRANSFER}
+            paperlessTag={ProfileModal.PAPERLESS}
+            accountNumberTag={ProfileModal.ACCOUNTNUMBER}
             account={account}
-            actionParam={urlParamActions}
-            accountParam={urlParamAccount}
-            activityParam={urlParamActivityView}
-            card={cards as Card}
-            countParam={urlParamActivityViewCount}
+            otherAccounts={nonVisibleAccounts}
+            transactions={customer.transactions}
             classes={classes}
             deposits={deposits}
-            fName={customer.fName}
-            lName={customer.lName}
-            year={urlParamYear}
-            month={urlParamMonth}
-            filterType={urlParamFilter}
-            filterYear={urlParamFilterYear}
-            filterMonth={urlParamFilterMonth}
             mainUrl={mainProfileURL}
             modals={modals}
             mobile={mobile}
-            nonVisibleAccounts={nonVisibleAccounts}
-            summaryURL={summaryURL}
-            transactions={customer.transactions}
-            withdrawals={withdrawals}
+            myName={`${customer.fName} ${customer.lName}`}
+            withdrawls={withdrawls}
             setAccountActivityView={setAccountActivityView}
             viewHandler={viewHandler}
             setDeposits={setDeposits}
-            setWithdrawals={setWithdrawals}
+            setWithdrawls={setWithdrawls}
             nav={nav}
-          />
-        )}
-      {urlParamDisplay?.includes(AppRoute.MAINPROFILE) &&
-        urlParamProfileView && (
-          <Summary
-            isMobile={mobile}
-            transactions={customer.transactions}
-            year={parseInt(urlParamYear as string)}
-            DateAmount={DateAmount}
-            withdrawals={withdrawals}
           />
         )}
     </>

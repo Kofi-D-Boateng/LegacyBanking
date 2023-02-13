@@ -1,9 +1,11 @@
+import { AccountType, CardType, CreditLine, CreditType } from "../enums/ProfileEnums";
+
 export type Transaction = {
   id: number;
   amount: number;
   accountNumber: string;
   location: string;
-  cardType: string;
+  cardType: CardType;
   dateOfTransaction: string;
   dateTransactionPosted: string;
   transactionType: string;
@@ -18,17 +20,17 @@ export type Card = {
   cardVerificationCode: string;
   expirationDate: string;
   isLocked: boolean;
-  type: string;
-  creditType: string;
+  cardType: CardType;
+  creditType:CreditType;
 };
 
 export type Account = {
   id: number;
   accountNumber: string;
   routingNumber: string;
-  bankAccountType: string;
+  bankAccountType: AccountType;
   capital: number;
-  creditType: string;
+  creditType: CreditType;
   isEnable: boolean;
   minimumBalance: number;
   minimumPayment: number;
@@ -48,7 +50,6 @@ export type CustomerDetails = {
   transactions: Transaction[];
   accounts: Account[];
   cards: Card[];
-  token: string | null;
   authenticated: boolean;
   expiresIn: number;
 };

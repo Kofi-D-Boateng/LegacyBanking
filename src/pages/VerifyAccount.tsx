@@ -23,7 +23,7 @@ const VerifyAccount: FC<{
   useEffect(() => {
     const fetchVerification: (token: string | null) => void = async (token) => {
       await axios
-        .get(`${API_VERSION}/authentication/confirm-account`, {
+        .get(`${API_VERSION}/verify/account`, {
           params: { token: token },
         })
         .then(() => {

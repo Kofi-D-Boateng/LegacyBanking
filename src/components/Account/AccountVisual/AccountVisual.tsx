@@ -6,22 +6,21 @@ import AppRoute from "../../../enums/Route";
 import { Account } from "../../../types/CustomerDetails";
 
 const AccountVisual: FC<{
-  fName: string;
-  lName: string;
-  nonVisibleAccounts: Account[];
   classes: {
     readonly [key: string]: string;
   };
-  year: string | null;
+  myName:string;
   month: string | null;
+  nonVisibleAccounts: Account[];
+  year: string | null;
   nav: NavigateFunction;
-}> = ({ nonVisibleAccounts, classes, fName, lName, nav, month, year }) => {
+}> = ({ nonVisibleAccounts, classes, nav,myName, month, year }) => {
   return (
     <>
       {nonVisibleAccounts.map((acc) => {
         const lengthOfAN = acc.accountNumber.length;
         const ANSubstring = acc.accountNumber.slice(lengthOfAN - 4, lengthOfAN);
-        const url: string = `${fName}${lName}?display=${AppRoute.MAINPROFILE}&account=${acc.id}&year=${year}&month=${month}`;
+        const url: string = `${myName}?display=${AppRoute.MAINPROFILE}&account=${acc.id}&year=${year}&month=${month}`;
         return (
           <Card
             key={acc.id}
@@ -69,7 +68,11 @@ const AccountVisual: FC<{
                     </Typography>
                   </Grid>
                   <Grid container>
-                    <Typography variant="h5">Current Balance</Typography>
+                    <Typography variant="h5">
+                      {acc.bankAccountType.includes(AccountType.CREDIT)
+                        ? "Used Credit"
+                        : "Current Balance"}
+                    </Typography>
                   </Grid>
                 </Grid>
               </Grid>

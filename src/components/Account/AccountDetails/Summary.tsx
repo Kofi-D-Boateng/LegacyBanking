@@ -1,50 +1,56 @@
 import { FC, memo } from "react";
 import { Grid } from "@mui/material";
-import classes from "../../../styles/SVG/BarGraphSVGStyles.module.css";
-import BarChart from "../../UI/SVGs/BarChart";
+import classes from "../../../styles/Charts/Chart.module.css";
+import BarChart from "../../UI/Charts/BarChart";
 import MainPanel from "./MainPanel/MainPanel";
 import { Transaction } from "../../../types/CustomerDetails";
-import { DateAmountType } from "../../../types/Maps";
+import PieChart from "../../UI/Charts/PieChart";
+import { ChartType } from "../../../enums/Chart";
 
 const Summary: FC<{
-  year: number;
-  withdrawals: number;
-  transactions: Transaction[];
-  DateAmount: DateAmountType[];
+  chartTypeParam: string | null;
   isMobile: boolean;
-}> = ({ transactions, year, DateAmount, isMobile, withdrawals }) => {
-  const view: number = 1;
-  const SVGs: { key: number; title: string; svg: JSX.Element }[] = [
+  summaryUrl: string;
+  transactions: Transaction[];
+  withdrawlAmount: number;
+  year: number;
+}> = ({ transactions, year, isMobile, withdrawlAmount, chartTypeParam }) => {
+  console.log(transactions)
+  const charts: { key: number; typeOfChart: string; chart: JSX.Element }[] = [
     {
       key: 1,
-      title: "bar-chart",
-      svg: (
+      typeOfChart: ChartType.Bar,
+      chart: (
         <BarChart
           classes={classes}
           transactions={transactions}
-          DateAmount={DateAmount}
           year={year}
           isMobile={isMobile}
         />
       ),
     },
+    {
+      key: 2,
+      typeOfChart: ChartType.Pie,
+      chart: (
+        <PieChart isMobile={isMobile} transactions={transactions} year={year} />
+      ),
+    },
   ];
 
+  const filteredView = charts.find(
+    (chart) => chart.typeOfChart === (chartTypeParam as string)
+  );
+
   return (
-    <>
-      <Grid className={classes.svgHolder} container>
-        {SVGs.filter((s) => {
-          return s.key === view;
-        }).map((s) => {
-          return (
-            <Grid key={s.key} xs={12} md={12} item>
-              {s.svg}
-            </Grid>
-          );
-        })}
-        <MainPanel classes={classes} withdrawals={withdrawals} />
+    <Grid className={classes.chartContainer} container>
+      <Grid xs={12} md={12} item>
+        {filteredView?.chart}
       </Grid>
-    </>
+      <Grid xs={12} md={12} item>
+        <MainPanel classes={classes} withdrawlAmount={withdrawlAmount} />
+      </Grid>
+    </Grid>
   );
 };
 

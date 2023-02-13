@@ -3,23 +3,13 @@ import Footer from "../Footers/Footer";
 import { Navbar } from "../Navbars/Navbar";
 import { Twitter, Facebook, Instagram, LinkedIn } from "@mui/icons-material";
 import { PathMatch } from "react-router-dom";
-import { AxiosStatic } from "axios";
 import { CustomerDetails } from "../../../types/CustomerDetails";
 import classes from "../../../styles/Main/LayoutStyles.module.css";
+import AppRoute from "../../../enums/Route";
+import { SocialMediaLink } from "../../../enums/SocialLink";
 
 const Layout: FC<{
-  DATE: Date;
-  Timer: FC<{
-    isMobile: boolean;
-    customer: CustomerDetails;
-    location: Location;
-  }>;
-  Location: Location;
-  BUFFER: number;
-
-  API_VERSION: string | undefined;
-  axios: AxiosStatic;
-  mobile: boolean;
+  isMobile: boolean;
   login: PathMatch<string> | null;
   signup: PathMatch<string> | null;
   error: PathMatch<string> | null;
@@ -27,59 +17,28 @@ const Layout: FC<{
   children: ReactNode;
   customer: CustomerDetails;
   YEAR: number;
-  ABOUT: string;
-  LOCATIONS: string;
-  CONTACT: string;
-  INSIGHT: string;
-  STARTUPS: string;
-  PROFILE: string;
-  REDIRECT: string;
-  LOGIN: string;
-  TWITTER: string;
-  FACEBOOK: string;
-  INSTAGRAM: string;
-  LINKEDIN: string;
 }> = ({
-  mobile,
+  isMobile,
   customer,
   children,
   login,
   signup,
   YEAR,
   error,
-  ABOUT,
-  CONTACT,
-  INSIGHT,
-  LOCATIONS,
-  LOGIN,
-  PROFILE,
-  REDIRECT,
-  STARTUPS,
-  FACEBOOK,
-  INSTAGRAM,
-  LINKEDIN,
-  TWITTER,
-  axios,
-  API_VERSION,
-  Location,
-  Timer,
-  BUFFER,
-  DATE,
   verification,
 }) => {
-  const TIMER: number = customer.expiresIn - DATE.getTime();
   const Links: { key: number; title: string; link: string }[] = [
-    { key: 1, title: "About Us", link: ABOUT },
-    { key: 2, title: "Locations", link: LOCATIONS },
-    { key: 3, title: "Contact", link: CONTACT },
-    { key: 4, title: "Insight", link: INSIGHT },
-    { key: 5, title: "Startups", link: STARTUPS },
+    { key: 1, title: "About Us", link: AppRoute.ABOUT },
+    { key: 2, title: "Locations", link: AppRoute.LOCATIONS },
+    { key: 3, title: "Contact", link: AppRoute.CONTACT },
+    { key: 4, title: "Insight", link: AppRoute.INSIGHT },
+    { key: 5, title: "Startups", link: AppRoute.STARTUPS },
   ];
 
   const authLinks: { key: number; title: string; link: string }[] = [
-    { key: 1, title: "Profile", link: PROFILE.substring(0, 8) },
-    { key: 2, title: "Log out", link: REDIRECT },
-    { key: 3, title: "Login", link: LOGIN },
+    { key: 1, title: "Profile", link: AppRoute.PROFILE.substring(0, 8) },
+    { key: 2, title: "Log out", link: AppRoute.REDIRECT },
+    { key: 3, title: "Login", link: AppRoute.LOGIN },
   ];
 
   const Socials: {
@@ -88,10 +47,30 @@ const Layout: FC<{
     svg: ReactElement;
     link: string;
   }[] = [
-    { key: 1, title: "twitter", svg: <Twitter />, link: TWITTER },
-    { key: 2, title: "facebook", svg: <Facebook />, link: FACEBOOK },
-    { key: 3, title: "instagram", svg: <Instagram />, link: INSTAGRAM },
-    { key: 4, title: "linkedin", svg: <LinkedIn />, link: LINKEDIN },
+    {
+      key: 1,
+      title: "twitter",
+      svg: <Twitter />,
+      link: SocialMediaLink.TWITTER,
+    },
+    {
+      key: 2,
+      title: "facebook",
+      svg: <Facebook />,
+      link: SocialMediaLink.FACEBOOK,
+    },
+    {
+      key: 3,
+      title: "instagram",
+      svg: <Instagram />,
+      link: SocialMediaLink.INSTAGRAM,
+    },
+    {
+      key: 4,
+      title: "linkedin",
+      svg: <LinkedIn />,
+      link: SocialMediaLink.LINKEDIN,
+    },
   ];
   return (
     <Fragment>
@@ -100,17 +79,12 @@ const Layout: FC<{
       error?.pattern.end ||
       verification?.pattern.end ? null : (
         <Navbar
-          API_VERSION={API_VERSION}
-          axios={axios}
-          isMobile={mobile}
+          isMobile={isMobile}
           customer={customer}
           links={Links}
           authLinks={authLinks}
         />
       )}
-      {TIMER < BUFFER && customer.expiresIn !== 0 ? (
-        <Timer isMobile={mobile} customer={customer} location={Location} />
-      ) : null}
       <div className={classes.main}>{children}</div>
       {signup?.pattern.end ||
       login?.pattern.end ||
@@ -119,9 +93,8 @@ const Layout: FC<{
         <Footer
           socials={Socials}
           links={Links}
-          isMobile={mobile}
+          isMobile={isMobile}
           YEAR={YEAR}
-          Location={Location}
         />
       )}
     </Fragment>

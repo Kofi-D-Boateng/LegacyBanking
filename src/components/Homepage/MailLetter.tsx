@@ -2,6 +2,7 @@ import { Grid, Typography } from "@mui/material";
 import { AxiosStatic } from "axios";
 import { FC, FormEvent, useRef, useState } from "react";
 import Form from "../Forms/MailLetterForm/MailLetterForm";
+import { API_VERSION } from "../UI/Constants/Constants";
 
 const MailLetter: FC<{
   classes: {
@@ -9,9 +10,7 @@ const MailLetter: FC<{
   };
   isMobile: boolean;
   axios: AxiosStatic;
-
-  API_VERSION: string | undefined;
-}> = ({ classes, isMobile, API_VERSION, axios }) => {
+}> = ({ classes, isMobile, axios }) => {
   const [show, setShow] = useState<boolean>(false);
   const [ready, setReady] = useState<boolean>(false);
   const emailRef = useRef<HTMLInputElement>();
@@ -23,7 +22,7 @@ const MailLetter: FC<{
     }
 
     if (ready) {
-      await axios.put(`${API_VERSION}/api/v1/mail-list/add-to-list`, {
+      await axios.put(`${API_VERSION}/maillist/join`, {
         email: emailRef.current?.value,
       });
     }

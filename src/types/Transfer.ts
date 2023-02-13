@@ -1,9 +1,13 @@
-export type TransferDetails = {
+import { AccountType, TransactionEnv, TransactionType } from "../enums/ProfileEnums";
+
+export type TransferRequest = {
+  apiKey:string;
   email: string;
   emailOfTransferee: string | undefined;
   amount: number;
   accountNumber: string;
-  bankAccountType: string;
+  bankAccountType: AccountType;
   phoneNumberOfTransferee: string | undefined;
-  transactionType: string;
+  transactionType: TransactionType;
+  transactionEnv:TransactionEnv
 };

@@ -139,19 +139,19 @@
 .insight {
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     url("../../assets/photos/city.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  color: white;
-  height: 100vh;
-  max-width: 95%;
-  margin: 100px auto;
-  position: relative;
-  transition-duration: 500ms;
-  transition-property: box-shadow;
-  animation: fadein;
-  -webkit-animation: fadein 7s;
-  -moz-animation: fadein 7s;
-  -o-animation: fadein 7s;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    height: 100vh;
+    max-width: 95%;
+    margin: 100px auto;
+    position: relative;
+    transition-duration: 500ms;
+    transition-property: box-shadow;
+    animation: fadein;
+    -webkit-animation: fadein 6s;
+    -moz-animation: fadein 6s;
+    -o-animation: fadein 6s;
 }
 .mobInsight {
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),

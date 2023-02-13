@@ -8,7 +8,6 @@ import AccountFooter from "../Footers/AccountFooter";
 import { AccountNavbar } from "../Navbars/AccountNavbar";
 import { useSearchParams } from "react-router-dom";
 import AppRoute from "../../../enums/Route";
-import { API_VERSION } from "../Constants/Constants";
 
 const AccountLayout: FC<{
   customer: CustomerDetails;
@@ -33,14 +32,11 @@ const AccountLayout: FC<{
 
   return (
     <>
-      {!urlParamAccount || !urlParamDisplay ? (
-        <div>{children}</div>
-      ) : (
-        <>
+      {(!urlParamDisplay || !urlParamAccount || customer.accounts.length <= 0) && <div>{children}</div>}
+      {(urlParamDisplay?.includes(AppRoute.MAINPROFILE) && customer.accounts.length > 0) &&  
+      <>
           <AccountNavbar
-            API_VERSION={API_VERSION}
             axios={axios}
-            token={customer.token}
             options={options}
             mobile={mobile}
             notificationDetails={notis}
@@ -49,7 +45,7 @@ const AccountLayout: FC<{
           <div>{children}</div>
           <AccountFooter />
         </>
-      )}
+        }
     </>
   );
 };

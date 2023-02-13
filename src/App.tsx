@@ -14,13 +14,10 @@ import AccountLayout from "./components/UI/Layouts/AccoutLayout";
 import { RootState } from "./store/store";
 import Layout from "./components/UI/Layouts/Layout";
 import Home from "./pages/Home";
-import { BUFFERTIME, API_VERSION } from "./components/UI/Constants/Constants";
-import axios from "axios";
 import LoadingSpinner from "./components/UI/Modals/LoadingSpinner/LoadingSpinner";
-import Timer from "./components/UI/Modals/Timer/Timer";
 import VerifyAccount from "./pages/VerifyAccount";
 import AppRoute from "./enums/Route";
-import { SocialMediaLink } from "./enums/SocialLink";
+
 const Startups = lazy(() => import("./pages/Startups"));
 const Insight = lazy(() => import("./pages/Insight"));
 const About = lazy(() => import("./pages/About"));
@@ -37,7 +34,6 @@ const App: FC = () => {
   const theme = useTheme<Theme>();
   const mobile: boolean = useMediaQuery<unknown>(theme.breakpoints.down("md"));
   const { pathname } = useLocation();
-  const Location: Location = window.location;
   const login: PathMatch<string> | null = matchPath<string, string>(
     AppRoute.LOGIN,
     pathname
@@ -86,30 +82,12 @@ const App: FC = () => {
       ) : (
         <Layout
           verification={verification}
-          DATE={DATE}
-          BUFFER={BUFFERTIME}
-          Timer={Timer}
-          Location={Location}
-          API_VERSION={API_VERSION}
-          axios={axios}
-          mobile={mobile}
+          isMobile={mobile}
           customer={customer}
           login={login}
           signup={signup}
           error={error}
           YEAR={YEAR}
-          ABOUT={AppRoute.ABOUT}
-          LOCATIONS={AppRoute.LOCATIONS}
-          CONTACT={AppRoute.CONTACT}
-          INSIGHT={AppRoute.INSIGHT}
-          STARTUPS={AppRoute.STARTUPS}
-          PROFILE={AppRoute.PROFILE}
-          REDIRECT={AppRoute.REDIRECT}
-          LOGIN={AppRoute.LOGIN}
-          TWITTER={SocialMediaLink.TWITTER}
-          FACEBOOK={SocialMediaLink.FACEBOOK}
-          INSTAGRAM={SocialMediaLink.INSTAGRAM}
-          LINKEDIN={SocialMediaLink.LINKEDIN}
         >
           <Routes>
             <Route path={AppRoute.HOME} element={<Home mobile={mobile} />} />

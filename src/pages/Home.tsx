@@ -7,7 +7,6 @@ import {
   useEffect,
   MutableRefObject,
 } from "react";
-import cityscape from "../assets/videos/cityscape.mp4";
 import Services from "../components/Homepage/Services";
 import startUp from "../assets/photos/startup.jpg";
 import biz from "../assets/photos/business.jpg";
@@ -17,7 +16,6 @@ import Banner from "../components/Homepage/Banner";
 import Misc from "../components/Homepage/Misc";
 import MailLetter from "../components/Homepage/MailLetter";
 import {
-  API_VERSION,
   BACKWARD,
   FORWARD,
 } from "../components/UI/Constants/Constants";
@@ -26,8 +24,8 @@ import axios from "axios";
 
 const Home: FC<{
   mobile: boolean;
-}> = ({ mobile }) => {
-  const NAVIGATE: NavigateFunction = useNavigate();
+}> = ({ mobile}) => {
+  const nav: NavigateFunction = useNavigate();
   const year = new Date().getFullYear();
   const [view, setView] = useState<number>(0);
   const [serviceView, setServiceView] = useState<boolean>();
@@ -112,9 +110,8 @@ const Home: FC<{
     <Fragment>
       <Banner
         classes={classes}
-        cityscape={cityscape}
         isMobile={mobile}
-        navigate={NAVIGATE}
+        navigate={nav}
       />
       <Grid sx={{ backgroundColor: "#8a2be2", padding: "80px 0" }} container>
         <Grid className={classes.aboutContainer} xs={12} md={12} item>
@@ -136,7 +133,6 @@ const Home: FC<{
       <div className={classes.serviceContainer} ref={serviceRef} id="services">
         {serviceView && (
           <Services
-            classes={classes}
             isMobile={mobile}
             view={view}
             cards={cards}
@@ -146,14 +142,13 @@ const Home: FC<{
           />
         )}
         <div className={classes.miscContainer}>
-          <Misc isMobile={mobile} info={info} navigate={NAVIGATE} />
+          <Misc isMobile={mobile} info={info} navigate={nav} />
         </div>
       </div>
       <MailLetter
         classes={classes}
         isMobile={mobile}
         axios={axios}
-        API_VERSION={API_VERSION}
       />
     </Fragment>
   );

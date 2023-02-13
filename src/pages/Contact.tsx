@@ -26,7 +26,7 @@ const Contact: FC<{
       topic: string | undefined
     ) => void = async (email, text, topic) => {
       await axios
-        .put(`${API_VERSION}/customer-service/email-customer-service`, {
+        .put(`${API_VERSION}/contact/customer-service`, {
           email: email,
           text: text,
           topic: topic,

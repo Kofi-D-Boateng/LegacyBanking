@@ -16,21 +16,19 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Notifications from "@mui/icons-material/Notifications";
 import Notis from "../Notifications/Notis";
 import { AxiosStatic } from "axios";
-import { notisActions } from "../../../store/notifications/notifications";
 import AccountMobile from "./Mobile/AccountMobile";
 import AccountWeb from "./Web/AccountWeb";
 import { customerActions } from "../../../store/customer/customer-slice";
 import { NotificationDetails } from "../../../types/Notification";
+import { API_VERSION } from "../Constants/Constants";
 
 const AccountNavbar: FC<{
   mobile: boolean;
   options: { key: number; title: string; link: string }[];
   notificationDetails: NotificationDetails;
-  token: string | null;
   axios: AxiosStatic;
   url: string;
-  API_VERSION: string | undefined;
-}> = ({ mobile, options, notificationDetails, token, axios, API_VERSION }) => {
+}> = ({ mobile, options, notificationDetails, axios }) => {
   const { notifications, numberOfUnreadNotifications } = notificationDetails;
   const nav: NavigateFunction = useNavigate();
   const dispatch = useDispatch<Dispatch<any>>();
@@ -59,14 +57,13 @@ const AccountNavbar: FC<{
       }
       const target = options.find((o) => o.title === innerText);
       if (target?.title === "Log out") {
-        await axios
-          .get(`${API_VERSION}/logout`, {
-            headers: { authorization: token as string },
+        axios
+          .delete(`${API_VERSION}/customer/logout`, {
+            headers: { authorization: localStorage.getItem("token") as string },
+            params:{"apiKey":localStorage.getItem("apiKey") as string}
           })
-          .catch(() => {
-            dispatch(customerActions.logout());
-          });
-        dispatch(customerActions.logout());
+          .then(()=> dispatch(customerActions.logout()))
+          .catch(() => dispatch(customerActions.logout()));
       } else if (target?.title !== "Log out") {
         nav(target!.link, { replace: false });
       }
@@ -74,7 +71,7 @@ const AccountNavbar: FC<{
       setShowLinks(null);
       setShowNotis(null);
     },
-    [dispatch, axios, API_VERSION, token, nav, options]
+    [dispatch, axios, nav, options]
   );
 
   const markRead: (e: MouseEvent<HTMLButtonElement>) => void = async ({
@@ -83,14 +80,12 @@ const AccountNavbar: FC<{
     const { value } = currentTarget;
     await axios
       .put(
-        `${API_VERSION}/authentication/notifications`,
-        { msgID: value },
-        { headers: { authorization: token as string } }
+        `${API_VERSION}/notifications/update`,
+        { msgId: value, apiKey: localStorage.getItem("apiKey") as string },
+        { headers: { authorization: localStorage.getItem("token") as string } }
       )
-      .then((response) => {
-        const { notis } = response.data;
-        dispatch(notisActions.getNotis({ notis: notis }));
-      });
+      .then(() => dispatch(customerActions.resetInfo()))
+      .catch(()=>dispatch(customerActions.resetInfo()));
   };
 
   return (
