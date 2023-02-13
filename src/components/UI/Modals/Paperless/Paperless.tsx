@@ -28,7 +28,7 @@ const Paperless: FC<{
       const { value } = e.currentTarget;
       await axios
         .put(
-          `${API_VERSION}/authentication/billing`,
+          `${API_VERSION}/customer/billing`,
           { choice: value,
             apiKey: localStorage.getItem("apiKey") as string
           },

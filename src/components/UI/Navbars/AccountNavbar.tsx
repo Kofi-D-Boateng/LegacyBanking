@@ -16,7 +16,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Notifications from "@mui/icons-material/Notifications";
 import Notis from "../Notifications/Notis";
 import { AxiosStatic } from "axios";
-import { notisActions } from "../../../store/notifications/notifications";
 import AccountMobile from "./Mobile/AccountMobile";
 import AccountWeb from "./Web/AccountWeb";
 import { customerActions } from "../../../store/customer/customer-slice";
@@ -59,7 +58,7 @@ const AccountNavbar: FC<{
       const target = options.find((o) => o.title === innerText);
       if (target?.title === "Log out") {
         axios
-          .delete(`http://localhost:8081/${API_VERSION}/auth/logout`, {
+          .delete(`${API_VERSION}/customer/logout`, {
             headers: { authorization: localStorage.getItem("token") as string },
             params:{"apiKey":localStorage.getItem("apiKey") as string}
           })
@@ -81,11 +80,12 @@ const AccountNavbar: FC<{
     const { value } = currentTarget;
     await axios
       .put(
-        `http://localhost:8081/${API_VERSION}/notifications/update-notification`,
+        `${API_VERSION}/notifications/update`,
         { msgId: value, apiKey: localStorage.getItem("apiKey") as string },
         { headers: { authorization: localStorage.getItem("token") as string } }
       )
-      .then((response) => dispatch(customerActions.resetInfo())).catch(()=>dispatch(customerActions.resetInfo()));
+      .then(() => dispatch(customerActions.resetInfo()))
+      .catch(()=>dispatch(customerActions.resetInfo()));
   };
 
   return (

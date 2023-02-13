@@ -17,7 +17,6 @@ const BarChart: FC<{
   const filteredTransactions = transactions.filter(
     (t) => year === +t.dateOfTransaction.substring(0, 4)
   );
-  console.log(transactions)
   const dataArr: any[] = [];
   dataArr.push([
     "Month",

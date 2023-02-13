@@ -120,6 +120,22 @@
   opacity: 0.8;
 }
 
+.couponTextContainer{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  color: white;
+}
+
+.couponImgs{
+  position: relative;
+  object-fit: cover;
+  height: 150px;
+  max-width: 100%;
+}
+
 .btn {
   color: #8a2be2;
   border-color: #8a2be2;

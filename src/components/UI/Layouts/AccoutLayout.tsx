@@ -32,10 +32,9 @@ const AccountLayout: FC<{
 
   return (
     <>
-      {!urlParamAccount || !urlParamDisplay ? (
-        <div>{children}</div>
-      ) : (
-        <>
+      {(!urlParamDisplay || !urlParamAccount || customer.accounts.length <= 0) && <div>{children}</div>}
+      {(urlParamDisplay?.includes(AppRoute.MAINPROFILE) && customer.accounts.length > 0) &&  
+      <>
           <AccountNavbar
             axios={axios}
             options={options}
@@ -46,7 +45,7 @@ const AccountLayout: FC<{
           <div>{children}</div>
           <AccountFooter />
         </>
-      )}
+        }
     </>
   );
 };

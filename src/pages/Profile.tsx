@@ -24,7 +24,6 @@ import Paperless from "../components/UI/Modals/Paperless/Paperless";
 import AccountNumbers from "../components/UI/Modals/AccountNumber/AccountNumbers";
 import { API_VERSION, MonthMap } from "../components/UI/Constants/Constants";
 import MainProfile from "../components/Account/MainProfile";
-import Summary from "../components/Account/AccountDetails/Summary";
 import AccountSecurity from "../components/UI/Modals/AccountSecurity/AccountSecurity";
 import { notisActions } from "../store/notifications/notifications";
 import { Account, Card, CustomerDetails } from "../types/CustomerDetails";
@@ -41,7 +40,6 @@ const Profile: FC<{
   const urlParams = useSearchParams();
   const date = new Date();
   const nav: NavigateFunction = useNavigate();
-
   const [withdrawls, setWithdrawls] = useState<number>(0);
   const [deposits, setDeposits] = useState<number>(0);
   const dispatch = useDispatch<Dispatch<any>>();
@@ -52,7 +50,6 @@ const Profile: FC<{
   const urlParamATransferStatus = urlParams[0].get("status");
   const urlParamActions = urlParams[0].get("action");
   const urlParamAccount = urlParams[0].get("account");
-  const urlParamChartType = urlParams[0].get("chartType");
   const urlParamDisplay = urlParams[0].get("display");
   const urlParamItemToLock = urlParams[0].get("itemToLock");
   const urlParamMonth = urlParams[0].get("month");
@@ -61,13 +58,10 @@ const Profile: FC<{
   const urlParamYear = urlParams[0].get("year");
 
   useEffect(() => {
-    if (!customer.getInfo) {
-      return;
-    }
-    const fetchAccount: (token: string | null) => void = async (token) => {
+    const fetchAccount: () => void = async () => {
       await axios
         .get(
-          `http://localhost:8081/${API_VERSION}/customer/profile`,
+          `${API_VERSION}/customer/profile`,
           {
             headers: {
               authorization: localStorage.getItem("token") as string,
@@ -110,7 +104,11 @@ const Profile: FC<{
           dispatch(customerActions.logout());
         });
     };
-    fetchAccount(localStorage.getItem("token"));
+    if (!customer.getInfo) {
+      return;
+    }else{
+      fetchAccount();
+    }
   }, [
     customer.getInfo,
     nav,
@@ -130,7 +128,6 @@ const Profile: FC<{
   });
 
   const cards: Card | undefined = customer.cards.find((card) => {
-    console.log(account.bankAccountType)
     if (account.bankAccountType.includes(AccountType.CREDIT)) {
       return card.creditType === account.creditType;
     } else {
@@ -139,7 +136,6 @@ const Profile: FC<{
   });
 
   const mainProfileURL = `${customer.fName}${customer.lName}?display=${AppRoute.MAINPROFILE}&account=${urlParamAccount}&year=${urlParamYear}&month=${urlParamMonth}`;
-  const summaryURL = `${mainProfileURL}&view=${AppRoute.SUMMARY}`;
 
   const viewHandler = useCallback(
     (event: ChangeEvent<HTMLElement>) => {
@@ -166,10 +162,6 @@ const Profile: FC<{
     },
     [mainProfileURL, nav, urlParamActions]
   );
-
-  const resetInfo = useCallback(() => {
-    nav(mainProfileURL, { replace: true });
-  }, [nav, mainProfileURL]);
 
   const setTransferStatus = useCallback(
     (param: string) => {
@@ -209,12 +201,12 @@ const Profile: FC<{
           myEmail={customer.email}
           account={account}
           isMobile={mobile}
+          mainUrl={mainProfileURL}
           Exit={exitHandler}
           onChoice={choiceHandler}
           urlParamDisplay={urlParamDisplay}
           urlParamAccount={urlParamAccount}
           urlParamTransferBy={urlParamTransferBy}
-          resetInfo={resetInfo}
           setTransferStatus={setTransferStatus}
           status={urlParamATransferStatus}
         />
@@ -265,7 +257,7 @@ const Profile: FC<{
 
   return (
     <>
-      {(!urlParamDisplay || !urlParamAccount) && (
+      {(!urlParamDisplay || !urlParamAccount || customer.accounts.length <= 0) && (
         <Box
           sx={{ position: "absolute", top: "50%", left: "50%", zIndex: "5" }}
         >
@@ -273,7 +265,7 @@ const Profile: FC<{
         </Box>
       )}
       {urlParamDisplay?.includes(AppRoute.MAINPROFILE) &&
-        !urlParamProfileView && (
+        (!urlParamProfileView && customer.accounts.length >0 ) &&(
           <MainProfile
             statementTag={ProfileModal.STATEMENT}
             securityTag={ProfileModal.SECURITY}
@@ -289,24 +281,12 @@ const Profile: FC<{
             modals={modals}
             mobile={mobile}
             myName={`${customer.fName} ${customer.lName}`}
-            summaryURL={summaryURL}
-            withdrawals={withdrawls}
+            withdrawls={withdrawls}
             setAccountActivityView={setAccountActivityView}
             viewHandler={viewHandler}
             setDeposits={setDeposits}
             setWithdrawls={setWithdrawls}
             nav={nav}
-          />
-        )}
-      {urlParamDisplay?.includes(AppRoute.MAINPROFILE) &&
-        urlParamProfileView && (
-          <Summary
-            chartTypeParam={urlParamChartType}
-            isMobile={mobile}
-            summaryUrl={summaryURL}
-            transactions={customer.transactions}
-            withdrawlAmount={withdrawls}
-            year={parseInt(urlParamYear as string)}
           />
         )}
     </>

@@ -50,7 +50,7 @@ const AccountSecurity: FC<{
     if (securityView?.includes(ProfileModal.LOCKCARD)) {
       await axios
         .put(
-          `http://localhost:8081/${API_VERSION}/security/update-customer-security`,
+          `${API_VERSION}/customer/security`,
           {
             requestType: "LOCK CARD",
             cardNumber: card.cardNumber,
@@ -64,7 +64,7 @@ const AccountSecurity: FC<{
     } else if (securityView?.includes(ProfileModal.LOCKACCOUNT)) {
       await axios
         .put(
-          `http://localhost:8081/${API_VERSION}/security/update-customer-security`,
+          `${API_VERSION}/customer/security`,
           {
             requestType: "LOCK ACCOUNT",
             accountNumber: AN,

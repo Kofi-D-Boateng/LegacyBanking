@@ -39,7 +39,7 @@ const Navbar: FC<{
       const { innerText } = event.currentTarget;
       if (innerText === "Log out") {
         await axios
-          .get(`${API_VERSION}/logout`, {
+          .get(`${API_VERSION}/customer/logout`, {
             headers: { authorization: localStorage.getItem("token") as string },
             params:{apiKey: localStorage.getItem("apiKey") as string}
           })

@@ -24,7 +24,7 @@ const WaitingPage: FC<{
 
   const GenerateLink: (e: MouseEvent<HTMLButtonElement>) => void = async () => {
     await axios
-      .post(`${API_VERSION}/authentication/new-verification-link`, {
+      .post(`${API_VERSION}/link/new-link`, {
         token: localStorage.getItem("token") as string,
       })
       .catch(() => {

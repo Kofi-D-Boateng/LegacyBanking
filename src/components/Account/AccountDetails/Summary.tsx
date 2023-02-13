@@ -15,6 +15,7 @@ const Summary: FC<{
   withdrawlAmount: number;
   year: number;
 }> = ({ transactions, year, isMobile, withdrawlAmount, chartTypeParam }) => {
+  console.log(transactions)
   const charts: { key: number; typeOfChart: string; chart: JSX.Element }[] = [
     {
       key: 1,

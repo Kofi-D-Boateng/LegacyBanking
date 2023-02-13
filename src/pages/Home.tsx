@@ -25,7 +25,7 @@ import axios from "axios";
 const Home: FC<{
   mobile: boolean;
 }> = ({ mobile}) => {
-  const NAVIGATE: NavigateFunction = useNavigate();
+  const nav: NavigateFunction = useNavigate();
   const year = new Date().getFullYear();
   const [view, setView] = useState<number>(0);
   const [serviceView, setServiceView] = useState<boolean>();
@@ -111,7 +111,7 @@ const Home: FC<{
       <Banner
         classes={classes}
         isMobile={mobile}
-        navigate={NAVIGATE}
+        navigate={nav}
       />
       <Grid sx={{ backgroundColor: "#8a2be2", padding: "80px 0" }} container>
         <Grid className={classes.aboutContainer} xs={12} md={12} item>
@@ -142,7 +142,7 @@ const Home: FC<{
           />
         )}
         <div className={classes.miscContainer}>
-          <Misc isMobile={mobile} info={info} navigate={NAVIGATE} />
+          <Misc isMobile={mobile} info={info} navigate={nav} />
         </div>
       </div>
       <MailLetter

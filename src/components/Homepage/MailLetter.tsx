@@ -22,7 +22,7 @@ const MailLetter: FC<{
     }
 
     if (ready) {
-      await axios.put(`${API_VERSION}/mail-list/add-to-maillist`, {
+      await axios.put(`${API_VERSION}/maillist/join`, {
         email: emailRef.current?.value,
       });
     }

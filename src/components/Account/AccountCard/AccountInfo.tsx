@@ -17,8 +17,8 @@ const AccountInfo: FC<{
   }[];
   myName: string;
   transactions: Transaction[];
-  withdrawals: number;
-  setWithdrawals: Dispatch<SetStateAction<number>>;
+  withdrawls: number;
+  setwithdrawls: Dispatch<SetStateAction<number>>;
   setDeposits: Dispatch<SetStateAction<number>>;
   onSetView: (event: any) => void;
 }> = ({
@@ -27,11 +27,11 @@ const AccountInfo: FC<{
   links,
   transactions,
   deposits,
-  withdrawals,
+  withdrawls,
   accountNumberTag,
   account,
   setDeposits,
-  setWithdrawals,
+  setwithdrawls,
   onSetView,
 }) => {
   useEffect(() => {
@@ -52,8 +52,8 @@ const AccountInfo: FC<{
     const floatWithdrawal = parseFloat(withdrawl.toFixed(2));
     const floatDeposit = parseFloat(deposit.toFixed(2));
     setDeposits(floatDeposit);
-    setWithdrawals(floatWithdrawal);
-  }, [transactions, setDeposits, setWithdrawals]);
+    setwithdrawls(floatWithdrawal);
+  }, [transactions, setDeposits, setwithdrawls]);
 
   const details: { key: number; value: string; desc: string }[] = [
     {
@@ -78,7 +78,7 @@ const AccountInfo: FC<{
     },
     {
       key: 3,
-      value: `-${withdrawals.toLocaleString("en-us", {
+      value: `-${withdrawls.toLocaleString("en-us", {
         style: "currency",
         currency: "USD",
         minimumFractionDigits: 2,

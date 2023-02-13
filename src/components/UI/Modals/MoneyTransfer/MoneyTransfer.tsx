@@ -13,22 +13,24 @@ import { useDispatch } from "react-redux";
 import { TransactionEnv, TransactionType } from "../../../../enums/ProfileEnums";
 import AppRoute from "../../../../enums/Route";
 import { TransferStatus } from "../../../../enums/TransferStatus";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 const MoneyTransfer: FC<{
   isMobile: boolean;
   myEmail: string;
   account: Account;
+  mainUrl:string
   urlParamDisplay: string | null;
   urlParamAccount: string | null;
   urlParamTransferBy: string | null;
   status: string | null;
   setTransferStatus: (param: string) => void;
-  resetInfo: () => void;
   Exit: () => void;
   onChoice: (event: ChangeEvent<HTMLInputElement>) => void;
 }> = ({
   isMobile,
   account,
+  mainUrl,
   Exit,
   onChoice,
   urlParamAccount,
@@ -36,7 +38,6 @@ const MoneyTransfer: FC<{
   urlParamTransferBy,
   myEmail,
   status,
-  resetInfo,
   setTransferStatus,
 }) => {
   const AN: string = account ? account.accountNumber : "";
@@ -52,6 +53,7 @@ const MoneyTransfer: FC<{
     transactionEnv:TransactionEnv.ONLINE
   });
   const dispatch = useDispatch();
+  const nav:NavigateFunction = useNavigate();
 
   useEffect(() => {
     if (
@@ -65,23 +67,24 @@ const MoneyTransfer: FC<{
     if (transfer.emailOfTransferee || transfer.phoneNumberOfTransferee) {
       axios
         .put(
-          `http://localhost:8081/${API_VERSION}/transactions/process-transaction`,
+          `${API_VERSION}/transactions/process-transaction`,
           transfer,
           {
             headers: { authorization: localStorage.getItem("token") as string },
           }
         )
         .then(() => {
-          dispatch(customerActions.resetInfo());
           setTransferStatus(TransferStatus.SUCCESSFUL_TRANSFER);
+          dispatch(customerActions.resetInfo());
           setTimeout(() => {
-            resetInfo();
+            nav(mainUrl,{replace:true})
           }, 4000);
         })
         .catch(() => {
           setTransferStatus(TransferStatus.UNSUCCESSFUL_TRANSFER);
+          dispatch(customerActions.resetInfo());
           setTimeout(() => {
-            resetInfo();
+            nav(mainUrl,{replace:true})
           }, 4000);
         });
     }
@@ -89,11 +92,12 @@ const MoneyTransfer: FC<{
     transfer,
     dispatch,
     setTransferStatus,
-    resetInfo,
     account.id,
     urlParamAccount,
     urlParamDisplay,
     account.bankAccountType,
+    mainUrl,
+    nav
   ]);
 
   const transferHandler = useCallback(

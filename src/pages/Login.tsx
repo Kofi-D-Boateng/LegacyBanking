@@ -37,7 +37,7 @@ const Login: FC<{
     const fetchUserLogin = async (userCredentials: LoginCredentials) => {
       await axios
         .post(
-          `http://localhost:8081/${API_VERSION}/auth/login-customer`,
+          `${API_VERSION}/customer/login`,
           userCredentials
         )
         .then((response) => {

@@ -7,7 +7,7 @@ import { MonthMap } from "../UI/Constants/Constants";
 import AccountActivity from "./AccountActivity/AccountActivity";
 import AccountInfo from "./AccountCard/AccountInfo";
 import AccountCoupons from "./AccountCoupons/AccountCoupons";
-import AccountDetails from "./AccountDetails/AccountDetails";
+import MainPanel from "./AccountDetails/MainPanel/MainPanel";
 import AccountVisual from "./AccountVisual/AccountVisual";
 
 const MainProfile: FC<{
@@ -20,7 +20,7 @@ const MainProfile: FC<{
     readonly [key: string]: string;
   };
   mobile: boolean;
-  withdrawals: number;
+  withdrawls: number;
   deposits: number;
   statementTag: string;
   securityTag: string;
@@ -36,20 +36,18 @@ const MainProfile: FC<{
   account: Account
   otherAccounts: Account[]
   transactions: Transaction[]
-  summaryURL: string;
   mainUrl: string;
 }> = ({
   modals,
   classes,
   mobile,
   deposits,
-  withdrawals,
+  withdrawls,
   accountNumberTag,
   moneyTransferTag,
   paperlessTag,
   securityTag,
   statementTag,
-  summaryURL,
   account,
   myName,
   otherAccounts,
@@ -157,8 +155,8 @@ const MainProfile: FC<{
                 transactions={currentTransaction}
                 classes={classes}
                 links={filteredLinks}
-                withdrawals={withdrawals}
-                setWithdrawals={setWithdrawls}
+                withdrawls={withdrawls}
+                setwithdrawls={setWithdrawls}
                 deposits={deposits}
                 setDeposits={setDeposits}
                 onSetView={viewHandler}
@@ -192,7 +190,7 @@ const MainProfile: FC<{
           </Grid>
           <Grid xs={12} md={5} item>
             <Grid container>
-              <AccountDetails classes={classes} summaryURL={summaryURL} />
+              <MainPanel classes={classes} withdrawlAmount={withdrawls}  />
               <AccountCoupons classes={classes} isMobile={mobile} />
             </Grid>
           </Grid>
@@ -208,8 +206,8 @@ const MainProfile: FC<{
               onSetView={viewHandler}
               myName={myName}
               transactions={currentTransaction}
-              withdrawals={withdrawals}
-              setWithdrawals={setWithdrawls}
+              withdrawls={withdrawls}
+              setwithdrawls={setWithdrawls}
               deposits={deposits}
               setDeposits={setDeposits}
             />
@@ -225,7 +223,7 @@ const MainProfile: FC<{
             />
           </Grid>
           <Grid container>
-            <AccountDetails classes={classes} summaryURL={summaryURL} />
+            <MainPanel classes={classes} withdrawlAmount={withdrawls}  />
           </Grid>
           <Grid container>
             <AccountCoupons classes={classes} isMobile={mobile} />
