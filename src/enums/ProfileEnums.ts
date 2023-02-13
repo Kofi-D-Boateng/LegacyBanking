@@ -13,12 +13,14 @@ export enum CreditType {
   PLATINUM = "PLATINUM",
   BLACK = "BLACK",
   EMERALD = "EMERALD",
+  NONE = "NONE"
 }
 
 export enum CreditLine {
   BLACK_CREDIT_LINE = 100000.0,
   EMERALD_CREDIT_LINE = 5000.0,
   PLATINUM_CREDIT_LINE = 10000.0,
+  NONE = 0.0
 }
 
 export enum TransactionType {
