@@ -1,12 +1,19 @@
 import { Grid, Typography } from "@mui/material";
 import { FC } from "react";
+import { AccountType } from "../../../../enums/ProfileEnums";
 
 const MonthlyExpenditure: FC<{
   details: { key: number; value: string; desc: string }[];
-}> = ({ details }) => {
+  accountType: string;
+}> = ({ details, accountType }) => {
+  const filtered = details.filter((p) => {
+    return accountType.includes(AccountType.CREDIT)
+      ? !p.desc.includes("Deposit")
+      : p;
+  });
   return (
     <>
-      {details.map((d) => {
+      {filtered.map((d) => {
         return (
           <Grid key={d.key} md={4} item>
             <Grid container>

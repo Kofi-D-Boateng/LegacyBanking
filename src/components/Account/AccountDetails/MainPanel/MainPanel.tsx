@@ -5,8 +5,8 @@ const MainPanel: FC<{
   classes: {
     readonly [key: string]: string;
   };
-  withdrawals: number;
-}> = ({ classes, withdrawals }) => {
+  withdrawlAmount: number;
+}> = ({ classes, withdrawlAmount }) => {
   return (
     <Grid container>
       <Card className={classes.card}>
@@ -23,7 +23,7 @@ const MainPanel: FC<{
             container
           >
             <Typography sx={{ margin: "0 10px" }} variant="h5">
-              {`You have spent ${withdrawals.toLocaleString("en-us", {
+              {`You have spent ${withdrawlAmount.toLocaleString("en-us", {
                 style: "currency",
                 currency: "USD",
                 minimumFractionDigits: 2,

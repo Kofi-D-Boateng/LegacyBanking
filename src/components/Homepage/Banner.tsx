@@ -1,15 +1,15 @@
 import { Button, Grid, Typography } from "@mui/material";
 import { FC } from "react";
 import { NavigateFunction } from "react-router-dom";
+import { API_VERSION } from "../UI/Constants/Constants";
 
 const Banner: FC<{
   classes: {
     readonly [key: string]: string;
   };
-  cityscape: any;
   isMobile: boolean;
   navigate: NavigateFunction;
-}> = ({ classes, cityscape, isMobile, navigate }) => {
+}> = ({ classes, isMobile, navigate }) => {
   return (
     <Grid className={classes.banner} container>
       <Grid className={classes.sloganContainer} container>
@@ -45,7 +45,7 @@ const Banner: FC<{
           <video autoPlay muted loop>
             <source
               style={{ width: "100%", height: "auto" }}
-              src={cityscape}
+              src={`http://localhost:8081/${API_VERSION}/s3/get-video?key=cityscape.mp4`}
               type="video/mp4"
             />
           </video>

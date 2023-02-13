@@ -1,13 +1,9 @@
-import { randomBytes } from "crypto";
-import { DefaultBodyType, MockedRequest, rest, RestHandler } from "msw/lib";
+import { rest, RestHandler } from "msw/lib";
 import { API_VERSION } from "../../components/UI/Constants/Constants";
 import { Bank, Credentials, customer } from "../../setupTests";
-import { BankDetails } from "../../types/Bank";
-import { LoginCredentials } from "../../types/Credentials";
-import { CustomerDetails } from "../../types/CustomerDetails";
 
 export const handlers: RestHandler[] = [
-  rest.post(`${API_VERSION}/authentication/login`, async (req, res, ctx) => {
+  rest.post(`${API_VERSION}/customer/login`, async (req, res, ctx) => {
     const { email, password } = await req.json();
     if (email != Credentials.email) {
       return res(ctx.status(400));
@@ -36,14 +32,12 @@ export const handlers: RestHandler[] = [
     // }
     return res(ctx.status(200), ctx.json({ isSaved: true }));
   }),
-  rest.get(`/${API_VERSION}/bank/info`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(Bank));
-  }),
   rest.get(
-    `${API_VERSION}/authentication/profile/info`,
+    `${API_VERSION}/customer/profile`,
     async (req, res, ctx) => {
       const token = req.headers.get("authorization");
-      customer["token"] = token;
+      console.log(token)
+      // localStorage.setItem("token")  token;
       if (token) {
         return res(
           ctx.status(200),
@@ -58,7 +52,7 @@ export const handlers: RestHandler[] = [
             accounts: customer.accounts,
             cards: customer.cards,
             isActivated: customer.isActivated,
-            notis: [],
+            notifications: [],
           })
         );
       }

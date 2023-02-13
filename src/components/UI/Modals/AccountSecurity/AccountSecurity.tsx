@@ -33,14 +33,12 @@ const AccountSecurity: FC<{
   Exit: () => void;
   setAccountSecurityView: (e: MouseEvent<HTMLButtonElement>) => void;
   isMobile: boolean;
-  token: string | null;
   account: Account;
   card: AccountCard;
   securityView: string | null;
 }> = ({
   Exit,
   isMobile,
-  token,
   account,
   card,
   securityView,
@@ -52,12 +50,13 @@ const AccountSecurity: FC<{
     if (securityView?.includes(ProfileModal.LOCKCARD)) {
       await axios
         .put(
-          `${API_VERSION}/authentication/profile/security`,
+          `${API_VERSION}/customer/security`,
           {
             requestType: "LOCK CARD",
             cardNumber: card.cardNumber,
+            apiKey: localStorage.getItem("apiKey") as string
           },
-          { headers: { authorization: token as string } }
+          { headers: { authorization: localStorage.getItem("token") as string } }
         )
         .then(() => {
           window.location.reload();
@@ -65,18 +64,19 @@ const AccountSecurity: FC<{
     } else if (securityView?.includes(ProfileModal.LOCKACCOUNT)) {
       await axios
         .put(
-          `${API_VERSION}/authentication/profile/security`,
+          `${API_VERSION}/customer/security`,
           {
             requestType: "LOCK ACCOUNT",
             accountNumber: AN,
+            apiKey: localStorage.getItem("apiKey") as string
           },
-          { headers: { authorization: token as string } }
+          { headers: { authorization: localStorage.getItem("token") as string } }
         )
         .then(() => {
           window.location.reload();
         });
     }
-  }, [AN, securityView, token, card.cardNumber]);
+  }, [AN, securityView,  card.cardNumber]);
 
   return (
     <>

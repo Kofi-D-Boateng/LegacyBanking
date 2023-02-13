@@ -22,17 +22,18 @@ import { backdropDiv, overlayDiv } from "../../Layouts/RootElement";
 const Paperless: FC<{
   Exit: () => void;
   isMobile: boolean;
-  token: string | null;
-}> = ({ Exit, isMobile, token }) => {
+}> = ({ Exit, isMobile}) => {
   const setBillingType = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {
       const { value } = e.currentTarget;
       await axios
         .put(
-          `${API_VERSION}/authentication/billing`,
-          { choice: value },
+          `${API_VERSION}/customer/billing`,
+          { choice: value,
+            apiKey: localStorage.getItem("apiKey") as string
+          },
           {
-            headers: { authorization: token as string },
+            headers: { authorization: localStorage.getItem("token") as string },
           }
         )
         .then(() => {
@@ -40,7 +41,7 @@ const Paperless: FC<{
         })
         .catch(() => Exit());
     },
-    [Exit, token]
+    [Exit]
   );
 
   return (

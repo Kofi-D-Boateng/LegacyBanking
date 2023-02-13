@@ -15,20 +15,18 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import classes from "../../../styles/Navbar/NavbarStyles.module.css";
 import MainMobile from "./Mobile/MainMobile";
 import MainWeb from "./Web/MainWeb";
-
-import { AxiosStatic } from "axios";
 import { customerActions } from "../../../store/customer/customer-slice";
 import { CustomerDetails } from "../../../types/CustomerDetails";
 import { Link } from "../../../types/Link";
+import axios from "axios";
+import { API_VERSION } from "../Constants/Constants";
 
 const Navbar: FC<{
-  API_VERSION: string | undefined;
-  axios: AxiosStatic;
   isMobile: boolean;
   customer: CustomerDetails;
   links: Link[];
   authLinks: Link[];
-}> = ({ customer, isMobile, links, authLinks, axios, API_VERSION }) => {
+}> = ({ customer, isMobile, links, authLinks }) => {
   const [anchorEl, setAnchorEl] = useState<any>(null);
   const dispatch = useDispatch<Dispatch<any>>();
 
@@ -41,15 +39,16 @@ const Navbar: FC<{
       const { innerText } = event.currentTarget;
       if (innerText === "Log out") {
         await axios
-          .get(`${API_VERSION}/logout`, {
-            headers: { authorization: customer.token as string },
+          .get(`${API_VERSION}/customer/logout`, {
+            headers: { authorization: localStorage.getItem("token") as string },
+            params:{apiKey: localStorage.getItem("apiKey") as string}
           })
           .catch(() => dispatch(customerActions.logout()));
         dispatch(customerActions.logout());
       }
       setAnchorEl(null);
     },
-    [dispatch, axios, customer.token, API_VERSION]
+    [dispatch]
   );
 
   return (

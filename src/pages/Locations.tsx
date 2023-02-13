@@ -36,7 +36,7 @@ const Locations: FC<{
       });
     };
     fetchBankData();
-  }, [dispatch, LEGACY.name]);
+  });
 
   return (
     <>

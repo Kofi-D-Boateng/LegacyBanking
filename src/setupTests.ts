@@ -6,6 +6,7 @@ import { createTheme } from "@mui/material";
 import "@testing-library/jest-dom";
 import { randomBytes } from "crypto";
 import { server } from "../src/test/mocks/server";
+import { AccountType, CardType, CreditLine, CreditType } from "./enums/ProfileEnums";
 import { BankDetails } from "./types/Bank";
 import { LoginCredentials } from "./types/Credentials";
 import { CustomerDetails } from "./types/CustomerDetails";
@@ -62,7 +63,6 @@ export const Credentials: LoginCredentials = {
 };
 
 export const customer: CustomerDetails = {
-  token: token,
   authenticated: token ? true : false,
   expiresIn: timestamp.getTime(),
   fName: "Kofi",
@@ -81,7 +81,7 @@ export const customer: CustomerDetails = {
       dateTransactionPosted: timestamp.toISOString(),
       location: "ONLINE",
       accountNumber: "",
-      cardType: "",
+      cardType: CardType.DEBIT,
       merchantDescription: "",
       merchantName: "",
       recipient: "",
@@ -93,9 +93,9 @@ export const customer: CustomerDetails = {
       accountNumber: "1200876342",
       routingNumber: "5300245231",
       annualPercentageRate: 0.0,
-      bankAccountType: "DEBIT",
+      bankAccountType: AccountType.CHECKING,
       capital: 10000.0,
-      creditType: "",
+      creditType: CreditType.NONE,
       isEnable: true,
       minimumBalance: 30.0,
       minimumPayment: 0.0,
@@ -107,10 +107,10 @@ export const customer: CustomerDetails = {
       id: 1,
       cardNumber: "6534678800232915",
       cardVerificationCode: "013",
-      creditType: "",
+      cardType:CardType.DEBIT,
+      creditType:CreditType.NONE,
       expirationDate: timestamp.toISOString(),
       isLocked: false,
-      type: "DEBIT",
     },
   ],
   getInfo: true,

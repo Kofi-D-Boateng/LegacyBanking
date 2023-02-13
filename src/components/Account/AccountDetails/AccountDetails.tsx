@@ -3,6 +3,7 @@ import { Grid, Typography, Card, CardContent } from "@mui/material";
 import { FC, ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 import { ArrowForwardIos } from "@mui/icons-material";
+import { ChartType } from "../../../enums/Chart";
 
 const AccountDetails: FC<{
   classes: {
@@ -10,6 +11,7 @@ const AccountDetails: FC<{
   };
   summaryURL: string;
 }> = ({ classes, summaryURL }) => {
+  const url = summaryURL.concat(`&chartType=${ChartType.Bar}`);
   const clickableDetails: {
     key: number;
     title: string;
@@ -20,7 +22,7 @@ const AccountDetails: FC<{
     {
       key: 1,
       title: "Spending summary",
-      link: summaryURL,
+      link: url,
       desc: "Get insight into your spending",
       icon: <Wallet fontSize="large" sx={{ color: "#8a2be2" }} />,
     },
