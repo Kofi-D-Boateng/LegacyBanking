@@ -6,7 +6,7 @@ COPY . .
 
 RUN npm install && npm run build
 
-FROM ubuntu:18.04
+FROM nginx:1.20-alpine
 
 RUN apt update -y \
     && apt install nginx -y \
