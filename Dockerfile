@@ -1,4 +1,4 @@
-FROM node:16.6-alpine as build-stage
+FROM node:18-alpine as build-stage
 
 WORKDIR /local/app
 
@@ -16,7 +16,7 @@ RUN apt update -y \
     && apt-get install python-certbot-nginx -y \
     && apt-get clean
 
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 WORKDIR /usr/share/nginx/html
 

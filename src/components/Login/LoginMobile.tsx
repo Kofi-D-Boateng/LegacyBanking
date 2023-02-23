@@ -1,21 +1,13 @@
 import {
-  BoxTypeMap,
   CircularProgressProps,
   GridTypeMap,
   TypographyTypeMap,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import {
-  FC,
-  FormEvent,
-  ForwardRefExoticComponent,
-  MutableRefObject,
-  RefAttributes,
-} from "react";
-import { NavLinkProps } from "react-router-dom";
+import { FC, FormEvent, MutableRefObject } from "react";
 
 const LoginMobile: FC<{
-  Box: OverridableComponent<BoxTypeMap<{}, "div">>;
+  Box: OverridableComponent<any>;
   Loader: (props: CircularProgressProps) => JSX.Element;
   actionParam: string | null;
   statusParam: string | null;
@@ -25,9 +17,6 @@ const LoginMobile: FC<{
     readonly [key: string]: string;
   };
   Typography: OverridableComponent<TypographyTypeMap<{}, "span">>;
-  NavLink: ForwardRefExoticComponent<
-    NavLinkProps & RefAttributes<HTMLAnchorElement>
-  >;
   submitHandler: (event: FormEvent) => void;
   PASSWORD: MutableRefObject<HTMLInputElement | undefined>;
   EMAIL: MutableRefObject<HTMLInputElement | undefined>;
@@ -39,7 +28,6 @@ const LoginMobile: FC<{
   }>;
 }> = ({
   EMAIL,
-  NavLink,
   PASSWORD,
   LoginForm,
   isMobile,
