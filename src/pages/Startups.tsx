@@ -6,8 +6,10 @@ import Info from "../components/Startups/Info";
 import HANDSHAKE from "../assets/photos/handshake.jpg";
 import BS from "../assets/photos/business_shop.jpg";
 import PHONE from "../assets/photos/phone.jpg";
+import { Title } from "../enums/Title";
 
 const Startups: FC<{ isMobile: boolean }> = ({ isMobile }) => {
+  document.getElementById("title")!.innerText = Title.STARTUPS;
   const INFO: { key: number; title: string; info: string; img: string }[] = [
     {
       key: 1,

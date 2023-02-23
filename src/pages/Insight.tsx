@@ -6,11 +6,13 @@ import classes from "../styles/Insight/InsightStyles.module.css";
 import SPM from "../assets/photos/supply_chain.jpg";
 import money from "../assets/photos/money.jpg";
 import Fed from "../assets/photos/Fed.jpg";
+import { Title } from "../enums/Title";
 
 const Insight: FC<{ isMobile: boolean; YEAR: number }> = ({
   YEAR,
   isMobile,
 }) => {
+  document.getElementById("title")!.innerText = Title.INSIGHT;
   const info: { key: number; title: string; info: string; img: string }[] = [
     {
       key: 1,

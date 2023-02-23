@@ -2,9 +2,11 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
+import { CacheProvider } from "@emotion/react";
+import createEmotionCache from "./config/createEmotionCache";
 
 const theme: {} = createTheme({
   palette: {
@@ -29,15 +31,19 @@ const theme: {} = createTheme({
   },
 });
 
+const clientSideEmotionCache = createEmotionCache();
+
 const ROOT = ReactDOM.createRoot(
   (document.getElementById("root") as Element) || DocumentFragment
 );
 ROOT.render(
   <Provider store={store}>
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
+    <CacheProvider value={clientSideEmotionCache}>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    </CacheProvider>
   </Provider>
 );

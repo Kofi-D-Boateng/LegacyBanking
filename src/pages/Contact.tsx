@@ -5,11 +5,13 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import Banner from "../components/Contact/Banner";
 import ContactForm from "../components/Forms/ContactForm/ContactForm";
 import { API_VERSION } from "../components/UI/Constants/Constants";
+import { Title } from "../enums/Title";
 import classes from "../styles/Contact/ContactStyles.module.css";
 
 const Contact: FC<{
   isMobile: boolean;
 }> = ({ isMobile }) => {
+  document.getElementById("title")!.innerText = Title.CONTACT;
   const [limit, setLimit] = useState<number>(500);
   const params = useSearchParams()[0];
   const urlParamAction = params.get("action");

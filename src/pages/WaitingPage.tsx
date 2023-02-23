@@ -1,15 +1,17 @@
 import { Button } from "@mui/material";
 import axios from "axios";
 import { CSSProperties, Dispatch, FC, MouseEvent } from "react";
-import { useDispatch, } from "react-redux";
+import { useDispatch } from "react-redux";
 import { NavigateFunction, NavLink, useNavigate } from "react-router-dom";
 import { customerActions } from "../store/customer/customer-slice";
 import AppRoute from "../enums/Route";
 import { API_VERSION } from "../components/UI/Constants/Constants";
+import { Title } from "../enums/Title";
 
 const WaitingPage: FC<{
   isMobile: boolean;
 }> = ({ isMobile }) => {
+  document.getElementById("title")!.innerText = Title.LOGINERROR;
   const dispatch: Dispatch<any> = useDispatch();
   const navigate: NavigateFunction = useNavigate();
   const STYLE: CSSProperties = {
