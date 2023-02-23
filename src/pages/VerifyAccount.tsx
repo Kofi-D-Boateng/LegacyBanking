@@ -12,10 +12,12 @@ import { Cancel, Check } from "@mui/icons-material";
 import AppRoute from "../enums/Route";
 import { API_VERSION } from "../components/UI/Constants/Constants";
 import LoadingSpinner from "../components/UI/Modals/LoadingSpinner/LoadingSpinner";
+import { Title } from "../enums/Title";
 
 const VerifyAccount: FC<{
   isMobile: boolean;
 }> = ({ isMobile }) => {
+  document.getElementById("title")!.innerText = Title.VERIFYACCOUNT;
   const navigate: NavigateFunction = useNavigate();
   const params = useSearchParams()[0];
   const tokenParam = params.get("token");

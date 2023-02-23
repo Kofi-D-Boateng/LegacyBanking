@@ -1,9 +1,9 @@
-import { BoxTypeMap, CircularProgressProps } from "@mui/material";
+import { CircularProgressProps } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { FC } from "react";
 
 const Modal: FC<{
-  Box: OverridableComponent<BoxTypeMap<{}, "div">>;
+  Box: OverridableComponent<any>;
   Loader: (props: CircularProgressProps) => JSX.Element;
 }> = ({ Box, Loader }) => {
   return (

@@ -2,9 +2,8 @@ import { FC, useState, useRef, useEffect, Fragment, FormEvent } from "react";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import {
-  NavigateFunction,
-  NavLink,
   useNavigate,
+  NavigateFunction,
   useSearchParams,
 } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -16,6 +15,7 @@ import LoginWeb from "../components/Login/LoginWeb";
 import LoginForm from "../components/Forms/LoginForm/LoginForm";
 import { API_VERSION } from "../components/UI/Constants/Constants";
 import AppRoute from "../enums/Route";
+import { Title } from "../enums/Title";
 
 const Login: FC<{
   isMobile: boolean;
@@ -25,6 +25,9 @@ const Login: FC<{
   const params = useSearchParams();
   const urlParamStatus = params[0].get("status");
   const urlParamAction = params[0].get("action");
+  !urlParamAction
+    ? (document.getElementById("title")!.innerText = Title.LOGIN)
+    : (document.getElementById("title")!.innerText = Title.LOGGINGIN);
   const [credentials, setCredentials] = useState<LoginCredentials>({
     email: "",
     password: "",
@@ -36,18 +39,20 @@ const Login: FC<{
     if (!urlParamAction) return;
     const fetchUserLogin = async (userCredentials: LoginCredentials) => {
       await axios
-        .post(
-          `${API_VERSION}/customer/login`,
-          userCredentials
-        )
+        .post(`${API_VERSION}/customer/login`, userCredentials)
         .then((response) => {
-          const returnedValue:{AuthToken:string,ApiKey:string,TokenExpiration:number,IsActivated:boolean} = response.data
+          const returnedValue: {
+            AuthToken: string;
+            ApiKey: string;
+            TokenExpiration: number;
+            IsActivated: boolean;
+          } = response.data;
           dispatch(
             customerActions.getCreds({
               authToken: returnedValue.AuthToken,
               expiresIn: returnedValue.TokenExpiration,
               isActivated: returnedValue.IsActivated,
-              apiKey:returnedValue.ApiKey
+              apiKey: returnedValue.ApiKey,
             })
           );
           nav(AppRoute.PROFILE.substring(0, 8), { replace: true });
@@ -81,7 +86,6 @@ const Login: FC<{
           Grid={Grid}
           classes={classes}
           Typography={Typography}
-          NavLink={NavLink}
           submitHandler={submitHandler}
           PASSWORD={passwordRef}
           EMAIL={emailRef}
@@ -97,7 +101,6 @@ const Login: FC<{
           statusParam={urlParamStatus}
           actionParam={urlParamAction}
           Typography={Typography}
-          NavLink={NavLink}
           submitHandler={submitHandler}
           PASSWORD={passwordRef}
           EMAIL={emailRef}

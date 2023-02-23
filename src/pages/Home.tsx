@@ -15,18 +15,16 @@ import classes from "../styles/Home/HomeStyles.module.css";
 import Banner from "../components/Homepage/Banner";
 import Misc from "../components/Homepage/Misc";
 import MailLetter from "../components/Homepage/MailLetter";
-import {
-  BACKWARD,
-  FORWARD,
-} from "../components/UI/Constants/Constants";
+import { BACKWARD, FORWARD } from "../components/UI/Constants/Constants";
 import AppRoute from "../enums/Route";
 import axios from "axios";
+import { Title } from "../enums/Title";
 
 const Home: FC<{
   mobile: boolean;
-}> = ({ mobile}) => {
+}> = ({ mobile }) => {
+  document.getElementById("title")!.innerText = Title.HOME;
   const nav: NavigateFunction = useNavigate();
-  const year = new Date().getFullYear();
   const [view, setView] = useState<number>(0);
   const [serviceView, setServiceView] = useState<boolean>();
   const serviceRef: MutableRefObject<any> = useRef();
@@ -70,49 +68,9 @@ const Home: FC<{
     },
   ];
 
-  const cards = [
-    {
-      key: 1,
-      title: "International",
-      description:
-        "A deep dive into our foreign strategies and relations with around the world.",
-      css: !mobile ? classes.international : classes.mobInternational,
-      css2: classes.cardDescription,
-      link: AppRoute.LOCATIONS + "#map",
-    },
-    {
-      key: 2,
-      title: "Insight",
-      description: `A look at our ${year} organizational plans.`,
-      css: !mobile ? classes.insight : classes.mobInsight,
-      css2: classes.cardDescription,
-      link: AppRoute.INSIGHT,
-    },
-  ];
-
-  const viewHandler: (e: React.MouseEvent<HTMLButtonElement>) => void = ({
-    currentTarget,
-  }) => {
-    const { value } = currentTarget;
-
-    if (value.includes(FORWARD) && view < cards.length - 1) {
-      setView(view + 1);
-      return;
-    }
-
-    if (value.includes(BACKWARD) && view > 0) {
-      setView(view - 1);
-      return;
-    }
-  };
-
   return (
     <Fragment>
-      <Banner
-        classes={classes}
-        isMobile={mobile}
-        navigate={nav}
-      />
+      <Banner classes={classes} isMobile={mobile} navigate={nav} />
       <Grid sx={{ backgroundColor: "#8a2be2", padding: "80px 0" }} container>
         <Grid className={classes.aboutContainer} xs={12} md={12} item>
           <Typography variant="h4">Learn more about us</Typography>
@@ -133,10 +91,10 @@ const Home: FC<{
       <div className={classes.serviceContainer} ref={serviceRef} id="services">
         {serviceView && (
           <Services
+            classes={classes}
             isMobile={mobile}
             view={view}
-            cards={cards}
-            setView={viewHandler}
+            setView={setView}
             FORWARD={FORWARD}
             BACKWARD={BACKWARD}
           />
@@ -145,11 +103,7 @@ const Home: FC<{
           <Misc isMobile={mobile} info={info} navigate={nav} />
         </div>
       </div>
-      <MailLetter
-        classes={classes}
-        isMobile={mobile}
-        axios={axios}
-      />
+      <MailLetter classes={classes} isMobile={mobile} axios={axios} />
     </Fragment>
   );
 };

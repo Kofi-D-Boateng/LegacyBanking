@@ -45,7 +45,7 @@ const Banner: FC<{
           <video autoPlay muted loop>
             <source
               style={{ width: "100%", height: "auto" }}
-              src={`http://localhost:8081/${API_VERSION}/s3/get-video?key=cityscape.mp4`}
+              src={`/${API_VERSION}/s3/get-video?key=cityscape.mp4`}
               type="video/mp4"
             />
           </video>

@@ -30,6 +30,7 @@ import { Account, Card, CustomerDetails } from "../types/CustomerDetails";
 import { AccountType, ProfileModal } from "../enums/ProfileEnums";
 import AppRoute from "../enums/Route";
 import { RootState } from "../store/store";
+import { Title } from "../enums/Title";
 
 const Profile: FC<{
   mobile: boolean;
@@ -37,6 +38,10 @@ const Profile: FC<{
   const customer: CustomerDetails = useSelector(
     (state: RootState) => state.cust
   );
+
+  !customer.getInfo
+    ? (document.getElementById("title")!.innerText = Title.PROFILE)
+    : (document.getElementById("title")!.innerText = Title.SEARCHING);
   const urlParams = useSearchParams();
   const date = new Date();
   const nav: NavigateFunction = useNavigate();
@@ -60,15 +65,12 @@ const Profile: FC<{
   useEffect(() => {
     const fetchAccount: () => void = async () => {
       await axios
-        .get(
-          `${API_VERSION}/customer/profile`,
-          {
-            headers: {
-              authorization: localStorage.getItem("token") as string,
-            },
-            params:{"apiKey":localStorage.getItem("apiKey") as string}
-          }
-        )
+        .get(`${API_VERSION}/customer/profile`, {
+          headers: {
+            authorization: localStorage.getItem("token") as string,
+          },
+          params: { apiKey: localStorage.getItem("apiKey") as string },
+        })
         .then((response) => {
           const {
             firstName,
@@ -95,9 +97,12 @@ const Profile: FC<{
               cards: cards,
             })
           );
-          dispatch(notisActions.getNotis({ notis: notifications ? notifications : [] }));
+          dispatch(
+            notisActions.getNotis({ notis: notifications ? notifications : [] })
+          );
           nav(
-            `${firstName}${lastName}?display=${AppRoute.MAINPROFILE}&account=${accounts[0].id}&year=${currentYear}&month=${MonthMap[currentMonth]}`,{replace:true}
+            `${firstName}${lastName}?display=${AppRoute.MAINPROFILE}&account=${accounts[0].id}&year=${currentYear}&month=${MonthMap[currentMonth]}`,
+            { replace: true }
           );
         })
         .catch(() => {
@@ -106,16 +111,10 @@ const Profile: FC<{
     };
     if (!customer.getInfo) {
       return;
-    }else{
+    } else {
       fetchAccount();
     }
-  }, [
-    customer.getInfo,
-    nav,
-    dispatch,
-    currentMonth,
-    currentYear,
-  ]);
+  }, [customer.getInfo, nav, dispatch, currentMonth, currentYear]);
 
   const account: Account = customer.accounts.filter((acc) => {
     const id: number = parseInt(urlParamAccount as string);
@@ -220,12 +219,7 @@ const Profile: FC<{
     {
       key: 3,
       type: ProfileModal.PAPERLESS,
-      modal: (
-        <Paperless
-          Exit={exitHandler}
-          isMobile={mobile}
-        />
-      ),
+      modal: <Paperless Exit={exitHandler} isMobile={mobile} />,
     },
     {
       key: 4,
@@ -257,7 +251,9 @@ const Profile: FC<{
 
   return (
     <>
-      {(!urlParamDisplay || !urlParamAccount || customer.accounts.length <= 0) && (
+      {(!urlParamDisplay ||
+        !urlParamAccount ||
+        customer.accounts.length <= 0) && (
         <Box
           sx={{ position: "absolute", top: "50%", left: "50%", zIndex: "5" }}
         >
@@ -265,7 +261,8 @@ const Profile: FC<{
         </Box>
       )}
       {urlParamDisplay?.includes(AppRoute.MAINPROFILE) &&
-        (!urlParamProfileView && customer.accounts.length >0 ) &&(
+        !urlParamProfileView &&
+        customer.accounts.length > 0 && (
           <MainProfile
             statementTag={ProfileModal.STATEMENT}
             securityTag={ProfileModal.SECURITY}

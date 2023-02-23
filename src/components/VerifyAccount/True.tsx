@@ -1,10 +1,10 @@
-import { BoxTypeMap, GridTypeMap, SvgIconTypeMap } from "@mui/material";
+import { GridTypeMap, SvgIconTypeMap } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { FC } from "react";
 
 const True: FC<{
   isMobile: boolean;
-  Box: OverridableComponent<BoxTypeMap<{}, "div">>;
+  Box: OverridableComponent<any>;
   PASSED: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
   };

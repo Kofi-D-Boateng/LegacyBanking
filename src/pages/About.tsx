@@ -11,8 +11,11 @@ import homedepotLogo from "../assets/photos/partnerLogos/home-depot.png";
 import Toyota from "../assets/photos/partnerLogos/Toyota.png";
 import Aetna from "../assets/photos/partnerLogos/aetna.png";
 import AmericanAirline from "../assets/photos/partnerLogos/AA.png";
+import { Title } from "../enums/Title";
 
 const About: FC<{ isMobile: boolean }> = ({ isMobile }) => {
+  document.getElementById("title")!.innerText = Title.ABOUT;
+
   return (
     <>
       <Banner

@@ -1,4 +1,4 @@
-import { BoxTypeMap, GridTypeMap, SvgIconTypeMap } from "@mui/material";
+import { GridTypeMap, SvgIconTypeMap } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { FC } from "react";
 
@@ -7,7 +7,7 @@ const False: FC<{
   FAILED: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
   };
-  Box: OverridableComponent<BoxTypeMap<{}, "div">>;
+  Box: OverridableComponent<any>;
   Grid: OverridableComponent<GridTypeMap<{}, "div">>;
 }> = ({ FAILED, Box, Grid, isMobile }) => {
   return (
