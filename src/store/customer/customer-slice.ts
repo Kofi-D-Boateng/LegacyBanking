@@ -38,19 +38,19 @@ const customerSlice = createSlice({
       state,
       action: PayloadAction<{
         authToken: string;
-        apiKey:string;
+        apiKey: string;
         expiresIn: number;
         isActivated: boolean;
       }>
     ) {
-      const {apiKey ,authToken, expiresIn, isActivated } = action.payload;
+      const { apiKey, authToken, expiresIn, isActivated } = action.payload;
       state.authenticated = true;
       state.isActivated = isActivated;
       state.expiresIn = expiresIn + DATE.getTime();
       localStorage.setItem("token", authToken);
-      localStorage.setItem("apiKey",apiKey)
+      localStorage.setItem("apiKey", apiKey);
       localStorage.setItem("exp", state.expiresIn.toString());
-      localStorage.setItem("enabled", isActivated ? "true":"false");
+      localStorage.setItem("enabled", isActivated ? "true" : "false");
     },
     createCustomer(
       state,

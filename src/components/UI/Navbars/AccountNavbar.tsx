@@ -19,7 +19,7 @@ import { AxiosStatic } from "axios";
 import AccountMobile from "./Mobile/AccountMobile";
 import AccountWeb from "./Web/AccountWeb";
 import { customerActions } from "../../../store/customer/customer-slice";
-import { NotificationDetails } from "../../../types/Notification";
+import { Notification, NotificationDetails } from "../../../types/Notification";
 import { API_VERSION } from "../Constants/Constants";
 
 const AccountNavbar: FC<{
@@ -60,9 +60,9 @@ const AccountNavbar: FC<{
         axios
           .delete(`${API_VERSION}/customer/logout`, {
             headers: { authorization: localStorage.getItem("token") as string },
-            params:{"apiKey":localStorage.getItem("apiKey") as string}
+            params: { apiKey: localStorage.getItem("apiKey") as string },
           })
-          .then(()=> dispatch(customerActions.logout()))
+          .then(() => dispatch(customerActions.logout()))
           .catch(() => dispatch(customerActions.logout()));
       } else if (target?.title !== "Log out") {
         nav(target!.link, { replace: false });
@@ -84,8 +84,8 @@ const AccountNavbar: FC<{
         { msgId: value, apiKey: localStorage.getItem("apiKey") as string },
         { headers: { authorization: localStorage.getItem("token") as string } }
       )
-      .then(() => dispatch(customerActions.resetInfo()))
-      .catch(()=>dispatch(customerActions.resetInfo()));
+      .then((response) => dispatch(response.data as Notification[]))
+      .catch(() => dispatch(customerActions.resetInfo()));
   };
 
   return (

@@ -84,6 +84,7 @@ const Profile: FC<{
             transactions,
             notifications,
           } = response.data;
+          console.log(response.data);
           dispatch(
             customerActions.createCustomer({
               fName: firstName,
@@ -98,14 +99,16 @@ const Profile: FC<{
             })
           );
           dispatch(
-            notisActions.getNotis({ notis: notifications ? notifications : [] })
+            notisActions.setNotifications({
+              notis: notifications ? notifications : [],
+            })
           );
           nav(
             `${firstName}${lastName}?display=${AppRoute.MAINPROFILE}&account=${accounts[0].id}&year=${currentYear}&month=${MonthMap[currentMonth]}`,
             { replace: true }
           );
         })
-        .catch(() => {
+        .catch((err) => {
           dispatch(customerActions.logout());
         });
     };
@@ -126,13 +129,15 @@ const Profile: FC<{
     return acc.id !== id;
   });
 
-  const cards: Card | undefined = customer.cards.find((card) => {
-    if (account.bankAccountType.includes(AccountType.CREDIT)) {
-      return card.creditType === account.creditType;
-    } else {
-      return card;
-    }
-  });
+  const cards: Card | undefined = account.bankAccountType
+    ? customer.cards.find((card) => {
+        if (account.bankAccountType?.includes(AccountType.CREDIT)) {
+          return card.creditType === account.creditType;
+        } else {
+          return card;
+        }
+      })
+    : undefined;
 
   const mainProfileURL = `${customer.fName}${customer.lName}?display=${AppRoute.MAINPROFILE}&account=${urlParamAccount}&year=${urlParamYear}&month=${urlParamMonth}`;
 
