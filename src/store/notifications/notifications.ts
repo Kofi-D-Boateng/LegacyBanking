@@ -12,7 +12,7 @@ const notisSlice = createSlice({
   name: "notification",
   initialState: initialState(),
   reducers: {
-    getNotis(
+    setNotifications(
       state,
       action: PayloadAction<{
         notis: Notification[];
@@ -28,6 +28,9 @@ const notisSlice = createSlice({
             state.numberOfUnreadNotifications + 1;
         }
       }
+    },
+    updateNotification(state, action: PayloadAction<Notification[]>) {
+      state.notifications = action.payload;
     },
   },
 });
