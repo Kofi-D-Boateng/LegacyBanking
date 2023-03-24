@@ -119,19 +119,21 @@ const Profile: FC<{
     }
   }, [customer.getInfo, nav, dispatch, currentMonth, currentYear]);
 
-  const account: Account = customer.accounts.filter((acc) => {
-    const id: number = parseInt(urlParamAccount as string);
-    return acc.id === id;
-  })[0];
+  const account: Account | undefined = urlParamAccount
+    ? customer.accounts.filter((acc) => {
+        const id: number = parseInt(urlParamAccount as string);
+        return acc.id === id;
+      })[0]
+    : undefined;
 
   const nonVisibleAccounts: Account[] = customer.accounts.filter((acc) => {
     const id: number = parseInt(urlParamAccount as string);
     return acc.id !== id;
   });
 
-  const cards: Card | undefined = account.bankAccountType
+  const cards: Card | undefined = urlParamAccount
     ? customer.cards.find((card) => {
-        if (account.bankAccountType?.includes(AccountType.CREDIT)) {
+        if (account?.bankAccountType?.includes(AccountType.CREDIT)) {
           return card.creditType === account.creditType;
         } else {
           return card;
@@ -203,7 +205,7 @@ const Profile: FC<{
       modal: (
         <MoneyTransfer
           myEmail={customer.email}
-          account={account}
+          account={account as Account}
           isMobile={mobile}
           mainUrl={mainProfileURL}
           Exit={exitHandler}
@@ -244,7 +246,7 @@ const Profile: FC<{
       modal: (
         <AccountSecurity
           card={cards as Card}
-          account={account}
+          account={account as Account}
           Exit={exitHandler}
           isMobile={mobile}
           setAccountSecurityView={setAccountSecrutiyType}
@@ -274,7 +276,7 @@ const Profile: FC<{
             moneyTransferTag={ProfileModal.MONEYTRANSFER}
             paperlessTag={ProfileModal.PAPERLESS}
             accountNumberTag={ProfileModal.ACCOUNTNUMBER}
-            account={account}
+            account={account as Account}
             otherAccounts={nonVisibleAccounts}
             transactions={customer.transactions}
             classes={classes}
