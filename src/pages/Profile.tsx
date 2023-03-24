@@ -130,7 +130,6 @@ const Profile: FC<{
     const id: number = parseInt(urlParamAccount as string);
     return acc.id !== id;
   });
-
   const mainProfileURL = `${customer.fName}${customer.lName}?display=${AppRoute.MAINPROFILE}&account=${urlParamAccount}&year=${urlParamYear}&month=${urlParamMonth}`;
 
   const viewHandler = useCallback(
