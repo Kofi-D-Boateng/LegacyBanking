@@ -131,16 +131,6 @@ const Profile: FC<{
     return acc.id !== id;
   });
 
-  const cards: Card | undefined = urlParamAccount
-    ? customer.cards.find((card) => {
-        if (account?.bankAccountType?.includes(AccountType.CREDIT)) {
-          return card.creditType === account.creditType;
-        } else {
-          return card;
-        }
-      })
-    : undefined;
-
   const mainProfileURL = `${customer.fName}${customer.lName}?display=${AppRoute.MAINPROFILE}&account=${urlParamAccount}&year=${urlParamYear}&month=${urlParamMonth}`;
 
   const viewHandler = useCallback(
@@ -204,8 +194,7 @@ const Profile: FC<{
       type: ProfileModal.MONEYTRANSFER,
       modal: (
         <MoneyTransfer
-          myEmail={customer.email}
-          account={account as Account}
+          customer={customer}
           isMobile={mobile}
           mainUrl={mainProfileURL}
           Exit={exitHandler}
@@ -245,8 +234,8 @@ const Profile: FC<{
       type: ProfileModal.SECURITY,
       modal: (
         <AccountSecurity
-          card={cards as Card}
-          account={account as Account}
+          customer={customer}
+          accountParam={urlParamAccount}
           Exit={exitHandler}
           isMobile={mobile}
           setAccountSecurityView={setAccountSecrutiyType}

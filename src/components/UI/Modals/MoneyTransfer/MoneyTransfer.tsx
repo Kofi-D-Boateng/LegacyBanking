@@ -4,22 +4,24 @@ import Backdrop from "../../Backdrops/Backdrop";
 import Modal from "./Modal";
 import axios from "axios";
 import { TransferRequest } from "../../../../types/Transfer";
-import { Account } from "../../../../types/CustomerDetails";
+import { Account, CustomerDetails } from "../../../../types/CustomerDetails";
 import { API_VERSION } from "../../Constants/Constants";
 import { customerActions } from "../../../../store/customer/customer-slice";
 import { backdropDiv, overlayDiv } from "../../Layouts/RootElement";
 import classes from "../../../../styles/Modals/Modals.module.css";
 import { useDispatch } from "react-redux";
-import { TransactionEnv, TransactionType } from "../../../../enums/ProfileEnums";
+import {
+  TransactionEnv,
+  TransactionType,
+} from "../../../../enums/ProfileEnums";
 import AppRoute from "../../../../enums/Route";
 import { TransferStatus } from "../../../../enums/TransferStatus";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 
 const MoneyTransfer: FC<{
   isMobile: boolean;
-  myEmail: string;
-  account: Account;
-  mainUrl:string
+  customer: CustomerDetails;
+  mainUrl: string;
   urlParamDisplay: string | null;
   urlParamAccount: string | null;
   urlParamTransferBy: string | null;
@@ -29,31 +31,31 @@ const MoneyTransfer: FC<{
   onChoice: (event: ChangeEvent<HTMLInputElement>) => void;
 }> = ({
   isMobile,
-  account,
   mainUrl,
   Exit,
   onChoice,
   urlParamAccount,
   urlParamDisplay,
   urlParamTransferBy,
-  myEmail,
+  customer,
   status,
   setTransferStatus,
 }) => {
+  const account = customer.accounts[parseInt(urlParamAccount as string)];
   const AN: string = account ? account.accountNumber : "";
   const [transfer, setTransfer] = useState<TransferRequest>({
     accountNumber: AN,
     amount: 0,
-    email: myEmail,
+    email: customer.email,
     emailOfTransferee: undefined,
     phoneNumberOfTransferee: undefined,
     bankAccountType: account?.bankAccountType,
     transactionType: TransactionType.TRANSFER,
-    apiKey:localStorage.getItem("apiKey") as string,
-    transactionEnv:TransactionEnv.ONLINE
+    apiKey: localStorage.getItem("apiKey") as string,
+    transactionEnv: TransactionEnv.ONLINE,
   });
   const dispatch = useDispatch();
-  const nav:NavigateFunction = useNavigate();
+  const nav: NavigateFunction = useNavigate();
 
   useEffect(() => {
     if (
@@ -66,25 +68,21 @@ const MoneyTransfer: FC<{
     }
     if (transfer.emailOfTransferee || transfer.phoneNumberOfTransferee) {
       axios
-        .put(
-          `${API_VERSION}/transactions/process-transaction`,
-          transfer,
-          {
-            headers: { authorization: localStorage.getItem("token") as string },
-          }
-        )
+        .put(`${API_VERSION}/transactions/process-transaction`, transfer, {
+          headers: { authorization: localStorage.getItem("token") as string },
+        })
         .then(() => {
           setTransferStatus(TransferStatus.SUCCESSFUL_TRANSFER);
           dispatch(customerActions.resetInfo());
           setTimeout(() => {
-            nav(mainUrl,{replace:true})
+            nav(mainUrl, { replace: true });
           }, 4000);
         })
         .catch(() => {
           setTransferStatus(TransferStatus.UNSUCCESSFUL_TRANSFER);
           dispatch(customerActions.resetInfo());
           setTimeout(() => {
-            nav(mainUrl,{replace:true})
+            nav(mainUrl, { replace: true });
           }, 4000);
         });
     }
@@ -97,7 +95,7 @@ const MoneyTransfer: FC<{
     urlParamDisplay,
     account.bankAccountType,
     mainUrl,
-    nav
+    nav,
   ]);
 
   const transferHandler = useCallback(
@@ -106,23 +104,30 @@ const MoneyTransfer: FC<{
       phoneNumber: string | undefined;
       amount: number;
     }) => {
-      if(data.email === myEmail){
+      if (data.email === customer.email) {
         return;
       }
       setTransfer({
         emailOfTransferee: data.email,
         accountNumber: AN,
         amount: data.amount,
-        email: myEmail,
+        email: customer.email,
         bankAccountType: account.bankAccountType,
         phoneNumberOfTransferee: data.phoneNumber,
         transactionType: TransactionType.TRANSFER,
-        apiKey:transfer.apiKey,
-        transactionEnv:transfer.transactionEnv
+        apiKey: transfer.apiKey,
+        transactionEnv: transfer.transactionEnv,
       });
       setTransferStatus(TransferStatus.INPROGRESS);
     },
-    [AN, account.bankAccountType,transfer.apiKey,transfer.transactionEnv, myEmail, setTransferStatus]
+    [
+      AN,
+      account.bankAccountType,
+      transfer.apiKey,
+      transfer.transactionEnv,
+      customer.email,
+      setTransferStatus,
+    ]
   );
 
   return (
