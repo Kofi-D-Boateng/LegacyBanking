@@ -84,7 +84,6 @@ const Profile: FC<{
             transactions,
             notifications,
           } = response.data;
-          console.log(response.data);
           dispatch(
             customerActions.createCustomer({
               fName: firstName,
@@ -108,7 +107,7 @@ const Profile: FC<{
             { replace: true }
           );
         })
-        .catch((err) => {
+        .catch(() => {
           dispatch(customerActions.logout());
         });
     };
